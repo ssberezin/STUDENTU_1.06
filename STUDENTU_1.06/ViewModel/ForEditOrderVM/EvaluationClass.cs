@@ -118,10 +118,18 @@ namespace STUDENTU_1._06.ViewModel
                 {
                     EvaluationRecord.FinalEvaluation = true;
                     ExecuteAuthor = AuthorsRecord;
+                    FinalEvaluationRecord = EvaluationRecord;
+
+                    SelectedExecuteAuthor.AuthorId = AuthorsRecord.AuthorRecordId;
+
+                    Order.ExecuteAuthorComments = item.EvaluateDescription;
+                    Order.ExecuteAuthorPrice = item.Price;
+                    Order.ExecuteAuthorDeadLine = item.DeadLine;
+
                     break;
                 }
             }
-            FinalEvaluationRecord = EvaluationRecord;
+           
         }
 
         //call AddEvaluateWindow

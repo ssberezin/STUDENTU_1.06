@@ -1,5 +1,5 @@
 ﻿using STUDENTU_1._06.Model.DBModelClasses;
-
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -36,6 +36,13 @@ namespace STUDENTU_1._06.Model
         [Column("RedactionLog", TypeName = "nvarchar")]
         [MaxLength(2000)]
         public string RedactionLog { get; set; }
+
+        public Author ExecuteAuthor { get; set; }
+        public decimal ExecuteAuthorPrice { get; set; }
+        [Column("ExecuteAuthorComments", TypeName = "nvarchar")]
+        [MaxLength(2000)]
+        public string ExecuteAuthorComments { get; set; }
+        public DateTime ExecuteAuthorDeadLine { get; set; }
 
         public virtual User User { get; set; }
         public virtual Client Client { get; set; }

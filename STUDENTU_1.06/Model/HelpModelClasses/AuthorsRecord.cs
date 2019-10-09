@@ -9,6 +9,8 @@ namespace STUDENTU_1._06.Model.HelpModelClasses
         public AuthorsRecord()
         {
             this.EvaluationRecords = new ObservableCollection<EvaluationRecord>();
+            this.Persone = new Persone();
+            this.Contacts = new Contacts();
         }
 
         public int AuthorRecordId { get; set; }        

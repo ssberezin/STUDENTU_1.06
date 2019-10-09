@@ -194,18 +194,16 @@ namespace STUDENTU_1._06.ViewModel
                                 { DeadLine= new DateTime(1900, 1, 1) ,
                                   Price=0,
                                   EvaluateDescription=""};
-            
 
             ExecuteAuthor = new AuthorsRecord();
             ExecuteAuthor.Persone.NickName = "не задан";
-           
-
 
             LoadDirectionsData();//for load data to combobox DirList in EditOrder.xaml
             LoadSubjectsData();//for load data to combobox SubjList in EditOrder.xaml
             LoadWorkTypesData();//for load data to combobox WorkTypeList in EditOrder.xaml
             LoadSourcesData();//for load data to combobox SourcesList in EditOrder.xaml
             LoadStatusData();//for load data to combobox StatusList in RuleOrderLineWindow.xaml
+
         }
         //=================================METHODS FOR PREVIOS LOAD TO CONTROLS OF EditOrder.xaml =====
 
@@ -672,25 +670,42 @@ namespace STUDENTU_1._06.ViewModel
                                     Evaluation.Moneys.Add(new Money() { Price = item.Price });
                                     Evaluation.Description = item.EvaluateDescription;
                                     Evaluation.Dates.Add(new Dates() { DeadLine = item.DeadLine });
-                                    i.Evaluation.Add(Evaluation);
-                            }
-                       
+                                    i.Evaluation.Add(Evaluation);                               
+                            }                       
                         }
-                    Order.Author.Evaluation.Add(Evaluation);
+                    
 
-                   
+                    Order.ExecuteAuthor = db.Authors.Find(new Author() { AuthorId = SelectedExecuteAuthor.AuthorId }.AuthorId);
 
-                    foreach (var item in AuthorsRecord.EvaluationRecords)
+                    if (Order.ExecuteAuthor is null)
                     {
-                        if (item.FinalEvaluation==true)
-                        {
-                            WinnerEvaluation.Moneys.Add(new Money() { Price = item.Price });
-                            WinnerEvaluation.Description = item.EvaluateDescription;
-                            WinnerEvaluation.Dates.Add(new Dates() { DeadLine = item.DeadLine });
-                            SelectedExecuteAuthor.Evaluation.Add(WinnerEvaluation);
-                            break;
-                        }
+                        // set a default entry to author field
+                        Order.Author = db.Authors.Find(new Author() { AuthorId = 1 }.AuthorId);
+                        Order.Author.Evaluation.Add(Evaluation);
                     }
+                    else
+                    {
+                        Order.Author = db.Authors.Find(new Author() { AuthorId = SelectedExecuteAuthor.AuthorId }.AuthorId);
+                        Order.Author.Evaluation.Add(Evaluation);
+                    }
+
+                    //in SetSelectEvaluation(), whot in EvaluationClass.cs, we get :
+                    //Order.ExecuteAuthorComments = item.EvaluateDescription;
+                    //Order.ExecuteAuthorPrice = item.Price;
+                    //Order.ExecuteAuthorDeadLine = item.DeadLine;
+
+                    //эта ветка уже нафиг не нужна, по идее
+                    //foreach (var item in AuthorsRecord.EvaluationRecords)
+                    //{
+                    //    if (item.FinalEvaluation==true)
+                    //    {
+                    //        WinnerEvaluation.Moneys.Add(new Money() { Price = item.Price });
+                    //        WinnerEvaluation.Description = item.EvaluateDescription;
+                    //        WinnerEvaluation.Dates.Add(new Dates() { DeadLine = item.DeadLine });
+                    //        SelectedExecuteAuthor.Evaluation.Add(WinnerEvaluation);
+                    //        break;
+                    //    }
+                    //}
                     
                     Persone.Contacts=Contacts;
                     Order.Direction = db.Directions.Find(Dir.DirectionId);
@@ -699,12 +714,12 @@ namespace STUDENTU_1._06.ViewModel
                     Order.Dates = Date;
                     Order.Subject = db.Subjects.Find(Subj.SubjectId); ;
                     Order.Money = Price;
-                    if (SelectedExecuteAuthor is null)
-                        // set a default entry to author field
-                        Order.Author = db.Authors.Find(new Author() { AuthorId = 1 }.AuthorId);
-                    else
-                        //set realy selected author
-                        Order.Author = SelectedExecuteAuthor;
+                    //if (SelectedExecuteAuthor is null)
+                    //    // set a default entry to author field
+                    //    Order.Author = db.Authors.Find(new Author() { AuthorId = 1 }.AuthorId);
+                    //else
+                    //    //set realy selected author
+                    //    Order.Author = SelectedExecuteAuthor;
                     if (Status is null)
                         // set a default entry to status field
                         Order.Status = db.Statuses.Find(new Status() { StatusId = 1 }.StatusId); 
