@@ -1,0 +1,95 @@
+﻿<Window x:Class="STUDENTU_1._06.Views.EditSubject"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      
+         xmlns:helpes="clr-namespace:STUDENTU_1._06.Helpes" 
+        xmlns:scm1="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+        mc:Ignorable="d"
+         WindowStartupLocation="CenterScreen"
+        Title="Правка предмета" Background="LightYellow"
+        MaxHeight="350" MaxWidth="350" MinHeight="350" MinWidth="350" Height="350" Width="350">
+    <Window.InputBindings>
+        <KeyBinding Gesture="Esc" Command="{Binding CloseWindowCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
+        <!-- Command CloseWindowCommand can find in ForEditOrder.cs!-->
+    </Window.InputBindings>
+
+    <Window.Resources>
+       
+        <ResourceDictionary>
+            <helpes:NullToBooleanConverter x:Key="NullBoolConverter" />
+            
+            <!--for sorting in listbox without behind code-->
+            <CollectionViewSource x:Key="SortedItems" Source="{Binding SubjRecords}"
+                xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
+                <!-- SubjRecords can find in SubjectClass.cs-->
+                <CollectionViewSource.SortDescriptions>
+                    <scm1:SortDescription PropertyName="SubName"/>
+                </CollectionViewSource.SortDescriptions>
+            </CollectionViewSource>            
+        </ResourceDictionary>
+        
+        
+
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition Height="0.5*"/>
+        </Grid.RowDefinitions>
+        <TextBox x:Name="SubName" Grid.ColumnSpan="3" Margin="5" Text="{Binding Subj.SubName , Mode=TwoWay,
+            UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap"
+                 SpellCheck.IsEnabled="True" Language="ru-ru" TextAlignment="Center"
+                 TabIndex="0"/>
+        <!-- Subj can find in SubjectClass.cs-->
+            <ListBox x:Name="SubjList"
+                     Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="2" Margin="5" 
+                    ItemsSource="{Binding Source={StaticResource SortedItems}, 
+                    UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding Subj}"                   
+                     SelectionMode="Single" 
+                     IsSynchronizedWithCurrentItem="False"
+                     TabIndex="2"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <!--SortedItems can find above in Window.Resources-->
+            <!--Subj can find in SubjectClass.cs-->
+            <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <DockPanel >
+                        <TextBlock Text="{Binding SubName}" Margin="2"
+                                   TextWrapping="WrapWithOverflow" />
+                        <!--SubName is one of the Subj properties  what declarated in SubjectClass.cs-->
+                    </DockPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+      
+        </ListBox>
+        <Button Grid.Column="0" Grid.Row="3"  Content="Добавить" Background="Green"
+                    Command="{Binding AddSubjectCommand}" CommandParameter="{Binding SubName.Text}"
+                 IsEnabled="{Binding ElementName=SubName,  Path=Text.Length}"
+                TabIndex="1">            
+        </Button>
+        <!--Command AddSubjectCommand can find in SubjectClass.cs-->
+
+        <Button  x:Name="EditButton" Grid.Column="1" Grid.Row="3" Content="Редактировать" Background="BlueViolet"
+                Command="{Binding EditSubjectCommand}" IsEnabled="{Binding SelectedItem,
+                     Converter={StaticResource NullBoolConverter}, ElementName=SubjList}"
+                 CommandParameter="{Binding ElementName=SubName, Path=Text}"
+                 TabIndex="3"/>
+        <!--Command EditSubjectCommand can find in SubjectClass.cs-->
+        <Button Grid.Column="2" Grid.Row="3" Content="Удалить" Command="{Binding DeleteSubjectCommand}"
+                 CommandParameter="{Binding ElementName=SubName, Path=Text}"
+                IsEnabled="{Binding SelectedItem,
+                     Converter={StaticResource NullBoolConverter}, ElementName=SubjList}"
+                TabIndex="4"/>
+        <!--Command DeleteSubjectCommand can find in SubjectClass.cs-->
+    </Grid>
+</Window>

@@ -1,0 +1,8 @@
+xaml 
+
+Эта фича позволдяет закрыть окно по нажатию кнопки только средствами xaml
+взято от сюдава http://qaru.site/questions/29659/wpf-mvvm-how-to-close-a-window
+
+<Button Grid.Row="1" Width="75" Content="Да" Background="Green" Command="{Binding YesCommand}" 
+                CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}">
+        </Button>

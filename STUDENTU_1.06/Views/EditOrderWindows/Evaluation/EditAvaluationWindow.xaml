@@ -1,0 +1,155 @@
+﻿<Window x:Class="STUDENTU_1._06.Views.EditOrderWindows.EditAvaluationWindow"
+          xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
+       xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Platform"
+         xmlns:helpes="clr-namespace:STUDENTU_1._06.Helpes" 
+        xmlns:scm1="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+        mc:Ignorable="d"
+         WindowStartupLocation="CenterScreen"
+        Title="Редактирование оценок авторов" 
+        Height="350" Width="600"
+        >
+    <Window.InputBindings>
+        <KeyBinding Gesture="Esc" Command="{Binding CloseWindowCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
+        <KeyBinding Gesture="Ctrl+n" Command="{Binding AddEvaluationCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
+        <KeyBinding Gesture="Ctrl+d" Command="{Binding AddEvaluationCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
+    </Window.InputBindings>
+    <Window.Resources>
+
+        <ResourceDictionary>
+            <helpes:NullToBooleanConverter x:Key="NullBoolConverter" />
+            <helpes:DateFormatConverter x:Key="dateFormatConverter"/>
+            <helpes:TimeFormatConverter x:Key="timeFormatConverter"/>
+            <helpes:HeightToFontSizeConverter x:Key="heightToFontSizeConverter"/>
+            <helpes:BoolInverterConverter x:Key="boolInverterConverter"/>
+
+            <!--for sorting in listbox without behind code-->
+            <CollectionViewSource x:Key="SortedSelectedAuthors" Source="{Binding SelectedAuthorsRecords}"
+                xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
+                <!--"SelectedAuthorsRecords" can find in "RuleOrderLineClass.cs"-->
+                <CollectionViewSource.SortDescriptions>
+                    <scm1:SortDescription PropertyName="AuthorsRecord.Persone"/>
+                </CollectionViewSource.SortDescriptions>
+            </CollectionViewSource>
+
+            <Style TargetType="TextBlock" x:Name="TxtBlockStyle">
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="TextAlignment" Value="Center"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="TextWrapping" Value="Wrap"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+            </Style>
+
+            <Style TargetType="ListBox" x:Name="ListBoxStyle">
+                <Setter Property="VerticalAlignment" Value="Stretch"/>
+                <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                <Setter Property="Margin" Value="5"/>
+                <Setter Property="Background" Value="White"/>
+                <Setter Property="SelectionMode" Value="Single"/>
+                <Setter Property="IsSynchronizedWithCurrentItem" Value="False"/>
+                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+            </Style>
+
+
+        </ResourceDictionary>
+
+    </Window.Resources>
+
+    <Grid Background="#FFAFE2D5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="0.2*"/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+           
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.6*"/>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+          
+
+        </Grid.RowDefinitions>
+            
+        <TextBlock Text="Авторы, оцениваеющие работы" Grid.Column="0"/>
+        <ListBox x:Name="Authors" Grid.Row="1" Grid.Column="0" Grid.RowSpan="5"
+                    ItemsSource="{Binding Source={StaticResource SortedSelectedAuthors}, 
+                    UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding AuthorsRecord}"                   
+                   TabIndex="6" Margin="8"   >
+            <!--"AuthorsRecord" can find in RuleOrderLineClass.cs-->
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <DockPanel >
+                        <TextBlock Text="{Binding NickName}" Margin="2"
+                                   TextWrapping="WrapWithOverflow" 
+                                   TextAlignment="Center"/>
+                    </DockPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <ListBox x:Name="Avaluation" Grid.Row="1" Grid.Column="2" Grid.RowSpan="5" Grid.ColumnSpan="2"
+                    ItemsSource="{Binding AuthorsRecord.EvaluationRecords, 
+                    UpdateSourceTrigger=PropertyChanged}" 
+                 SelectedItem="{Binding  EvaluationRecord}"                   
+                   TabIndex="6" Margin="8" >
+            <!--"AuthorsRecords" can find in "RuleOrderLineClass.cs"-->
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <DockPanel >
+                        <WrapPanel>
+                            <Label Content="Дата: " Foreground="Red" Background="Black" />
+                            <TextBlock Text="{Binding DeadLine, Converter={StaticResource dateFormatConverter}}" 
+                                   Margin="2" Background="Black" Foreground="Red"
+                                   TextWrapping="WrapWithOverflow" 
+                                   TextAlignment="Center"/>
+                            <Label Content="Время: " Foreground="Orange" Background="Black" />
+                            <TextBlock Text="{Binding DeadLine, Converter={StaticResource timeFormatConverter}}" 
+                                   Margin="2" Background="Black" Foreground="Orange"
+                                   TextWrapping="WrapWithOverflow" 
+                                   TextAlignment="Center"/>
+                        </WrapPanel>
+                        <Label Content="Цена: " Foreground="Blue" Background="Yellow" />
+                        <TextBlock Text="{Binding Price}" 
+                                   Margin="2" Background="Yellow" Foreground="Red"
+                                   TextWrapping="WrapWithOverflow" 
+                                   TextAlignment="Center"/>
+                        <Label Content="Комментарии" Foreground="Blue" />
+                        <TextBlock Text="{Binding EvaluateDescription}" 
+                                   Margin="2" 
+                                   TextWrapping="WrapWithOverflow" 
+                                   TextAlignment="Center"/>
+                    </DockPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Button Grid.Column="1" Grid.Row="2" Content="+" Background="Green" TabIndex="6"
+               IsEnabled="{Binding SelectedItem,
+                     Converter={StaticResource NullBoolConverter}, ElementName=Authors}"
+                Command="{Binding AddEvaluationCommand}" CommandParameter="{Binding DataContext, RelativeSource=
+                    {RelativeSource AncestorType={x:Type Window}}}" RenderTransformOrigin="0.5,0.706" />
+        <!--Command "AddEvaluationCommand" can find in EvaluationClass.cs -->
+        <Button Grid.Column="1" Grid.Row="3" Content="-" Background="Red" FontWeight="ExtraBold" TabIndex="5"
+                IsEnabled="{Binding SelectedItem,
+                     Converter={StaticResource NullBoolConverter}, ElementName=Avaluation}"
+                 Command="{Binding DeleteSelectedAvaluateRuleOrderCommand}"   />
+        <!--Command "DeleteSelectedAvaluateRuleOrderCommand" can find in EvaluationClass.cs -->
+        <Button Grid.Column="1" Grid.Row="4" Content="Ред." Background="BlueViolet"
+                FontWeight="ExtraBold" TabIndex="5"
+                IsEnabled="{Binding SelectedItem,
+                     Converter={StaticResource NullBoolConverter}, ElementName=Avaluation}"
+                 Command="{Binding CallEditSelectedAvaluateRuleOrderWindowCommand}"    />
+        <!--Command "EditSelectedAvaluateRuleOrderCommand" can find in EvaluationClass.cs -->
+        <TextBlock Text="Оценки авторов "  Grid.Column="2" Grid.ColumnSpan="2"/>
+
+    </Grid>
+</Window>
