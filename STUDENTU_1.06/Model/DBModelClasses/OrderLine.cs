@@ -42,6 +42,7 @@ namespace STUDENTU_1._06.Model
         [Column("ExecuteAuthorComments", TypeName = "nvarchar")]
         [MaxLength(2000)]
         public string ExecuteAuthorComments { get; set; }
+        [Column(TypeName = "datetime2")]
         public DateTime ExecuteAuthorDeadLine { get; set; }
 
         public virtual User User { get; set; }

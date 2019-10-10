@@ -19,6 +19,6 @@ namespace STUDENTU_1._06.Views
 
         }
 
-     
+      
     }
 }

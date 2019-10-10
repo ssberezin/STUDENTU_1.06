@@ -122,7 +122,8 @@ namespace STUDENTU_1._06.ViewModel
             {
                 try
                 {
-                    if (Dir.DirectionName == "---") param = "AllAuthors";
+                    if (Dir.DirectionName == "---")
+                        param = "AllAuthors";
                     var contacts = db.Contacts.Include("Persone").ToList();
                     switch (param)
                     {
@@ -226,23 +227,23 @@ namespace STUDENTU_1._06.ViewModel
                 }
                 catch (ArgumentNullException ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    dialogService.ShowMessage(ex.Message);
                 }
                 catch (OverflowException ex)
                 {
-                    MessageBox.Show(ex.Message);
+                     dialogService.ShowMessage(ex.Message);
                 }
                 catch (System.Data.SqlClient.SqlException ex)
                 {
-                    MessageBox.Show(ex.Message);
+                     dialogService.ShowMessage(ex.Message);
                 }
                 catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
                 {
-                    MessageBox.Show(ex.Message);
+                     dialogService.ShowMessage(ex.Message);
                 }
                 catch (System.Data.Entity.Core.EntityException ex)
                 {
-                    MessageBox.Show(ex.Message);
+                     dialogService.ShowMessage(ex.Message);
                 }
             }
 
@@ -254,15 +255,25 @@ namespace STUDENTU_1._06.ViewModel
             addSelectedAuthorCommand ?? (addSelectedAuthorCommand = new RelayCommand(
                     (obj) =>
                     {
-                        AddSelectedAuthor(obj as AuthorsRecord );
+                        AddSelectedAuthor();
                     }
                     ));
-        private void AddSelectedAuthor(AuthorsRecord author)
+        private void AddSelectedAuthor()
         {
-            SelectedAuthorsRecords.Add(author);
-            Order.Money.Evaluation.Authors.Add(new Author() {
-                                                AuthorId=author.AuthorRecordId,
-                                                Sourse=author.Sourse});
+            if (AuthorsRecord.Persone.NickName != "---")
+            {
+                SelectedAuthorsRecords.Add(AuthorsRecord);
+                Order.Money.Evaluation.Authors.Add(new Author()
+                {
+                    AuthorId = AuthorsRecord.AuthorRecordId,
+                    Sourse = AuthorsRecord.Sourse
+                });
+            }
+            else
+            {
+                dialogService.ShowMessage("Нельзя добавить эту запись");
+            }
+            
         }
 
         //=============================edit listbox "AuthorsAvaluat" if press button "-"====================
@@ -271,16 +282,16 @@ namespace STUDENTU_1._06.ViewModel
             delSelectedAuthorCommand ?? (delSelectedAuthorCommand = new RelayCommand(
                     (obj) =>
                     {
-                        DelSelectedAuthor(obj as AuthorsRecord);
+                        DelSelectedAuthor();
                     }
                     ));
 
-        private void DelSelectedAuthor(AuthorsRecord author)
+        private void DelSelectedAuthor()
         {
-            SelectedAuthorsRecords.Remove(author);
+            SelectedAuthorsRecords.Remove(AuthorsRecord);
             Order.Money.Evaluation.Authors.Remove(new Author()
                                                     {
-                                                        AuthorId = author.AuthorRecordId,
+                                                        AuthorId = AuthorsRecord.AuthorRecordId,
                                                         Sourse = author.Sourse
                                                     });
         }

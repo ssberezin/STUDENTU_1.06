@@ -64,10 +64,7 @@
                 <Setter Property="IsSynchronizedWithCurrentItem" Value="False"/>
                 <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
             </Style>
-
-
         </ResourceDictionary>
-
     </Window.Resources>
 
     <Grid Background="#FFE9F1EF">
@@ -89,50 +86,11 @@
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
-
         </Grid.RowDefinitions>
         <StackPanel  Margin="2">
             <TextBlock Text="Авторы" />
-            
-            <RadioButton GroupName="GroupA" Content="Все авторы" IsChecked="True">
-                <RadioButton.Triggers>
-                    <EventTrigger RoutedEvent="ToggleButton.Loaded">
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <BooleanAnimationUsingKeyFrames Storyboard.TargetProperty="IsChecked" >
-                                    <DiscreteBooleanKeyFrame Value="True"/>
-                                </BooleanAnimationUsingKeyFrames>
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </EventTrigger>
-                </RadioButton.Triggers>
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="Checked">
-                        <cmd:EventToCommand Command="{Binding AllAuthorsCallCommand }"/>
-                        <!-- Command AllAuthorsCallCommand can find in RuleOrderLineClass.cs-->
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </RadioButton>
-
-            <RadioButton GroupName="GroupA" Content="Авторы по тематике" >
-                <RadioButton.Triggers>
-                    <EventTrigger RoutedEvent="ToggleButton.Loaded">
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <BooleanAnimationUsingKeyFrames Storyboard.TargetProperty="IsChecked" >
-                                    <DiscreteBooleanKeyFrame Value="True"/>
-                                </BooleanAnimationUsingKeyFrames>
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </EventTrigger>
-                </RadioButton.Triggers>
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="Checked">
-                        <cmd:EventToCommand Command="{Binding ThemAuthorsCallCommand}"/>
-                        <!--Command ThemAuthorsCallCommand can find in RuleOrderLineClass.cs -->
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </RadioButton>
+            <RadioButton GroupName="GroupA" Content="Все авторы" IsChecked="False" Command="{Binding AllAuthorsCallCommand}"/>
+            <RadioButton GroupName="GroupA" Content="Авторы по тематике" IsChecked="False" Command="{Binding ThemAuthorsCallCommand}"/>            
         </StackPanel>
         <ListBox x:Name="Authors"
                      Grid.Row="1" Grid.RowSpan="5"
@@ -169,14 +127,12 @@
         <Button Grid.Column="1" Grid.Row="2" Content="+" Background="Green" TabIndex="6"
                 IsEnabled="{Binding SelectedItem,
                      Converter={StaticResource NullBoolConverter}, ElementName=Authors}"
-                Command="{Binding AddSelectedAuthorCommand}"
-                CommandParameter="{Binding ElementName=AuthorsAvaluat, Path=SelectedItem}"/>
+                Command="{Binding AddSelectedAuthorCommand}"/>
         <!-- Command AddSelectedAuthorCommand can find in RuleOrderLineClass.cs-->
         <Button Grid.Column="1" Grid.Row="3" Content="-" Background="Red" FontWeight="ExtraBold" TabIndex="5"
                 IsEnabled="{Binding SelectedItem,
                      Converter={StaticResource NullBoolConverter}, ElementName=AuthorsAvaluat}"
-                 Command="{Binding DelSelectedAuthorCommand}"
-                CommandParameter="{Binding ElementName=AuthorsAvaluat, Path=SelectedItem}"/>
+                 Command="{Binding DelSelectedAuthorCommand}"/>
         <!-- Command DelSelectedAuthorCommand can find in RuleOrderLineClass.cs-->
         <WrapPanel Grid.Row="9" Grid.ColumnSpan="3"  Margin="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" >
             <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 

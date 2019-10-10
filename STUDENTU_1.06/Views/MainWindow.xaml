@@ -86,7 +86,7 @@
         <DataGrid x:Name="GridOrders" Grid.Row="1" ItemsSource="{Binding Records, UpdateSourceTrigger=PropertyChanged}" 
                   SelectedItem="{Binding SelectedOrderLine}"                  
                   AutoGenerateColumns="False" SelectionMode="Single"
-                  IsReadOnly="True" Grid.ColumnSpan="2">
+                  IsReadOnly="True" Grid.ColumnSpan="2" >
             <!--"Records" , "SelectedOrderLine" we can find in  "MainViewModel.cs"-->
             <DataGrid.RowStyle>
                 <Style TargetType="DataGridRow">
@@ -147,17 +147,13 @@
             <Button Content="Новый заказ" Grid.Column="0"
                     Name="NewOrder" Margin="5"  Command="{Binding NewOrder}"
                     Background="Green"/>
-            <!--Сщььфтв "NewOrder" can be found in the class "MainViewModel.cs"-->
+            <!--"NewOrder" can be found in the class "MainViewModel.cs"-->
             <Button Content="Править заказ" Grid.Column="1"
                     Name="EditOrder" Margin="5"  
                     Background="Black"
                     IsEnabled="{Binding SelectedItem,
                      Converter={StaticResource NullBoolConverter}, ElementName=GridOrders}"/>
-            <!--<Button Grid.Column="1">
-                     VerticalAlignment="Stretch">
-                    <TextBlock Text="Править" FontWeight="Bold" />
-                </Viewbox>
-            </Button>-->
+         
             <Button Content="Печать квитанции" Grid.Column="2"
                     Name="PrintCheck" Margin="5"  
                     Background="LightBlue" Foreground="Black"

@@ -653,38 +653,43 @@ namespace STUDENTU_1._06.ViewModel
                 {
 
 
-                    //добавили авторов из AuthorsRecords в Evaluation
-                    foreach (var item in AuthorsRecords)
-                    {
-                        Evaluation.Authors.Add(new Author() {
-                            AuthorId=item.AuthorRecordId,
-                            Sourse=item.Sourse
-                    });
-                    }
-                    //добавили оценки авторам  Evaluation из AuthorsRecord.EvaluationRecords
-                    foreach (var i in Evaluation.Authors)
-                        {
-                            foreach (var item in AuthorsRecord.EvaluationRecords)
-                            {
-                            
-                                    Evaluation.Moneys.Add(new Money() { Price = item.Price });
-                                    Evaluation.Description = item.EvaluateDescription;
-                                    Evaluation.Dates.Add(new Dates() { DeadLine = item.DeadLine });
-                                    i.Evaluation.Add(Evaluation);                               
-                            }                       
-                        }
+                  
                     
 
-                    Order.ExecuteAuthor = db.Authors.Find(new Author() { AuthorId = SelectedExecuteAuthor.AuthorId }.AuthorId);
+                    //Order.ExecuteAuthor = db.Authors.Find(new Author() { AuthorId = SelectedExecuteAuthor.AuthorId }.AuthorId);
 
-                    if (Order.ExecuteAuthor is null)
+                    if (SelectedExecuteAuthor.AuthorId==0)
                     {
                         // set a default entry to author field
-                        Order.Author = db.Authors.Find(new Author() { AuthorId = 1 }.AuthorId);
-                        Order.Author.Evaluation.Add(Evaluation);
+                        Order.ExecuteAuthor = db.Authors.Find(new Author() { AuthorId = 1 }.AuthorId);
+                        Order.Author = Order.ExecuteAuthor;
+                       // Order.Author.Evaluation.Add(Evaluation);
                     }
                     else
                     {
+                        //добавили авторов из AuthorsRecords в Evaluation
+                        foreach (var item in AuthorsRecords)
+                        {
+                            Evaluation.Authors.Add(new Author()
+                            {
+                                AuthorId = item.AuthorRecordId,
+                                Sourse = item.Sourse
+                            });
+                        }
+                        //добавили оценки авторам  Evaluation из AuthorsRecord.EvaluationRecords
+                        foreach (var i in Evaluation.Authors)
+                        {
+                            foreach (var item in AuthorsRecord.EvaluationRecords)
+                            {
+
+                                Evaluation.Moneys.Add(new Money() { Price = item.Price });
+                                Evaluation.Description = item.EvaluateDescription;
+                                Evaluation.Dates.Add(new Dates() { DeadLine = item.DeadLine });
+                                i.Evaluation.Add(Evaluation);
+                            }
+                        }
+
+                        Order.ExecuteAuthor = db.Authors.Find(new Author() { AuthorId = SelectedExecuteAuthor.AuthorId }.AuthorId);
                         Order.Author = db.Authors.Find(new Author() { AuthorId = SelectedExecuteAuthor.AuthorId }.AuthorId);
                         Order.Author.Evaluation.Add(Evaluation);
                     }
@@ -720,7 +725,7 @@ namespace STUDENTU_1._06.ViewModel
                     //else
                     //    //set realy selected author
                     //    Order.Author = SelectedExecuteAuthor;
-                    if (Status is null)
+                    if (Status.StatusName=="принимается")
                         // set a default entry to status field
                         Order.Status = db.Statuses.Find(new Status() { StatusId = 1 }.StatusId); 
                     else
