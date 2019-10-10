@@ -53,15 +53,22 @@
                     <!--"CloseMainWindow" we can find in  "MainViewModel.cs"-->
                 </MenuItem>
                 <MenuItem Header="Правка"  Height="17"  VerticalAlignment="Top">
-                    <MenuItem Header="Новый заказ  Ctrl+N" Command="{Binding NewOrder}"/>
-                    <!--"NewOrder" we can find in  "MainViewModel.cs"-->
-                    <MenuItem Header="Редактировать заказ" 
+                    <MenuItem Header="Заказы" Height="17" VerticalAlignment="Top">
+                        <MenuItem Header="Новый заказ  Ctrl+N" Command="{Binding NewOrder}"
+                                  Height="17" VerticalAlignment="Top"/>
+                        <!--"NewOrder" we can find in  "MainViewModel.cs"-->
+                        <MenuItem Header="Редактировать заказ" Height="17" VerticalAlignment="Top"
                               IsEnabled="{Binding SelectedItem,
                                           Converter={StaticResource NullBoolConverter}, ElementName=GridOrders}"/>
-                    <MenuItem Header="Удалить заказ"
+                        <MenuItem Header="Удалить заказ" Height="17" VerticalAlignment="Top"
                               IsEnabled="{Binding SelectedItem,
                                           Converter={StaticResource NullBoolConverter}, ElementName=GridOrders}"/>
-                </MenuItem>
+                    </MenuItem>
+                    <MenuItem Header="Авторы" Height="17" VerticalAlignment="Top"
+                              Command="{Binding AddAuthorCommand}"/>
+
+
+                    
                 <MenuItem Header="Черный список"  Height="17"  VerticalAlignment="Top" >
                     <MenuItem Header="Отобразить">
                         <MenuItem Header="Заказы" />

@@ -46,7 +46,7 @@ namespace STUDENTU_1._06 {
     public partial class MainWindow : System.Windows.Window, System.Windows.Markup.IComponentConnector {
         
         
-        #line 86 "..\..\..\Views\MainWindow.xaml"
+        #line 97 "..\..\..\Views\MainWindow.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.DataGrid GridOrders;
         
@@ -54,7 +54,7 @@ namespace STUDENTU_1._06 {
         #line hidden
         
         
-        #line 148 "..\..\..\Views\MainWindow.xaml"
+        #line 159 "..\..\..\Views\MainWindow.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.Button NewOrder;
         
@@ -62,7 +62,7 @@ namespace STUDENTU_1._06 {
         #line hidden
         
         
-        #line 152 "..\..\..\Views\MainWindow.xaml"
+        #line 163 "..\..\..\Views\MainWindow.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.Button EditOrder;
         
@@ -70,7 +70,7 @@ namespace STUDENTU_1._06 {
         #line hidden
         
         
-        #line 158 "..\..\..\Views\MainWindow.xaml"
+        #line 169 "..\..\..\Views\MainWindow.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.Button PrintCheck;
         
@@ -78,7 +78,7 @@ namespace STUDENTU_1._06 {
         #line hidden
         
         
-        #line 163 "..\..\..\Views\MainWindow.xaml"
+        #line 174 "..\..\..\Views\MainWindow.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.Button DeleteOrder;
         

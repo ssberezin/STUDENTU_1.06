@@ -11,16 +11,21 @@ using STUDENTU_1._06.Views;
 using STUDENTU_1._06.Model.HelpModelClasses.ShowWindows;
 using STUDENTU_1._06.Model.HelpModelClasses;
 using STUDENTU_1._06.Model.DBModelClasses;
+using STUDENTU_1._06.Model.HelpModelClasses.DialogWindows;
 
 namespace STUDENTU_1._06.ViewModel
 {
     class MainViewModel : Helpes.ObservableObject
     {
         public ObservableCollection<Records> Records { get; set; }
-        public DateFormatConverter DateFormatConverter { get; set; }
+        //public DateFormatConverter DateFormatConverter { get; set; }
       
         private Persone selectedPersone;
         private Window mainWindow;
+
+        
+        IDialogService dialogService;//for show messages in mvvm pattern order
+        IShowWindowService showWindow;//for show messages in mvvm pattern order
 
 
         public Persone SelectedOrderLine
@@ -37,7 +42,7 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
-        IShowWindowService showWindow;
+        
 
         public MainViewModel(Window mainWindow, DefaultShowWindowService showWindow)
         {
@@ -121,23 +126,23 @@ namespace STUDENTU_1._06.ViewModel
                 }
                 catch (ArgumentNullException ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    dialogService.ShowMessage(ex.Message);
                 }
                 catch (OverflowException ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    dialogService.ShowMessage(ex.Message);
                 }
                 catch (System.Data.SqlClient.SqlException ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    dialogService.ShowMessage(ex.Message);
                 }
                 catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    dialogService.ShowMessage(ex.Message);
                 }
                 catch (System.Data.Entity.Core.EntityException ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    dialogService.ShowMessage(ex.Message);
                 }
             }
         }
@@ -200,23 +205,23 @@ namespace STUDENTU_1._06.ViewModel
                 }
                 catch (ArgumentNullException ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    dialogService.ShowMessage(ex.Message);
                 }
                 catch (OverflowException ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    dialogService.ShowMessage(ex.Message);
                 }
                 catch (System.Data.SqlClient.SqlException ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    dialogService.ShowMessage(ex.Message);
                 }
                 catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    dialogService.ShowMessage(ex.Message);
                 }
                 catch (System.Data.Entity.Core.EntityException ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    dialogService.ShowMessage(ex.Message);
                 }
             }
         }
@@ -233,7 +238,6 @@ namespace STUDENTU_1._06.ViewModel
 
 
         private RelayCommand newOrder;
-
         public RelayCommand NewOrder => newOrder ?? (newOrder = new RelayCommand(
                     (obj) =>
                     {
@@ -249,6 +253,18 @@ namespace STUDENTU_1._06.ViewModel
                     (obj) =>
                     {                        
                         mainWindow.Close();
+                    }
+                    ));
+
+
+        //AddAuthorCommand
+        private RelayCommand addAuthorCommand;
+        public RelayCommand AddAuthorCommand => newOrder ?? (newOrder = new RelayCommand(
+                    (obj) =>
+                    {
+                        EditOrder editOrder = new EditOrder();
+                        editOrder.Owner = Application.Current.MainWindow;
+                        showWindow.ShowWindow(editOrder);
                     }
                     ));
 

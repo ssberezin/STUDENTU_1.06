@@ -127,6 +127,10 @@
     <Compile Include="Model\HelpModelClasses\BlackListHelpModel.cs" />
     <Compile Include="Model\HelpModelClasses\DialogWindows\DefaultDialogService.cs" />
     <Compile Include="Model\HelpModelClasses\DialogWindows\IDialogService.cs" />
+    <Compile Include="ViewModel\PersoneOperations\AuthorsOperationsVM\AuthorsVMClass.cs" />
+    <Compile Include="Views\PersoneOperations\AuthorOperationsWindows\AuthorWindow.xaml.cs">
+      <DependentUpon>AuthorWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="Views\EditOrderWindows\AddContactsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -270,6 +274,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\PersoneOperations\AuthorOperationsWindows\AuthorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
