@@ -1,4 +1,5 @@
-﻿    using System;
+﻿using STUDENTU_1._06.Model.HelpModelClasses;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -7,19 +8,19 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace STUDENTU_1._06.Model
 {
-   public  class Persone //: IDataErrorInfo
+    public class Persone //: IDataErrorInfo
     {
         public Persone()
         {
             this.User = new List<User>();
             this.Client = new List<Client>();
             this.Author = new List<Author>();
-           // this.Contacts = new List<Contacts>();
+            // this.Contacts = new List<Contacts>();
 
             this.Dates = new List<Dates>();
             this.Sex = true;
             this.Name = "";
-            this.NickName = null;            
+            this.NickName = null;
         }
 
         public int PersoneId { get; set; }
@@ -38,6 +39,7 @@ namespace STUDENTU_1._06.Model
         public string Patronimic { get; set; }
         public bool Sex { get; set; }
 
+        public virtual Picture Picture {get;set;}
         public virtual Contacts Contacts { get; set; }
         public virtual PersoneDescription PersoneDescription { get; set; }
       //  public virtual List<Contacts> Contacts { get; set; }        

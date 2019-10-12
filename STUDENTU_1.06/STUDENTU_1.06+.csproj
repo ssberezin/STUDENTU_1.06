@@ -127,6 +127,7 @@
     <Compile Include="Model\HelpModelClasses\BlackListHelpModel.cs" />
     <Compile Include="Model\HelpModelClasses\DialogWindows\DefaultDialogService.cs" />
     <Compile Include="Model\HelpModelClasses\DialogWindows\IDialogService.cs" />
+    <Compile Include="Model\DBModelClasses\Picture.cs" />
     <Compile Include="ViewModel\PersoneOperations\AuthorsOperationsVM\AuthorsVMClass.cs" />
     <Compile Include="Views\PersoneOperations\AuthorOperationsWindows\AuthorWindow.xaml.cs">
       <DependentUpon>AuthorWindow.xaml</DependentUpon>
