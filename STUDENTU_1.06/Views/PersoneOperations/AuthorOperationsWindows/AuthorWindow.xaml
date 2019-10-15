@@ -33,7 +33,7 @@
         <helpes:DateFormatConverter x:Key="dateFormatConverter"/>
         <helpes:HeightToFontSizeConverter x:Key="heightToFontSizeConverter"/>
         <helpes:BoolInverterConverter x:Key="boolInverterConverter"/>
-        
+
         <CollectionViewSource x:Key="SortedStatuses" Source="{Binding StatusRecords}"
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
             <!--StatusRecords can find in StatusClass.cs-->
@@ -143,13 +143,13 @@
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
-            <RowDefinition />            
+            <RowDefinition />
         </Grid.RowDefinitions>
-       
+
         <WrapPanel Grid.Row="0" Grid.ColumnSpan="2" Margin="3">
             <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
                      VerticalAlignment="Stretch">
-                <TextBlock Text="Имя*: " Foreground="Red"/>
+                <TextBlock Text="Имя: " Foreground="Brown" FontWeight="Bold"/>
             </Viewbox>
 
 
@@ -164,13 +164,13 @@
                 </TextBox.Text>
             </TextBox>
             <!--тут хз пока шо прилепить, забацал кнопку и забыл накой она нужна была-->
-           
+
 
         </WrapPanel>
         <WrapPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="3">
             <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
                      VerticalAlignment="Stretch">
-                <TextBlock Text="Фамилия: " />
+                <TextBlock Text="Фамилия: " Foreground="Brown" />
             </Viewbox>
             <TextBox x:Name="Surname"   Text="{Binding Persone.Surname, Mode=TwoWay}" TabIndex="1"  MinWidth="250"/>
         </WrapPanel>
@@ -178,7 +178,7 @@
         <WrapPanel Grid.Row="2" Grid.ColumnSpan="2" Margin="3">
             <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
                      VerticalAlignment="Stretch">
-                <TextBlock Text="Отчество: " />
+                <TextBlock Text="Отчество: " Foreground="Brown"/>
             </Viewbox>
             <TextBox x:Name="Patronimic"   Text="{Binding Persone.Patronimic, Mode=TwoWay}" TabIndex="2"  MinWidth="250"/>
             <!--Persone can find in ForEditOrder.cs-->
@@ -186,16 +186,20 @@
         <WrapPanel Grid.Row="3" Grid.ColumnSpan="2" Margin="3">
             <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
                      VerticalAlignment="Stretch">
-                <TextBlock Text="Ник: " FontWeight="Bold"/>
+                <TextBlock Text="Ник: " FontWeight="Bold" Foreground="Brown"/>
             </Viewbox>
-            <TextBox    Text="{Binding Persone.NickName, Mode=TwoWay}"  MinWidth="80"/>
+            <TextBox    Text="{Binding Persone.NickName, Mode=TwoWay}"  MinWidth="70" Width="110"/>
             <!--Persone can find in ForEditOrder.cs-->
+            <Button Content="Добавить контакты " Background="YellowGreen" Height="30" TabIndex="7" Margin="5"
+                     Command="{Binding NewEditContactsCommand}" CommandParameter="{Binding DataContext, RelativeSource=
+                    {RelativeSource AncestorType={x:Type Window}}}" Width="177"/>
+            <!--NewEditContactsCommand can find in ForEditOrderAddContacts.cs-->
         </WrapPanel>
-        
+
         <WrapPanel Grid.Row="4" Grid.ColumnSpan="2" Margin="3">
             <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
                      VerticalAlignment="Stretch">
-                <TextBlock Text="Пол:" FontWeight="Bold" />
+                <TextBlock Text="Пол:" FontWeight="Bold" Foreground="Brown"/>
             </Viewbox>
             <!--для валидации https://www.codeproject.com/Articles/97564/Attributes-based-Validation-in-a-WPF-MVVM-Applicat-->
             <RadioButton GroupName="A" Content="Мужской" VerticalAlignment="Center" TabIndex="4"
@@ -207,14 +211,12 @@
                           Converter={StaticResource boolInverterConverter},
                           Mode=TwoWay}"/>
             <!--Persone can find in ForEditOrder.cs-->
-        </WrapPanel>
-        <WrapPanel Grid.Row="5" Grid.ColumnSpan="2"  Margin="3" >            
-            <Button Content="Добавить контакты контакты" Background="YellowGreen" Height="30" TabIndex="7" Margin="5"
-                     Command="{Binding NewEditContactsCommand}" CommandParameter="{Binding DataContext, RelativeSource=
-                    {RelativeSource AncestorType={x:Type Window}}}"/>
-            <!--NewEditContactsCommand can find in ForEditOrderAddContacts.cs-->
-            <Button Content="В ч.списке?" Background="Black" Height="30" Width="100" TabIndex="8" Margin="5"
+            <Button Content="В ч.списке?" Background="Black" Height="30" Width="149" TabIndex="8" Margin="5"
                     Command="{Binding CheckBlackListCommand}"/>
+        </WrapPanel>
+        <WrapPanel Grid.Row="5" Grid.ColumnSpan="2"  Margin="3" >
+
+
             <!--CheckBlackListCommand can find in BlackListClass.cs-->
         </WrapPanel>
         <WrapPanel Grid.Row="6" Grid.ColumnSpan="2"  Margin="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" >
@@ -234,7 +236,7 @@
                     Command="{Binding NewEditStatusCommand}" CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}"/>
             <!--Command NewEditStatusCommand can find in StatusClass.cs-->
-           
+
         </WrapPanel>
         <WrapPanel Grid.Row="7" Grid.ColumnSpan="2"  Margin="3,3,0,3" HorizontalAlignment="Left" >
             <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
@@ -260,84 +262,86 @@
                     {RelativeSource AncestorType={x:Type Window}}}"/>
             <!--Command NewEditDirection can find in DirectionClass.cs-->
         </WrapPanel>
-        
-        <StackPanel Grid.Row="9"   Margin="3" VerticalAlignment="Center">
+        <WrapPanel Grid.Row="8" Grid.ColumnSpan="2" Margin="3" Grid.RowSpan="2">
             <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
                      VerticalAlignment="Stretch">
-                <TextBlock Text="Дата приема заказа" Foreground="Blue" FontWeight="Bold"/>
+                <TextBlock Text="Источник " FontWeight="Bold" Foreground="Brown"/>
+            </Viewbox>
+            <TextBox    Text="привязать к полю источника" FontSize="10" TextWrapping="Wrap"
+                        MinWidth="80" Width="267" Height="80" TextAlignment="Center" VerticalContentAlignment="Center"
+                        />
+            <!--Persone can find in ForEditOrder.cs-->
+        </WrapPanel>
+        <StackPanel Grid.Row="10"   Margin="3" VerticalAlignment="Center">
+            <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
+                     VerticalAlignment="Stretch">
+                <TextBlock Text="Сотрудничаем с:" Foreground="Brown" FontWeight="Bold"/>
             </Viewbox>
             <DatePicker Name="DateOfReception" IsDropDownOpen="False" SelectedDateFormat="Short" 
                         MaxWidth="150" TabIndex="13" HorizontalAlignment="Center"
                         SelectedDate="{Binding Date.DateOfReception,Mode=TwoWay}"/>
             <!--Date can find in ForEditOrder.cs-->
         </StackPanel>
-
-        
-       
-       
-        <Viewbox Grid.Column="3" Grid.ColumnSpan="2" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Center" 
-                     VerticalAlignment="Bottom">
-            <TextBlock Text="Комментарии...." FontWeight="Bold" />
-        </Viewbox>
-        <TextBox Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="3" Margin="5,10" 
-                     FontSize="14" TabIndex="17" TextWrapping="Wrap"  AcceptsReturn="True" MinHeight="103"
-                    VerticalScrollBarVisibility="Visible"
-                    Text="{Binding Order.DescriptionForClient}"/>
-        <!--Order can find in ForEditOrder.cs-->
-        <StackPanel Grid.Column="2" Grid.Row="4" Grid.ColumnSpan="3" Grid.RowSpan="3"  Margin="3">
-            <Viewbox MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Center" 
-                     VerticalAlignment="Bottom">
-                <TextBlock Text="Комментарии ...." FontWeight="Bold" 
-                           Foreground="Blue"/>
+        <StackPanel Grid.Row="10" Grid.Column="1"  Margin="3" VerticalAlignment="Center">
+            <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
+                     VerticalAlignment="Stretch">
+                <TextBlock Text="Перестали работать с:" Foreground="Brown" FontWeight="Bold"/>
             </Viewbox>
-            <TextBox  Margin="5" FontSize="14" TabIndex="18" MinHeight="85"
-                      TextWrapping="Wrap"  AcceptsReturn="True"
-                      VerticalScrollBarVisibility="Auto"
-                      Text="{Binding Order.WorkDescription}" Height="85"/>
-            <!--Order can find in ForEditOrder.cs-->
+            <DatePicker  IsDropDownOpen="False" SelectedDateFormat="Short" 
+                        MaxWidth="150" TabIndex="13" HorizontalAlignment="Center"
+                        SelectedDate="{Binding Date.DateOfReception,Mode=TwoWay}"/>
+            <!--Date can find in ForEditOrder.cs-->
         </StackPanel>
 
 
-        
-        
-        
-        
 
-        <Grid Grid.Row="7" Grid.Column="2" Grid.ColumnSpan="3" >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="107*"/>
-                <ColumnDefinition Width="208*"/>
-                <ColumnDefinition Width="121*"/>
 
-                <ColumnDefinition Width="158*"/>
-            </Grid.ColumnDefinitions>
-            <WrapPanel Grid.Column="0" Margin="3" Grid.ColumnSpan="2" >
-                <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
-                     VerticalAlignment="Stretch">
-                    <TextBlock Text="Источник:" FontWeight="Bold" />
-                </Viewbox>
-                <ComboBox x:Name="Sourse"  MinWidth="180"  TabIndex="15" MinHeight="32" Margin="3"   SelectedIndex="0" 
-                      
-                     ItemsSource="{Binding Source={StaticResource SortedSources}, 
-                      UpdateSourceTrigger=PropertyChanged}" 
-                     SelectedItem="{Binding Source}"
-                     DisplayMemberPath="SourceName"
-                     HorizontalContentAlignment="Center"
-                     Background="White" >
-                    <!--SortedSources can find above in Window.Resources-->
-                    <!--Source can find in SourceClass.cs-->
-                </ComboBox>
-
-                <Button x:Name="AddSourse" Width="40" Background="Gray" Content="..." TabIndex="16"
-                    Command="{Binding NewEditSource}" CommandParameter="{Binding DataContext, RelativeSource=
-                    {RelativeSource AncestorType={x:Type Window}}}"/>
-                <!--NewEditSource can find in SourceClass.cs-->
-            </WrapPanel>
+        <Viewbox Grid.Column="2" Grid.ColumnSpan="2" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Center" 
+                     VerticalAlignment="Bottom" >
+            <TextBlock Text="Первичная информация об авторе" FontWeight="Bold" Foreground="Brown"/>
+        </Viewbox>
+        <TextBox Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="3" Margin="5.4,9.8,4.6,18.8" 
+                     FontSize="14" TabIndex="17" TextWrapping="Wrap"  AcceptsReturn="True" MinHeight="103"
+                    VerticalScrollBarVisibility="Visible"
+                    Text="{Binding Order.DescriptionForClient}" Height="113"/>
+        <!--Order can find in ForEditOrder.cs-->
+        <StackPanel Grid.Column="2" Grid.Row="4" Grid.ColumnSpan="2" Grid.RowSpan="3"  Margin="3">
+            <Viewbox MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Center" 
+                     VerticalAlignment="Bottom">
+                <TextBlock Text="Отзывы об авторе" FontWeight="Bold" 
+                           Foreground="Brown"/>
+            </Viewbox>
+            <TextBox  Margin="5,5,4.8,5" FontSize="14" TabIndex="18" MinHeight="85"
+                      TextWrapping="Wrap"  AcceptsReturn="True"
+                      VerticalScrollBarVisibility="Auto"
+                      Text="{Binding Order.WorkDescription}" Height="98"/>
+            <!--Order can find in ForEditOrder.cs-->
+        </StackPanel>
+        <StackPanel Grid.Column="2" Grid.Row="7" Grid.ColumnSpan="2" Grid.RowSpan="3"  Margin="3">
+            <Viewbox MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Center" 
+                     VerticalAlignment="Bottom">
+                <TextBlock Text="Прекратили сотрудничать потому что..." FontWeight="Bold" 
+                           Foreground="Brown"/>
+            </Viewbox>
+            <TextBox  Margin="5,5,4.8,5" FontSize="14" TabIndex="18" MinHeight="85"
+                      TextWrapping="Wrap"  AcceptsReturn="True"
+                      VerticalScrollBarVisibility="Auto"
+                      Text="{Binding Order.WorkDescription}" Height="98"/>
+            <!--Order can find in ForEditOrder.cs-->
+        </StackPanel>
+        <StackPanel>
             
-            
-        </Grid>
+        </StackPanel>
 
-        
+
+
+
+
+
+
+
+
+
 
 
         <Button Grid.Column="2" Grid.Row="10" Content="Добавть" Background="Green" TabIndex="23"

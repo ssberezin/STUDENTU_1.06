@@ -24,9 +24,9 @@ namespace STUDENTU_1._06.Model
         [MaxLength(1000)]
         public string Description { get; set; }
         [Column("FeedBack", TypeName = "nvarchar")]
-        [MaxLength(255)]
+        [MaxLength(500)]
         public string FeedBack { get; set; }
-        public bool Status { get; set; }
+        //public bool Status { get; set; }
         [Column("ReasonFortermCoop", TypeName = "nvarchar")]
         [MaxLength(255)]
         public string ReasonFortermCoop { get; set; }
