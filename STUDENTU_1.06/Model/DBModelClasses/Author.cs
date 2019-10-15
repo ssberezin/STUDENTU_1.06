@@ -17,12 +17,15 @@ namespace STUDENTU_1._06.Model
             this.Direction = new ObservableCollection<Direction>();
             this.Evaluation = new ObservableCollection<Evaluation>();
             this.OrderLine = new ObservableCollection<OrderLine>();
-           // this.Sourse = "1000";
+            
+            // this.Sourse = "1000";
         }
 
         [Column("Sourse", TypeName = "ntext")]
         [MaxLength(2000)]
         public string Sourse { get; set; }
+
+        
 
         public int AuthorId { get; set; }        
 
@@ -32,5 +35,7 @@ namespace STUDENTU_1._06.Model
         public virtual ObservableCollection<Direction> Direction { get; set; }
         public virtual ObservableCollection<Evaluation> Evaluation { get; set; }
 
+
+        public virtual Status Status { get; set; }
     }
 }

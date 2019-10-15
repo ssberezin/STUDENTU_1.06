@@ -50,13 +50,15 @@
                     <MenuItem Header="Создать резервную копию"/>
                     <Separator Height="Auto"/>
                     <MenuItem Header="Выход" Command="{Binding CloseMainWindow}"/>
-                    <!--"CloseMainWindow" we can find in  "MainViewModel.cs"-->
+                    "CloseMainWindow" we can find in  "MainViewModel.cs"
                 </MenuItem>
                 <MenuItem Header="Правка"  Height="17"  VerticalAlignment="Top">
                     <MenuItem Header="Заказы" Height="17" VerticalAlignment="Top">
                         <MenuItem Header="Новый заказ  Ctrl+N" Command="{Binding NewOrder}"
                                   Height="17" VerticalAlignment="Top"/>
-                        <!--"NewOrder" we can find in  "MainViewModel.cs"-->
+                        
+                    "NewOrder" we can find in  "MainViewModel.cs"
+                    
                         <MenuItem Header="Редактировать заказ" Height="17" VerticalAlignment="Top"
                               IsEnabled="{Binding SelectedItem,
                                           Converter={StaticResource NullBoolConverter}, ElementName=GridOrders}"/>
@@ -68,7 +70,7 @@
                               Command="{Binding AddAuthorCommand}"/>
 
 
-                    
+                </MenuItem>
                 <MenuItem Header="Черный список"  Height="17"  VerticalAlignment="Top" >
                     <MenuItem Header="Отобразить">
                         <MenuItem Header="Заказы" />
@@ -106,10 +108,10 @@
                     <!--"Status" , "OrderCount" we can find in  "MainViewModel.cs"-->
                     <Style.Triggers>
                         <MultiDataTrigger>
-                            <!--задачаем фон и цвет шрифта записиси заказа со статусом "отказ"-->
+                            <!--задачаем фон и цвет шрифта записиси заказа со статусом "-отказ от выполнения-"-->
                             <!--set the background and font color of the order record with the status "rejection"-->
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding Status}" Value="отказ" />                                
+                                <Condition Binding="{Binding Status}" Value="-отказ от выполнения-" />                                
                             </MultiDataTrigger.Conditions>
                             <MultiDataTrigger.Setters>                                
                                 <Setter Property="Background" Value="#FFE4C58E" />

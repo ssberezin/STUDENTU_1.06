@@ -28,5 +28,7 @@ namespace STUDENTU_1._06.Views.PersoneOperations.AuthorOperationsWindows
             this.DataContext = new AuthorsVMClass(this, new DefaultShowWindowService(),
                 new DefaultDialogService());
         }
+
+    
     }
 }

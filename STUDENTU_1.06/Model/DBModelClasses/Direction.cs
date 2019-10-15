@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -9,7 +10,7 @@ namespace STUDENTU_1._06.Model
     {
         public Direction()
         {          
-            this.OrderLine = new List<OrderLine>();
+            this.OrderLine = new ObservableCollection<OrderLine>();
         }
                 
         public int DirectionId { get; set; }
@@ -20,7 +21,8 @@ namespace STUDENTU_1._06.Model
 
         public virtual Author Author { get; set; }
 
-        public virtual List<OrderLine> OrderLine { get; set; }
+        public virtual ObservableCollection<OrderLine> OrderLine { get; set; }
+        
 
 
     }

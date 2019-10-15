@@ -165,21 +165,47 @@ namespace STUDENTU_1._06.ViewModel
                     //need befor ferst start of programm and Db isn't created
                     if (db.Statuses.Count() == 0)
                     {
-                        db.Statuses.Add(new Status() { StatusName = "принят" });
-                        db.Statuses.Add(new Status() { StatusName = "готов" });
-                        db.Statuses.Add(new Status() { StatusName = "выполняется" });
-                        db.Statuses.Add(new Status() { StatusName = "отдан зказчику" });
-                        db.Statuses.Add(new Status() { StatusName = "на оценке" });
+                        //тут у нас устананавливаются статусы для заказов
+                        // here we have statuses for orders
+                        db.Statuses.Add(new Status() { StatusName = "-принят-" });
+                        db.Statuses.Add(new Status() { StatusName = "-готов-" });
+                        db.Statuses.Add(new Status() { StatusName = "-выполняется-" });
+                        db.Statuses.Add(new Status() { StatusName = "-отдан зказчику-" });
+                        db.Statuses.Add(new Status() { StatusName = "-на оценке-" });
+                        db.Statuses.Add(new Status() { StatusName = "-принят на доработку-" });
+                        db.Statuses.Add(new Status() { StatusName = "-дорабатывается-" });
+                        db.Statuses.Add(new Status() { StatusName = "-отказ от выполнения-" });
+                        db.Statuses.Add(new Status() { StatusName = "-ждем новостей от заказчика-" });
+                        //тут у нас устананавливаются статусы для атворов
+                        // here we have statuses for authors
+                        db.Statuses.Add(new Status() { StatusName = "работает" });
+                        db.Statuses.Add(new Status() { StatusName = "уволен" });
+                        db.Statuses.Add(new Status() { StatusName = "не проверен" });
+                        db.Statuses.Add(new Status() { StatusName = "проверяется" });
+                        db.Statuses.Add(new Status() { StatusName = "на паузе" });
+
                         db.SaveChanges();
                     }                    
                     if (db.Directions.Count() == 0)
                     {
-                        db.Directions.Add(new Direction() { DirectionName = "---" });
+                        db.Directions.Add(new Direction() { DirectionName = "---" });                        
                         db.SaveChanges();
                     }
                     if (db.WorkTypes.Count() == 0)
                     {
                         db.WorkTypes.Add(new WorkType() { TypeOfWork = "---" });
+                        db.WorkTypes.Add(new WorkType() { TypeOfWork = "контрольная" });
+                        db.WorkTypes.Add(new WorkType() { TypeOfWork = "курсовая" });
+                        db.WorkTypes.Add(new WorkType() { TypeOfWork = "дипломная" });
+                        db.WorkTypes.Add(new WorkType() { TypeOfWork = "реферат" });
+                        db.WorkTypes.Add(new WorkType() { TypeOfWork = "отчет по практике" });
+                        db.WorkTypes.Add(new WorkType() { TypeOfWork = "распечатка" });
+                        db.WorkTypes.Add(new WorkType() { TypeOfWork = "ксерокопия" });
+                        db.WorkTypes.Add(new WorkType() { TypeOfWork = "сканкопия" });
+                        db.WorkTypes.Add(new WorkType() { TypeOfWork = "набор текста" });
+                        db.WorkTypes.Add(new WorkType() { TypeOfWork = "чертежи" });
+                        db.WorkTypes.Add(new WorkType() { TypeOfWork = "тезисы" });
+                        db.WorkTypes.Add(new WorkType() { TypeOfWork = "статья" });
                         db.SaveChanges();
                     }
                     if (db.Subjects.Count() == 0)
@@ -198,6 +224,10 @@ namespace STUDENTU_1._06.ViewModel
                     if (db.Sources.Count() == 0)
                     {
                         db.Sources.Add(new Source() {SourceName = "---" });
+                        db.Sources.Add(new Source() { SourceName = "Вайбер" });
+                        db.Sources.Add(new Source() { SourceName = "Соцсети" });
+                        db.Sources.Add(new Source() { SourceName = "Сайт" });
+                        db.Sources.Add(new Source() { SourceName = "Оформлен лично в офисе" });
                         db.SaveChanges();
                     }
 

@@ -26,23 +26,30 @@ namespace STUDENTU_1._06.Helpes
                 // назначаем цвет шрифта строк
             switch (value.ToString())
             {
-                case "принят":
+                case "-принят-":
                     return Brushes.Red;
-                case "готов":
+                case "-готов-":
                     return Brushes.Blue;
-                case "отдан заказчику":
+                case "-отдан заказчику-":
                     return Brushes.Green;
-                case "выполняется":
+                case "-выполняется-":
                     return Brushes.Brown;
-                case "на оценке":
+                case "-на оценке-":
                     return Brushes.Gray;
-                //case "отказ":
-                //        return Brushes.Orange;
-                default:
+                case "-принят на доработку-":
+                      return Brushes.OrangeRed;
+                case "-дорабатывается-":
+                      return Brushes.SaddleBrown;
+                case "-ждем новостей от заказчика-":
+                        return Brushes.DarkGray;
+
+                    //case "отказ":
+                    //        return Brushes.Orange;
+                    default:
                     return DependencyProperty.UnsetValue;
             }
         }
-
+      
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
