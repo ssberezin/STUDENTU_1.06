@@ -1,4 +1,5 @@
 ﻿
+using STUDENTU_1._06.Model.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
@@ -13,6 +14,12 @@ namespace STUDENTU_1._06.Model
       
         public Author()
         {
+            this.Punctually = 0;
+            this.WorkQuality = 0;
+            this.Responsibility = 0;
+            this.CompletionCompliance = 0;
+            this.Rating = 0;
+
             this.Subject = new ObservableCollection<Subject>();
             this.Direction = new ObservableCollection<Direction>();
             this.Evaluation = new ObservableCollection<Evaluation>();
@@ -25,7 +32,12 @@ namespace STUDENTU_1._06.Model
         [MaxLength(2000)]
         public string Sourse { get; set; }
 
-        
+        //properties for forming a retention rate
+        public int Punctually { get; set; }
+        public int WorkQuality { get; set; }
+        public int Responsibility { get; set; }
+        public int CompletionCompliance { get; set; }//сговорчивость по доработкам
+        public int Rating { get; set; }
 
         public int AuthorId { get; set; }        
 
@@ -37,5 +49,6 @@ namespace STUDENTU_1._06.Model
 
 
         public virtual Status Status { get; set; }
+        
     }
 }

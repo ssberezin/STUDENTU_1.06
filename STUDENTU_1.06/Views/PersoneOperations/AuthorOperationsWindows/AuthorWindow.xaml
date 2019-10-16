@@ -214,11 +214,16 @@
             <Button Content="В ч.списке?" Background="Black" Height="30" Width="149" TabIndex="8" Margin="5"
                     Command="{Binding CheckBlackListCommand}"/>
         </WrapPanel>
-        <WrapPanel Grid.Row="5" Grid.ColumnSpan="2"  Margin="3" >
-
-
-            <!--CheckBlackListCommand can find in BlackListClass.cs-->
-        </WrapPanel>
+        <StackPanel Grid.Row="5"   Margin="3" VerticalAlignment="Center" Orientation="Horizontal" Grid.ColumnSpan="2">
+            <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
+                     VerticalAlignment="Stretch">
+                <TextBlock Text="Дата рождения" Foreground="Brown" FontWeight="Bold"/>
+            </Viewbox>
+            <DatePicker  IsDropDownOpen="False" SelectedDateFormat="Short" 
+                        MaxWidth="150" TabIndex="13" HorizontalAlignment="Center"
+                        SelectedDate="{Binding Date.DayBirth,Mode=TwoWay}"/>
+            <!--Date can find in ForEditOrder.cs-->
+        </StackPanel>
         <WrapPanel Grid.Row="6" Grid.ColumnSpan="2"  Margin="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" >
             <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
                      VerticalAlignment="Stretch">
@@ -272,14 +277,14 @@
                         />
             <!--Persone can find in ForEditOrder.cs-->
         </WrapPanel>
-        <StackPanel Grid.Row="10"   Margin="3" VerticalAlignment="Center">
+        <StackPanel Grid.Row="9"   Margin="3,0,2.8,-2.2" VerticalAlignment="Bottom" Grid.RowSpan="2">
             <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
                      VerticalAlignment="Stretch">
                 <TextBlock Text="Сотрудничаем с:" Foreground="Brown" FontWeight="Bold"/>
             </Viewbox>
-            <DatePicker Name="DateOfReception" IsDropDownOpen="False" SelectedDateFormat="Short" 
+            <DatePicker x:Name="DateOfReception" IsDropDownOpen="False" SelectedDateFormat="Short" 
                         MaxWidth="150" TabIndex="13" HorizontalAlignment="Center"
-                        SelectedDate="{Binding Date.DateOfReception,Mode=TwoWay}"/>
+                        SelectedDate="{Binding Date.DateOfReception, Mode=TwoWay}" Margin="69,0,62.4,2"/>
             <!--Date can find in ForEditOrder.cs-->
         </StackPanel>
         <StackPanel Grid.Row="10" Grid.Column="1"  Margin="3" VerticalAlignment="Center">
@@ -289,7 +294,8 @@
             </Viewbox>
             <DatePicker  IsDropDownOpen="False" SelectedDateFormat="Short" 
                         MaxWidth="150" TabIndex="13" HorizontalAlignment="Center"
-                        SelectedDate="{Binding Date.DateOfReception,Mode=TwoWay}"/>
+                        SelectedDate="{Binding Date.DateOfReception,Mode=TwoWay}"
+                         Margin="69,0,62.4,2"/>
             <!--Date can find in ForEditOrder.cs-->
         </StackPanel>
 
@@ -300,12 +306,12 @@
                      VerticalAlignment="Bottom" >
             <TextBlock Text="Первичная информация об авторе" FontWeight="Bold" Foreground="Brown"/>
         </Viewbox>
-        <TextBox Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="3" Margin="5.4,9.8,4.6,18.8" 
+        <TextBox Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="4" Margin="5" 
                      FontSize="14" TabIndex="17" TextWrapping="Wrap"  AcceptsReturn="True" MinHeight="103"
                     VerticalScrollBarVisibility="Visible"
-                    Text="{Binding Order.DescriptionForClient}" Height="113"/>
+                    Text="{Binding Order.DescriptionForClient}" Height="169"/>
         <!--Order can find in ForEditOrder.cs-->
-        <StackPanel Grid.Column="2" Grid.Row="4" Grid.ColumnSpan="2" Grid.RowSpan="3"  Margin="3">
+        <StackPanel Grid.Column="2" Grid.Row="5" Grid.ColumnSpan="2" Grid.RowSpan="4"  Margin="3">
             <Viewbox MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Center" 
                      VerticalAlignment="Bottom">
                 <TextBlock Text="Отзывы об авторе" FontWeight="Bold" 
@@ -317,7 +323,7 @@
                       Text="{Binding Order.WorkDescription}" Height="98"/>
             <!--Order can find in ForEditOrder.cs-->
         </StackPanel>
-        <StackPanel Grid.Column="2" Grid.Row="7" Grid.ColumnSpan="2" Grid.RowSpan="3"  Margin="3">
+        <StackPanel Grid.Column="2" Grid.Row="8" Grid.ColumnSpan="2" Grid.RowSpan="3"  Margin="3">
             <Viewbox MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Center" 
                      VerticalAlignment="Bottom">
                 <TextBlock Text="Прекратили сотрудничать потому что..." FontWeight="Bold" 
@@ -329,9 +335,20 @@
                       Text="{Binding Order.WorkDescription}" Height="98"/>
             <!--Order can find in ForEditOrder.cs-->
         </StackPanel>
-        <StackPanel>
-            
+
+        <StackPanel Grid.Column="4" HorizontalAlignment="Left" Height="168" Margin="35,11,0,0" Grid.RowSpan="4" VerticalAlignment="Top" Width="148" >
+            <StackPanel.Background>
+                <ImageBrush ImageSource="/Images/default_avatar.jpg"/>
+            </StackPanel.Background>
+            <Image Source="{Binding Foto}" />
         </StackPanel>
+        <StackPanel Grid.Column="4" Grid.Row="4"  Orientation="Horizontal"  >
+            <TextBlock Text="Рейтинг: " Margin="3,0" VerticalAlignment="Center" Foreground="Brown" FontWeight="Bold"  />
+            <TextBlock Text="Привязать к рейтингу"  VerticalAlignment="Center" Foreground="Red" FontWeight="Bold"  />
+        </StackPanel>
+        <Button Grid.Column="4" Grid.Row="5" Content="Задать рейтинг" Background="Brown" Height="30" TabIndex="7" Margin="5"
+                     Command="{Binding NewEditContactsCommand}" CommandParameter="{Binding DataContext, RelativeSource=
+                    {RelativeSource AncestorType={x:Type Window}}}" Width="177"/>
 
 
 
@@ -342,18 +359,15 @@
 
 
 
-
-
-        <Button Grid.Column="2" Grid.Row="10" Content="Добавть" Background="Green" TabIndex="23"
+        <Button Grid.Column="4" Grid.Row="10" Content="Сохранить" Background="Green" TabIndex="23"
                 IsEnabled="{Binding ElementName=TBxName,  Path=Text.Length}"
                 Command="{Binding CreateNewOrderLine}" />
         <!-- Command CreateNewOrderLine  can find  ForEditOrder.cs-->
-        <Button Grid.Column="3" Grid.Row="10" Content="Редактировать" Background="OrangeRed" TabIndex="24" 
-                Command="{Binding CloseWindowCommand}"/>
         <!-- Command CloseWindowCommand  can find  ForEditOrder.cs-->
 
-        <Button Content="Отменить" Grid.Column="4" Grid.Row="110"
+        <Button Content="Отменить" Grid.Column="4" Grid.Row="9"
                     Name="PrintCheck"   TabIndex="25"
                     Background="Brown" Foreground="Black"/>
+        <!--<Label Content="Рейтинг: " Grid.Column="4" Margin="0,25.4,145.6,43" Grid.Row="3" Grid.RowSpan="2" />-->
     </Grid>
 </Window>
