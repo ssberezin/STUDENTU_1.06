@@ -33,7 +33,7 @@
         <helpes:DateFormatConverter x:Key="dateFormatConverter"/>
         <helpes:HeightToFontSizeConverter x:Key="heightToFontSizeConverter"/>
         <helpes:BoolInverterConverter x:Key="boolInverterConverter"/>
-
+        <helpes:ImagePathConverter x:Key="imagePathConverter"/>
         <CollectionViewSource x:Key="SortedStatuses" Source="{Binding StatusRecords}"
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
             <!--StatusRecords can find in StatusClass.cs-->
@@ -151,21 +151,8 @@
                      VerticalAlignment="Stretch">
                 <TextBlock Text="Имя: " Foreground="Brown" FontWeight="Bold"/>
             </Viewbox>
-
-
             <TextBox x:Name="TBxName"  MinWidth="220" TabIndex="0"
-                   Validation.ErrorTemplate="{StaticResource validationFailed}" Width="274">
-                <TextBox.Text>
-                    <Binding  Path="Persone.Name" NotifyOnValidationError="True">
-                        <Binding.ValidationRules>
-                            <DataErrorValidationRule />
-                        </Binding.ValidationRules>
-                    </Binding>
-                </TextBox.Text>
-            </TextBox>
-            <!--тут хз пока шо прилепить, забацал кнопку и забыл накой она нужна была-->
-
-
+                   Width="274" Text="{Binding Persone.Name}"/>
         </WrapPanel>
         <WrapPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="3">
             <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
@@ -338,7 +325,7 @@
 
         <StackPanel Grid.Column="4" HorizontalAlignment="Left" Height="168" Margin="35,11,0,0" Grid.RowSpan="4" VerticalAlignment="Top" Width="148" >
             <StackPanel.Background>
-                <ImageBrush ImageSource="/Images/default_avatar.jpg"/>
+                <ImageBrush ImageSource="{Binding DefaultImagePath, Converter={StaticResource imagePathConverter}}"/>
             </StackPanel.Background>
             <Image Source="{Binding Foto}" />
         </StackPanel>

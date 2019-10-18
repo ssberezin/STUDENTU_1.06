@@ -66,8 +66,12 @@
                               IsEnabled="{Binding SelectedItem,
                                           Converter={StaticResource NullBoolConverter}, ElementName=GridOrders}"/>
                     </MenuItem>
-                    <MenuItem Header="Авторы" Height="17" VerticalAlignment="Top"
-                              Command="{Binding AddAuthorCommand}"/>
+                    <MenuItem Header="Авторы" Height="17" VerticalAlignment="Top">
+                        <MenuItem Header="Добавить нового" Command="{Binding AddAuthorCommand}"
+                                  Height="17" VerticalAlignment="Top"/>
+                        <MenuItem Header="Редакция" 
+                                  Height="17" VerticalAlignment="Top"/>
+                    </MenuItem>
 
 
                 </MenuItem>

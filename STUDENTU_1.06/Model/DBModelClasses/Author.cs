@@ -1,5 +1,5 @@
 ﻿
-using STUDENTU_1._06.Model.Model;
+using STUDENTU_1._06.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;

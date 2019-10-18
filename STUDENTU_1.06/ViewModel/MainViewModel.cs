@@ -12,6 +12,7 @@ using STUDENTU_1._06.Model.HelpModelClasses.ShowWindows;
 using STUDENTU_1._06.Model.HelpModelClasses;
 using STUDENTU_1._06.Model.DBModelClasses;
 using STUDENTU_1._06.Model.HelpModelClasses.DialogWindows;
+using STUDENTU_1._06.Views.PersoneOperations.AuthorOperationsWindows;
 
 namespace STUDENTU_1._06.ViewModel
 {
@@ -289,12 +290,12 @@ namespace STUDENTU_1._06.ViewModel
 
         //AddAuthorCommand
         private RelayCommand addAuthorCommand;
-        public RelayCommand AddAuthorCommand => newOrder ?? (newOrder = new RelayCommand(
+        public RelayCommand AddAuthorCommand => addAuthorCommand ?? (addAuthorCommand = new RelayCommand(
                     (obj) =>
                     {
-                        EditOrder editOrder = new EditOrder();
-                        editOrder.Owner = Application.Current.MainWindow;
-                        showWindow.ShowWindow(editOrder);
+                        AuthorWindow authorWindow = new AuthorWindow();
+                        authorWindow.Owner = Application.Current.MainWindow;
+                        showWindow.ShowWindow(authorWindow);
                     }
                     ));
 
