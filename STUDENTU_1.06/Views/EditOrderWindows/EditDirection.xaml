@@ -21,7 +21,7 @@
             <helpes:NullToBooleanConverter x:Key="NullBoolConverter" />
             
             <!--for sorting in listbox without behind code-->
-            <CollectionViewSource x:Key="SortedItems" Source="{Binding DirRecords}"
+            <CollectionViewSource x:Key="SortedItems" Source="{Binding _Dir.DirRecords}"
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
                 <!--DirRecords can find in DirectionClass.cs-->
                 <CollectionViewSource.SortDescriptions>
@@ -47,7 +47,7 @@
             <RowDefinition Height="0.5*"/>
         </Grid.RowDefinitions>
         <TextBox x:Name="DirName" Grid.ColumnSpan="3" Margin="5" 
-                 Text="{Binding Dir.DirectionName , Mode=TwoWay,
+                 Text="{Binding _Dir.Dir.DirectionName , Mode=TwoWay,
             UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="0"
                  SpellCheck.IsEnabled="True" Language="ru-ru" TextAlignment="Center"/>
         <!--Dir can find in DirectionClass.cs-->
@@ -55,7 +55,7 @@
             <ListBox x:Name="DirList"
                      Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="2" Margin="5" 
                     ItemsSource="{Binding Source={StaticResource SortedItems}, 
-                    UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding Dir}"                   
+                    UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding _Dir.Dir}"                   
                      SelectionMode="Single" 
                      IsSynchronizedWithCurrentItem="False"
                      TabIndex="3"

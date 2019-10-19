@@ -122,7 +122,7 @@ namespace STUDENTU_1._06.ViewModel
             {
                 try
                 {
-                    if (Dir.DirectionName == "---")
+                    if (_Dir.Dir.DirectionName == "---")
                         param = "AllAuthors";
                     var contacts = db.Contacts.Include("Persone").ToList();
                     switch (param)
@@ -168,7 +168,7 @@ namespace STUDENTU_1._06.ViewModel
                             break;
                         case "ThemAuthors":
                             var result1 = db.Orderlines.Include("Direction").
-                                                        Include("Authors").
+                                                        Include("Author").
                                                         ToList();
 
                             var tmp = (from item in result1

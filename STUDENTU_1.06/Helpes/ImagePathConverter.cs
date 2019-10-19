@@ -20,6 +20,13 @@ namespace STUDENTU_1._06.Helpes
             ImageBrush ib = new ImageBrush();
             ib.ImageSource = new BitmapImage(uri);
             return ib;
+            //BitmapImage _i = (BitmapImage)value;
+            //ImageBrush _b = new ImageBrush();
+            //if (_i != null)
+            //{
+            //    _b.ImageSource = _i;
+            //}
+            //return _b;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

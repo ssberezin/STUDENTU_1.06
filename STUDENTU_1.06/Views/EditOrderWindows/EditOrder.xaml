@@ -43,7 +43,7 @@
                 <scm1:SortDescription PropertyName="DirectionName"/>
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
-        <CollectionViewSource x:Key="SortedItems" Source="{Binding  DirRecords}"
+        <CollectionViewSource x:Key="SortedItems" Source="{Binding  _Dir.DirRecords}"
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
             <!--DirRecords can find in Direction.cs-->
             <CollectionViewSource.SortDescriptions>
@@ -234,9 +234,9 @@
                       IsEditable="False"
                      ItemsSource="{Binding Source={StaticResource SortedItems}, 
                       UpdateSourceTrigger=PropertyChanged}" 
-                     SelectedItem="{Binding Dir}"
+                     SelectedItem="{Binding _Dir.Dir}"
                      DisplayMemberPath="DirectionName"
-                     ToolTip="{Binding Dir.DirectionName}" 
+                     ToolTip="{Binding _Dir.Dir.DirectionName}" 
                      HorizontalContentAlignment="Center"
                      Background="White" >
                 <!--SortedItems can find above in Window.Resources-->
@@ -258,7 +258,7 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>-->
             <Button x:Name="AddDirection" Width="40" Background="Gray" Content="..." TabIndex="10"
-                    Command="{Binding NewEditDirection}" CommandParameter="{Binding DataContext, RelativeSource=
+                    Command="{Binding _Dir.NewEditDirection}" CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}"/>
             <!--Command NewEditDirection can find in DirectionClass.cs-->
         </WrapPanel>

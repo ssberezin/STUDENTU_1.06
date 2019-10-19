@@ -21,7 +21,7 @@ namespace STUDENTU_1._06.Model
             this.Sex = true;
             this.Name = "";
             this.NickName = null;
-            this.PhotoPath = "/Images/";
+            this.PhotoFileName = "/Images/";
         }
 
         public int PersoneId { get; set; }
@@ -38,9 +38,9 @@ namespace STUDENTU_1._06.Model
         [Column("Patronimic", TypeName = "nvarchar")]
         [MaxLength(50)]
         public string Patronimic { get; set; }
-        [Column("PhotoPath", TypeName = "nvarchar")]
+        [Column("PhotoFileName", TypeName = "nvarchar")]
         [MaxLength(500)]
-        public string PhotoPath { get; set; }
+        public string PhotoFileName { get; set; }
 
         public bool Sex { get; set; }
 

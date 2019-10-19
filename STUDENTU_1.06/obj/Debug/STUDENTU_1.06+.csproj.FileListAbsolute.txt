@@ -973,3 +973,4 @@ e:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\STUDENTU_1.06.pdb
 E:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\PersoneOperations\AuthorOperationsWindows\AuthorWindow.g.cs
 E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\PersoneOperations\AuthorOperationsWindows\AuthorWindow.g.cs
 E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\PersoneOperations\AuthorOperationsWindows\AuthorWindow.baml
+e:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\STUDENTU_1.06+.csprojAssemblyReference.cache

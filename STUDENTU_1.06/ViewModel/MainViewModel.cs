@@ -29,20 +29,7 @@ namespace STUDENTU_1._06.ViewModel
         IShowWindowService showWindow;//for show messages in mvvm pattern order
 
 
-        public Persone SelectedOrderLine
-        {
-            get { return selectedPersone; }
-            set
-            {
-                if (selectedPersone != value)
-                {
-                    selectedPersone = value;
-
-                    OnPropertyChanged(nameof(selectedPersone));
-                }
-            }
-        }
-
+        
         
 
         public MainViewModel(Window mainWindow, DefaultShowWindowService showWindow)

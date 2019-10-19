@@ -84,10 +84,21 @@ namespace STUDENTU_1._06.ViewModel
                     OnPropertyChanged(nameof(Price));
                 }
             }
-        }            
+        }
 
-       
-       
+        private _Direction _dir;
+        public _Direction _Dir
+        {
+            get { return _dir; }
+            set
+            {
+                if (_dir != value)
+                {
+                    _dir = value;
+                    OnPropertyChanged(nameof(_Dir));
+                }
+            }
+        }
 
         private Direction selectedRecord;
         public Direction SelectedRecord
@@ -150,7 +161,7 @@ namespace STUDENTU_1._06.ViewModel
            IDialogService dialogService)
         {
             AuthorsRecords = new ObservableCollection<AuthorsRecord>();
-            DirRecords = new ObservableCollection<Direction>();
+           // DirRecords = new ObservableCollection<Direction>();
             SelectedAuthorsRecords = new ObservableCollection<AuthorsRecord> ();
             SubjRecords = new ObservableCollection<Subject>();
             SourcesRecords = new ObservableCollection<Source>();
@@ -169,36 +180,41 @@ namespace STUDENTU_1._06.ViewModel
         private void EditWindow_Loaded(object sender, RoutedEventArgs e)
         {
 
-            Order = new OrderLine
-            { OrderNumber = GetOrderNumber() };
-            Persone = new Persone ();
-            EvaluationRecord = new EvaluationRecord();
-            PersoneDescription = new PersoneDescription();
-            Source = new Source();
-            WorkType = new WorkType();
-            Dir = new Direction();
-            Subj = new Subject();
-            Price = new Money();
-            Date = new Dates();
-            Status = new Status();
             Author = new Author();
-            SelectedExecuteAuthor = new Author();
-            Contacts = new Contacts();
-            SelectetdAuthorContacts = new Contacts();
             AuthorsRecord = new AuthorsRecord();
-
+            Contacts = new Contacts();
+            Date = new Dates();
+            //Dir = new Direction();
+            //Dir = new Direction();
+            _Dir = new _Direction();
+            
             Evaluation = new Evaluation();
-            WinnerEvaluation = new Evaluation();
-
-            FinalEvaluationRecord = new EvaluationRecord()
-                                { DeadLine= new DateTime(1900, 1, 1) ,
-                                  Price=0,
-                                  EvaluateDescription=""};
-
+            EvaluationRecord = new EvaluationRecord();
             ExecuteAuthor = new AuthorsRecord();
             ExecuteAuthor.Persone.NickName = "не задан";
+            FinalEvaluationRecord = new EvaluationRecord()
+            {
+                DeadLine = new DateTime(1900, 1, 1),
+                Price = 0,
+                EvaluateDescription = ""
+            };
+            Order = new OrderLine { OrderNumber = GetOrderNumber() };
+            Persone = new Persone ();
+            PersoneDescription = new PersoneDescription();
+            Price = new Money();
+            SelectetdAuthorContacts = new Contacts();
+            SelectedExecuteAuthor = new Author();
+            Status = new Status();
+            Source = new Source();
+            Subj = new Subject();
+            WinnerEvaluation = new Evaluation();
+            WorkType = new WorkType();
 
-            LoadDirectionsData();//for load data to combobox DirList in EditOrder.xaml
+
+
+
+            //LoadDirectionsData();//for load data to combobox DirList in EditOrder.xaml
+           
             LoadSubjectsData();//for load data to combobox SubjList in EditOrder.xaml
             LoadWorkTypesData();//for load data to combobox WorkTypeList in EditOrder.xaml
             LoadSourcesData();//for load data to combobox SourcesList in EditOrder.xaml
@@ -293,26 +309,27 @@ namespace STUDENTU_1._06.ViewModel
                                 dialogService.ShowMessage("Нельзя удалить эту запись");
                             return;
                         case "Direction"://delete Direction
-                            if (Dir.DirectionId != 1)
-                            {
-                                if (dialogService.YesNoDialog("Точно нужно удалить эту запись?") == true)
-                                {
-                                    //changing DB
-                                    //we find all the records in which we have the desired Id and make a replacement
-                                    foreach (OrderLine order in res)
-                                    {
-                                        if (order.Direction.DirectionId == Dir.DirectionId)
-                                            order.Direction = db.Directions.Find(new Direction() { DirectionId = 1 }.DirectionId);
-                                    }
-                                    db.Directions.Remove(db.Directions.Find(Dir.DirectionId));
-                                    db.SaveChanges();
+                            //if (Dir.DirectionId != 1)
+                            //{
+                            //    if (dialogService.YesNoDialog("Точно нужно удалить эту запись?") == true)
+                            //    {
+                            //        //changing DB
+                            //        //we find all the records in which we have the desired Id and make a replacement
+                            //        foreach (OrderLine order in res)
+                            //        {
+                            //            if (order.Direction.DirectionId == Dir.DirectionId)
+                            //                order.Direction = db.Directions.Find(new Direction() { DirectionId = 1 }.DirectionId);
+                            //        }
+                            //        db.Directions.Remove(db.Directions.Find(Dir.DirectionId));
+                            //        db.SaveChanges();
 
-                                    //changing collection
-                                    DirRecords.Remove(Dir);
-                                }
-                            }
-                            else
-                                dialogService.ShowMessage("Нельзя удалить эту запись");
+                            //        //changing collection
+                            //        DirRecords.Remove(Dir);
+                            //    }
+                            //}
+                            //else
+                            //    dialogService.ShowMessage("Нельзя удалить эту запись");
+                            _Dir.DeleteDir();
                             return;
                         case "Subject"://delete Subject
                             if (Subj.SubjectId != 1)
@@ -443,24 +460,26 @@ namespace STUDENTU_1._06.ViewModel
                                 dialogService.ShowMessage("Уже есть такое название в базе данных");
                             return;
                         case "Direction"://add to Directions
-                            var res1 = db.Directions.Any(o => o.DirectionName == Dir.DirectionName);
-                            if (!res1)
-                            {
-                                if (!string.IsNullOrEmpty(Dir.DirectionName))
-                                {
-                                    Dir.DirectionName = Dir.DirectionName.ToLower();
-                                    db.Directions.Add(Dir);
-                                    db.SaveChanges();
-                                    DirRecords.Clear();
-                                    LoadDirectionsData();
-                                    Dir = new Direction();
+                            //var res1 = db.Directions.Any(o => o.DirectionName == Dir.DirectionName);                            
+                            //if (!res1)
+                            //{
+                            //    if (!string.IsNullOrEmpty(Dir.DirectionName))
+                            //    {
+                            //        Dir.DirectionName = Dir.DirectionName.ToLower();
+                            //        db.Directions.Add(Dir);
+                            //        db.SaveChanges();
+                            //        DirRecords.Clear();
+                            //        LoadDirectionsData();
+                            //        Dir = new Direction();
 
-                                }
-                                else
-                                    return;
-                            }
-                            else
-                                dialogService.ShowMessage("Уже есть такое название в базе данных");
+                            //    }
+                            //    else
+                            //        return;
+                            //}
+                            //else
+                            //    dialogService.ShowMessage("Уже есть такое название в базе данных");
+                            //return;
+                            _Dir.AddDir();
                             return;
                         case "Subject"://add to Subjects
                             var res2 = db.Subjects.Any(o => o.SubName == Subj.SubName);
@@ -534,14 +553,14 @@ namespace STUDENTU_1._06.ViewModel
                 {
                     dialogService.ShowMessage(ex.Message);
                 }
-                //catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
-                //{
-                //    dialogService.ShowMessage(ex.Message);
-                //}
-                //catch (System.Data.Entity.Core.EntityException ex)
-                //{
-                //    dialogService.ShowMessage(ex.Message);
-                //}
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
             }
         }
 
@@ -570,13 +589,14 @@ namespace STUDENTU_1._06.ViewModel
                             }
                             return;
                         case "Direction"://add to Directions
-                            var res1 = db.Directions.Find(Dir.DirectionId);
-                            if (res1 != null)
-                            {
-                                //changing DB
-                                res1.DirectionName = Dir.DirectionName.ToLower();
-                                db.SaveChanges();
-                            }
+                            //var res1 = db.Directions.Find(Dir.DirectionId);
+                            //if (res1 != null)
+                            //{
+                            //    //changing DB
+                            //    res1.DirectionName = Dir.DirectionName.ToLower();
+                            //    db.SaveChanges();
+                            //}
+                            _Dir.EditDir();
                             return;
                         case "Subject"://add to Subjects
                             var res2 = db.Subjects.Find(Subj.SubjectId);
