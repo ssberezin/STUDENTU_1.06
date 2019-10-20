@@ -129,6 +129,7 @@
     <Compile Include="Model\HelpModelClasses\DialogWindows\DefaultDialogService.cs" />
     <Compile Include="Model\HelpModelClasses\DialogWindows\IDialogService.cs" />
     <Compile Include="ViewModel\PersoneOperations\AuthorsOperationsVM\AuthorsVMClass.cs" />
+    <Compile Include="ViewModel\_Subject.cs" />
     <Compile Include="ViewModel\_Direction.cs" />
     <Compile Include="Views\PersoneOperations\AuthorOperationsWindows\AuthorWindow.xaml.cs">
       <DependentUpon>AuthorWindow.xaml</DependentUpon>
@@ -222,14 +223,12 @@
     <Compile Include="Model\HelpModelClasses\ShowWindows\DefaultShowWindowService.cs" />
     <Compile Include="Model\HelpModelClasses\ShowWindows\IShowWindowService.cs" />
     <Compile Include="ViewModel\ForEditOrderVM\BlackListClass.cs" />
-    <Compile Include="ViewModel\ForEditOrderVM\DirectionClass.cs" />
     <Compile Include="ViewModel\ForEditOrderVM\EvaluationClass.cs" />
     <Compile Include="ViewModel\ForEditOrderVM\ForEditOrder.cs" />
     <Compile Include="ViewModel\ForEditOrderVM\ForEditOrderAddContacts.cs" />
     <Compile Include="ViewModel\ForEditOrderVM\RuleOrderLineClass.cs" />
     <Compile Include="ViewModel\ForEditOrderVM\SourceClass.cs" />
     <Compile Include="ViewModel\ForEditOrderVM\StatusClass.cs" />
-    <Compile Include="ViewModel\ForEditOrderVM\SubjectClass.cs" />
     <Compile Include="ViewModel\ForEditOrderVM\WorkTypeClass.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="Views\EditOrderWindows\AddContactsWindow.xaml.cs">

@@ -100,19 +100,20 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
-        private Direction selectedRecord;
-        public Direction SelectedRecord
+        private _Subject _subj;
+        public _Subject _Subj
         {
-            get { return selectedRecord; }
+            get { return _subj; }
             set
             {
-                if (selectedRecord != value)
+                if (_subj != value)
                 {
-                    selectedRecord = value;
-                    OnPropertyChanged(nameof(SelectedRecord));
+                    _subj = value;
+                    OnPropertyChanged(nameof(_Subj));
                 }
             }
         }
+        
 
         private Contacts contacts;
         public Contacts Contacts
@@ -160,10 +161,8 @@ namespace STUDENTU_1._06.ViewModel
         public ForEditOrder(Window editWindow, DefaultShowWindowService showWindow,
            IDialogService dialogService)
         {
-            AuthorsRecords = new ObservableCollection<AuthorsRecord>();
-           // DirRecords = new ObservableCollection<Direction>();
+            AuthorsRecords = new ObservableCollection<AuthorsRecord>();           
             SelectedAuthorsRecords = new ObservableCollection<AuthorsRecord> ();
-            SubjRecords = new ObservableCollection<Subject>();
             SourcesRecords = new ObservableCollection<Source>();
             WorkTypesRecords = new ObservableCollection<WorkType>();
             ContactsRecords = new ObservableCollection<Contacts>();
@@ -183,9 +182,7 @@ namespace STUDENTU_1._06.ViewModel
             Author = new Author();
             AuthorsRecord = new AuthorsRecord();
             Contacts = new Contacts();
-            Date = new Dates();
-            //Dir = new Direction();
-            //Dir = new Direction();
+            Date = new Dates();           
             _Dir = new _Direction();
             
             Evaluation = new Evaluation();
@@ -201,21 +198,15 @@ namespace STUDENTU_1._06.ViewModel
             Order = new OrderLine { OrderNumber = GetOrderNumber() };
             Persone = new Persone ();
             PersoneDescription = new PersoneDescription();
-            Price = new Money();
+            Price = new Money();            
             SelectetdAuthorContacts = new Contacts();
             SelectedExecuteAuthor = new Author();
             Status = new Status();
-            Source = new Source();
-            Subj = new Subject();
+            _Subj = new _Subject();
+            Source = new Source();            
             WinnerEvaluation = new Evaluation();
             WorkType = new WorkType();
-
-
-
-
-            //LoadDirectionsData();//for load data to combobox DirList in EditOrder.xaml
-           
-            LoadSubjectsData();//for load data to combobox SubjList in EditOrder.xaml
+            
             LoadWorkTypesData();//for load data to combobox WorkTypeList in EditOrder.xaml
             LoadSourcesData();//for load data to combobox SourcesList in EditOrder.xaml
             LoadStatusData();//for load data to combobox StatusList in RuleOrderLineWindow.xaml
@@ -308,50 +299,11 @@ namespace STUDENTU_1._06.ViewModel
                             else
                                 dialogService.ShowMessage("Нельзя удалить эту запись");
                             return;
-                        case "Direction"://delete Direction
-                            //if (Dir.DirectionId != 1)
-                            //{
-                            //    if (dialogService.YesNoDialog("Точно нужно удалить эту запись?") == true)
-                            //    {
-                            //        //changing DB
-                            //        //we find all the records in which we have the desired Id and make a replacement
-                            //        foreach (OrderLine order in res)
-                            //        {
-                            //            if (order.Direction.DirectionId == Dir.DirectionId)
-                            //                order.Direction = db.Directions.Find(new Direction() { DirectionId = 1 }.DirectionId);
-                            //        }
-                            //        db.Directions.Remove(db.Directions.Find(Dir.DirectionId));
-                            //        db.SaveChanges();
-
-                            //        //changing collection
-                            //        DirRecords.Remove(Dir);
-                            //    }
-                            //}
-                            //else
-                            //    dialogService.ShowMessage("Нельзя удалить эту запись");
+                        case "Direction"://delete Direction                           
                             _Dir.DeleteDir();
                             return;
                         case "Subject"://delete Subject
-                            if (Subj.SubjectId != 1)
-                            {
-                                if (dialogService.YesNoDialog("Точно нужно удалить эту запись?") == true)
-                                {
-                                    //changing DB
-                                    //we find all the records in which we have the desired Id and make a replacement
-                                    foreach (OrderLine order in res)
-                                    {
-                                        if (order.Subject.SubjectId == Subj.SubjectId)
-                                            order.Subject = db.Subjects.Find(new Subject() { SubjectId = 1 }.SubjectId);
-                                    }
-                                    db.Subjects.Remove(db.Subjects.Find(Subj.SubjectId));
-                                    db.SaveChanges();
-
-                                    //changing collection
-                                    SubjRecords.Remove(Subj);
-                                }
-                            }
-                            else
-                                dialogService.ShowMessage("Нельзя удалить эту запись");
+                            _Subj.DeleteSubj();
                             return;
                         case "Source"://delete Source
                             if (Source.SourceId != 1)
@@ -459,45 +411,11 @@ namespace STUDENTU_1._06.ViewModel
                             else
                                 dialogService.ShowMessage("Уже есть такое название в базе данных");
                             return;
-                        case "Direction"://add to Directions
-                            //var res1 = db.Directions.Any(o => o.DirectionName == Dir.DirectionName);                            
-                            //if (!res1)
-                            //{
-                            //    if (!string.IsNullOrEmpty(Dir.DirectionName))
-                            //    {
-                            //        Dir.DirectionName = Dir.DirectionName.ToLower();
-                            //        db.Directions.Add(Dir);
-                            //        db.SaveChanges();
-                            //        DirRecords.Clear();
-                            //        LoadDirectionsData();
-                            //        Dir = new Direction();
-
-                            //    }
-                            //    else
-                            //        return;
-                            //}
-                            //else
-                            //    dialogService.ShowMessage("Уже есть такое название в базе данных");
-                            //return;
+                        case "Direction"://add to Directions                          
                             _Dir.AddDir();
                             return;
-                        case "Subject"://add to Subjects
-                            var res2 = db.Subjects.Any(o => o.SubName == Subj.SubName);
-                            if (!res2)
-                            {
-                                if (!string.IsNullOrEmpty(Subj.SubName))
-                                {
-                                    db.Subjects.Add(Subj);
-                                    db.SaveChanges();
-                                    SubjRecords.Clear();
-                                    LoadSubjectsData();
-                                    Subj = new Subject();
-                                }
-                                else
-                                    return;
-                            }
-                            else
-                                dialogService.ShowMessage("Уже есть такое название в базе данных");
+                        case "Subject"://add to Subjects                           
+                            _Subj.AddSubj();
                             return;
                         case "Source"://add to Subjects
                             var res3 = db.Sources.Any(o => o.SourceName == Source.SourceName);
@@ -589,23 +507,11 @@ namespace STUDENTU_1._06.ViewModel
                             }
                             return;
                         case "Direction"://add to Directions
-                            //var res1 = db.Directions.Find(Dir.DirectionId);
-                            //if (res1 != null)
-                            //{
-                            //    //changing DB
-                            //    res1.DirectionName = Dir.DirectionName.ToLower();
-                            //    db.SaveChanges();
-                            //}
+                            
                             _Dir.EditDir();
                             return;
                         case "Subject"://add to Subjects
-                            var res2 = db.Subjects.Find(Subj.SubjectId);
-                            if (res2 != null)
-                            {
-                                //changing DB
-                                res2.SubName = Subj.SubName;
-                                db.SaveChanges();
-                            }
+                            _Subj.EditSubj();
                             return;
                         case "Source"://add to Source
                             var res3 = db.Sources.Find(Source.SourceId);
@@ -671,11 +577,6 @@ namespace STUDENTU_1._06.ViewModel
             {
                 try
                 {
-
-
-                  
-                    
-
                     //Order.ExecuteAuthor = db.Authors.Find(new Author() { AuthorId = SelectedExecuteAuthor.AuthorId }.AuthorId);
 
                     if (SelectedExecuteAuthor.AuthorId==0)
@@ -733,11 +634,11 @@ namespace STUDENTU_1._06.ViewModel
                     //}
                     
                     Persone.Contacts=Contacts;
-                    Order.Direction = db.Directions.Find(Dir.DirectionId);
+                    Order.Direction = db.Directions.Find(_Dir.Dir.DirectionId);
                     Order.Client=new Client() { Persone=Persone};
                     Order.WorkType = db.WorkTypes.Find(WorkType.WorkTypeId);
                     Order.Dates = Date;
-                    Order.Subject = db.Subjects.Find(Subj.SubjectId); ;
+                    Order.Subject = db.Subjects.Find(_Subj.Subj.SubjectId); ;
                     Order.Money = Price;
                     //if (SelectedExecuteAuthor is null)
                     //    // set a default entry to author field

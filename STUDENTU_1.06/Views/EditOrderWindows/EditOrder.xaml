@@ -57,9 +57,9 @@
                 <scm1:SortDescription PropertyName="TypeOfWork"/>
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
-        <CollectionViewSource x:Key="SortedSubjects" Source="{Binding  SubjRecords}"
+        <CollectionViewSource x:Key="SortedSubjects" Source="{Binding  _Subj.SubjRecords}"
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
-            <!--SubjRecords can find in SubjectClass.cs-->
+            <!--SubjRecords can find in _Subject.cs-->
             <CollectionViewSource.SortDescriptions>
                 <scm1:SortDescription PropertyName="SubName"/>
             </CollectionViewSource.SortDescriptions>
@@ -271,18 +271,18 @@
                       
                      ItemsSource="{Binding Source={StaticResource SortedSubjects}, 
                       UpdateSourceTrigger=PropertyChanged}" 
-                     SelectedItem="{Binding Subj}"
+                     SelectedItem="{Binding _Subj.Subj}"
                      DisplayMemberPath="SubName"
-                      ToolTip="{Binding Subj.SubName}" 
+                      ToolTip="{Binding _Subj.Subj.SubName}" 
                      HorizontalContentAlignment="Center"
                      Background="White" >
                 <!--SortedSubjects can find above in Window.Resources-->
-                <!--Subj can find in SubjectClass.cs-->
+                <!--Subj can find in _Subject.cs-->
             </ComboBox>
             <Button x:Name="AddSubject" Width="40" Background="Gray" Content="..." TabIndex="12"
-                    Command="{Binding NewEditSubject}" CommandParameter="{Binding DataContext, RelativeSource=
+                    Command="{Binding _Subj.NewEditSubject}" CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}"/>
-            <!--Command NewEditSubject in SubjectClass.cs-->
+            <!--Command NewEditSubject in _Subject.cs-->
         </WrapPanel>
         <StackPanel Grid.Row="9"   Margin="3" VerticalAlignment="Center">
             <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 

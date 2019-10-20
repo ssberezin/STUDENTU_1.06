@@ -22,9 +22,9 @@
             <helpes:NullToBooleanConverter x:Key="NullBoolConverter" />
             
             <!--for sorting in listbox without behind code-->
-            <CollectionViewSource x:Key="SortedItems" Source="{Binding SubjRecords}"
+            <CollectionViewSource x:Key="SortedItems" Source="{Binding  _Subj.SubjRecords}"
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
-                <!-- SubjRecords can find in SubjectClass.cs-->
+                <!-- SubjRecords can find in _Subject.cs-->
                 <CollectionViewSource.SortDescriptions>
                     <scm1:SortDescription PropertyName="SubName"/>
                 </CollectionViewSource.SortDescriptions>
@@ -46,50 +46,50 @@
             <RowDefinition/>
             <RowDefinition Height="0.5*"/>
         </Grid.RowDefinitions>
-        <TextBox x:Name="SubName" Grid.ColumnSpan="3" Margin="5" Text="{Binding Subj.SubName , Mode=TwoWay,
+        <TextBox x:Name="SubName" Grid.ColumnSpan="3" Margin="5" Text="{Binding _Subj.Subj.SubName , Mode=TwoWay,
             UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap"
                  SpellCheck.IsEnabled="True" Language="ru-ru" TextAlignment="Center"
                  TabIndex="0"/>
-        <!-- Subj can find in SubjectClass.cs-->
+        <!-- Subj can find in _Subject.cs-->
             <ListBox x:Name="SubjList"
                      Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="2" Margin="5" 
                     ItemsSource="{Binding Source={StaticResource SortedItems}, 
-                    UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding Subj}"                   
+                    UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding _Subj.Subj}"                   
                      SelectionMode="Single" 
                      IsSynchronizedWithCurrentItem="False"
                      TabIndex="2"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <!--SortedItems can find above in Window.Resources-->
-            <!--Subj can find in SubjectClass.cs-->
+            <!--Subj can find in _Subject.cs-->
             <ListBox.ItemTemplate>
                     <DataTemplate>
                         <DockPanel >
                         <TextBlock Text="{Binding SubName}" Margin="2"
                                    TextWrapping="WrapWithOverflow" />
-                        <!--SubName is one of the Subj properties  what declarated in SubjectClass.cs-->
+                        <!--SubName is one of the Subj properties  what declarated in _Subject.cs-->
                     </DockPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
       
         </ListBox>
         <Button Grid.Column="0" Grid.Row="3"  Content="Добавить" Background="Green"
-                    Command="{Binding AddSubjectCommand}" CommandParameter="{Binding SubName.Text}"
+                    Command="{Binding _Subj.AddSubjectCommand}" CommandParameter="{Binding SubName.Text}"
                  IsEnabled="{Binding ElementName=SubName,  Path=Text.Length}"
                 TabIndex="1">            
         </Button>
-        <!--Command AddSubjectCommand can find in SubjectClass.cs-->
+        <!--Command AddSubjectCommand can find in _Subject.cs-->
 
         <Button  x:Name="EditButton" Grid.Column="1" Grid.Row="3" Content="Редактировать" Background="BlueViolet"
-                Command="{Binding EditSubjectCommand}" IsEnabled="{Binding SelectedItem,
+                Command="{Binding _Subj.EditSubjectCommand}" IsEnabled="{Binding SelectedItem,
                      Converter={StaticResource NullBoolConverter}, ElementName=SubjList}"
                  CommandParameter="{Binding ElementName=SubName, Path=Text}"
                  TabIndex="3"/>
-        <!--Command EditSubjectCommand can find in SubjectClass.cs-->
-        <Button Grid.Column="2" Grid.Row="3" Content="Удалить" Command="{Binding DeleteSubjectCommand}"
+        <!--Command EditSubjectCommand can find in _Subject.cs-->
+        <Button Grid.Column="2" Grid.Row="3" Content="Удалить" Command="{Binding _Subj.DeleteSubjectCommand}"
                  CommandParameter="{Binding ElementName=SubName, Path=Text}"
                 IsEnabled="{Binding SelectedItem,
                      Converter={StaticResource NullBoolConverter}, ElementName=SubjList}"
                 TabIndex="4"/>
-        <!--Command DeleteSubjectCommand can find in SubjectClass.cs-->
+        <!--Command DeleteSubjectCommand can find in _Subject.cs-->
     </Grid>
 </Window>

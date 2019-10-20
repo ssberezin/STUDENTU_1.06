@@ -172,7 +172,7 @@ namespace STUDENTU_1._06.ViewModel
                                                         ToList();
 
                             var tmp = (from item in result1
-                                       where (item.Direction.DirectionName == Dir.DirectionName)
+                                       where (item.Direction.DirectionName == _Dir.Dir.DirectionName)
                                        select new AuthorsRecord
                                        {
                                            AuthorRecordId = item.Author.AuthorId,
@@ -196,7 +196,7 @@ namespace STUDENTU_1._06.ViewModel
                             //AuthorsRecords record;
                             foreach (var item in result1)
                             {
-                                if (item.Direction.DirectionName == Dir.DirectionName)
+                                if (item.Direction.DirectionName == _Dir.Dir.DirectionName)
                                 {
                                     record = new AuthorsRecord
                                     {
