@@ -113,7 +113,21 @@ namespace STUDENTU_1._06.ViewModel
                 }
             }
         }
-        
+
+        private _Status _status;
+        public _Status _Status
+        {
+            get { return _status; }
+            set
+            {
+                if (_status != value)
+                {
+                    _status = value;
+                    OnPropertyChanged(nameof(_Status));
+                }
+            }
+        }
+
 
         private Contacts contacts;
         public Contacts Contacts
@@ -167,7 +181,7 @@ namespace STUDENTU_1._06.ViewModel
             WorkTypesRecords = new ObservableCollection<WorkType>();
             ContactsRecords = new ObservableCollection<Contacts>();
             BlackListRecords = new ObservableCollection<BlackListHelpModel>();
-            StatusRecords = new ObservableCollection<Status>();
+            //StatusRecords = new ObservableCollection<Status>();
           
             editWindow.Loaded += EditWindow_Loaded;
             this.showWindow = showWindow;
@@ -200,8 +214,8 @@ namespace STUDENTU_1._06.ViewModel
             PersoneDescription = new PersoneDescription();
             Price = new Money();            
             SelectetdAuthorContacts = new Contacts();
-            SelectedExecuteAuthor = new Author();
-            Status = new Status();
+            SelectedExecuteAuthor = new Author();            
+            _Status = new _Status();
             _Subj = new _Subject();
             Source = new Source();            
             WinnerEvaluation = new Evaluation();
@@ -209,7 +223,7 @@ namespace STUDENTU_1._06.ViewModel
             
             LoadWorkTypesData();//for load data to combobox WorkTypeList in EditOrder.xaml
             LoadSourcesData();//for load data to combobox SourcesList in EditOrder.xaml
-            LoadStatusData();//for load data to combobox StatusList in RuleOrderLineWindow.xaml
+           // LoadStatusData();//for load data to combobox StatusList in RuleOrderLineWindow.xaml
 
         }
         //=================================METHODS FOR PREVIOS LOAD TO CONTROLS OF EditOrder.xaml =====
@@ -328,28 +342,8 @@ namespace STUDENTU_1._06.ViewModel
                                 dialogService.ShowMessage("Нельзя удалить эту запись");
                             return;
                         case "Status"://delete Status
-                            if (Status.StatusId != 1)
-                            {
-                                if (dialogService.YesNoDialog("Точно нужно удалить эту запись?") == true)
-                                {
-                                    //changing DB
-                                    //we find all the records in which we have the desired Id and make a replacement
-                                    foreach (OrderLine order in res)
-                                    {
-                                        if (order.Status.StatusId == Status.StatusId)
-                                            order.Status = db.Statuses.Find(new Status() { StatusId = 1 }.StatusId);
-                                    }
-                                    db.Statuses.Remove(db.Statuses.Find(Status.StatusId));
-                                    db.SaveChanges();
-
-                                    //changing collection
-                                    WorkTypesRecords.Remove(WorkType);
-                                }
-                            }
-                            else
-                                dialogService.ShowMessage("Нельзя удалить эту запись");
+                            _Status.DeleteStatus();
                             return;
-
                     }
 
                 }
@@ -436,26 +430,8 @@ namespace STUDENTU_1._06.ViewModel
                                 dialogService.ShowMessage("Уже есть такое название в базе данных");
                             return;
                         case "Status"://add to Statuses
-                            var res4 = db.Statuses.Any(o => o.StatusName == Status.StatusName);
-                            if (!res4)
-                            {
-                                if (!string.IsNullOrEmpty(Status.StatusName))
-                                {
-                                    Status.StatusName = Status.StatusName.ToLower();
-                                    db.Statuses.Add(Status);
-                                    db.SaveChanges();
-                                    StatusRecords.Clear();
-                                    LoadStatusData();
-                                    Status = new Status();
-
-                                }
-                                else
-                                    return;
-                            }
-                            else
-                                dialogService.ShowMessage("Уже есть такое название в базе данных");
+                            _Status.AddStatus();
                             return;
-
                     }
 
                 }
@@ -523,15 +499,8 @@ namespace STUDENTU_1._06.ViewModel
                             }
                             return;
                         case "Status"://add to WorkTypes
-                            var res4 = db.Statuses.Find(Status.StatusId);
-                            if (res4 != null)
-                            {
-                                //changing DB
-                                res4.StatusName = Status.StatusName.ToLower();
-                                db.SaveChanges();
-                            }
+                            _Status.EditStatus();
                             return;
-
                     }
 
                 }
@@ -646,12 +615,12 @@ namespace STUDENTU_1._06.ViewModel
                     //else
                     //    //set realy selected author
                     //    Order.Author = SelectedExecuteAuthor;
-                    if (Status.StatusName=="принимается")
+                    if (_Status.Status.StatusName=="принимается")
                         // set a default entry to status field
                         Order.Status = db.Statuses.Find(new Status() { StatusId = 1 }.StatusId); 
                     else
                         //set realy selected status
-                        Order.Status = Status;
+                        Order.Status = _Status.Status;
 
                     db.Orderlines.Add(Order);
                     

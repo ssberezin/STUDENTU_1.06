@@ -15,6 +15,7 @@ namespace STUDENTU_1._06.Model
         }
 
         public virtual DbSet<Author> Authors { get; set; }
+        public virtual DbSet<AuthorStatus> AuthorStatuses { get; set; }
         public virtual DbSet<AfterDoneDescription> AfterDoneDescriptions { get; set; }        
         public virtual DbSet<Client> Clients { get; set; }
         public virtual DbSet<Contacts> Contacts { get; set; }

@@ -123,12 +123,14 @@
     <Compile Include="Helpes\NullToBooleanConverter.cs" />
     <Compile Include="Helpes\StringToBrushConverter.cs" />
     <Compile Include="Helpes\TimeFormatConverter.cs" />
+    <Compile Include="Model\DBModelClasses\AuthorStatus.cs" />
     <Compile Include="Model\DBModelClasses\Sourse.cs" />
     <Compile Include="Model\HelpModelClasses\AuthorsRecord.cs" />
     <Compile Include="Model\HelpModelClasses\BlackListHelpModel.cs" />
     <Compile Include="Model\HelpModelClasses\DialogWindows\DefaultDialogService.cs" />
     <Compile Include="Model\HelpModelClasses\DialogWindows\IDialogService.cs" />
     <Compile Include="ViewModel\PersoneOperations\AuthorsOperationsVM\AuthorsVMClass.cs" />
+    <Compile Include="ViewModel\_Status.cs" />
     <Compile Include="ViewModel\_Subject.cs" />
     <Compile Include="ViewModel\_Direction.cs" />
     <Compile Include="Views\PersoneOperations\AuthorOperationsWindows\AuthorWindow.xaml.cs">
@@ -228,7 +230,6 @@
     <Compile Include="ViewModel\ForEditOrderVM\ForEditOrderAddContacts.cs" />
     <Compile Include="ViewModel\ForEditOrderVM\RuleOrderLineClass.cs" />
     <Compile Include="ViewModel\ForEditOrderVM\SourceClass.cs" />
-    <Compile Include="ViewModel\ForEditOrderVM\StatusClass.cs" />
     <Compile Include="ViewModel\ForEditOrderVM\WorkTypeClass.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="Views\EditOrderWindows\AddContactsWindow.xaml.cs">

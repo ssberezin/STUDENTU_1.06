@@ -321,7 +321,7 @@
                      >
                 <TextBlock Text="Статус заказа" FontWeight="Bold" HorizontalAlignment="Center"/>
             </Viewbox>
-            <TextBlock x:Name="StatusName"    Text="{Binding Status.StatusName}" HorizontalAlignment="Center"  Foreground="Red"/>
+            <TextBlock x:Name="StatusName"    Text="{Binding _Status.Status.StatusName}" HorizontalAlignment="Center"  Foreground="Red"/>
             <!--Status can find in StatusClass.cs-->
         </StackPanel>
         <Viewbox Grid.Column="3" Grid.ColumnSpan="2" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Center" 

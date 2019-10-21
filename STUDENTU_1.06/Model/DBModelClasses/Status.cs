@@ -11,8 +11,7 @@ namespace STUDENTU_1._06.Model
         public Status()
         {
         
-            this.OrderLine = new ObservableCollection<OrderLine>();
-            this.Author = new ObservableCollection<Author>();
+            this.OrderLine = new ObservableCollection<OrderLine>();            
             this.StatusName = "принимается";
         }
         
@@ -25,13 +24,6 @@ namespace STUDENTU_1._06.Model
         [MaxLength(50)]
         public string StatusName { get; set; }
 
-
-
-       
        public virtual ObservableCollection<OrderLine> OrderLine { get; set; }
-
-        public virtual ObservableCollection<Author> Author {get;set;}
-
-
-}
+    }
 }

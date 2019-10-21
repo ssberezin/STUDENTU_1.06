@@ -29,9 +29,9 @@
                 </CollectionViewSource.SortDescriptions>
             </CollectionViewSource>
 
-            <CollectionViewSource x:Key="SortedStatuses" Source="{Binding StatusRecords}"
+            <CollectionViewSource x:Key="SortedStatuses" Source="{Binding _Status.StatusRecords}"
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
-                <!--StatusRecords can find in StatusClass.cs-->
+                <!--StatusRecords can find in _Status.cs-->
                 <CollectionViewSource.SortDescriptions>
                     <scm1:SortDescription PropertyName="StatusName"/>
                 </CollectionViewSource.SortDescriptions>
@@ -143,14 +143,14 @@
                       IsEditable="False"
                      ItemsSource="{Binding Source={StaticResource SortedStatuses}, 
                       UpdateSourceTrigger=PropertyChanged}" 
-                     SelectedItem="{Binding Status}"
-                     DisplayMemberPath="SatusName">
-                <!--Status can fint in StatusClass.cs-->
+                     SelectedItem="{Binding _Status.Status}"
+                     DisplayMemberPath="StatusName">
+                <!--Status can find in _Status.cs-->
             </ComboBox>
             <Button x:Name="AddDStatus" Width="40" Background="Gray" Content="..." TabIndex="4"
-                    Command="{Binding NewEditStatusCommand}" CommandParameter="{Binding DataContext, RelativeSource=
+                    Command="{Binding _Status.NewEditStatusCommand}" CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}"/>
-            <!--Command NewEditStatusCommand can find in StatusClass.cs-->
+            <!--Command NewEditStatusCommand can find in _Status.cs-->
             <Button x:Name="CompareAvaluation"  Background="Orange" Content="Сравнить оценки" TabIndex="7"
                     Command="{Binding CompareAvaluationCommand}" CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}"/>

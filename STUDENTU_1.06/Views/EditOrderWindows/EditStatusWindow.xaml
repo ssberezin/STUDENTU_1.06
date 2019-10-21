@@ -22,15 +22,13 @@
             <helpes:NullToBooleanConverter x:Key="NullBoolConverter" />
 
             <!--for sorting in listbox without behind code-->
-            <CollectionViewSource x:Key="SortedItems" Source="{Binding StatusRecords}"
+            <CollectionViewSource x:Key="SortedItems" Source="{Binding _Status.StatusRecords}"
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
                 <CollectionViewSource.SortDescriptions>
                     <scm1:SortDescription PropertyName="StatusName"/>
                 </CollectionViewSource.SortDescriptions>
             </CollectionViewSource>
-            <!--StatusRecords can find in SourceClass.cs -->
-
-
+            <!--StatusRecords can find in _Status.cs -->
         </ResourceDictionary>
 
 
@@ -49,53 +47,54 @@
             <RowDefinition Height="0.5*"/>
         </Grid.RowDefinitions>
         <TextBox x:Name="DirName" Grid.ColumnSpan="3" Margin="5" 
-                 Text="{Binding Status.StatusName , Mode=TwoWay,
+                 Text="{Binding _Status.Status.StatusName , Mode=TwoWay,
             UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="0"
                  SpellCheck.IsEnabled="True" Language="ru-ru" TextAlignment="Center"/>
-        <!-- Statuse can find in StatuseClass.cs-->
+        <!-- Statuse can find in _Statuse.cs-->
 
         <ListBox x:Name="DirList"
                      Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="2" Margin="5" 
                     ItemsSource="{Binding Source={StaticResource SortedItems}, 
-                    UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding Status}"                   
+                    UpdateSourceTrigger=PropertyChanged}" 
+                    SelectedItem="{Binding _Status.Status}"                   
                      SelectionMode="Single" 
                      IsSynchronizedWithCurrentItem="False"
                      TabIndex="3"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <!--SortedItems can find above in Window.Resources-->
-            <!--Statuse can find in StatuseClass.cs-->
+            <!--Statuse can find in _Statuse.cs-->
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <DockPanel >
                         <TextBlock Text="{Binding StatusName}" Margin="2"
                                    TextWrapping="WrapWithOverflow" 
                                    TextAlignment="Center"/>
-                        <!--StatusName is one of the Statuses properties  what declarated in StatusClass.cs-->
+                        <!--StatusName is one of the Statuses properties  what declarated in _Status.cs-->
                     </DockPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
 
         </ListBox>
         <Button Grid.Column="0" Grid.Row="3"  Content="Добавить" Background="Green"
-                 Command="{Binding AddStatusCommand}" CommandParameter="{Binding DirName.Text}"
+                 Command="{Binding _Status.AddStatusCommand}" CommandParameter="{Binding DirName.Text}"
                  IsEnabled="{Binding ElementName=DirName,  Path=Text.Length}"
                 TabIndex="1">
-            <!--Command AddStatusCommand can find in StatusClass.cs-->
+            <!--Command AddStatusCommand can find in _Status.cs-->
         </Button>
         
 
 
         <Button  x:Name="EditButton" Grid.Column="1" Grid.Row="3" Content="Редактировать" Background="BlueViolet"
-                Command="{Binding EditStatusCommand}" IsEnabled="{Binding SelectedItem,
+                Command="{Binding _Status.EditStatusCommand}" IsEnabled="{Binding SelectedItem,
                      Converter={StaticResource NullBoolConverter}, ElementName=DirList}"
                  CommandParameter="{Binding ElementName=DirName, Path=Text}"
                  TabIndex="4" />
-        <!--Command EditStatusCommand can find in StatusClass.cs-->
-        <Button Grid.Column="2" Grid.Row="3" Content="Удалить" Command="{Binding DeleteStatusCommand}"
+        <!--Command EditStatusCommand can find in _Status.cs-->
+        <Button Grid.Column="2" Grid.Row="3" Content="Удалить" Command="{Binding _Status.DeleteStatusCommand}"
                  CommandParameter="{Binding ElementName=DirName, Path=Text}"
                 IsEnabled="{Binding SelectedItem, 
                      Converter={StaticResource NullBoolConverter}, ElementName=DirList}"
                 TabIndex="5"/>
-        <!--Command DeleteStatusCommand can find in StatusClass.cs-->
+        <!--Command DeleteStatusCommand can find in _Status.cs-->
     </Grid>
 </Window>

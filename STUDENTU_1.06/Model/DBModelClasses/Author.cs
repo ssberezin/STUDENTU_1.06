@@ -1,5 +1,6 @@
 ﻿
 using STUDENTU_1._06.Model;
+using STUDENTU_1._06.Model.DBModelClasses;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
@@ -48,7 +49,7 @@ namespace STUDENTU_1._06.Model
         public virtual ObservableCollection<Evaluation> Evaluation { get; set; }
 
 
-        public virtual Status Status { get; set; }
+        public virtual AuthorStatus AuthorStatus { get; set; }
         
     }
 }

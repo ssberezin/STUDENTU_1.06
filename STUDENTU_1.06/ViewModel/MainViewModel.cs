@@ -155,25 +155,29 @@ namespace STUDENTU_1._06.ViewModel
                     {
                         //тут у нас устананавливаются статусы для заказов
                         // here we have statuses for orders
-                        db.Statuses.Add(new Status() { StatusName = "-принят-" });
-                        db.Statuses.Add(new Status() { StatusName = "-готов-" });
-                        db.Statuses.Add(new Status() { StatusName = "-выполняется-" });
-                        db.Statuses.Add(new Status() { StatusName = "-отдан зказчику-" });
-                        db.Statuses.Add(new Status() { StatusName = "-на оценке-" });
-                        db.Statuses.Add(new Status() { StatusName = "-принят на доработку-" });
-                        db.Statuses.Add(new Status() { StatusName = "-дорабатывается-" });
-                        db.Statuses.Add(new Status() { StatusName = "-отказ от выполнения-" });
-                        db.Statuses.Add(new Status() { StatusName = "-ждем новостей от заказчика-" });
+                        db.Statuses.Add(new Status() { StatusName = "---" });
+                        db.Statuses.Add(new Status() { StatusName = "принят" });
+                        db.Statuses.Add(new Status() { StatusName = "готов" });
+                        db.Statuses.Add(new Status() { StatusName = "выполняется" });
+                        db.Statuses.Add(new Status() { StatusName = "отдан зказчику" });
+                        db.Statuses.Add(new Status() { StatusName = "на оценке" });
+                        db.Statuses.Add(new Status() { StatusName = "принят на доработку" });
+                        db.Statuses.Add(new Status() { StatusName = "дорабатывается" });
+                        db.Statuses.Add(new Status() { StatusName = "отказ от выполнения" });
+                        db.Statuses.Add(new Status() { StatusName = "ждем новостей от заказчика" });
+                        db.SaveChanges();
+                    }
+                    if (db.AuthorStatuses.Count() == 0)
+                    {
                         //тут у нас устананавливаются статусы для атворов
                         // here we have statuses for authors
-                        db.Statuses.Add(new Status() { StatusName = "работает" });
-                        db.Statuses.Add(new Status() { StatusName = "уволен" });
-                        db.Statuses.Add(new Status() { StatusName = "не проверен" });
-                        db.Statuses.Add(new Status() { StatusName = "проверяется" });
-                        db.Statuses.Add(new Status() { StatusName = "на паузе" });
-
-                        db.SaveChanges();
-                    }                    
+                        db.AuthorStatuses.Add(new AuthorStatus() { AuthorStatusName = "---" });
+                        db.AuthorStatuses.Add(new AuthorStatus() { AuthorStatusName = "работает" });
+                        db.AuthorStatuses.Add(new AuthorStatus() { AuthorStatusName = "уволен" });
+                        db.AuthorStatuses.Add(new AuthorStatus() { AuthorStatusName = "не проверен" });
+                        db.AuthorStatuses.Add(new AuthorStatus() { AuthorStatusName = "проверяется" });
+                        db.AuthorStatuses.Add(new AuthorStatus() { AuthorStatusName = "на паузе" });
+                    }
                     if (db.Directions.Count() == 0)
                     {
                         db.Directions.Add(new Direction() { DirectionName = "---" });                        
