@@ -59,6 +59,7 @@ namespace STUDENTU_1._06.ViewModel
                             StatusName = item.StatusName
                         });
                     }
+                    Status = StatusRecords[0];
                 }
                 catch (ArgumentNullException ex)
                 {
@@ -145,8 +146,7 @@ namespace STUDENTU_1._06.ViewModel
                                     db.Statuses.Remove(db.Statuses.Find(Status.StatusId));
                                     db.SaveChanges();
                                     //changing collection
-                                    StatusRecords.Remove(Status);
-                                    Status = null;
+                                   StatusRecords.Remove(Status);                                   
                                 }
                             }
                             else

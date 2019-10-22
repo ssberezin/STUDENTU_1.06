@@ -130,9 +130,11 @@
     <Compile Include="Model\HelpModelClasses\DialogWindows\DefaultDialogService.cs" />
     <Compile Include="Model\HelpModelClasses\DialogWindows\IDialogService.cs" />
     <Compile Include="ViewModel\PersoneOperations\AuthorsOperationsVM\AuthorsVMClass.cs" />
+    <Compile Include="ViewModel\_Source.cs" />
     <Compile Include="ViewModel\_Status.cs" />
     <Compile Include="ViewModel\_Subject.cs" />
     <Compile Include="ViewModel\_Direction.cs" />
+    <Compile Include="ViewModel\_WorkType.cs" />
     <Compile Include="Views\PersoneOperations\AuthorOperationsWindows\AuthorWindow.xaml.cs">
       <DependentUpon>AuthorWindow.xaml</DependentUpon>
     </Compile>
@@ -229,8 +231,6 @@
     <Compile Include="ViewModel\ForEditOrderVM\ForEditOrder.cs" />
     <Compile Include="ViewModel\ForEditOrderVM\ForEditOrderAddContacts.cs" />
     <Compile Include="ViewModel\ForEditOrderVM\RuleOrderLineClass.cs" />
-    <Compile Include="ViewModel\ForEditOrderVM\SourceClass.cs" />
-    <Compile Include="ViewModel\ForEditOrderVM\WorkTypeClass.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="Views\EditOrderWindows\AddContactsWindow.xaml.cs">
       <DependentUpon>AddContactsWindow.xaml</DependentUpon>

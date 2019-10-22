@@ -57,6 +57,7 @@ namespace STUDENTU_1._06.ViewModel
                             SubName = item.SubName
                         });
                     }
+                    Subj = SubjRecords[0];
                 }
                 catch (ArgumentNullException ex)
                 {

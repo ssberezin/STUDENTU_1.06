@@ -128,6 +128,33 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
+        private _Source _source;
+        public _Source _Source
+        {
+            get { return _source; }
+            set
+            {
+                if (_source != value)
+                {
+                    _source = value;
+                    OnPropertyChanged(nameof(_Source));
+                }
+            }
+        }
+
+        private _WorkType _workType;
+        public _WorkType _WorkType
+        {
+            get { return _workType; }
+            set
+            {
+                if (_workType != value)
+                {
+                    _workType = value;
+                    OnPropertyChanged(nameof(_WorkType));
+                }
+            }
+        }
 
         private Contacts contacts;
         public Contacts Contacts
@@ -176,12 +203,9 @@ namespace STUDENTU_1._06.ViewModel
            IDialogService dialogService)
         {
             AuthorsRecords = new ObservableCollection<AuthorsRecord>();           
-            SelectedAuthorsRecords = new ObservableCollection<AuthorsRecord> ();
-            SourcesRecords = new ObservableCollection<Source>();
-            WorkTypesRecords = new ObservableCollection<WorkType>();
+            SelectedAuthorsRecords = new ObservableCollection<AuthorsRecord> ();            
             ContactsRecords = new ObservableCollection<Contacts>();
-            BlackListRecords = new ObservableCollection<BlackListHelpModel>();
-            //StatusRecords = new ObservableCollection<Status>();
+            BlackListRecords = new ObservableCollection<BlackListHelpModel>();           
           
             editWindow.Loaded += EditWindow_Loaded;
             this.showWindow = showWindow;
@@ -217,15 +241,11 @@ namespace STUDENTU_1._06.ViewModel
             SelectedExecuteAuthor = new Author();            
             _Status = new _Status();
             _Subj = new _Subject();
-            Source = new Source();            
+            _Source = new _Source();            
             WinnerEvaluation = new Evaluation();
-            WorkType = new WorkType();
-            
-            LoadWorkTypesData();//for load data to combobox WorkTypeList in EditOrder.xaml
-            LoadSourcesData();//for load data to combobox SourcesList in EditOrder.xaml
-           // LoadStatusData();//for load data to combobox StatusList in RuleOrderLineWindow.xaml
-
+            _WorkType = new _WorkType();
         }
+
         //=================================METHODS FOR PREVIOS LOAD TO CONTROLS OF EditOrder.xaml =====
 
         //create new oreder number (get max namber and add 1)
@@ -276,260 +296,7 @@ namespace STUDENTU_1._06.ViewModel
 
         }
 
-        //===================THIS METHOD IS FOR DELETE RECORDS IN DIRECTIONS, SUBJECTS , WORKTYPES, SOURCES TABLES==============
-
-        //if nameOfObject ="Direction" - delete records in directions, 
-        //if nameOfObject ="Subject" - delete records in subjects
-        //if nameOfObject ="WorkType" - delete records in worktypes
-        //if nameOfObject ="Source" - delete records in source
-        private void DeleteDirSubjWorkType(string nameOfObject)
-        {
-            using (StudentuConteiner db = new StudentuConteiner())
-            {
-                try
-                {
-                    var res = db.Orderlines;
-                    switch (nameOfObject)
-                    {
-                        case "WorkType"://delete WorkType
-                            if (WorkType.WorkTypeId != 1)
-                            {
-                                if (dialogService.YesNoDialog("Точно нужно удалить эту запись?") == true)
-                                {
-                                    //changing DB
-                                    //we find all the records in which we have the desired Id and make a replacement
-                                    foreach (OrderLine order in res)
-                                    {
-                                        if (order.WorkType.WorkTypeId == WorkType.WorkTypeId)
-                                            order.WorkType = db.WorkTypes.Find(new WorkType() { WorkTypeId = 1 }.WorkTypeId);
-                                    }
-                                    db.WorkTypes.Remove(db.WorkTypes.Find(WorkType.WorkTypeId));
-                                    db.SaveChanges();
-
-                                    //changing collection
-                                    WorkTypesRecords.Remove(WorkType);
-                                }
-                            }
-                            else
-                                dialogService.ShowMessage("Нельзя удалить эту запись");
-                            return;
-                        case "Direction"://delete Direction                           
-                            _Dir.DeleteDir();
-                            return;
-                        case "Subject"://delete Subject
-                            _Subj.DeleteSubj();
-                            return;
-                        case "Source"://delete Source
-                            if (Source.SourceId != 1)
-                            {
-                                if (dialogService.YesNoDialog("Точно нужно удалить эту запись?") == true)
-                                {
-                                    //changing DB
-                                    //we find all the records in which we have the desired Id and make a replacement
-                                    foreach (OrderLine order in res)
-                                    {
-                                        if (order.Source.SourceId == Source.SourceId)
-                                            order.Source = db.Sources.Find(new Source() { SourceId = 1 }.SourceId);
-                                    }
-                                    db.Sources.Remove(db.Sources.Find(Source.SourceId));
-                                    db.SaveChanges();
-
-                                    //changing collection
-                                    SourcesRecords.Remove(Source);
-                                }
-                            }
-                            else
-                                dialogService.ShowMessage("Нельзя удалить эту запись");
-                            return;
-                        case "Status"://delete Status
-                            _Status.DeleteStatus();
-                            return;
-                    }
-
-                }
-                catch (ArgumentNullException ex)
-                {
-                    dialogService.ShowMessage(ex.Message);
-                }
-                catch (OverflowException ex)
-                {
-                    dialogService.ShowMessage(ex.Message);
-                }
-                catch (System.Data.SqlClient.SqlException ex)
-                {
-                    dialogService.ShowMessage(ex.Message);
-                }
-                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
-                {
-                    dialogService.ShowMessage(ex.Message);
-                }
-                catch (System.Data.Entity.Core.EntityException ex)
-                {
-                    dialogService.ShowMessage(ex.Message);
-                }
-            }
-        }
-
-
-        //===================THIS METHOD IS FOR ADD RECORDS IN DIRECTIONS, SUBJECTS , WORKTYPES, SOURCES TABLES==============
-
-        //if nameOfObject ="Direction" - add records in directions, 
-        //if nameOfObject ="Subject" - add records in subjects
-        //if nameOfObject ="WorkType" - add records in worktypes
-        //if nameOfObject ="Source" - add records in sources
-        private void AddDirSubjWorkType(string nameOfObject)
-        {
-            using (StudentuConteiner db = new StudentuConteiner())
-            {
-                try
-                {
-                    switch (nameOfObject)
-                    {
-                        case "WorkType"://add to WorkTypes
-                            var res = db.WorkTypes.Any(o => o.TypeOfWork == WorkType.TypeOfWork);
-                            if (!res)
-                            {
-                                if (!string.IsNullOrEmpty(WorkType.TypeOfWork))
-                                {
-                                    WorkType.TypeOfWork = WorkType.TypeOfWork.ToLower();
-                                    db.WorkTypes.Add(WorkType);
-                                    db.SaveChanges();
-                                    WorkTypesRecords.Clear();
-                                    LoadWorkTypesData();
-                                    WorkType = new WorkType();
-
-                                }
-                                else
-                                    return;
-                            }
-                            else
-                                dialogService.ShowMessage("Уже есть такое название в базе данных");
-                            return;
-                        case "Direction"://add to Directions                          
-                            _Dir.AddDir();
-                            return;
-                        case "Subject"://add to Subjects                           
-                            _Subj.AddSubj();
-                            return;
-                        case "Source"://add to Subjects
-                            var res3 = db.Sources.Any(o => o.SourceName == Source.SourceName);
-                            if (!res3)
-                            {
-                                if (!string.IsNullOrEmpty(Source.SourceName))
-                                {
-                                    db.Sources.Add(Source);
-                                    db.SaveChanges();
-                                    SourcesRecords.Clear();
-                                    LoadSourcesData();
-                                    Source = new Source();
-                                }
-                                else
-                                    return;
-                            }
-                            else
-                                dialogService.ShowMessage("Уже есть такое название в базе данных");
-                            return;
-                        case "Status"://add to Statuses
-                            _Status.AddStatus();
-                            return;
-                    }
-
-                }
-                catch (ArgumentNullException ex)
-                {
-                    dialogService.ShowMessage(ex.Message);
-                }
-                catch (OverflowException ex)
-                {
-                    dialogService.ShowMessage(ex.Message);
-                }
-                catch (System.Data.SqlClient.SqlException ex)
-                {
-                    dialogService.ShowMessage(ex.Message);
-                }
-                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
-                {
-                    dialogService.ShowMessage(ex.Message);
-                }
-                catch (System.Data.Entity.Core.EntityException ex)
-                {
-                    dialogService.ShowMessage(ex.Message);
-                }
-            }
-        }
-
-
-        //===================THIS METHOD IS FOR EDIT RECORDS IN DIRECTIONS, SUBJECTS , WORKTYPES, SOURCES TABLES==============
-
-        //if nameOfObject ="Direction" - edit records in directions, 
-        //if nameOfObject ="Subject" - edit records in subjects
-        //if nameOfObject ="WorkType" - edit records in worktypes
-        //if nameOfObject ="Source" - edit records in sources
-        private void EditDirSubjWorkType(string nameOfObject)
-        {
-            using (StudentuConteiner db = new StudentuConteiner())
-            {
-                try
-                {
-                    switch (nameOfObject)
-                    {
-                        case "WorkType"://add to WorkTypes
-                            var res = db.WorkTypes.Find(WorkType.WorkTypeId);
-                            if (res != null)
-                            {
-                                //changing DB
-                                res.TypeOfWork = WorkType.TypeOfWork.ToLower();
-                                db.SaveChanges();
-                            }
-                            return;
-                        case "Direction"://add to Directions
-                            
-                            _Dir.EditDir();
-                            return;
-                        case "Subject"://add to Subjects
-                            _Subj.EditSubj();
-                            return;
-                        case "Source"://add to Source
-                            var res3 = db.Sources.Find(Source.SourceId);
-                            if (res3 != null)
-                            {
-                                //changing DB
-                                res3.SourceName = Source.SourceName;
-                                db.SaveChanges();
-                            }
-                            return;
-                        case "Status"://add to WorkTypes
-                            _Status.EditStatus();
-                            return;
-                    }
-
-                }
-                catch (ArgumentNullException ex)
-                {
-                    dialogService.ShowMessage(ex.Message);
-                }
-                catch (OverflowException ex)
-                {
-                    dialogService.ShowMessage(ex.Message);
-                }
-                catch (System.Data.SqlClient.SqlException ex)
-                {
-                    dialogService.ShowMessage(ex.Message);
-                }
-                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
-                {
-                    dialogService.ShowMessage(ex.Message);
-                }
-                catch (System.Data.Entity.Core.EntityException ex)
-                {
-                    dialogService.ShowMessage(ex.Message);
-                }
-            }
-        }
-
-
-       
-
+        
         //==================================== COMMAND FOR SAVE NEW ORDER ====================================
 
         private RelayCommand createNewOrderLine;
@@ -605,7 +372,7 @@ namespace STUDENTU_1._06.ViewModel
                     Persone.Contacts=Contacts;
                     Order.Direction = db.Directions.Find(_Dir.Dir.DirectionId);
                     Order.Client=new Client() { Persone=Persone};
-                    Order.WorkType = db.WorkTypes.Find(WorkType.WorkTypeId);
+                    Order.WorkType = db.WorkTypes.Find(_WorkType.WorkType.WorkTypeId);
                     Order.Dates = Date;
                     Order.Subject = db.Subjects.Find(_Subj.Subj.SubjectId); ;
                     Order.Money = Price;

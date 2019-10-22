@@ -36,9 +36,9 @@
 
 
         <!--for sorting in listbox without behind code-->
-        <CollectionViewSource x:Key="SortedSources" Source="{Binding  SourcesRecords}"
+        <CollectionViewSource x:Key="SortedSources" Source="{Binding  _Source.SourcesRecords}"
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
-            <!--SourcesRecords can find in SourceClass.cs-->
+            <!--SourcesRecords can find in _Source.cs-->
             <CollectionViewSource.SortDescriptions>
                 <scm1:SortDescription PropertyName="DirectionName"/>
             </CollectionViewSource.SortDescriptions>
@@ -50,9 +50,9 @@
                 <scm1:SortDescription PropertyName="DirectionName"/>
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
-        <CollectionViewSource x:Key="SortedWorkTypes" Source="{Binding  WorkTypesRecords}"
+        <CollectionViewSource x:Key="SortedWorkTypes" Source="{Binding  _WorkType.WorkTypesRecords}"
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
-            <!--WorkTypesRecords can find in WorkTypeClass.cs-->
+            <!--WorkTypesRecords can find in _WorkType.cs-->
             <CollectionViewSource.SortDescriptions>
                 <scm1:SortDescription PropertyName="TypeOfWork"/>
             </CollectionViewSource.SortDescriptions>
@@ -396,16 +396,16 @@
                       
                      ItemsSource="{Binding Source={StaticResource SortedSources}, 
                       UpdateSourceTrigger=PropertyChanged}" 
-                     SelectedItem="{Binding Source}"
+                     SelectedItem="{Binding _Source.Source}"
                      DisplayMemberPath="SourceName"
                      HorizontalContentAlignment="Center"
                      Background="White" >
                     <!--SortedSources can find above in Window.Resources-->
-                    <!--Source can find in SourceClass.cs-->
+                    <!--Source can find in _Source.cs-->
                 </ComboBox>
                 
                 <Button x:Name="AddSourse" Width="40" Background="Gray" Content="..." TabIndex="16"
-                    Command="{Binding NewEditSource}" CommandParameter="{Binding DataContext, RelativeSource=
+                    Command="{Binding _Source.NewEditSource}" CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}"/>
                 <!--NewEditSource can find in SourceClass.cs-->
             </WrapPanel>
@@ -427,16 +427,16 @@
                         SelectedIndex="0" Margin="3"                        
                      ItemsSource="{Binding Source={StaticResource SortedWorkTypes}, 
                       UpdateSourceTrigger=PropertyChanged}" 
-                     SelectedItem="{Binding WorkType}"
+                     SelectedItem="{Binding _WorkType.WorkType}"
                      DisplayMemberPath="TypeOfWork"
                      HorizontalContentAlignment="Center"
                      Background="White" >
                 <!--SortedWorkTypes can find above in Window.Resources-->
-                <!--WorkType can find in WorkTypeClass.cs-->
+                <!--WorkType can find in _WorkType.cs-->
             </ComboBox>
 
             <Button x:Name="AddWorkType" Width="40" Background="Gray" Content="..." TabIndex="14"
-                    Command="{Binding NewEditWorkType}" CommandParameter="{Binding DataContext, RelativeSource=
+                    Command="{Binding _WorkType.NewEditWorkType}" CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}"/>
             <!-- Command NewEditWorkType  can find  WorkTypeClass.cs-->
 

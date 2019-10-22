@@ -57,6 +57,7 @@ namespace STUDENTU_1._06.ViewModel
                             DirectionId = item.DirectionId,
                             DirectionName = item.DirectionName
                         });
+                        Dir = DirRecords[0];
                     }
                 }
                 catch (ArgumentNullException ex)

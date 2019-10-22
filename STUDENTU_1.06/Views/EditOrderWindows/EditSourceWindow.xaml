@@ -22,9 +22,9 @@
             <helpes:NullToBooleanConverter x:Key="NullBoolConverter" />
 
             <!--for sorting in listbox without behind code-->
-            <CollectionViewSource x:Key="SortedItems" Source="{Binding SourcesRecords}"
+            <CollectionViewSource x:Key="SortedItems" Source="{Binding _Source.SourcesRecords}"
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
-                <!--SourcesRecords can find in SourceClass.cs -->
+                <!--SourcesRecords can find in _Source.cs -->
                 <CollectionViewSource.SortDescriptions>
                     <scm1:SortDescription PropertyName="SourceName"/>
                 </CollectionViewSource.SortDescriptions>
@@ -48,22 +48,22 @@
             <RowDefinition Height="0.5*"/>
         </Grid.RowDefinitions>
         <TextBox x:Name="DirName" Grid.ColumnSpan="3" Margin="5" 
-                 Text="{Binding Source.SourceName , Mode=TwoWay,
+                 Text="{Binding _Source.Source.SourceName , Mode=TwoWay,
             UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap"
                  SpellCheck.IsEnabled="True" Language="ru-ru" TextAlignment="Center"
                  TabIndex="0"/>        
-            <!-- Soursce can find in SourceClass.cs-->        
+            <!-- Soursce can find in _Source.cs-->        
 
         <ListBox x:Name="DirList"
                      Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="2" Margin="5" 
                     ItemsSource="{Binding Source={StaticResource SortedItems}, 
-                    UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding Source}"                   
+                    UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding _Source.Source}"                   
                      SelectionMode="Single" 
                      IsSynchronizedWithCurrentItem="False"
                      TabIndex="2"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <!--SortedItems can find above in Window.Resources-->
-            <!--Source can find in SourceClass.cs-->
+            <!--Source can find in _Source.cs-->
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <DockPanel >
@@ -78,25 +78,25 @@
 
         </ListBox>
         <Button Grid.Column="0" Grid.Row="3"  Content="Добавить" Background="Green"
-                    Command="{Binding AddSourceCommand}" CommandParameter="{Binding DirName.Text}"
+                    Command="{Binding _Source.AddSourceCommand}" CommandParameter="{Binding DirName.Text}"
                  IsEnabled="{Binding ElementName=DirName,  Path=Text.Length}"
                 TabIndex="1">
-            <!--Command AddSourceCommand can find in SourceClass.cs-->
+            <!--Command AddSourceCommand can find in _Source.cs-->
         </Button>
 
 
         <Button  x:Name="EditButton" Grid.Column="1" Grid.Row="3" Content="Редактировать" Background="BlueViolet"
-                Command="{Binding EditSourceCommand}" IsEnabled="{Binding SelectedItem,
+                Command="{Binding _Source.EditSourceCommand}" IsEnabled="{Binding SelectedItem,
                      Converter={StaticResource NullBoolConverter}, ElementName=DirList}"
                  CommandParameter="{Binding ElementName=DirName, Path=Text}"                 
                  TabIndex="3"/>
-        <!--Command EditSourceCommand can find in SourceClass.cs-->
+        <!--Command EditSourceCommand can find in _Source.cs-->
         <Button Grid.Column="2" Grid.Row="3" Content="Удалить" 
-                Command="{Binding DeleteSourceCommand}"
+                Command="{Binding _Source.DeleteSourceCommand}"
                  CommandParameter="{Binding ElementName=DirName, Path=Text}"
                 IsEnabled="{Binding SelectedItem,
                      Converter={StaticResource NullBoolConverter}, ElementName=DirList}"
                 TabIndex="4"/>
-        <!--Command DeleteSourceCommand can find in SourceClass.cs-->
+        <!--Command DeleteSourceCommand can find in _Source.cs-->
     </Grid>
 </Window>

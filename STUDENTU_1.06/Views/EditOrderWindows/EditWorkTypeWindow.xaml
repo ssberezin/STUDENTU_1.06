@@ -22,9 +22,9 @@
             <helpes:NullToBooleanConverter x:Key="NullBoolConverter" />
 
             <!--for sorting in listbox without behind code-->
-            <CollectionViewSource x:Key="SortedItems" Source="{Binding WorkTypesRecords}"
+            <CollectionViewSource x:Key="SortedItems" Source="{Binding _WorkType.WorkTypesRecords}"
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
-                <!-- WorkTypesRecords can find in WorkTypeClass.cs-->
+                <!-- WorkTypesRecords can find in _WorkType.cs-->
                 <CollectionViewSource.SortDescriptions>
                     <scm1:SortDescription PropertyName="TypeOfWork"/>
                 </CollectionViewSource.SortDescriptions>
@@ -48,17 +48,17 @@
             <RowDefinition Height="0.5*"/>
         </Grid.RowDefinitions>
         <TextBox x:Name="DirName" Grid.ColumnSpan="3" Margin="5" 
-                 Text="{Binding WorkType.TypeOfWork , Mode=TwoWay,
+                 Text="{Binding _WorkType.WorkType.TypeOfWork , Mode=TwoWay,
             UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap"
                  SpellCheck.IsEnabled="True" Language="ru-ru" TextAlignment="Center"
                  TabIndex="0"/>
 
-        <!--WorkType can fint in WorkTypeClass.cs-->
+        <!--WorkType can fint in _WorkType.cs-->
 
         <ListBox x:Name="DirList"
                      Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="2" Margin="5" 
                     ItemsSource="{Binding Source={StaticResource SortedItems}, 
-                    UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding WorkType}"                   
+                    UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding _WorkType.WorkType}"                   
                      SelectionMode="Single" 
                      IsSynchronizedWithCurrentItem="False"
                      TabIndex="2"
@@ -77,18 +77,18 @@
 
         </ListBox>
         <Button Grid.Column="0" Grid.Row="3"  Content="Добавить" Background="Green"
-                    Command="{Binding AddWorkTypeCommand}" CommandParameter="{Binding DirName.Text}"
+                    Command="{Binding _WorkType.AddWorkTypeCommand}" CommandParameter="{Binding DirName.Text}"
                  IsEnabled="{Binding ElementName=DirName,  Path=Text.Length}"
                 TabIndex="1">
             <!--Command AddWorkTypeCommand can find in WorkTypeClass.cs-->
         </Button>
         <Button  x:Name="EditButton" Grid.Column="1" Grid.Row="3" Content="Редактировать" Background="BlueViolet"
-                Command="{Binding EditWorkTypeCommand}" IsEnabled="{Binding SelectedItem,
+                Command="{Binding _WorkType.EditWorkTypeCommand}" IsEnabled="{Binding SelectedItem,
                      Converter={StaticResource NullBoolConverter}, ElementName=DirList}"
                  CommandParameter="{Binding ElementName=DirName, Path=Text}"
                  TabIndex="3"/>
         <!--Command EditWorkTypeCommand can find in WorkTypeClass.cs-->
-        <Button Grid.Column="2" Grid.Row="3" Content="Удалить" Command="{Binding DeleteWorkTypeCommand}"
+        <Button Grid.Column="2" Grid.Row="3" Content="Удалить" Command="{Binding _WorkType.DeleteWorkTypeCommand}"
                  CommandParameter="{Binding ElementName=DirName, Path=Text}"
                 IsEnabled="{Binding SelectedItem,
                      Converter={StaticResource NullBoolConverter}, ElementName=DirList}"

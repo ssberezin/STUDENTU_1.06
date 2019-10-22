@@ -26,25 +26,25 @@ namespace STUDENTU_1._06.Helpes
                 // назначаем цвет шрифта строк
             switch (value.ToString())
             {
-                case "-принят-":
+                case "принят":
                     return Brushes.Red;
-                case "-готов-":
+                case "---":
+                    return Brushes.Red;
+                case "готов":
                     return Brushes.Blue;
-                case "-отдан заказчику-":
+                case "отдан заказчику":
                     return Brushes.Green;
-                case "-выполняется-":
+                case "выполняется":
                     return Brushes.Brown;
-                case "-на оценке-":
+                case "на оценке":
                     return Brushes.Gray;
-                case "-принят на доработку-":
+                case "принят на доработку":
                       return Brushes.OrangeRed;
-                case "-дорабатывается-":
+                case "дорабатывается":
                       return Brushes.SaddleBrown;
-                case "-ждем новостей от заказчика-":
+                case "ждем новостей от заказчика":
                         return Brushes.DarkGray;
-
-                    //case "отказ":
-                    //        return Brushes.Orange;
+                  
                     default:
                     return DependencyProperty.UnsetValue;
             }
