@@ -56,8 +56,6 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
-       
-
         private Author author;
         public Author Author
         {
@@ -205,8 +203,7 @@ namespace STUDENTU_1._06.ViewModel
             AuthorsRecords = new ObservableCollection<AuthorsRecord>();           
             SelectedAuthorsRecords = new ObservableCollection<AuthorsRecord> ();            
             ContactsRecords = new ObservableCollection<Contacts>();
-            BlackListRecords = new ObservableCollection<BlackListHelpModel>();           
-          
+            BlackListRecords = new ObservableCollection<BlackListHelpModel>();
             editWindow.Loaded += EditWindow_Loaded;
             this.showWindow = showWindow;
             this.dialogService = dialogService;
@@ -221,8 +218,7 @@ namespace STUDENTU_1._06.ViewModel
             AuthorsRecord = new AuthorsRecord();
             Contacts = new Contacts();
             Date = new Dates();           
-            _Dir = new _Direction();
-            
+            _Dir = new _Direction();            
             Evaluation = new Evaluation();
             EvaluationRecord = new EvaluationRecord();
             ExecuteAuthor = new AuthorsRecord();

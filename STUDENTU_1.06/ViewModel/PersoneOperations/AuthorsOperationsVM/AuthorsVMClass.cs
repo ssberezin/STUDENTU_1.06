@@ -91,6 +91,21 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
             }
         }
 
+        //for operations with records in AuthorStatus table
+        private _AuthorStatus _authorStatus;
+        public _AuthorStatus _AuthorStatus
+        {
+            get { return _authorStatus; }
+            set
+            {
+                if (_authorStatus != value)
+                {
+                    _authorStatus = value;
+                    OnPropertyChanged(nameof(_AuthorStatus));
+                }
+            }
+        }
+
         IDialogService dialogService;
         IShowWindowService showWindow;
 
@@ -110,6 +125,8 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
             DefaultPhoto = "default_avatar.png";
             AuthorPhoto = "a_ek.png";
 
+
+            _AuthorStatus = new _AuthorStatus();
             Date = new Dates();
             Persone = new Persone();
 

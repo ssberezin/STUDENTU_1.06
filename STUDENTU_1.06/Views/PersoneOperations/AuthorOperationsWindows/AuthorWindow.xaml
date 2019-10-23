@@ -34,11 +34,11 @@
         <helpes:HeightToFontSizeConverter x:Key="heightToFontSizeConverter"/>
         <helpes:BoolInverterConverter x:Key="boolInverterConverter"/>
         <helpes:ImagePathConverter x:Key="imagePathConverter"/>
-        <CollectionViewSource x:Key="SortedStatuses" Source="{Binding StatusRecords}"
+        <CollectionViewSource x:Key="SortedStatuses" Source="{Binding _AuthorStatus.AuthorStatusRecords}"
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
-            <!--StatusRecords can find in StatusClass.cs-->
+            <!--StatusRecords can find in _AuthorStatus.cs-->
             <CollectionViewSource.SortDescriptions>
-                <scm1:SortDescription PropertyName="StatusName"/>
+                <scm1:SortDescription PropertyName="AuthorStatusName"/>
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
 
@@ -219,12 +219,12 @@
                       IsEditable="False"
                      ItemsSource="{Binding Source={StaticResource SortedStatuses}, 
                       UpdateSourceTrigger=PropertyChanged}" 
-                     SelectedItem="{Binding Status}"
-                     DisplayMemberPath="SatusName" Width="219" >
-                <!--Status can fint in StatusClass.cs-->
+                     SelectedItem="{Binding _Author.AuthorStatus}"
+                     DisplayMemberPath="AuthorSatusName" Width="219" >
+                <!--Status can fint in _AuthorStatus.cs-->
             </ComboBox>
             <Button x:Name="AddDStatus" Width="40" Background="Gray" Content="..." TabIndex="4"
-                    Command="{Binding NewEditStatusCommand}" CommandParameter="{Binding DataContext, RelativeSource=
+                    Command="{Binding _AuthorStatus.NewEditAuthorStatusCommand}" CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}"/>
             <!--Command NewEditStatusCommand can find in StatusClass.cs-->
 

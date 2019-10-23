@@ -130,6 +130,7 @@
     <Compile Include="Model\HelpModelClasses\DialogWindows\DefaultDialogService.cs" />
     <Compile Include="Model\HelpModelClasses\DialogWindows\IDialogService.cs" />
     <Compile Include="ViewModel\PersoneOperations\AuthorsOperationsVM\AuthorsVMClass.cs" />
+    <Compile Include="ViewModel\_AuthorStatus.cs" />
     <Compile Include="ViewModel\_Source.cs" />
     <Compile Include="ViewModel\_Status.cs" />
     <Compile Include="ViewModel\_Subject.cs" />
@@ -137,6 +138,9 @@
     <Compile Include="ViewModel\_WorkType.cs" />
     <Compile Include="Views\PersoneOperations\AuthorOperationsWindows\AuthorWindow.xaml.cs">
       <DependentUpon>AuthorWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PersoneOperations\AuthorOperationsWindows\EditAuthorStatusWindow.xaml.cs">
+      <DependentUpon>EditAuthorStatusWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\EditOrderWindows\AddContactsWindow.xaml">
       <SubType>Designer</SubType>
@@ -276,6 +280,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\PersoneOperations\AuthorOperationsWindows\AuthorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PersoneOperations\AuthorOperationsWindows\EditAuthorStatusWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
