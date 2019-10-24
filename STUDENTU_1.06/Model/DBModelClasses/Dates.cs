@@ -15,8 +15,8 @@ namespace STUDENTU_1._06.Model
 
             // this.Evaluations = new List<Evaluation>();
             this.OrderLine = new List<OrderLine>();
-            this.StartDateWork = new DateTime(1900, 1, 1);
-            this.EndDateWork = new DateTime(1900, 1, 1);
+            this.StartDateWork = DateTime.Now;
+            this.EndDateWork = new DateTime(2100, 1, 1);
             this.DayBirth = new DateTime(1900, 1, 1);
             this.DeadLine = DateTime.Now.AddDays(1);
             DeadLine=DeadLine.AddHours(-DateTime.Now.Hour).AddMinutes(-DateTime.Now.Minute).AddHours(8);

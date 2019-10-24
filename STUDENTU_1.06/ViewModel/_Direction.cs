@@ -132,7 +132,7 @@ namespace STUDENTU_1._06.ViewModel
                     var res1 = db.Directions.Any(o => o.DirectionName == Dir.DirectionName);
                     if (!res1)
                     {
-                        if (!string.IsNullOrEmpty(Dir.DirectionName))
+                        if (!string.IsNullOrEmpty(Dir.DirectionName)|| Dir.DirectionName!="---")
                         {
                             Dir.DirectionName = Dir.DirectionName.ToLower();
                             db.Directions.Add(Dir);
@@ -181,7 +181,7 @@ namespace STUDENTU_1._06.ViewModel
                 {
                     var res = db.Orderlines;
                    
-                            if (Dir.DirectionId != 1)
+                            if ( Dir.DirectionName != "---" )
                             {
                                 if (dialogService.YesNoDialog("Точно нужно удалить эту запись?") == true)
                                 {

@@ -34,29 +34,25 @@
         <helpes:HeightToFontSizeConverter x:Key="heightToFontSizeConverter"/>
         <helpes:BoolInverterConverter x:Key="boolInverterConverter"/>
         <helpes:ImagePathConverter x:Key="imagePathConverter"/>
+       
+        
+        <!--for sorting in listbox without behind code-->
         <CollectionViewSource x:Key="SortedStatuses" Source="{Binding _AuthorStatus.AuthorStatusRecords}"
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
-            <!--StatusRecords can find in _AuthorStatus.cs-->
             <CollectionViewSource.SortDescriptions>
                 <scm1:SortDescription PropertyName="AuthorStatusName"/>
             </CollectionViewSource.SortDescriptions>
-        </CollectionViewSource>
-
-        <!--for sorting in listbox without behind code-->
-        <CollectionViewSource x:Key="SortedSources" Source="{Binding  SourcesRecords}"
-                xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
+        </CollectionViewSource>        
             <!--SourcesRecords can find in SourceClass.cs-->
-            <CollectionViewSource.SortDescriptions>
-                <scm1:SortDescription PropertyName="DirectionName"/>
-            </CollectionViewSource.SortDescriptions>
-        </CollectionViewSource>
-        <CollectionViewSource x:Key="SortedItems" Source="{Binding  DirRecords}"
+
+        <CollectionViewSource x:Key="SortedItems" Source="{Binding  _Dir.DirRecords}"
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
-            <!--DirRecords can find in Direction.cs-->
+            <!--DirRecords can find in _Direction.cs-->
             <CollectionViewSource.SortDescriptions>
                 <scm1:SortDescription PropertyName="DirectionName"/>
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
+        
         <CollectionViewSource x:Key="SortedWorkTypes" Source="{Binding  WorkTypesRecords}"
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
             <!--WorkTypesRecords can find in WorkTypeClass.cs-->
@@ -219,8 +215,10 @@
                       IsEditable="False"
                      ItemsSource="{Binding Source={StaticResource SortedStatuses}, 
                       UpdateSourceTrigger=PropertyChanged}" 
-                     SelectedItem="{Binding _Author.AuthorStatus}"
-                     DisplayMemberPath="AuthorSatusName" Width="219" >
+                     SelectedItem="{Binding _AuthorStatus.AuthorStatus}"
+                     DisplayMemberPath="AuthorStatusName" Width="219" 
+                      HorizontalContentAlignment="Center"
+                     Background="White" >
                 <!--Status can fint in _AuthorStatus.cs-->
             </ComboBox>
             <Button x:Name="AddDStatus" Width="40" Background="Gray" Content="..." TabIndex="4"
@@ -238,27 +236,27 @@
                       IsEditable="False"
                      ItemsSource="{Binding Source={StaticResource SortedItems}, 
                       UpdateSourceTrigger=PropertyChanged}" 
-                     SelectedItem="{Binding Dir}"
+                     SelectedItem="{Binding _Dir.Dir}"
                      DisplayMemberPath="DirectionName"
-                     ToolTip="{Binding Dir.DirectionName}" 
+                     ToolTip="{Binding _Dir.Dir.DirectionName}" 
                      HorizontalContentAlignment="Center"
                      Background="White" >
                 <!--SortedItems can find above in Window.Resources-->
-                <!--Dir can find in DirectionClass.cs-->
+                <!--Dir can find in _Direction.cs-->
             </ComboBox>
 
 
             <Button x:Name="AddDirection" Width="40" Background="Gray" Content="..." TabIndex="10"
-                    Command="{Binding NewEditDirection}" CommandParameter="{Binding DataContext, RelativeSource=
+                    Command="{Binding _Dir.NewEditDirection}" CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}"/>
-            <!--Command NewEditDirection can find in DirectionClass.cs-->
+            <!--Command NewEditDirection can find in _Direction.cs-->
         </WrapPanel>
         <WrapPanel Grid.Row="8" Grid.ColumnSpan="2" Margin="3" Grid.RowSpan="2">
             <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
                      VerticalAlignment="Stretch">
                 <TextBlock Text="Источник " FontWeight="Bold" Foreground="Brown"/>
             </Viewbox>
-            <TextBox    Text="привязать к полю источника" FontSize="10" TextWrapping="Wrap"
+            <TextBox    Text="{Binding Author.Source, Mode=TwoWay}" FontSize="10" TextWrapping="Wrap"
                         MinWidth="80" Width="267" Height="80" TextAlignment="Center" VerticalContentAlignment="Center"
                         />
             <!--Persone can find in ForEditOrder.cs-->
@@ -270,7 +268,7 @@
             </Viewbox>
             <DatePicker x:Name="DateOfReception" IsDropDownOpen="False" SelectedDateFormat="Short" 
                         MaxWidth="150" TabIndex="13" HorizontalAlignment="Center"
-                        SelectedDate="{Binding Date.DateOfReception, Mode=TwoWay}" Margin="69,0,62.4,2"/>
+                        SelectedDate="{Binding Date.StartDateWork, Mode=TwoWay}" Margin="69,0,62.4,2"/>
             <!--Date can find in ForEditOrder.cs-->
         </StackPanel>
         <StackPanel Grid.Row="10" Grid.Column="1"  Margin="3" VerticalAlignment="Center">
@@ -280,7 +278,7 @@
             </Viewbox>
             <DatePicker  IsDropDownOpen="False" SelectedDateFormat="Short" 
                         MaxWidth="150" TabIndex="13" HorizontalAlignment="Center"
-                        SelectedDate="{Binding Date.DateOfReception,Mode=TwoWay}"
+                        SelectedDate="{Binding Date.EndDateWork,Mode=TwoWay}"
                          Margin="69,0,62.4,2"/>
             <!--Date can find in ForEditOrder.cs-->
         </StackPanel>
@@ -295,8 +293,8 @@
         <TextBox Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="4" Margin="5" 
                      FontSize="14" TabIndex="17" TextWrapping="Wrap"  AcceptsReturn="True" MinHeight="103"
                     VerticalScrollBarVisibility="Visible"
-                    Text="{Binding Order.DescriptionForClient}" Height="169"/>
-        <!--Order can find in ForEditOrder.cs-->
+                    Text="{Binding PersoneDescription.Description, Mode=TwoWay}" Height="169"/>
+        <!--PersoneDescription can find in AuthorsVMClass.cs-->
         <StackPanel Grid.Column="2" Grid.Row="5" Grid.ColumnSpan="2" Grid.RowSpan="4"  Margin="3">
             <Viewbox MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Center" 
                      VerticalAlignment="Bottom">
@@ -306,8 +304,8 @@
             <TextBox  Margin="5,5,4.8,5" FontSize="14" TabIndex="18" MinHeight="85"
                       TextWrapping="Wrap"  AcceptsReturn="True"
                       VerticalScrollBarVisibility="Auto"
-                      Text="{Binding Order.WorkDescription}" Height="98"/>
-            <!--Order can find in ForEditOrder.cs-->
+                      Text="{Binding PersoneDescription.FeedBack, Mode=TwoWay}" Height="98"/>
+            <!--PersoneDescription can find in AuthorsVMClass.cs-->
         </StackPanel>
         <StackPanel Grid.Column="2" Grid.Row="8" Grid.ColumnSpan="2" Grid.RowSpan="3"  Margin="3">
             <Viewbox MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Center" 
@@ -318,8 +316,8 @@
             <TextBox  Margin="5,5,4.8,5" FontSize="14" TabIndex="18" MinHeight="85"
                       TextWrapping="Wrap"  AcceptsReturn="True"
                       VerticalScrollBarVisibility="Auto"
-                      Text="{Binding Order.WorkDescription}" Height="98"/>
-            <!--Order can find in ForEditOrder.cs-->
+                      Text="{Binding PersoneDescription.ReasonFortermCoop, Mode=TwoWay}" Height="98"/>
+            <!--PersoneDescription can find in AuthorsVMClass.cs-->
         </StackPanel>
 
         <StackPanel Grid.Column="4" HorizontalAlignment="Left" Height="215" Margin="10,11,0,0"
@@ -334,9 +332,9 @@
         </StackPanel>
         <StackPanel Grid.Column="4" Grid.Row="5"  Orientation="Horizontal"  >
             <TextBlock Text="Рейтинг: " Margin="3,0" VerticalAlignment="Center" Foreground="Brown" FontWeight="Bold"  />
-            <TextBlock Text="Привязать к рейтингу"  VerticalAlignment="Center" Foreground="Red" FontWeight="Bold"  />
+            <TextBlock Text="{Binding Author.Rating}"  VerticalAlignment="Center" Foreground="Red" FontWeight="Bold"  />
         </StackPanel>
-        <Button Grid.Column="4" Grid.Row="6" Content="Задать рейтинг" Background="Brown" Height="30" TabIndex="7" Margin="5"
+        <Button Grid.Column="4" Grid.Row="6" Content="Правка рейтинга" Background="Brown" Height="30" TabIndex="7" Margin="5"
                      Command="{Binding NewEditContactsCommand}" CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}" Width="177"/>
 

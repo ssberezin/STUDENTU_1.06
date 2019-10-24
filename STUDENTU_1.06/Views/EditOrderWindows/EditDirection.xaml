@@ -75,18 +75,18 @@
       
         </ListBox>
         <Button Grid.Column="0" Grid.Row="3"  Content="Добавить" Background="Green"
-                    Command="{Binding AddDirectionCommand}" CommandParameter="{Binding DirName.Text}"
+                    Command="{Binding _Dir.AddDirectionCommand}" CommandParameter="{Binding DirName.Text}"
                  IsEnabled="{Binding ElementName=DirName,  Path=Text.Length}"
                 TabIndex="1">
             <!--Command AddDirectionCommand can find in DirectionClass.cs-->
         </Button>
         <Button  x:Name="EditButton" Grid.Column="1" Grid.Row="3" Content="Редактировать" Background="BlueViolet"
-                Command="{Binding EditDirectionCommand}" IsEnabled="{Binding SelectedItem,
+                Command="{Binding _Dir.EditDirectionCommand}" IsEnabled="{Binding SelectedItem,
                      Converter={StaticResource NullBoolConverter}, ElementName=DirList}"
                  CommandParameter="{Binding ElementName=DirName, Path=Text}"                 
                  TabIndex="4"/>
         <!--Command EditDirectionCommand can find in DirectionClass.cs-->
-        <Button Grid.Column="2" Grid.Row="3" Content="Удалить" Command="{Binding DeleteDirectionCommand}"
+        <Button Grid.Column="2" Grid.Row="3" Content="Удалить" Command="{Binding _Dir.DeleteDirectionCommand}"
                  CommandParameter="{Binding ElementName=DirName, Path=Text}"
                 IsEnabled="{Binding SelectedItem, 
                      Converter={StaticResource NullBoolConverter}, ElementName=DirList}"

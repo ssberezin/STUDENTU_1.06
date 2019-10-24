@@ -76,6 +76,37 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
             }
         }
 
+
+        //for operations with records in AuthorStatus table
+        private _AuthorStatus _authorStatus;
+        public _AuthorStatus _AuthorStatus
+        {
+            get { return _authorStatus; }
+            set
+            {
+                if (_authorStatus != value)
+                {
+                    _authorStatus = value;
+                    OnPropertyChanged(nameof(_AuthorStatus));
+                }
+            }
+        }
+
+        //to be able to make further changes to the Authors database table
+        private Author author;
+        public Author Author
+        {
+            get { return author; }
+            set
+            {
+                if (author != value)
+                {
+                    author = value;
+                    OnPropertyChanged(nameof(Author));
+                }
+            }
+        }
+
         //to be able to make further changes to the Dates database table
         private Dates date;
         public Dates Date
@@ -91,17 +122,33 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
             }
         }
 
-        //for operations with records in AuthorStatus table
-        private _AuthorStatus _authorStatus;
-        public _AuthorStatus _AuthorStatus
+        //to be able to make further changes to the Directions database table
+        private _Direction _dir;
+        public _Direction _Dir
         {
-            get { return _authorStatus; }
+            get { return _dir; }
             set
             {
-                if (_authorStatus != value)
+                if (_dir != value)
                 {
-                    _authorStatus = value;
-                    OnPropertyChanged(nameof(_AuthorStatus));
+                    _dir = value;
+                    OnPropertyChanged(nameof(_Dir));
+                }
+            }
+        }
+
+
+        //to be able to make further changes to the PersoneDescription database table
+        private PersoneDescription personeDescription;
+        public PersoneDescription PersoneDescription
+        {
+            get { return personeDescription; }
+            set
+            {
+                if (personeDescription != value)
+                {
+                    personeDescription = value;
+                    OnPropertyChanged(nameof(PersoneDescription));
                 }
             }
         }
@@ -125,10 +172,12 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
             DefaultPhoto = "default_avatar.png";
             AuthorPhoto = "a_ek.png";
 
-
-            _AuthorStatus = new _AuthorStatus();
+            Author = new Author();
+            _AuthorStatus = new _AuthorStatus();            
             Date = new Dates();
+            _Dir = new _Direction();
             Persone = new Persone();
+            PersoneDescription = new PersoneDescription();
 
         }
 

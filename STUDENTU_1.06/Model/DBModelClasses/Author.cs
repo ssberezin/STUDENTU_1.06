@@ -38,7 +38,7 @@ namespace STUDENTU_1._06.Model
         public int WorkQuality { get; set; }
         public int Responsibility { get; set; }
         public int CompletionCompliance { get; set; }//сговорчивость по доработкам
-        public int Rating { get; set; }
+        public double Rating { get; set; }
 
         public int AuthorId { get; set; }        
 
