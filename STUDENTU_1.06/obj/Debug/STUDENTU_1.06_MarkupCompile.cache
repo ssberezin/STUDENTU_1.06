@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\
+E:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\
 STUDENTU_1._06
 none
 false
 DEBUG;TRACE
-E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\App.xaml
+E:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\App.xaml
 171585027707
 
-68-1211381161
-892058223528
+69540113326
+891652980710
 Views\EditOrderWindows\AddContactsWindow.xaml;Views\EditOrderWindows\Evaluation\AddEvaluateWindow.xaml;Views\EditOrderWindows\BlackListWindow.xaml;Views\Dictionaries\Buttons.xaml;Views\EditOrderWindows\Evaluation\EditAvaluationWindow.xaml;Views\EditOrderWindows\EditSourceWindow.xaml;Views\EditOrderWindows\EditStatusWindow.xaml;Views\EditOrderWindows\EditSubject.xaml;Views\EditOrderWindows\EditDirection.xaml;Views\EditOrderWindows\EditOrder.xaml;Views\EditOrderWindows\EditWorkTypeWindow.xaml;Views\EditOrderWindows\Evaluation\EditEvaluateWindow.xaml.xaml;Views\EditOrderWindows\Evaluation\SetFinalAvaluationWindow.xaml;Views\EditOrderWindows\RuleOrderLineWindow.xaml;Views\MainWindow.xaml;Views\PersoneOperations\AuthorOperationsWindows\AuthorWindow.xaml;Views\PersoneOperations\AuthorOperationsWindows\EditAuthorStatusWindow.xaml;
 
 False

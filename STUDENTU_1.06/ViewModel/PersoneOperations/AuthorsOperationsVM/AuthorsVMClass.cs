@@ -1,12 +1,16 @@
-﻿using STUDENTU_1._06.Model;
+﻿using STUDENTU_1._06.Helpes;
+using STUDENTU_1._06.Model;
 using STUDENTU_1._06.Model.HelpModelClasses.DialogWindows;
+
 using STUDENTU_1._06.Model.HelpModelClasses.ShowWindows;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -15,6 +19,23 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
 {
    public partial class AuthorsVMClass : Helpes.ObservableObject
     {
+
+        //экспериментируем с хранение изображения в виде массива байтов 
+        private byte[] photo;
+        public byte[] Photo
+        {
+            get { return photo; }
+            set
+            {
+                if (value != photo)
+                {
+                    photo = value;
+                    OnPropertyChanged(nameof(Photo));
+                }
+            }
+        }
+
+
         //for display default image
         private string defaultPhoto;
         public string DefaultPhoto
@@ -155,7 +176,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
 
         IDialogService dialogService;
         IShowWindowService showWindow;
-
+        
         public AuthorsVMClass(Window editWindow, DefaultShowWindowService showWindow,
            IDialogService dialogService)
         {
@@ -165,6 +186,8 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
             editWindow.Loaded += EditWindow_Loaded;
 
         }
+
+        
 
 
         private void EditWindow_Loaded(object sender, RoutedEventArgs e)
@@ -181,7 +204,35 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
 
         }
 
-       
+
+        private RelayCommand openFileDialogCommand;
+        public RelayCommand OpenFileDialogCommand => openFileDialogCommand ?? (openFileDialogCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        PathToFile();
+                    }
+                    ));
+        private void PathToFile()
+        {
+           
+            
+            string path;
+            
+            path = dialogService.OpenFileDialog("C:\\");
+            //FileStream file = new FileStream(path, FileMode.Open, FileAccess.Read);
+
+           // file.Read(Photo, 0, System.Convert.ToInt32(file.Length));
+            //file.Close();
+
+
+            Photo = File.ReadAllBytes(path);
+            //File.WriteAllBytes(@"sevedFile.someExtention", bData);
+            int i = 0;
+            //byte[] bData = File.ReadAllBytes(@"someFile.someExtention");
+            //File.WriteAllBytes(@"sevedFile.someExtention", bData);
+
+        }
+
 
     }
 }

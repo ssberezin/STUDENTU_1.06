@@ -319,20 +319,27 @@
                       Text="{Binding PersoneDescription.ReasonFortermCoop, Mode=TwoWay}" Height="98"/>
             <!--PersoneDescription can find in AuthorsVMClass.cs-->
         </StackPanel>
+        
 
         <StackPanel Grid.Column="4" HorizontalAlignment="Left" Height="215" Margin="10,11,0,0"
                     Grid.RowSpan="5" VerticalAlignment="Top" Width="190"
-                    Orientation="Horizontal">
+                    Orientation="Horizontal" >
+            <StackPanel.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Добавить/изменить фото?" Command="{Binding OpenFileDialogCommand}"></MenuItem>                    
+                </ContextMenu>
+            </StackPanel.ContextMenu>
             <StackPanel.Background>
                 <ImageBrush ImageSource="{Binding DefaultPhoto, UpdateSourceTrigger=PropertyChanged}"/>
-                <!--<ImageBrush ImageSource="{Binding PhotoPath, Converter={StaticResource imagePathConverter}}"/>-->                
+                
             </StackPanel.Background>
-            <Image Source="{Binding Photo, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" />
-            <!--<Image Source="{Binding PhotoPath, Converter={StaticResource imagePathConverter}}" VerticalAlignment="Center" />-->
+            <!--<Image Source="{Binding Photo, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" />-->
+            <Image Source="{Binding Path=Photo, Converter={StaticResource imagePathConverter}, Mode=OneWay}" VerticalAlignment="Center" />
         </StackPanel>
         <StackPanel Grid.Column="4" Grid.Row="5"  Orientation="Horizontal"  >
             <TextBlock Text="Рейтинг: " Margin="3,0" VerticalAlignment="Center" Foreground="Brown" FontWeight="Bold"  />
             <TextBlock Text="{Binding Author.Rating}"  VerticalAlignment="Center" Foreground="Red" FontWeight="Bold"  />
+            
         </StackPanel>
         <Button Grid.Column="4" Grid.Row="6" Content="Правка рейтинга" Background="Brown" Height="30" TabIndex="7" Margin="5"
                      Command="{Binding NewEditContactsCommand}" CommandParameter="{Binding DataContext, RelativeSource=

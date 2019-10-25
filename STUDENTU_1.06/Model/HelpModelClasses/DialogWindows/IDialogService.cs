@@ -10,5 +10,6 @@ namespace STUDENTU_1._06.Model.HelpModelClasses.DialogWindows
     {
         bool YesNoDialog(string message);
         void ShowMessage(string message);
+        string OpenFileDialog(string path);
     }
 }

@@ -976,3 +976,6 @@ E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\PersoneOperati
 e:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\STUDENTU_1.06+.csprojAssemblyReference.cache
 e:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\PersoneOperations\AuthorOperationsWindows\EditAuthorStatusWindow.g.cs
 e:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\PersoneOperations\AuthorOperationsWindows\EditAuthorStatusWindow.baml
+E:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\PersoneOperations\AuthorOperationsWindows\EditAuthorStatusWindow.g.cs
+E:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\PersoneOperations\AuthorOperationsWindows\AuthorWindow.baml
+E:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\PersoneOperations\AuthorOperationsWindows\EditAuthorStatusWindow.baml
