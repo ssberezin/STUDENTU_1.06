@@ -42,7 +42,7 @@ namespace STUDENTU_1._06.Model
         [MaxLength(500)]
         public string PhotoFileName { get; set; }
 
-        [Column("PhotoFileName",TypeName = "image")]
+        [Column("Photo",TypeName = "image")]
         //for storing image of persone
         public byte[] Photo { get; set; }
 

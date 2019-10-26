@@ -338,11 +338,11 @@
         </StackPanel>
         <StackPanel Grid.Column="4" Grid.Row="5"  Orientation="Horizontal"  >
             <TextBlock Text="Рейтинг: " Margin="3,0" VerticalAlignment="Center" Foreground="Brown" FontWeight="Bold"  />
-            <TextBlock Text="{Binding Author.Rating}"  VerticalAlignment="Center" Foreground="Red" FontWeight="Bold"  />
+            <TextBlock Text="{Binding Author.Rating,UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Center" Foreground="Red" FontWeight="Bold"  />
             
         </StackPanel>
-        <Button Grid.Column="4" Grid.Row="6" Content="Правка рейтинга" Background="Brown" Height="30" TabIndex="7" Margin="5"
-                     Command="{Binding NewEditContactsCommand}" CommandParameter="{Binding DataContext, RelativeSource=
+        <Button Grid.Column="4" Grid.Row="6" Content="Правка рейтинга" Background="Orange" Height="30" TabIndex="7" Margin="5"
+                     Command="{Binding NewEditRating}" CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}" Width="177"/>
 
 

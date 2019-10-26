@@ -19,7 +19,7 @@ namespace STUDENTU_1._06.Model
             this.WorkQuality = 0;
             this.Responsibility = 0;
             this.CompletionCompliance = 0;
-            this.Rating = 0;
+            this.Rating =0;
 
             this.Subject = new ObservableCollection<Subject>();
             this.Direction = new ObservableCollection<Direction>();
@@ -50,6 +50,11 @@ namespace STUDENTU_1._06.Model
 
 
         public virtual AuthorStatus AuthorStatus { get; set; }
-        
+
+
+        public double RatingCreate()
+        {
+            return (Punctually + WorkQuality + Responsibility + CompletionCompliance) / 4.0;
+        }
     }
 }

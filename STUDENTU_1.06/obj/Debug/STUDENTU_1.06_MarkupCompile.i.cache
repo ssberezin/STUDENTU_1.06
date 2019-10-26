@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-E:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\
+E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\
 STUDENTU_1._06
 none
 false
 DEBUG;TRACE
-E:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\App.xaml
-171585027707
+E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\App.xaml
+18-1178107316
 
-731522433935
-891652980710
-Views\EditOrderWindows\AddContactsWindow.xaml;Views\EditOrderWindows\Evaluation\AddEvaluateWindow.xaml;Views\EditOrderWindows\BlackListWindow.xaml;Views\Dictionaries\Buttons.xaml;Views\EditOrderWindows\Evaluation\EditAvaluationWindow.xaml;Views\EditOrderWindows\EditSourceWindow.xaml;Views\EditOrderWindows\EditStatusWindow.xaml;Views\EditOrderWindows\EditSubject.xaml;Views\EditOrderWindows\EditDirection.xaml;Views\EditOrderWindows\EditOrder.xaml;Views\EditOrderWindows\EditWorkTypeWindow.xaml;Views\EditOrderWindows\Evaluation\EditEvaluateWindow.xaml.xaml;Views\EditOrderWindows\Evaluation\SetFinalAvaluationWindow.xaml;Views\EditOrderWindows\RuleOrderLineWindow.xaml;Views\MainWindow.xaml;Views\PersoneOperations\AuthorOperationsWindows\AuthorWindow.xaml;Views\PersoneOperations\AuthorOperationsWindows\EditAuthorStatusWindow.xaml;
+73-1115987368
+892058223528
+Views\EditOrderWindows\AddContactsWindow.xaml;Views\EditOrderWindows\Evaluation\AddEvaluateWindow.xaml;Views\EditOrderWindows\BlackListWindow.xaml;Views\Dictionaries\Buttons.xaml;Views\EditOrderWindows\Evaluation\EditAvaluationWindow.xaml;Views\EditOrderWindows\EditSourceWindow.xaml;Views\EditOrderWindows\EditStatusWindow.xaml;Views\EditOrderWindows\EditSubject.xaml;Views\EditOrderWindows\EditDirection.xaml;Views\EditOrderWindows\EditOrder.xaml;Views\EditOrderWindows\EditWorkTypeWindow.xaml;Views\EditOrderWindows\Evaluation\EditEvaluateWindow.xaml.xaml;Views\EditOrderWindows\Evaluation\SetFinalAvaluationWindow.xaml;Views\EditOrderWindows\RuleOrderLineWindow.xaml;Views\MainWindow.xaml;Views\PersoneOperations\AuthorOperationsWindows\AuthorRatingEditWindow.xaml;Views\PersoneOperations\AuthorOperationsWindows\AuthorWindow.xaml;Views\PersoneOperations\AuthorOperationsWindows\EditAuthorStatusWindow.xaml;
 
-True
+False
 

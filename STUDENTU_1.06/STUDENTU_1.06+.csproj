@@ -119,7 +119,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Helpes\BoolInverterConverter.cs" />
-    <Compile Include="Helpes\ByteArrayToBitmapImageConverter.cs" />
     <Compile Include="Helpes\ImagePathConverter.cs" />
     <Compile Include="Helpes\NullToBooleanConverter.cs" />
     <Compile Include="Helpes\StringToBrushConverter.cs" />
@@ -137,6 +136,9 @@
     <Compile Include="ViewModel\_Subject.cs" />
     <Compile Include="ViewModel\_Direction.cs" />
     <Compile Include="ViewModel\_WorkType.cs" />
+    <Compile Include="Views\PersoneOperations\AuthorOperationsWindows\AuthorRatingEditWindow.xaml.cs">
+      <DependentUpon>AuthorRatingEditWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PersoneOperations\AuthorOperationsWindows\AuthorWindow.xaml.cs">
       <DependentUpon>AuthorWindow.xaml</DependentUpon>
     </Compile>
@@ -280,6 +282,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\PersoneOperations\AuthorOperationsWindows\AuthorRatingEditWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\PersoneOperations\AuthorOperationsWindows\AuthorWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -316,14 +322,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Images\Clients\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Images\default_avatar.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\Authors\a_ek.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
