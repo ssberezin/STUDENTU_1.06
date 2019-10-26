@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace STUDENTU_1._06.Model
 {
-    public class Author
+    public class Author : Helpes.ObservableObject
     {
 
       
@@ -38,7 +38,20 @@ namespace STUDENTU_1._06.Model
         public int WorkQuality { get; set; }
         public int Responsibility { get; set; }
         public int CompletionCompliance { get; set; }//сговорчивость по доработкам
-        public double Rating { get; set; }
+
+        private double rating;
+        public double Rating
+        {
+            get { return rating; }
+            set
+            {
+                if (rating != value)
+                {
+                    rating = value;
+                    OnPropertyChanged(nameof(Rating));
+                }
+            }
+        }
 
         public int AuthorId { get; set; }        
 
