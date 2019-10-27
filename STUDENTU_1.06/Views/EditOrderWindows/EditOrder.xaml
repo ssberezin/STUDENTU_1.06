@@ -200,7 +200,7 @@
             </Viewbox>
             <!--для валидации https://www.codeproject.com/Articles/97564/Attributes-based-Validation-in-a-WPF-MVVM-Applicat-->
             <RadioButton GroupName="A" Content="Мужской" VerticalAlignment="Center" TabIndex="4"
-                          IsChecked="{Binding Persone.Sex, Mode=TwoWay,Converter={StaticResource boolInverterConverter}}"  />
+                          IsChecked="{Binding Persone.Sex, Mode=TwoWay}" />
             <!--Persone can find in ForEditOrder.cs-->
 
             <RadioButton GroupName="A" Content="Женский" VerticalAlignment="Center" TabIndex="5" 

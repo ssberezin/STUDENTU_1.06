@@ -42,11 +42,11 @@ namespace STUDENTU_1._06.ViewModel
                     }
                     ));
 
-       
 
-       
 
-        //=====================Command for call Editing wondow ======================================
+
+
+        //=====================Command for call AddContactsWindow.xaml ======================================
 
         private RelayCommand newEditContactsCommand;
         public RelayCommand NewEditContactsCommand => newEditContactsCommand ?? 
