@@ -95,7 +95,7 @@
             <Setter Property="TextAlignment" Value="Left"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="SpellCheck.IsEnabled" Value="True"/>
-            <Setter Property="MaxLength" Value="34"/>
+            
             <Setter Property="Language" Value="ru-ru"/>
             <Setter Property="FontSize" Value="{Binding Path=ActualHeight, RelativeSource={RelativeSource Self}, Converter={StaticResource heightToFontSizeConverter}}"/>
             <Setter Property="VerticalAlignment" Value="Center"></Setter>
@@ -163,7 +163,8 @@
 
 
             <TextBox x:Name="TBxName"  MinWidth="220" TabIndex="0"
-                   Validation.ErrorTemplate="{StaticResource validationFailed}">
+                   Validation.ErrorTemplate="{StaticResource validationFailed}"
+                     MaxLength="34">
                 <TextBox.Text>
                     <Binding  Path="Persone.Name" NotifyOnValidationError="True">
                         <Binding.ValidationRules>
@@ -182,7 +183,8 @@
                      VerticalAlignment="Stretch">
                 <TextBlock Text="Фамилия: " />
             </Viewbox>
-            <TextBox x:Name="Surname"   Text="{Binding Persone.Surname, Mode=TwoWay}" TabIndex="1"  MinWidth="250"/>
+            <TextBox x:Name="Surname"   Text="{Binding Persone.Surname, Mode=TwoWay}"
+                     TabIndex="1"  MinWidth="250" MaxLength="34"/>
         </WrapPanel>
         <!--Persone can find in ForEditOrder.cs-->
         <WrapPanel Grid.Row="3" Grid.ColumnSpan="2" Margin="3">
@@ -190,7 +192,8 @@
                      VerticalAlignment="Stretch">
                 <TextBlock Text="Отчество: " />
             </Viewbox>
-            <TextBox x:Name="Patronimic"   Text="{Binding Persone.Patronimic, Mode=TwoWay}" TabIndex="2"  MinWidth="250"/>
+            <TextBox x:Name="Patronimic"   Text="{Binding Persone.Patronimic, Mode=TwoWay}"
+                     MaxLength="34" TabIndex="2"  MinWidth="250"/>
             <!--Persone can find in ForEditOrder.cs-->
         </WrapPanel>
         <WrapPanel Grid.Row="4" Grid.ColumnSpan="2" Margin="3">

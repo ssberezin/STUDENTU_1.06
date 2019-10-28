@@ -31,7 +31,7 @@ namespace STUDENTU_1._06.Model
 
         [Column("Sourse", TypeName = "ntext")]
         [MaxLength(2000)]
-        public string Sourse { get; set; }
+        public string Source { get; set; }
 
         //properties for forming a retention rate
         public int Punctually { get; set; }

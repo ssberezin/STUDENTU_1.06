@@ -326,7 +326,7 @@ namespace STUDENTU_1._06.ViewModel
                             Evaluation.Authors.Add(new Author()
                             {
                                 AuthorId = item.AuthorRecordId,
-                                Sourse = item.Sourse
+                                Source = item.Source
                             });
                         }
                         //добавили оценки авторам  Evaluation из AuthorsRecord.EvaluationRecords

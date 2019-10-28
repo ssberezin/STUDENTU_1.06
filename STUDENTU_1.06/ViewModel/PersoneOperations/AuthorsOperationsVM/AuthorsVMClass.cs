@@ -37,6 +37,20 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
             }
         }
 
+        //for edit DB table contacts
+        private Contacts contacts;
+        public Contacts Contacts
+        {
+            get { return contacts; }
+            set
+            {
+                if (contacts != value)
+                {
+                    contacts = value;
+                    OnPropertyChanged(nameof(contacts));
+                }
+            }
+        }
 
         //for display default image
         private string defaultPhoto;
@@ -164,7 +178,8 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
             DefaultPhoto = "default_avatar.png";          
 
             Author = new Author();
-            _AuthorStatus = new _AuthorStatus();            
+            _AuthorStatus = new _AuthorStatus();
+            Contacts = new Contacts();
             Date = new Dates();
             _Dir = new _Direction();
             Persone = new Persone();
@@ -242,9 +257,13 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
         public RelayCommand SaveContactCommand => saveContactCommand ?? (saveContactCommand = new RelayCommand(
                     (obj) =>
                     {
-
+                        //тут над придумать, шо толком сюад впилить, 
+                        //т.к. банальный вывод сообщения о том, гр все сохраненор - это не айс
+                        
+                        
                         //тут у нас просто вывод сообщения , т.к. все данные и так привязаны к нужным 
                         //полям в окне редактирования + сохранение данных о контактах происходит
+                        
                         //в SaveNewOrder
                         // here we just have a message output, because all data is already tied to the right
                         // fields in the edit window + saving contact data occurs

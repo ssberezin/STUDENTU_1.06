@@ -15,7 +15,7 @@ namespace STUDENTU_1._06.Model.HelpModelClasses
 
         public int AuthorRecordId { get; set; }        
         public Persone Persone { get; set; }
-        public string Sourse { get; set; }
+        public string Source { get; set; }
         public Contacts Contacts { get; set; }
         public ObservableCollection<EvaluationRecord> EvaluationRecords { get; set; }
 

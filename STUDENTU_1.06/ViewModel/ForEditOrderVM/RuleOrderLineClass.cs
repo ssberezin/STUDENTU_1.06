@@ -159,7 +159,7 @@ namespace STUDENTU_1._06.ViewModel
                                     //Patronimic = item.Persone.Patronimic,
                                     //Sex = item.Persone.Sex,
                                     //NickName = item.Persone.NickName,
-                                    Sourse = item.Sourse,
+                                    Source = item.Source,
                                     Contacts = item.Persone.Contacts
                                 };
                                 AuthorsRecords.Add(record);
@@ -190,7 +190,7 @@ namespace STUDENTU_1._06.ViewModel
                                            //Patronimic = item.Author.Persone.Patronimic,
                                            //Sex = item.Author.Persone.Sex,
                                            //NickName = item.Author.Persone.NickName,
-                                           Sourse = item.Author.Sourse,
+                                           Source = item.Author.Source,
                                            Contacts = item.Author.Persone.Contacts
                                        });
                             //AuthorsRecords record;
@@ -216,7 +216,7 @@ namespace STUDENTU_1._06.ViewModel
                                         //Patronimic = item.Author.Persone.Patronimic,
                                         //Sex = item.Author.Persone.Sex,
                                         //NickName = item.Author.Persone.NickName,
-                                        //Sourse = item.Author.Sourse,
+                                        //Source = item.Author.Source,
                                         Contacts = item.Author.Persone.Contacts
                                     };
                                     AuthorsRecords.Add(record);
@@ -266,7 +266,7 @@ namespace STUDENTU_1._06.ViewModel
                 Order.Money.Evaluation.Authors.Add(new Author()
                 {
                     AuthorId = AuthorsRecord.AuthorRecordId,
-                    Sourse = AuthorsRecord.Sourse
+                    Source = AuthorsRecord.Source
                 });
             }
             else
@@ -292,7 +292,7 @@ namespace STUDENTU_1._06.ViewModel
             Order.Money.Evaluation.Authors.Remove(new Author()
                                                     {
                                                         AuthorId = AuthorsRecord.AuthorRecordId,
-                                                        Sourse = author.Sourse
+                                                        Source = author.Source
                                                     });
         }
 
