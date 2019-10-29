@@ -29,6 +29,6 @@ namespace STUDENTU_1._06.Views.PersoneOperations.AuthorOperationsWindows
                 new DefaultDialogService());
         }
 
-    
+        
     }
 }

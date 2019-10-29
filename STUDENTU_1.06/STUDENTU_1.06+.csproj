@@ -136,6 +136,9 @@
     <Compile Include="ViewModel\_Subject.cs" />
     <Compile Include="ViewModel\_Direction.cs" />
     <Compile Include="ViewModel\_WorkType.cs" />
+    <Compile Include="Views\PersoneOperations\AuthorOperationsWindows\AuthorDirectionsWindow.xaml.cs">
+      <DependentUpon>AuthorDirectionsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PersoneOperations\AuthorOperationsWindows\AuthorRatingEditWindow.xaml.cs">
       <DependentUpon>AuthorRatingEditWindow.xaml</DependentUpon>
     </Compile>
@@ -282,6 +285,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\PersoneOperations\AuthorOperationsWindows\AuthorDirectionsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\PersoneOperations\AuthorOperationsWindows\AuthorRatingEditWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

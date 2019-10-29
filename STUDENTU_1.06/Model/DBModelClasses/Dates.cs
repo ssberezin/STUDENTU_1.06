@@ -22,9 +22,11 @@ namespace STUDENTU_1._06.Model
             DeadLine=DeadLine.AddHours(-DateTime.Now.Hour).AddMinutes(-DateTime.Now.Minute).AddHours(8);
             this.DateDone = new DateTime(1900, 1, 1);
             this.DateOfPaid = new DateTime(1900, 1, 1);
-            this.AuthorDeadLine = DeadLine;
+            this.AuthorDeadLine = DeadLine;           
             this.DateOfReception = DateTime.Now;
-            
+            this.DateOfAuthorDataReception= DateTime.Now; 
+
+
         }
 
          
@@ -33,26 +35,38 @@ namespace STUDENTU_1._06.Model
 
         [Column(TypeName = "datetime2")]
         public DateTime StartDateWork { get; set; }
-        [Column(TypeName = "datetime2")]
-        public DateTime ReceptionTime { get; set; }
+   
 
         [Column(TypeName = "datetime2")]
         public System.DateTime EndDateWork { get; set; }
+
         [Column(TypeName = "datetime2")]
         public System.DateTime DayBirth { get; set; }
+
         [Column(TypeName = "datetime2")]
         public System.DateTime DeadLine { get; set; }
+
         [Column(TypeName = "datetime2")]
         public System.DateTime DeadLineTime { get; set; }
 
         [Column(TypeName = "datetime2")]
         public System.DateTime DateDone { get; set; }
+
         [Column(TypeName = "datetime2")]
         public System.DateTime DateOfPaid { get; set; }
+
         [Column(TypeName = "datetime2")]
         public System.DateTime AuthorDeadLine { get; set; }
+
         [Column(TypeName = "datetime2")]
+        //date of order reception
         public System.DateTime DateOfReception { get; set; }
+
+        
+        [Column(TypeName = "datetime2")]
+        //date of author data record in DB
+        public System.DateTime DateOfAuthorDataReception { get; set; }
+
 
         public virtual Evaluation Evaluation { get; set; }
         public virtual Persone Persone { get; set; }

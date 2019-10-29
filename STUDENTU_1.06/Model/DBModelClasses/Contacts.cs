@@ -59,5 +59,15 @@ namespace STUDENTU_1._06.Model
         //  public virtual Persone Persone { get; set; }
         public virtual List<Persone> Persone { get; set; }
 
+        //check for validation of Contacts fields
+        public bool ContactsValidation()
+        {
+            bool flag = true;
+
+            if (Phone1 == "+380" && Phone2 == "---" && Phone3 == "---" && Email1 == "---" && Email2 == "---" && VK == "---" && FaceBook == "---")
+                flag = false;
+
+            return flag;
+        }
     }
 }

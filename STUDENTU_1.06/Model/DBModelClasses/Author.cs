@@ -22,7 +22,7 @@ namespace STUDENTU_1._06.Model
             this.Rating =0;
 
             this.Subject = new ObservableCollection<Subject>();
-            this.Direction = new ObservableCollection<Direction>();
+            this.Directions = new ObservableCollection<Direction>();
             this.Evaluation = new ObservableCollection<Evaluation>();
             this.OrderLine = new ObservableCollection<OrderLine>();
             
@@ -58,7 +58,7 @@ namespace STUDENTU_1._06.Model
         public virtual Persone Persone { get; set; }
         public virtual ObservableCollection<OrderLine> OrderLine { get; set; }
         public virtual ObservableCollection<Subject> Subject { get; set; }
-        public virtual ObservableCollection<Direction> Direction { get; set; }
+        public virtual ObservableCollection<Direction> Directions { get; set; }
         public virtual ObservableCollection<Evaluation> Evaluation { get; set; }
 
 
