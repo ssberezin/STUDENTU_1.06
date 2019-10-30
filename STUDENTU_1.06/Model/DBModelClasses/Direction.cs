@@ -11,7 +11,7 @@ namespace STUDENTU_1._06.Model
         public Direction()
         {          
             this.OrderLine = new ObservableCollection<OrderLine>();
-            this.Authors = new ObservableCollection<Author>();
+            this.Author = new ObservableCollection<Author>();
         }
                 
         public int DirectionId { get; set; }
@@ -20,7 +20,7 @@ namespace STUDENTU_1._06.Model
         [MaxLength(80)]
         public string DirectionName { get; set; }
 
-        public virtual ObservableCollection<Author> Authors { get; set; }
+        public virtual ObservableCollection<Author> Author { get; set; }
         //public virtual Author Author { get; set; }
 
         public virtual ObservableCollection<OrderLine> OrderLine { get; set; }

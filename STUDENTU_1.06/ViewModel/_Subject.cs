@@ -17,6 +17,7 @@ namespace STUDENTU_1._06.ViewModel
         {
             Subj = new Subject();
             SubjRecords = new ObservableCollection<Subject>();
+            AuthorSubjects = new ObservableCollection<Subject>();
             LoadSubjectsData();
             showWindow = new DefaultShowWindowService();
             dialogService= new  DefaultDialogService();
@@ -26,6 +27,7 @@ namespace STUDENTU_1._06.ViewModel
         IShowWindowService showWindow;
 
         public ObservableCollection<Subject> SubjRecords { get; set; }
+        public ObservableCollection<Subject> AuthorSubjects { get; set; }
 
         private Subject subj;
         public Subject Subj
@@ -257,6 +259,59 @@ namespace STUDENTU_1._06.ViewModel
                     dialogService.ShowMessage(ex.Message);
                 }
             }
+        }
+
+        //===================================COMMAND FOR ADD Subj INTO AuthorSubjects ============      
+
+        private RelayCommand addAuthorSubjectCommand;
+        public RelayCommand AddAuthorSubjectCommand => addAuthorSubjectCommand ??
+            (addAuthorSubjectCommand = new RelayCommand((selectedItem) =>
+            {
+                AddAuthorSubject();
+            }
+           ));
+
+        private void AddAuthorSubject()
+        {
+            if (FindSubj())
+            {
+                dialogService.ShowMessage("Уже есть такое название в в списке");
+            }
+            else
+                AuthorSubjects.Add(Subj);
+        }
+
+        //here we check AuthorSubjects for the added item
+        private bool FindSubj()
+        {
+            bool flag = false;
+            foreach (Subject item in AuthorSubjects)
+            {
+                flag = Subj.SubjectId == item.SubjectId ? true : false;
+                break;
+
+                if (Subj.SubjectId == item.SubjectId ||Subj.SubName == "---")
+                {
+                    flag = true;
+                    break;
+                }
+            }
+            return flag;
+        }
+
+        //===================================COMMAND FOR DELETE DIRECTIONS FROM AuthorDirections ============      
+
+        private RelayCommand delFromAuthorSubjectCommand;
+        public RelayCommand DelFromAuthorSubjectCommand => delFromAuthorSubjectCommand ??
+            (delFromAuthorSubjectCommand = new RelayCommand((selectedItem) =>
+            {
+                DelFromAuthorSubjects();
+            }
+           ));
+
+        private void DelFromAuthorSubjects()
+        {            
+            AuthorSubjects.Remove(Subj);
         }
 
     }

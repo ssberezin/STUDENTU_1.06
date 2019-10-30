@@ -130,6 +130,21 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
             }
         }
 
+        //to be able to make further changes to the Subjects database table
+        private _Subject _subj;
+        public _Subject _Subj
+        {
+            get { return _subj; }
+            set
+            {
+                if (_subj != value)
+                {
+                    _subj = value;
+                    OnPropertyChanged(nameof(_Subj));
+                }
+            }
+        }
+
         //to be able to make further changes to the Directions database table
         private _Direction _dir;
         public _Direction _Dir
@@ -184,6 +199,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
             _Dir = new _Direction();
             Persone = new Persone();
             PersoneDescription = new PersoneDescription();
+            _Subj = new _Subject();
             
         }
 
@@ -304,6 +320,23 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
 
                     }
                     ));
+
+    
+        //====================================COMMAND FOR CALL AuthorSubjectWindow.XAML =========================
+
+        private RelayCommand addSubjectsCommand;
+        public RelayCommand AddSubjectsCommand => addSubjectsCommand ??
+            (addSubjectsCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        AuthorSubjectWindow authorSubjectWindow = new AuthorSubjectWindow(obj);
+                        authorSubjectWindow.Owner = Application.Current.MainWindow;
+                        showWindow.ShowWindow(authorSubjectWindow);
+                    }
+                    ));
+
+
+
         // =============================================COMMAND FOR SAVE AUTHOR DATA =====================================
 
         private RelayCommand saveAuthorDataCommand;

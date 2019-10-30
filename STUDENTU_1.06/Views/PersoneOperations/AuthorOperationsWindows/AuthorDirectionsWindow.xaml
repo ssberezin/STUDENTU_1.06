@@ -29,6 +29,14 @@
                 </CollectionViewSource.SortDescriptions>
             </CollectionViewSource>
 
+            <CollectionViewSource x:Key="SortedDirs" Source="{Binding _Dir.AuthorDirections}"
+                xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
+                <!--SubjRecords can find in _Subject.cs-->
+                <CollectionViewSource.SortDescriptions>
+                    <scm1:SortDescription PropertyName="DirectionName"/>
+                </CollectionViewSource.SortDescriptions>
+            </CollectionViewSource>
+
         </ResourceDictionary>
 
 
@@ -68,19 +76,20 @@
 
 
             <Button x:Name="AddDirection" Width="40" Background="Gray" Content="..." TabIndex="1"
-                    Command="{Binding _Dir.NewEditDirection}" CommandParameter="{Binding DataContext, RelativeSource=
+                    Command="{Binding _Dir.NewEditDirection}" 
+                    CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}" />
             
                 <!--Command NewEditDirection can find in _Direction.cs-->                
         </WrapPanel>
         <ListBox x:Name="DirList" 
                      Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="2" Margin="5" 
-                    ItemsSource="{Binding Source=AuthorDirections, 
+                     ItemsSource="{Binding Source={StaticResource SortedDirs}, 
                     UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding _Dir.Dir}"                   
                      SelectionMode="Single" 
                      IsSynchronizedWithCurrentItem="False"
                      TabIndex="3"
-                     ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionChanged="ListBox_SelectionChanged">
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled" >
         
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -95,19 +104,13 @@
 
         </ListBox>
         <Button Grid.Column="0" Grid.Row="3"  Content="Добавить" Background="Green"
-                    Command="{Binding _Dir.AddDirectionCommand}" CommandParameter="{Binding DirName.Text}"
+                    Command="{Binding _Dir.AddAuthorDirectionCommand}" 
                  IsEnabled="{Binding SelectedItem, Converter={StaticResource NullBoolConverter}, ElementName=Direction}"
                 TabIndex="4" >
             <!--Command AddDirectionCommand can find in DirectionClass.cs-->
         </Button>
-        <Button  x:Name="EditButton" Grid.Column="2" Grid.Row="3" Content="Сохранить" Background="BlueViolet"
-                Command="{Binding _Dir.EditDirectionCommand}" 
-                 IsEnabled="{Binding Items.Count,ElementName=DirList}"
-                                
-                 TabIndex="6" Click="EditButton_Click"/>
-        <!--Command EditDirectionCommand can find in DirectionClass.cs-->
-        <Button Grid.Column="1" Grid.Row="3" Content="Удалить" Command="{Binding _Dir.DeleteDirectionCommand}"
-                 CommandParameter="{Binding ElementName=DirName, Path=Text}"
+        
+        <Button Grid.Column="2" Grid.Row="3" Content="Удалить" Command="{Binding _Dir.DelFromAuthorDirectionCommand}"                
                 IsEnabled="{Binding SelectedItem, 
                      Converter={StaticResource NullBoolConverter}, ElementName=DirList}"
                 TabIndex="5" RenderTransformOrigin="0.5,0.681"/>

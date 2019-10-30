@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using System.Windows;
 using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using STUDENTU_1._06.Model.HelpModelClasses.DialogWindows;
 using STUDENTU_1._06.Model.HelpModelClasses.ShowWindows;
 
@@ -17,6 +18,7 @@ namespace STUDENTU_1._06.ViewModel
         {
             Dir = new Direction();
             DirRecords = new ObservableCollection<Direction>();
+            AuthorDirections = new ObservableCollection<Direction>();
             LoadDirectionsData();
             showWindow = new DefaultShowWindowService();
             dialogService= new  DefaultDialogService();
@@ -26,6 +28,7 @@ namespace STUDENTU_1._06.ViewModel
         IShowWindowService showWindow;
 
         public ObservableCollection<Direction> DirRecords { get; set; }
+        public ObservableCollection<Direction> AuthorDirections { get; set; }
 
         private Direction dir;
         public Direction Dir
@@ -265,5 +268,56 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
+
+        //===================================COMMAND FOR ADD DIRECTIONS INTO AuthorDirections ============      
+
+        private RelayCommand addAuthorDirectionCommand;
+        public RelayCommand AddAuthorDirectionCommand => addAuthorDirectionCommand ??
+            (addAuthorDirectionCommand = new RelayCommand((selectedItem) =>
+            {
+                AddAuthorDirection();
+            }
+           ));
+
+        private void AddAuthorDirection()
+        {
+            if (FindDir())
+            {
+                dialogService.ShowMessage("Уже есть такое название в списке");
+            }
+            else            
+            AuthorDirections.Add(Dir);
+        }
+
+        //here we check AuthorDirections for the added item
+        private bool FindDir()
+        {
+            bool flag = false;
+            foreach (Direction item in AuthorDirections)
+            {
+                if (Dir.DirectionId == item.DirectionId || Dir.DirectionName == "---")
+                {
+                    flag = true;
+                    break;
+                }
+            }
+            return flag;
+        }
+
+        //===================================COMMAND FOR DELETE DIRECTIONS FROM AuthorDirections ============      
+
+        private RelayCommand delFromAuthorDirectionCommand;
+        public RelayCommand DelFromAuthorDirectionCommand => delFromAuthorDirectionCommand ??
+            (delFromAuthorDirectionCommand = new RelayCommand((selectedItem) =>
+            {
+                DelFromAuthorDirection();
+            }
+           ));
+
+        private void DelFromAuthorDirection()
+        {            
+                AuthorDirections.Remove(Dir);
+        }
     }
+   
 }
