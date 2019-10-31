@@ -46,7 +46,7 @@
             <TextBox x:Name="Phone1"  Margin="2" MinWidth="205" 
                  Text="{Binding Contacts.Phone1 , Mode=TwoWay,
             UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="0"
-                  TextAlignment="Center"/>
+                  TextAlignment="Center" MaxLength="13"/>
             <!--Contatcts can find in ForEditOrder.cs-->
         </WrapPanel>
         <WrapPanel Grid.Row="1"  Margin="3" HorizontalAlignment="Stretch" Width="331"   Background="Beige">
@@ -57,7 +57,7 @@
             <TextBox x:Name="Phone2"  Margin="2" MinWidth="205" HorizontalAlignment="Stretch"
                  Text="{Binding Contacts.Phone2 , Mode=TwoWay,
             UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="1"
-                  TextAlignment="Center" Width="205" />
+                  TextAlignment="Center" Width="205" MaxLength="13"/>
             <!--Contatcts can find in ForEditOrder.cs-->
         </WrapPanel>
         <WrapPanel Grid.Row="2"  Margin="3" HorizontalAlignment="Stretch" Width="331"  Background="Beige">
@@ -68,7 +68,7 @@
             <TextBox x:Name="Phone3"  Margin="2" MinWidth="200" 
                  Text="{Binding Contacts.Phone3 , Mode=TwoWay,
             UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="2"
-                  TextAlignment="Center" Width="203"/>
+                  TextAlignment="Center" Width="203" MaxLength="13"/>
             <!--Contatcts can find in ForEditOrder.cs-->
         </WrapPanel>
         <WrapPanel Grid.Row="3"  Margin="3" HorizontalAlignment="Stretch" Width="331"  Background="Gold">

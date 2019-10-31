@@ -22,21 +22,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
    public partial class AuthorsVMClass : Helpes.ObservableObject
     {
 
-        //экспериментируем с хранение изображения в виде массива байтов 
-        private byte[] photo;
-        public byte[] Photo
-        {
-            get { return photo; }
-            set
-            {
-                if (value != photo)
-                {
-                    photo = value;                    
-                    OnPropertyChanged(nameof(Photo));
-                }
-            }
-        }
-
+        
         //for edit DB table contacts
         private Contacts contacts;
         public Contacts Contacts
@@ -215,7 +201,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
         {   
             string path;            
             path = dialogService.OpenFileDialog("C:\\");
-            Photo = File.ReadAllBytes(path);
+            Persone.Photo = File.ReadAllBytes(path);
         }
 
         //=====================Command for call AuthorRatingEditWindow.xaml======================================
@@ -290,8 +276,9 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                         dialogService.ShowMessage("Данные сохранены");
                     }
                     ));
-        //======================================================================================================================== 
+        //=========================================COMMAND FOR CANCEL SAVE=========================================== 
 
+            //NOT USED ANYWEAR
         private RelayCommand cencelSaveAuthorDataCommand;
         public RelayCommand CencelSaveAuthorDataCommand => cencelSaveAuthorDataCommand ??
             (cencelSaveAuthorDataCommand = new RelayCommand(
@@ -344,80 +331,38 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
             (saveAuthorDataCommand = new RelayCommand(
                     (obj) =>
                     {
-
+                        SaveAuthorData();
                     }
                     ));
+
         private void SaveAuthorData()
         {
             using (StudentuConteiner db = new StudentuConteiner())
             {
                 try
-                {
-                    //Order.ExecuteAuthor = db.Authors.Find(new Author() { AuthorId = SelectedExecuteAuthor.AuthorId }.AuthorId);
-                    string errValidation = ValidAuthorDataCheck()+"\n\n Данные НЕ были сохранены";
+                {                    
+                    string errValidation = ValidAuthorDataCheck();
                     if (errValidation != null)
                     {
+                        errValidation += "\n\n Данные автора НЕ были сохранены";
                         dialogService.ShowMessage(errValidation);
                         return;
                     }
                     else
                     {
-                        ////добавили авторов из AuthorsRecords в Evaluation
-                        //foreach (var item in AuthorsRecords)
-                        //{
-                        //    Evaluation.Authors.Add(new Author()
-                        //    {
-                        //        AuthorId = item.AuthorRecordId,
-                        //        Source = item.Source
-                        //    });
-                        //}
-                        ////добавили оценки авторам  Evaluation из AuthorsRecord.EvaluationRecords
-                        //foreach (var i in Evaluation.Authors)
-                        //{
-                        //    foreach (var item in AuthorsRecord.EvaluationRecords)
-                        //    {
-
-                        //        Evaluation.Moneys.Add(new Money() { Price = item.Price });
-                        //        Evaluation.Description = item.EvaluateDescription;
-                        //        Evaluation.Dates.Add(new Dates() { DeadLine = item.DeadLine });
-                        //        i.Evaluation.Add(Evaluation);
-                        //    }
-                        //}
-
-                        //Order.ExecuteAuthor = db.Authors.Find(new Author() { AuthorId = SelectedExecuteAuthor.AuthorId }.AuthorId);
-                        //Order.Author = db.Authors.Find(new Author() { AuthorId = SelectedExecuteAuthor.AuthorId }.AuthorId);
-                        //Order.Author.Evaluation.Add(Evaluation);
+                        Persone.Dates.Add(Date);
+                        Persone.Contacts = Contacts;
+                        Persone.PersoneDescription = PersoneDescription;
+                        Author.Persone = Persone;
+                        Author.AuthorStatus = _AuthorStatus.AuthorStatus;
+                        foreach (Direction item in _Dir.AuthorDirections)
+                            Author.Direction.Add(item);
+                        foreach (Subject item in _Subj.AuthorSubjects)
+                            Author.Subject.Add(item);
+                        db.Authors.Add(Author);
+                        db.SaveChanges();
+                        dialogService.ShowMessage("Данные автора сохранены");
                     }
-
-                   
-
-                    Persone.Contacts = Contacts;
-                    Author.Persone = Persone;
-                    Author.AuthorStatus = _AuthorStatus.AuthorStatus;
-                    //_Dir.Dir.Author = Author;
-
-                    //Order.Direction = db.Directions.Find(_Dir.Dir.DirectionId);
-                    //Order.Client = new Client() { Persone = Persone };
-                    //Order.WorkType = db.WorkTypes.Find(_WorkType.WorkType.WorkTypeId);
-                    //Order.Dates = Date;
-                    //Order.Subject = db.Subjects.Find(_Subj.Subj.SubjectId); ;
-                    //Order.Money = Price;
-                    ////if (SelectedExecuteAuthor is null)
-                    ////    // set a default entry to author field
-                    ////    Order.Author = db.Authors.Find(new Author() { AuthorId = 1 }.AuthorId);
-                    ////else
-                    ////    //set realy selected author
-                    ////    Order.Author = SelectedExecuteAuthor;                    if (_Status.Status.StatusName == "принимается")
-                    //    // set a default entry to status field
-                    //    Order.Status = db.Statuses.Find(new Status() { StatusId = 1 }.StatusId);
-                    //else
-                    //    //set realy selected status
-                    //    Order.Status = _Status.Status;
-
-                    //db.Orderlines.Add(Order);
-
-                    //db.SaveChanges();
-                    //dialogService.ShowMessage("Данные о заказе сохранены");
 
                 }
                 catch (ArgumentNullException ex)
@@ -445,11 +390,12 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
         //chek for  validation of of author name , contacts and direction
         private string ValidAuthorDataCheck()
         {
-            string error=null;
+            string error;
             error = Persone.Name == "" ? "Поле имени не должно быть пустым" : null;
-            error += _Dir.Dir.DirectionName == "---" ? "\nПоле направления не должно быть пустым" : null;
+            error += _Dir.Dir.DirectionName == "---" ? "\nНЕ добавлено ни одного направления" : null;
             error += !Contacts.ContactsValidation() ?"\nНи одно из полей контактных данных не заполнено":null;
-            return error;
+            error = error == "" ? null:error ;
+             return error;
         }
     }
 }

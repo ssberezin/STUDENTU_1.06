@@ -129,38 +129,59 @@ namespace STUDENTU_1._06.ViewModel
                     {
                         
                         case "AllAuthors":
-                            var result = db.Authors.Include("Persone").                                                    
-                                                    ToList();
+                            var result = db.Authors.Include("Persone")
+                                                   .ToList();
+
                             AuthorsRecord record;
-                            foreach (var item in result)
+
+                            //   Order.Client=new Client() { Persone=Persone};
+                            foreach (Author item in result)
                             {
-                                //var res = from m in contacts
-                                //          where m.Persone.PersoneId == item.Persone.PersoneId
-                                //          select new Contacts
-                                //          {
-                                //              ContactsId = m.ContactsId,
-                                //              Phone1 = m.Phone1,
-                                //              Phone2 = m.Phone2,
-                                //              Phone3 = m.Phone3,
-                                //              Email1 = m.Email1,
-                                //              Email2 = m.Email2,
-                                //              Skype = m.Skype,
-                                //              VK = m.VK,
-                                //              Adress = m.Adress
-                                //          };
-                                //Contacts tmpContact = new Contacts();
-                                //tmpContact = res as Contacts;
+                                Contacts = new Contacts()
+                                {
+                                    Phone1 = item.Persone.Contacts.Phone1,
+                                    Phone2 = item.Persone.Contacts.Phone2,
+                                    Phone3 = item.Persone.Contacts.Phone3,
+                                    Email1 = item.Persone.Contacts.Email1,
+                                    Email2 = item.Persone.Contacts.Email2,
+                                    VK = item.Persone.Contacts.VK,
+                                    FaceBook = item.Persone.Contacts.FaceBook
+                                };
                                 record = new AuthorsRecord
                                 {
-                                    AuthorRecordId = item.AuthorId,
-                                    Persone= item.Persone,
-                                    //Persone.Name = item.Persone.Name,
-                                    //Surname = item.Persone.Surname,
-                                    //Patronimic = item.Persone.Patronimic,
-                                    //Sex = item.Persone.Sex,
-                                    //NickName = item.Persone.NickName,
-                                    Source = item.Source,
-                                    Contacts = item.Persone.Contacts
+                                   
+                                    Author = new Author()
+                                    {
+                                        AuthorId = item.AuthorId,
+                                        Source = item.Source,
+                                        Rating = item.Rating,
+                                        Punctually = item.Punctually,
+                                        CompletionCompliance = item.CompletionCompliance,
+                                        WorkQuality = item.WorkQuality,
+                                        Responsibility = item.Responsibility
+                                    },
+                                    Persone = new Persone()
+                                    {
+                                        PersoneId = item.Persone.PersoneId,
+                                        PersoneDescription = item.Persone.PersoneDescription,
+                                        Name = item.Persone.Name,
+                                        Surname = item.Persone.Surname,
+                                        Patronimic = item.Persone.Patronimic,
+                                        Sex = item.Persone.Sex,
+                                        NickName = item.Persone.NickName
+                                    }
+                                    //Persone = item.Persone,                                                                       
+                                    // Contacts = item.Persone.Contacts
+                                    //Contacts = new Contacts()
+                                    //{
+                                    //    Phone1 = item.Persone.Contacts.Phone1,
+                                    //    Phone2 = item.Persone.Contacts.Phone2,
+                                    //    Phone3 = item.Persone.Contacts.Phone3,
+                                    //    Email1 = item.Persone.Contacts.Email1,
+                                    //    Email2 = item.Persone.Contacts.Email2,
+                                    //    VK = item.Persone.Contacts.VK,
+                                    //    FaceBook = item.Persone.Contacts.FaceBook
+                                    //}
                                 };
                                 AuthorsRecords.Add(record);
                             }
@@ -175,7 +196,8 @@ namespace STUDENTU_1._06.ViewModel
                                        where (item.Direction.DirectionName == _Dir.Dir.DirectionName)
                                        select new AuthorsRecord
                                        {
-                                           AuthorRecordId = item.Author.AuthorId,
+                                           Author=item.Author,
+                                           //AuthorRecordId = item.Author.AuthorId,
                                            Persone = new Persone() {
                                                PersoneId= item.Author.Persone.PersoneId,
                                                PersoneDescription = item.Author.Persone.PersoneDescription,
@@ -184,13 +206,7 @@ namespace STUDENTU_1._06.ViewModel
                                                Patronimic = item.Author.Persone.Patronimic,
                                                Sex = item.Author.Persone.Sex,
                                                NickName = item.Author.Persone.NickName
-                                           },
-                                           //Name = item.Author.Persone.Name,
-                                           //Surname = item.Author.Persone.Surname,
-                                           //Patronimic = item.Author.Persone.Patronimic,
-                                           //Sex = item.Author.Persone.Sex,
-                                           //NickName = item.Author.Persone.NickName,
-                                           Source = item.Author.Source,
+                                           },                                          
                                            Contacts = item.Author.Persone.Contacts
                                        });
                             //AuthorsRecords record;
@@ -200,7 +216,7 @@ namespace STUDENTU_1._06.ViewModel
                                 {
                                     record = new AuthorsRecord
                                     {
-                                        AuthorRecordId = item.Author.AuthorId,
+                                        Author = item.Author,
                                         Persone = new Persone()
                                         {
                                             PersoneId = item.Author.Persone.PersoneId,
@@ -210,13 +226,7 @@ namespace STUDENTU_1._06.ViewModel
                                             Patronimic = item.Author.Persone.Patronimic,
                                             Sex = item.Author.Persone.Sex,
                                             NickName = item.Author.Persone.NickName
-                                        },
-                                        //Name = item.Author.Persone.Name,
-                                        //Surname = item.Author.Persone.Surname,
-                                        //Patronimic = item.Author.Persone.Patronimic,
-                                        //Sex = item.Author.Persone.Sex,
-                                        //NickName = item.Author.Persone.NickName,
-                                        //Source = item.Author.Source,
+                                        },                                        
                                         Contacts = item.Author.Persone.Contacts
                                     };
                                     AuthorsRecords.Add(record);
@@ -263,11 +273,12 @@ namespace STUDENTU_1._06.ViewModel
             if (AuthorsRecord.Persone.NickName != "---")
             {
                 SelectedAuthorsRecords.Add(AuthorsRecord);
-                Order.Money.Evaluation.Authors.Add(new Author()
-                {
-                    AuthorId = AuthorsRecord.AuthorRecordId,
-                    Source = AuthorsRecord.Source
-                });
+                Order.Money.Evaluation.Authors.Add(AuthorsRecord.Author);
+                //Order.Money.Evaluation.Authors.Add(new Author()
+                //{
+                //    AuthorId = AuthorsRecord.AuthorRecordId,
+                //    Source = AuthorsRecord.Source
+                //});
             }
             else
             {
@@ -289,11 +300,12 @@ namespace STUDENTU_1._06.ViewModel
         private void DelSelectedAuthor()
         {
             SelectedAuthorsRecords.Remove(AuthorsRecord);
-            Order.Money.Evaluation.Authors.Remove(new Author()
-                                                    {
-                                                        AuthorId = AuthorsRecord.AuthorRecordId,
-                                                        Source = author.Source
-                                                    });
+            Order.Money.Evaluation.Authors.Remove(AuthorsRecord.Author);
+            //Order.Money.Evaluation.Authors.Remove(new Author()
+            //                                        {
+            //                                            AuthorId = AuthorsRecord.AuthorRecordId,
+            //                                            Source = author.Source
+            //                                        });
         }
 
         //=============================Call window SetFinalAvaluationWindow.xaml========================================

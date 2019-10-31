@@ -323,11 +323,13 @@ namespace STUDENTU_1._06.ViewModel
                         //добавили авторов из AuthorsRecords в Evaluation
                         foreach (var item in AuthorsRecords)
                         {
-                            Evaluation.Authors.Add(new Author()
-                            {
-                                AuthorId = item.AuthorRecordId,
-                                Source = item.Source
-                            });
+                            Evaluation.Authors.Add(Author);
+                            //Evaluation.Authors.Add(new Author()
+                            //{
+                            //    AuthorId = item.AuthorRecordId,
+                            //    Source = item.Source
+                                
+                            //});
                         }
                         //добавили оценки авторам  Evaluation из AuthorsRecord.EvaluationRecords
                         foreach (var i in Evaluation.Authors)
@@ -366,9 +368,10 @@ namespace STUDENTU_1._06.ViewModel
                     //}
                     
                     Persone.Contacts=Contacts;
-                    Order.Direction = db.Directions.Find(_Dir.Dir.DirectionId);
+                    Order.Direction = db.Directions.Find(_Dir.Dir.DirectionId);                    
                     Order.Client=new Client() { Persone=Persone};
                     Order.WorkType = db.WorkTypes.Find(_WorkType.WorkType.WorkTypeId);
+                    
                     Order.Dates = Date;
                     Order.Subject = db.Subjects.Find(_Subj.Subj.SubjectId); ;
                     Order.Money = Price;

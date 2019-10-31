@@ -172,9 +172,9 @@
                      VerticalAlignment="Stretch">
                 <TextBlock Text="Ник: " FontWeight="Bold" Foreground="Brown"/>
             </Viewbox>
-            <TextBox    Text="{Binding Persone.NickName, Mode=TwoWay}"  MinWidth="70" Width="110"/>
+            <TextBox    Text="{Binding Persone.NickName, Mode=TwoWay}"  MinWidth="70" Width="110" TabIndex="3"/>
             <!--Persone can find in AuthorsVMClass.cs-->
-            <Button Content="Добавить контакты " Background="YellowGreen" Height="30" TabIndex="7" Margin="5"
+            <Button Content="Добавить контакты " Background="YellowGreen" Height="30" TabIndex="4" Margin="5"
                      Command="{Binding NewEditContactsCommand}" CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}" Width="177"/>
             <!--NewEditContactsCommand can find in ForEditOrderAddContacts.cs-->
@@ -185,25 +185,25 @@
                      VerticalAlignment="Stretch">
                 <TextBlock Text="Пол:" FontWeight="Bold" Foreground="Brown"/>
             </Viewbox>
-            <RadioButton GroupName="A" Content="Мужской" VerticalAlignment="Center" TabIndex="4"
+            <RadioButton GroupName="A" Content="Мужской" VerticalAlignment="Center" TabIndex="5"
                           IsChecked="{Binding Persone.Sex, Mode=TwoWay}" />
             <!--Persone can find in AuthorsVMClass.cs-->
-            <RadioButton GroupName="A" Content="Женский" VerticalAlignment="Center" TabIndex="5" 
+            <RadioButton GroupName="A" Content="Женский" VerticalAlignment="Center" TabIndex="6" 
                           IsChecked="{Binding Persone.Sex, 
                           Converter={StaticResource boolInverterConverter},
                           Mode=TwoWay}"/>
             <!--Persone can find in AuthorsVMClass.cs-->
-            <Button Content="В ч.списке?" Background="Black" Height="30" Width="149" TabIndex="8" Margin="5"
+            <Button Content="В ч.списке?" Background="Black" Height="30" Width="149" TabIndex="7" Margin="5"
                     Command="{Binding CheckBlackListCommand}"/>
         </WrapPanel>
         <StackPanel Grid.Row="5"   Margin="3" VerticalAlignment="Center" Orientation="Horizontal" Grid.ColumnSpan="2">
-            <CheckBox x:Name="BirthDate" />
+            <CheckBox x:Name="BirthDate" TabIndex="8"/>
             <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
                      VerticalAlignment="Stretch">
                 <TextBlock Text="Дата рождения" Foreground="Brown" FontWeight="Bold"/>
             </Viewbox>
             <DatePicker  IsDropDownOpen="False" SelectedDateFormat="Short" 
-                        MaxWidth="150" TabIndex="13" HorizontalAlignment="Center"
+                        MaxWidth="150" TabIndex="9" HorizontalAlignment="Center"
                         SelectedDate="{Binding Date.DayBirth,Mode=TwoWay}"
                          IsEnabled="{Binding ElementName=BirthDate, Path=IsChecked}"/>
             
@@ -214,7 +214,7 @@
                      VerticalAlignment="Stretch">
                 <TextBlock Text="Статус: " FontWeight="Bold"  Foreground="Brown"/>
             </Viewbox>
-            <ComboBox x:Name="StatusList"  MinWidth="165"  TabIndex="9" SelectedIndex="0" 
+            <ComboBox x:Name="StatusList"  MinWidth="165"  TabIndex="10" SelectedIndex="0" 
                       IsEditable="False"
                      ItemsSource="{Binding Source={StaticResource SortedStatuses}, 
                       UpdateSourceTrigger=PropertyChanged}" 
@@ -224,16 +224,16 @@
                      Background="White" >
                 <!--Status can fint in _AuthorStatus.cs-->
             </ComboBox>
-            <Button x:Name="AddDStatus" Width="40" Background="Gray" Content="..." TabIndex="4"
+            <Button x:Name="AddDStatus" Width="40" Background="Gray" Content="..." TabIndex="11"
                     Command="{Binding _AuthorStatus.NewEditAuthorStatusCommand}" CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}"/>
             <!--Command NewEditStatusCommand can find in StatusClass.cs-->
         </WrapPanel>
-        <Button Grid.Row="7"  Content="Направления?+" Background="#FF0996AC" TabIndex="23"               
+        <Button Grid.Row="7"  Content="Направления?+" Background="#FF0996AC" TabIndex="12"               
                 Command="{Binding AddDirectionsCommand}" 
                  CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}"/>
-        <Button Grid.Row="7" Grid.Column="1"  Content="Предметы?+" Background="#FF0B1646" TabIndex="23"               
+        <Button Grid.Row="7" Grid.Column="1"  Content="Предметы?+" Background="#FF0B1646" TabIndex="13"               
                 Command="{Binding AddSubjectsCommand}" 
                  CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}"/>
@@ -271,7 +271,7 @@
                 <TextBlock  Text="Источник " FontWeight="Bold" Foreground="Brown"/>
             </Viewbox>
             <TextBox Grid.Column="1"    Text="{Binding Author.Source, Mode=TwoWay}"
-                     FontSize="10" TextWrapping="Wrap"
+                     FontSize="12" TextWrapping="Wrap" TabIndex="14"
                         Height="80" TextAlignment="Center" VerticalContentAlignment="Center"
                         HorizontalAlignment="Stretch" Margin="5"  
                         VerticalScrollBarVisibility="Auto"/>
@@ -284,7 +284,7 @@
                 <TextBlock Text="Сотрудничаем с:" Foreground="Brown" FontWeight="Bold"/>
             </Viewbox>
             <StackPanel Orientation="Horizontal">
-                <CheckBox x:Name="StartWorkEnable" TabIndex="21"  />
+                <CheckBox x:Name="StartWorkEnable" TabIndex="16"  />
                 <DatePicker x:Name="DateOfReception" IsDropDownOpen="False" SelectedDateFormat="Short" 
                             IsEnabled="{Binding ElementName=StartWorkEnable,  Path=IsChecked}"
                         MaxWidth="150" TabIndex="13" HorizontalAlignment="Center"
@@ -300,7 +300,7 @@
                 <TextBlock Text="Прекратили работать с:" Foreground="Brown" FontWeight="Bold"/>
             </Viewbox>
             <StackPanel Orientation="Horizontal">
-                <CheckBox x:Name="EndWorkEnable" TabIndex="21"  />
+                <CheckBox x:Name="EndWorkEnable" TabIndex="18"  />
                 <DatePicker  IsDropDownOpen="False" SelectedDateFormat="Short" 
                              IsEnabled="{Binding ElementName=EndWorkEnable,  Path=IsChecked}"
                         MaxWidth="150" TabIndex="13" HorizontalAlignment="Center"
@@ -320,7 +320,7 @@
             <TextBlock Text="Первичная информация об авторе" FontWeight="Bold" Foreground="Brown"/>
         </Viewbox>
         <TextBox Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="4" Margin="5" 
-                     FontSize="14" TabIndex="17" TextWrapping="Wrap"  AcceptsReturn="True" MinHeight="103"
+                     FontSize="12" TabIndex="19" TextWrapping="Wrap"  AcceptsReturn="True" MinHeight="103"
                     VerticalScrollBarVisibility="Auto" 
                     Text="{Binding PersoneDescription.Description, Mode=TwoWay}" Height="169"/>
         <!--PersoneDescription can find in AuthorsVMClass.cs-->
@@ -330,9 +330,9 @@
                 <TextBlock Text="Отзывы об авторе" FontWeight="Bold" 
                            Foreground="Brown"/>
             </Viewbox>
-            <TextBox  Margin="5,5,4.8,5" FontSize="14" TabIndex="18" MinHeight="85"
+            <TextBox  Margin="5,5,4.8,5" FontSize="12" TabIndex="20" MinHeight="85"
                       TextWrapping="Wrap"  AcceptsReturn="True"
-                      VerticalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Auto"                     
                       Text="{Binding PersoneDescription.FeedBack, Mode=TwoWay}" Height="98"/>
             <!--PersoneDescription can find in AuthorsVMClass.cs-->
         </StackPanel>
@@ -342,10 +342,11 @@
                 <TextBlock Text="Прекратили сотрудничать потому что..." FontWeight="Bold" 
                            Foreground="Brown"/>
             </Viewbox>
-            <TextBox  Margin="5,5,4.8,5" FontSize="14" TabIndex="18" MinHeight="85"
+            <TextBox  Margin="5,5,4.8,5" FontSize="12" TabIndex="21" MinHeight="85"
                       TextWrapping="Wrap"  AcceptsReturn="True"
-                      VerticalScrollBarVisibility="Auto"
-                      Text="{Binding PersoneDescription.ReasonFortermCoop, Mode=TwoWay}" Height="98"/>
+                      VerticalScrollBarVisibility="Auto" Foreground="Red"
+                      Text="{Binding PersoneDescription.ReasonFortermCoop, Mode=TwoWay}" Height="98"
+                       IsEnabled="{Binding ElementName=EndWorkEnable,  Path=IsChecked}"/>
             <!--PersoneDescription can find in AuthorsVMClass.cs-->
         </StackPanel>
 
@@ -355,7 +356,8 @@
                     Orientation="Horizontal" >
             <StackPanel.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Добавить/изменить фото?" Command="{Binding OpenFileDialogCommand}"></MenuItem>
+                    <MenuItem Header="Добавить/изменить фото?" Command="{Binding OpenFileDialogCommand}" 
+                              Height="17"/>
                 </ContextMenu>
             </StackPanel.ContextMenu>
             <StackPanel.Background>
@@ -363,14 +365,15 @@
 
             </StackPanel.Background>
             <!--<Image Source="{Binding Photo, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" />-->
-            <Image Source="{Binding Path=Photo, Converter={StaticResource imagePathConverter}, Mode=OneWay}" VerticalAlignment="Center" />
+            <Image Source="{Binding Path=Persone.Photo, Converter={StaticResource imagePathConverter}, Mode=OneWay}" VerticalAlignment="Center" />
         </StackPanel>
         <StackPanel Grid.Column="4" Grid.Row="5"  Orientation="Horizontal"  >
             <TextBlock Text="Рейтинг: " Margin="3,0" VerticalAlignment="Center" Foreground="Brown" FontWeight="Bold"  />
             <TextBlock Text="{Binding Author.Rating,UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Center" Foreground="Red" FontWeight="Bold"  />
 
         </StackPanel>
-        <Button Grid.Column="4" Grid.Row="6" Content="Правка рейтинга" Background="Orange" Height="30" TabIndex="7" Margin="5"
+        <Button Grid.Column="4" Grid.Row="6" Content="Правка рейтинга" Background="Orange" Height="30" 
+                TabIndex="22" Margin="5"
                      Command="{Binding NewEditRating}" CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}" Width="177"/>
 

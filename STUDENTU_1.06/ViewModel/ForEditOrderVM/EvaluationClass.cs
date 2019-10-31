@@ -120,7 +120,8 @@ namespace STUDENTU_1._06.ViewModel
                     ExecuteAuthor = AuthorsRecord;
                     FinalEvaluationRecord = EvaluationRecord;
 
-                    SelectedExecuteAuthor.AuthorId = AuthorsRecord.AuthorRecordId;
+                    //SelectedExecuteAuthor.AuthorId = AuthorsRecord.AuthorRecordId;
+                    SelectedExecuteAuthor = AuthorsRecord.Author;
 
                     Order.ExecuteAuthorComments = item.EvaluateDescription;
                     Order.ExecuteAuthorPrice = item.Price;

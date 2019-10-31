@@ -93,6 +93,7 @@ namespace STUDENTU_1._06.ViewModel
                     //creat a orderlist in datagrid (mainwindow)
                     foreach (var item in COrders)
                     {
+                        string i = item.Client.Persone.Contacts.Phone1;
                         Records record = new Records
                         {
                             RecordId= item.OrderLineId,

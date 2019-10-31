@@ -6,9 +6,9 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 
-namespace STUDENTU_1._06.Model
+namespace STUDENTU_1._06.Model 
 {
-    public class Persone //: IDataErrorInfo
+    public class Persone : Helpes.ObservableObject
     {
         public Persone()
         {
@@ -44,7 +44,19 @@ namespace STUDENTU_1._06.Model
 
         [Column("Photo",TypeName = "image")]
         //for storing image of persone
-        public byte[] Photo { get; set; }
+        private byte[] photo;
+        public byte[] Photo
+        {
+            get { return photo; }
+            set
+            {
+                if (value != photo)
+                {
+                    photo = value;
+                    OnPropertyChanged(nameof(Photo));
+                }
+            }
+        }
 
         public bool Sex { get; set; }
 
