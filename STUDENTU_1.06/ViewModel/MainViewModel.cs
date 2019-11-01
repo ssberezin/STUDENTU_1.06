@@ -93,7 +93,7 @@ namespace STUDENTU_1._06.ViewModel
                     //creat a orderlist in datagrid (mainwindow)
                     foreach (var item in COrders)
                     {
-                        string i = item.Client.Persone.Contacts.Phone1;
+                        
                         Records record = new Records
                         {
                             RecordId= item.OrderLineId,
@@ -151,11 +151,9 @@ namespace STUDENTU_1._06.ViewModel
                                                .Include("Money")
                                                .Include("WorkType")
                                                .ToList<OrderLine>();
-                    //need befor ferst start of programm and Db isn't created
+                    //add default orders statuses
                     if (db.Statuses.Count() == 0)
-                    {
-                        //тут у нас устананавливаются статусы для заказов
-                        // here we have statuses for orders
+                    {                       
                         db.Statuses.Add(new Status() { StatusName = "---" });
                         db.Statuses.Add(new Status() { StatusName = "принят" });
                         db.Statuses.Add(new Status() { StatusName = "готов" });
@@ -168,10 +166,9 @@ namespace STUDENTU_1._06.ViewModel
                         db.Statuses.Add(new Status() { StatusName = "ждем новостей от заказчика" });
                         db.SaveChanges();
                     }
+                    //add default authorstatuses
                     if (db.AuthorStatuses.Count() == 0)
-                    {
-                        //тут у нас устананавливаются статусы для атворов
-                        // here we have statuses for authors
+                    {                        
                         db.AuthorStatuses.Add(new AuthorStatus() { AuthorStatusName = "---" });
                         db.AuthorStatuses.Add(new AuthorStatus() { AuthorStatusName = "работает" });
                         db.AuthorStatuses.Add(new AuthorStatus() { AuthorStatusName = "уволен" });
@@ -184,6 +181,7 @@ namespace STUDENTU_1._06.ViewModel
                         db.Directions.Add(new Direction() { DirectionName = "---" });                        
                         db.SaveChanges();
                     }
+                    //add default worktype
                     if (db.WorkTypes.Count() == 0)
                     {
                         db.WorkTypes.Add(new WorkType() { TypeOfWork = "---" });
@@ -200,20 +198,43 @@ namespace STUDENTU_1._06.ViewModel
                         db.WorkTypes.Add(new WorkType() { TypeOfWork = "тезисы" });
                         db.WorkTypes.Add(new WorkType() { TypeOfWork = "статья" });
                         db.SaveChanges();
-                    }
+                    }                   
+                    //add default subjects
                     if (db.Subjects.Count() == 0)
                     {
                         db.Subjects.Add(new Subject() { SubName = "---" });
                         db.SaveChanges();
-                    }                    
+                    }
+                   //add default author
                     if (db.Authors.Count() == 0)
                     {
+
+                        //Persone = new Persone() { Name = "---", NickName = "---" };
+
+                        //Contacts Contacts = new Contacts() { Phone1 = "+380000000000" };
+                        //Persone.Contacts = Contacts;
+
+                        //PersoneDescription PersoneDescription = new PersoneDescription();
+                        //Persone.PersoneDescription = PersoneDescription;
+
+
+                        //Persone.Dates.Add(new Dates());
+
+                        //Author.AuthorStatus = db.AuthorStatuses.Find(new AuthorStatus() { AuthorStatusId = 1 }.AuthorStatusId);                         
+                        //Author.Direction.Add(db.Directions.Find(new Direction() { DirectionId = 1 }.DirectionId));
+                        //Author.Subject.Add(db.Subjects.Find(new Subject() { SubjectId = 1 }.SubjectId));                        
+                        //db.Authors.Add(Author);
+                        //db.SaveChanges();
+                        
                         Persone = new Persone() { NickName = "---" };
+                        Contacts Contacts = new Contacts() { Phone1 = "+380000000000" };
+                        Persone.Contacts = Contacts;
                         Author = new Author();
                         Persone.Author.Add(Author);
                         db.Persones.Add(Persone);
                         db.SaveChanges();
                     }
+                    //add default sources
                     if (db.Sources.Count() == 0)
                     {
                         db.Sources.Add(new Source() {SourceName = "---" });

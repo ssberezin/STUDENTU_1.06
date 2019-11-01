@@ -129,15 +129,31 @@ namespace STUDENTU_1._06.ViewModel
                     {
                         
                         case "AllAuthors":
-                            var result = db.Authors.Include("Persone")
-                                                   .ToList();
-
-                            AuthorsRecord record;
-
-                            //   Order.Client=new Client() { Persone=Persone};
+                            var result = db.Authors.Include("Persone").ToList();
+                            AuthorsRecord record;                            
                             foreach (Author item in result)
                             {
-                                Contacts = new Contacts()
+                                Author author = new Author()
+                                {
+                                    AuthorId = item.AuthorId,
+                                    Source = item.Source,
+                                    Rating = item.Rating,
+                                    Punctually = item.Punctually,
+                                    CompletionCompliance = item.CompletionCompliance,
+                                    WorkQuality = item.WorkQuality,
+                                    Responsibility = item.Responsibility
+                                };
+                                Persone persone = new Persone()
+                                {
+                                    PersoneId = item.Persone.PersoneId,
+                                    PersoneDescription = item.Persone.PersoneDescription,
+                                    Name = item.Persone.Name,
+                                    Surname = item.Persone.Surname,
+                                    Patronimic = item.Persone.Patronimic,
+                                    Sex = item.Persone.Sex,
+                                    NickName = item.Persone.NickName
+                                };
+                                Contacts _contacts = new Contacts()
                                 {
                                     Phone1 = item.Persone.Contacts.Phone1,
                                     Phone2 = item.Persone.Contacts.Phone2,
@@ -148,40 +164,10 @@ namespace STUDENTU_1._06.ViewModel
                                     FaceBook = item.Persone.Contacts.FaceBook
                                 };
                                 record = new AuthorsRecord
-                                {
-                                   
-                                    Author = new Author()
-                                    {
-                                        AuthorId = item.AuthorId,
-                                        Source = item.Source,
-                                        Rating = item.Rating,
-                                        Punctually = item.Punctually,
-                                        CompletionCompliance = item.CompletionCompliance,
-                                        WorkQuality = item.WorkQuality,
-                                        Responsibility = item.Responsibility
-                                    },
-                                    Persone = new Persone()
-                                    {
-                                        PersoneId = item.Persone.PersoneId,
-                                        PersoneDescription = item.Persone.PersoneDescription,
-                                        Name = item.Persone.Name,
-                                        Surname = item.Persone.Surname,
-                                        Patronimic = item.Persone.Patronimic,
-                                        Sex = item.Persone.Sex,
-                                        NickName = item.Persone.NickName
-                                    }
-                                    //Persone = item.Persone,                                                                       
-                                    // Contacts = item.Persone.Contacts
-                                    //Contacts = new Contacts()
-                                    //{
-                                    //    Phone1 = item.Persone.Contacts.Phone1,
-                                    //    Phone2 = item.Persone.Contacts.Phone2,
-                                    //    Phone3 = item.Persone.Contacts.Phone3,
-                                    //    Email1 = item.Persone.Contacts.Email1,
-                                    //    Email2 = item.Persone.Contacts.Email2,
-                                    //    VK = item.Persone.Contacts.VK,
-                                    //    FaceBook = item.Persone.Contacts.FaceBook
-                                    //}
+                                {                                   
+                                    Author = author,
+                                    Persone = persone,
+                                    Contacts=_contacts                                    
                                 };
                                 AuthorsRecords.Add(record);
                             }
