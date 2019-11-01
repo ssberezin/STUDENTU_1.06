@@ -13,6 +13,7 @@ using STUDENTU_1._06.Views.EditOrderWindows;
 using System.Collections.ObjectModel;
 using STUDENTU_1._06.Model.HelpModelClasses;
 using STUDENTU_1._06.Views.EditOrderWindows.Evaluation;
+using STUDENTU_1._06.Model.DBModelClasses;
 
 namespace STUDENTU_1._06.ViewModel
 {
@@ -133,9 +134,16 @@ namespace STUDENTU_1._06.ViewModel
                             AuthorsRecord record;                            
                             foreach (Author item in result)
                             {
+                                //AuthorStatus authorStatus = new AuthorStatus()
+                                //{
+                                //    AuthorStatusId=item.AuthorStatus.AuthorStatusId,
+                                //    AuthorStatusName=item.AuthorStatus.AuthorStatusName,
+                                //    Description=item.AuthorStatus.Description
+                                //};
                                 Author author = new Author()
                                 {
                                     AuthorId = item.AuthorId,
+                                    //AuthorStatus= authorStatus,
                                     Source = item.Source,
                                     Rating = item.Rating,
                                     Punctually = item.Punctually,

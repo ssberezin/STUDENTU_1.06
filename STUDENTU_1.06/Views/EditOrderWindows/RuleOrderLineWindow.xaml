@@ -25,7 +25,7 @@
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
                 <!--AuthorsRecords can find in RuleOrderLineClass.cs-->
                 <CollectionViewSource.SortDescriptions>
-                    <scm1:SortDescription PropertyName="Persone"/>
+                    <scm1:SortDescription PropertyName="Persone.NickName"/>
                 </CollectionViewSource.SortDescriptions>
             </CollectionViewSource>
 
@@ -36,7 +36,7 @@
                     <scm1:SortDescription PropertyName="StatusName"/>
                 </CollectionViewSource.SortDescriptions>
             </CollectionViewSource>
-            
+
             <CollectionViewSource x:Key="SortedSelectedAuthors" 
                                   Source="{Binding SelectedAuthorsRecords}"
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
@@ -90,21 +90,34 @@
         <StackPanel  Margin="2">
             <TextBlock Text="Авторы" />
             <RadioButton GroupName="GroupA" Content="Все авторы" IsChecked="False" Command="{Binding AllAuthorsCallCommand}"/>
-            <RadioButton GroupName="GroupA" Content="Авторы по тематике" IsChecked="False" Command="{Binding ThemAuthorsCallCommand}"/>            
+            <RadioButton GroupName="GroupA" Content="Авторы по тематике" IsChecked="False" Command="{Binding ThemAuthorsCallCommand}"/>
         </StackPanel>
         <ListBox x:Name="Authors"
                      Grid.Row="1" Grid.RowSpan="5"
                     ItemsSource="{Binding Source={StaticResource SortedItems}, 
                     UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding AuthorsRecord}" 
                      TabIndex="2">
-            <!--SortedItems can find above in Window.Resources-->            
+            <!--SortedItems can find above in Window.Resources-->
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <DockPanel >
+                    <StackPanel >
+                        <TextBlock Text="-------------------" Margin="2"
+                                   TextWrapping="WrapWithOverflow" 
+                                   TextAlignment="Center" Background="AliceBlue"/>
                         <TextBlock Text="{Binding Persone.NickName}" Margin="2"
                                    TextWrapping="WrapWithOverflow" 
-                                   TextAlignment="Center"/>
-                    </DockPanel>
+                                   TextAlignment="Center"  />
+
+                        <TextBlock Text="{Binding Persone.Surname}" Margin="2"
+                                   TextWrapping="WrapWithOverflow" 
+                                   TextAlignment="Center" Foreground="Red"/>
+                        <TextBlock Text="{Binding Persone.Name}" Margin="2"
+                                   TextWrapping="WrapWithOverflow" 
+                                   TextAlignment="Center" Foreground="Red"/>
+                        <TextBlock Text="{Binding Persone.Patronimic}" Margin="2"
+                                   TextWrapping="WrapWithOverflow" 
+                                   TextAlignment="Center" Foreground="Red"/>
+                    </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
@@ -212,20 +225,19 @@
             <TextBlock  Text="{ Binding FinalEvaluationRecord.Deadline,
                 Converter={StaticResource dateFormatConverter}}" Foreground="Red" />
         </StackPanel>
-        <StackPanel Grid.Column="4" Grid.Row="3" Grid.RowSpan="7"
-                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
-            <TextBlock  Text="Коменты автора при оценке:" Margin="5" Foreground="Blue"/>
-            <TextBox  Text="{Binding FinalEvaluationRecord.EvaluateDescription}" TextAlignment="Center"
+        <TextBlock  Text="Коменты автора при оценке:" Margin="5" Foreground="Blue"
+                     Grid.Column="5" Grid.Row="3"/>
+        <TextBox  Text="{Binding FinalEvaluationRecord.EvaluateDescription}"
+                  TextAlignment="Center" Grid.Column="5" Grid.Row="4" Grid.RowSpan="7"
                       VerticalContentAlignment="Center" Foreground="Red" Background="White"
-                      Margin="6,6,5.6,6" TextWrapping="Wrap" Height="247" />
-        </StackPanel>
+                      Margin="6,6,5.6,5.8" TextWrapping="Wrap" Grid.ColumnSpan="3"  />
         <TextBlock Grid.Row="6" Grid.Column="2"  Text="Постановка задачи для автора" Margin="5" Foreground="Blue"/>
 
         <TextBox  Grid.Row="7" Grid.RowSpan="2" Grid.ColumnSpan="4"    
                  Text="{Binding Order.DescriptionForClient, Mode=TwoWay}"
                   TextAlignment="Center"
                       VerticalContentAlignment="Center" Foreground="Red" Background="White"
-                      Margin="6,6,5.4,6" TextWrapping="Wrap" Height="79" />
+                      Margin="6,6,5.4,6" TextWrapping="Wrap"  />
         <!--Order can find in ForEditOrder.cs-->
 
     </Grid>

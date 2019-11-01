@@ -69,5 +69,7 @@ namespace STUDENTU_1._06.Model
         {
             return (Punctually + WorkQuality + Responsibility + CompletionCompliance) / 4.0;
         }
+
+        
     }
 }

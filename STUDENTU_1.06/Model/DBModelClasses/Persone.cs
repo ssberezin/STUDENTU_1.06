@@ -38,6 +38,8 @@ namespace STUDENTU_1._06.Model
         [Column("Patronimic", TypeName = "nvarchar")]
         [MaxLength(50)]
         public string Patronimic { get; set; }
+
+        //убрать нахер это поле
         [Column("PhotoFileName", TypeName = "nvarchar")]
         [MaxLength(500)]
         public string PhotoFileName { get; set; }
@@ -68,8 +70,11 @@ namespace STUDENTU_1._06.Model
         public virtual List<Client> Client { get; set; }        
         public virtual List<Author> Author { get; set; }        
         public virtual List<Dates> Dates { get; set; }
-     
 
+        public string ToString()
+        {
+            return $"{Name} " + $" {Surname} " + $"{Patronimic}" ;
+        }
 
 
         //public string this[string columnName]
