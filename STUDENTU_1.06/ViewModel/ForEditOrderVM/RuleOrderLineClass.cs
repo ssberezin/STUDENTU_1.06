@@ -203,29 +203,10 @@ namespace STUDENTU_1._06.ViewModel
                                            },                                          
                                            Contacts = item.Author.Persone.Contacts
                                        });
-                            //AuthorsRecords record;
-                            foreach (var item in result1)
-                            {
-                                if (item.Direction.DirectionName == _Dir.Dir.DirectionName)
-                                {
-                                    record = new AuthorsRecord
-                                    {
-                                        Author = item.Author,
-                                        Persone = new Persone()
-                                        {
-                                            PersoneId = item.Author.Persone.PersoneId,
-                                            PersoneDescription = item.Author.Persone.PersoneDescription,
-                                            Name = item.Author.Persone.Name,
-                                            Surname = item.Author.Persone.Surname,
-                                            Patronimic = item.Author.Persone.Patronimic,
-                                            Sex = item.Author.Persone.Sex,
-                                            NickName = item.Author.Persone.NickName
-                                        },                                        
-                                        Contacts = item.Author.Persone.Contacts
-                                    };
-                                    AuthorsRecords.Add(record);
-                                }
-                            }
+                           
+                            foreach (var item in tmp)                           
+                                SelectedAuthorsRecords.Add(item);                                
+                           
                             break;
                     }
                 }
@@ -267,7 +248,10 @@ namespace STUDENTU_1._06.ViewModel
             if (AuthorsRecord.Persone.NickName != "---")
             {
                 SelectedAuthorsRecords.Add(AuthorsRecord);
-                Order.Money.Evaluation.Authors.Add(AuthorsRecord.Author);
+                Money money = new Money();
+                Evaluation evaluation = new Evaluation();
+                //evaluation.Authors.Add();
+                //Order.Money=money.Evaluation.Authors.Add(AuthorsRecord.Author);
                 //Order.Money.Evaluation.Authors.Add(new Author()
                 //{
                 //    AuthorId = AuthorsRecord.AuthorRecordId,

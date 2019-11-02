@@ -42,7 +42,7 @@
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
                 <!--SelectedAuthorsRecords can find in RuleOrderLineClass.cs-->
                 <CollectionViewSource.SortDescriptions>
-                    <scm1:SortDescription PropertyName="Persone"/>
+                    <scm1:SortDescription PropertyName="Persone.NickName"/>
                 </CollectionViewSource.SortDescriptions>
             </CollectionViewSource>
 
@@ -107,7 +107,6 @@
                         <TextBlock Text="{Binding Persone.NickName}" Margin="2"
                                    TextWrapping="WrapWithOverflow" 
                                    TextAlignment="Center"  />
-
                         <TextBlock Text="{Binding Persone.Surname}" Margin="2"
                                    TextWrapping="WrapWithOverflow" 
                                    TextAlignment="Center" Foreground="Red"/>
@@ -195,14 +194,14 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <Button Grid.Column="3" Grid.Row="9" Content="Выбрать автора" Background="#FF41BD41"
+        <Button Grid.Column="3" Grid.Row="6" Content="Выбрать автора" Background="#FF41BD41"
                 TabIndex="9"
                  IsEnabled="{Binding SelectedItem,
                      Converter={StaticResource NullBoolConverter}, ElementName=AuthorsAvaluat}"
                 Command="{Binding SetExecuteAuthorCommand}" 
                 CommandParameter="{Binding ElementName=AuthorsAvaluat , Path=SelectedItem}"/>
         <!--Command SetExecuteAuthorCommand can find in  RuleOrderLineClass.cs-->
-        <Button Grid.Column="3" Grid.Row="6" Content="Задать оценку для автора" Background="CadetBlue"
+        <Button Grid.Column="0" Grid.Row="6" Content="Задать оценку для автора" Background="CadetBlue"
                 TabIndex="9"
                   IsEnabled="{Binding SelectedItem,
                      Converter={StaticResource NullBoolConverter}, ElementName=AuthorsAvaluat}"
@@ -228,9 +227,17 @@
         <TextBlock  Text="Коменты автора при оценке:" Margin="5" Foreground="Blue"
                      Grid.Column="5" Grid.Row="3"/>
         <TextBox  Text="{Binding FinalEvaluationRecord.EvaluateDescription}"
-                  TextAlignment="Center" Grid.Column="5" Grid.Row="4" Grid.RowSpan="7"
+                  TextAlignment="Center" Grid.Column="5" Grid.Row="4" Grid.RowSpan="5"
                       VerticalContentAlignment="Center" Foreground="Red" Background="White"
                       Margin="6,6,5.6,5.8" TextWrapping="Wrap" Grid.ColumnSpan="3"  />
+        <Button Grid.Column="4" Grid.Row="9" Content="Отмена" Background="Red"
+                TabIndex="9"                
+                Command="{Binding CancelCommand}"/>
+        <Button Grid.Column="3" Grid.Row="9" Content="Сохранить" Background="#FF183ACD"
+                TabIndex="9" 
+                IsEnabled="{Binding SelectedItem,
+                     Converter={StaticResource NullBoolConverter}, ElementName=AuthorsAvaluat}"
+                Command="{Binding SaveEvaluatelCommand}"/>
         <TextBlock Grid.Row="6" Grid.Column="2"  Text="Постановка задачи для автора" Margin="5" Foreground="Blue"/>
 
         <TextBox  Grid.Row="7" Grid.RowSpan="2" Grid.ColumnSpan="4"    

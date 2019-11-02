@@ -355,12 +355,34 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                         Persone.PersoneDescription = PersoneDescription;
                         Author.Persone = Persone;
                         Author.AuthorStatus = _AuthorStatus.AuthorStatus;
-                        foreach (Direction item in _Dir.AuthorDirections)
-                            Author.Direction.Add(item);
-                        foreach (Subject item in _Subj.AuthorSubjects)
-                            Author.Subject.Add(item);
                         db.Authors.Add(Author);
                         db.SaveChanges();
+                        //here we add author in directions
+                        foreach (Direction item in _Dir.AuthorDirections)
+                        {
+                            var res1 = db.Directions.Find(item.DirectionId);
+                            if (res1 != null)
+                            {
+                                //changing DB
+                                res1.Author.Add(Author);
+                                db.SaveChanges();
+                                continue;
+                            }
+                        }
+                        //here we add author in subjects
+                        foreach (Subject item in _Subj.AuthorSubjects)
+                        {
+                            var res1 = db.Subjects.Find(item.SubjectId);
+                            if (res1 != null)
+                            {
+                                //changing DB
+                                res1.Authors.Add(Author);
+                                db.SaveChanges();
+                                continue;
+                            }
+                        }
+                       
+                       
                         dialogService.ShowMessage("Данные автора сохранены");
                     }
 

@@ -320,6 +320,7 @@ namespace STUDENTU_1._06.ViewModel
                     }
                     else
                     {
+                        //лагов тут еще пилить и пилить( (02/11/19)
                         //добавили авторов из AuthorsRecords в Evaluation
                         foreach (var item in AuthorsRecords)
                         {
@@ -374,13 +375,7 @@ namespace STUDENTU_1._06.ViewModel
                     
                     Order.Dates = Date;
                     Order.Subject = db.Subjects.Find(_Subj.Subj.SubjectId); ;
-                    Order.Money = Price;
-                    //if (SelectedExecuteAuthor is null)
-                    //    // set a default entry to author field
-                    //    Order.Author = db.Authors.Find(new Author() { AuthorId = 1 }.AuthorId);
-                    //else
-                    //    //set realy selected author
-                    //    Order.Author = SelectedExecuteAuthor;
+                    Order.Money = Price;                   
                     if (_Status.Status.StatusName=="принимается")
                         // set a default entry to status field
                         Order.Status = db.Statuses.Find(new Status() { StatusId = 1 }.StatusId); 

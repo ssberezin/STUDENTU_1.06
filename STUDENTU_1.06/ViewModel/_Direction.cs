@@ -45,7 +45,7 @@ namespace STUDENTU_1._06.ViewModel
         }
 
         //load data array from "Directions" table
-        private void LoadDirectionsData()
+        public void LoadDirectionsData()
         {
             using (StudentuConteiner db = new StudentuConteiner())
             {
@@ -59,9 +59,9 @@ namespace STUDENTU_1._06.ViewModel
                         {
                             DirectionId = item.DirectionId,
                             DirectionName = item.DirectionName
-                        });
-                        Dir = DirRecords[0];
+                        });                       
                     }
+                    Dir = DirRecords[0];
                 }
                 catch (ArgumentNullException ex)
                 {
