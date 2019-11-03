@@ -76,7 +76,7 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="1.4*"/>
+            <RowDefinition Height="1.7*"/>
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
@@ -87,10 +87,26 @@
             <RowDefinition />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <StackPanel  Margin="2">
+        <StackPanel Grid.ColumnSpan="2" Margin="2" >
             <TextBlock Text="Авторы" />
-            <RadioButton GroupName="GroupA" Content="Все авторы" IsChecked="False" Command="{Binding AllAuthorsCallCommand}"/>
-            <RadioButton GroupName="GroupA" Content="Авторы по тематике" IsChecked="False" Command="{Binding ThemAuthorsCallCommand}"/>
+            <StackPanel>
+                <RadioButton GroupName="GroupA" Content="Все авторы" IsChecked="False" Command="{Binding AllAuthorsCallCommand}"/>
+                <RadioButton GroupName="GroupA" Content="Авторы по тематике" IsChecked="False" Command="{Binding ThemAuthorsCallCommand}"/>
+            </StackPanel >
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.ColumnSpan="2">
+            <StackPanel HorizontalAlignment="Stretch"/>
+            <TextBlock/>            
+            <RadioButton GroupName="GroupA" x:Name="AuthorNickFind" Content="Поиск по нику автора" IsChecked="False" Command="{Binding ThemAuthorsCallCommand}"
+                             VerticalContentAlignment="Bottom" />
+            <StackPanel Orientation="Horizontal">
+                <TextBox Width="80" Margin="3" Background="White" FontSize="12" VerticalContentAlignment="Center"
+                         IsEnabled="{Binding IsChecked,
+                      ElementName=AuthorNickFind}"/>
+                <Button Content="Найти" Width="70"
+                         IsEnabled="{Binding IsChecked,
+                     ElementName=AuthorNickFind}"/>
+            </StackPanel>
         </StackPanel>
         <ListBox x:Name="Authors"
                      Grid.Row="1" Grid.RowSpan="5"
@@ -120,8 +136,8 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <TextBlock Text="Авторы, оцениваеющие работы" Grid.Column="2"/>
-        <ListBox x:Name="AuthorsAvaluat" Grid.Row="1" Grid.Column="2" Grid.RowSpan="5"
+        <TextBlock Text="Авторы, оцениваеющие работы" Grid.Row="1" Grid.Column="2"/>
+        <ListBox x:Name="AuthorsAvaluat" Grid.Row="2" Grid.Column="2" Grid.RowSpan="4"
                     ItemsSource="{Binding Source={StaticResource SortedSelectedAuthors}, 
                     UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding AuthorsRecord}"                   
                    TabIndex="6">

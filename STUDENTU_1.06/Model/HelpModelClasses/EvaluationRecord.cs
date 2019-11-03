@@ -10,7 +10,7 @@ namespace STUDENTU_1._06.Model.HelpModelClasses
     {
         public EvaluationRecord()
         {
-            this.FinalEvaluation = false;
+            this.FinalEvaluation = false;            
         }
 
         //public int EvaluationRecordId { get; set; }

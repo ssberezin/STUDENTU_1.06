@@ -133,6 +133,8 @@ namespace STUDENTU_1._06.ViewModel
            
         }
 
+        
+
         //call AddEvaluateWindow
         private RelayCommand addEvaluationCommand;
         public RelayCommand AddEvaluationCommand =>
@@ -237,7 +239,37 @@ namespace STUDENTU_1._06.ViewModel
 
         private void SaveAuthorEvaluateAuthorRecord()
         {
-            AuthorsRecord.EvaluationRecords.Add(EvaluationRecord);
+            //check for the entry before adding
+            foreach (EvaluationRecord item in AuthorsRecord.EvaluationRecords)
+                if (item.DeadLine != EvaluationRecord.DeadLine &&
+                    item.Price != EvaluationRecord.Price &&
+                    item.EvaluateDescription != EvaluationRecord.EvaluateDescription)
+                {
+                    AuthorsRecord.EvaluationRecords.Add(EvaluationRecord);
+                    dialogService.ShowMessage("Данные сохранены");
+                    EvaluationRecord.Price = 0;
+                    EvaluationRecord.EvaluateDescription = null;
+                }
+                else
+                    dialogService.ShowMessage("Уже есть запись с такой оценкой");
+        }
+
+        //===================================== For Cancel save evaluate order any author in EditAvaluatonWindow.xaml====================
+        private RelayCommand cancelAuthorEvaluateAuthorRecordCommand;
+        public RelayCommand CancelAuthorEvaluateAuthorRecordCommand =>
+            cancelAuthorEvaluateAuthorRecordCommand ?? (cancelAuthorEvaluateAuthorRecordCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        CancelAuthorEvaluateAuthorRecord();
+                        Window window = obj as Window;
+                        window.Close();
+                    }
+                    ));
+
+        private void CancelAuthorEvaluateAuthorRecord()
+        {
+            EvaluationRecord.Price = 0;
+            EvaluationRecord.EvaluateDescription = null;
         }
 
     }

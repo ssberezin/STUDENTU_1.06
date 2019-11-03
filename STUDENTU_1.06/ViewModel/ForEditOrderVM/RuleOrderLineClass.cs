@@ -245,23 +245,11 @@ namespace STUDENTU_1._06.ViewModel
                     ));
         private void AddSelectedAuthor()
         {
-            if (AuthorsRecord.Persone.NickName != "---")
-            {
-                SelectedAuthorsRecords.Add(AuthorsRecord);
-                Money money = new Money();
-                Evaluation evaluation = new Evaluation();
-                //evaluation.Authors.Add();
-                //Order.Money=money.Evaluation.Authors.Add(AuthorsRecord.Author);
-                //Order.Money.Evaluation.Authors.Add(new Author()
-                //{
-                //    AuthorId = AuthorsRecord.AuthorRecordId,
-                //    Source = AuthorsRecord.Source
-                //});
-            }
-            else
-            {
+            if (AuthorsRecord.Persone.NickName != "---")           
+                SelectedAuthorsRecords.Add(AuthorsRecord);         
+            else           
                 dialogService.ShowMessage("Нельзя добавить эту запись");
-            }
+           
             
         }
 
@@ -277,13 +265,10 @@ namespace STUDENTU_1._06.ViewModel
 
         private void DelSelectedAuthor()
         {
-            SelectedAuthorsRecords.Remove(AuthorsRecord);
-            Order.Money.Evaluation.Authors.Remove(AuthorsRecord.Author);
-            //Order.Money.Evaluation.Authors.Remove(new Author()
-            //                                        {
-            //                                            AuthorId = AuthorsRecord.AuthorRecordId,
-            //                                            Source = author.Source
-            //                                        });
+            if(SelectedAuthorsRecords.Count()!=0)
+             SelectedAuthorsRecords.Remove(AuthorsRecord);
+            else
+                dialogService.ShowMessage("Нечего уже ничего удалять");
         }
 
         //=============================Call window SetFinalAvaluationWindow.xaml========================================

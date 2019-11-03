@@ -220,7 +220,7 @@ namespace STUDENTU_1._06.ViewModel
             Date = new Dates();           
             _Dir = new _Direction();            
             Evaluation = new Evaluation();
-            EvaluationRecord = new EvaluationRecord();
+            EvaluationRecord = new EvaluationRecord() { DeadLine=Date.AuthorDeadLine};
             ExecuteAuthor = new AuthorsRecord();
             ExecuteAuthor.Persone.NickName = "не задан";
             FinalEvaluationRecord = new EvaluationRecord()
