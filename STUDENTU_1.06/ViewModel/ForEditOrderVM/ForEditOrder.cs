@@ -98,6 +98,20 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
+        private _Evaluation _evaluation;
+        public _Evaluation _Evaluation
+        {
+            get { return _evaluation; }
+            set
+            {
+                if (_evaluation != value)
+                {
+                    _evaluation = value;
+                    OnPropertyChanged(nameof(_Evaluation));
+                }
+            }
+        }
+
         private _Subject _subj;
         public _Subject _Subj
         {
@@ -200,8 +214,7 @@ namespace STUDENTU_1._06.ViewModel
         public ForEditOrder(Window editWindow, DefaultShowWindowService showWindow,
            IDialogService dialogService)
         {
-            AuthorsRecords = new ObservableCollection<AuthorsRecord>();           
-            SelectedAuthorsRecords = new ObservableCollection<AuthorsRecord> ();            
+            
             ContactsRecords = new ObservableCollection<Contacts>();
             BlackListRecords = new ObservableCollection<BlackListHelpModel>();
             editWindow.Loaded += EditWindow_Loaded;
@@ -214,31 +227,18 @@ namespace STUDENTU_1._06.ViewModel
         private void EditWindow_Loaded(object sender, RoutedEventArgs e)
         {
 
-            Author = new Author();
-            AuthorsRecord = new AuthorsRecord();
+            Author = new Author();            
             Contacts = new Contacts();
             Date = new Dates();           
-            _Dir = new _Direction();            
-            Evaluation = new Evaluation();
-            EvaluationRecord = new EvaluationRecord() { DeadLine=Date.AuthorDeadLine};
-            ExecuteAuthor = new AuthorsRecord();
-            ExecuteAuthor.Persone.NickName = "не задан";
-            FinalEvaluationRecord = new EvaluationRecord()
-            {
-                DeadLine = new DateTime(1900, 1, 1),
-                Price = 0,
-                EvaluateDescription = ""
-            };
+            _Dir = new _Direction();
+            _Evaluation = new _Evaluation(Date);
             Order = new OrderLine { OrderNumber = GetOrderNumber() };
             Persone = new Persone ();
             PersoneDescription = new PersoneDescription();
             Price = new Money();            
-            SelectetdAuthorContacts = new Contacts();
-            SelectedExecuteAuthor = new Author();            
             _Status = new _Status();
             _Subj = new _Subject();
-            _Source = new _Source();            
-            WinnerEvaluation = new Evaluation();
+            _Source = new _Source();
             _WorkType = new _WorkType();
         }
 
@@ -309,64 +309,35 @@ namespace STUDENTU_1._06.ViewModel
             {
                 try
                 {
-                    //Order.ExecuteAuthor = db.Authors.Find(new Author() { AuthorId = SelectedExecuteAuthor.AuthorId }.AuthorId);
-
-                    if (SelectedExecuteAuthor.AuthorId==0)
-                    {
-                        // set a default entry to author field
-                        Order.ExecuteAuthor = db.Authors.Find(new Author() { AuthorId = 1 }.AuthorId);
-                        Order.Author = Order.ExecuteAuthor;
-                       // Order.Author.Evaluation.Add(Evaluation);
-                    }
+                    if (_Evaluation._RuleOrderLine.SelectedExecuteAuthor.AuthorId==0)
+                        Order.Author = _Evaluation._RuleOrderLine.ExecuteAuthor.Author;
                     else
                     {
                         //лагов тут еще пилить и пилить( (02/11/19)
                         //добавили авторов из AuthorsRecords в Evaluation
-                        foreach (var item in AuthorsRecords)
+                        foreach (var item in _Evaluation._RuleOrderLine.AuthorsRecords)
                         {
-                            Evaluation.Authors.Add(Author);
-                            //Evaluation.Authors.Add(new Author()
-                            //{
-                            //    AuthorId = item.AuthorRecordId,
-                            //    Source = item.Source
-                                
-                            //});
+                            _Evaluation.Evaluation.Authors.Add(item.Author);//вот эта хрень уже под сомнение. Накой она теперь?...
+                            Order.Authors.Add(item.Author);
                         }
-                        //добавили оценки авторам  Evaluation из AuthorsRecord.EvaluationRecords
-                        foreach (var i in Evaluation.Authors)
+
+                        //добавили оценки Evaluation авторам  Order.Authors  из _Evaluation._RuleOrderLine.AuthorsRecord.EvaluationRecords
+                        //т.е. получили полноценный список оценок авторов по текущему заказу
+                        foreach (var i in Order.Authors)
                         {
-                            foreach (var item in AuthorsRecord.EvaluationRecords)
+                            foreach (var item in _Evaluation._RuleOrderLine.AuthorsRecord.EvaluationRecords)
                             {
 
-                                Evaluation.Moneys.Add(new Money() { Price = item.Price });
-                                Evaluation.Description = item.EvaluateDescription;
-                                Evaluation.Dates.Add(new Dates() { DeadLine = item.DeadLine });
-                                i.Evaluation.Add(Evaluation);
-                            }
+                                _Evaluation.Evaluation.Moneys.Add(new Money() { Price = item.Price });
+                                _Evaluation.Evaluation.Description = item.EvaluateDescription;
+                                _Evaluation.Evaluation.Dates.Add(new Dates() { DeadLine = item.DeadLine });
+                                i.Evaluation.Add(_Evaluation.Evaluation);
+                            }                            
                         }
-
-                        Order.ExecuteAuthor = db.Authors.Find(new Author() { AuthorId = SelectedExecuteAuthor.AuthorId }.AuthorId);
-                        Order.Author = db.Authors.Find(new Author() { AuthorId = SelectedExecuteAuthor.AuthorId }.AuthorId);
-                        Order.Author.Evaluation.Add(Evaluation);
+                        Order.Author = db.Authors.Find(new Author() { AuthorId = _Evaluation._RuleOrderLine.SelectedExecuteAuthor.AuthorId }.AuthorId);
+                        Order.Author.Evaluation.Add(_Evaluation.Evaluation);
                     }
 
-                    //in SetSelectEvaluation(), whot in EvaluationClass.cs, we get :
-                    //Order.ExecuteAuthorComments = item.EvaluateDescription;
-                    //Order.ExecuteAuthorPrice = item.Price;
-                    //Order.ExecuteAuthorDeadLine = item.DeadLine;
-
-                    //эта ветка уже нафиг не нужна, по идее
-                    //foreach (var item in AuthorsRecord.EvaluationRecords)
-                    //{
-                    //    if (item.FinalEvaluation==true)
-                    //    {
-                    //        WinnerEvaluation.Moneys.Add(new Money() { Price = item.Price });
-                    //        WinnerEvaluation.Description = item.EvaluateDescription;
-                    //        WinnerEvaluation.Dates.Add(new Dates() { DeadLine = item.DeadLine });
-                    //        SelectedExecuteAuthor.Evaluation.Add(WinnerEvaluation);
-                    //        break;
-                    //    }
-                    //}
                     
                     Persone.Contacts=Contacts;
                     Order.Direction = db.Directions.Find(_Dir.Dir.DirectionId);                    

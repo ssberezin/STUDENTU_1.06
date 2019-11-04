@@ -1,6 +1,7 @@
 ﻿using STUDENTU_1._06.Model.DBModelClasses;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -15,6 +16,7 @@ namespace STUDENTU_1._06.Model
            // this.AfterDoneDescriptions = new List<AfterDoneDescription>();
             this.WorkInCredit = true;
             this.OrderCount = 1;
+            this.Authors = new ObservableCollection<Author>();
         }
 
         public int OrderLineId { get; set; }
@@ -37,7 +39,7 @@ namespace STUDENTU_1._06.Model
         [MaxLength(2000)]
         public string RedactionLog { get; set; }
 
-        public Author ExecuteAuthor { get; set; }
+       // public Author ExecuteAuthor { get; set; }
         public decimal ExecuteAuthorPrice { get; set; }
         [Column("ExecuteAuthorComments", TypeName = "nvarchar")]
         [MaxLength(2000)]
@@ -56,6 +58,8 @@ namespace STUDENTU_1._06.Model
         public virtual Direction Direction { get; set; }
         public virtual Source Source { get; set; }
         public virtual AfterDoneDescription AfterDoneDescriptions { get; set; }
-        
+
+        public virtual ObservableCollection<Author> Authors { get; set; }
+
     }
 }

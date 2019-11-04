@@ -217,7 +217,7 @@ namespace STUDENTU_1._06.ViewModel
                 try
                 {
                     var res = db.Orderlines;
-                    if (Subj.SubjectId != 1)
+                    if (Subj.SubjectId != 1&&!CheckRecordBeforDelete(Subj))
                     {
                         if (dialogService.YesNoDialog("Точно нужно удалить эту запись?") == true)
                         {
@@ -259,6 +259,54 @@ namespace STUDENTU_1._06.ViewModel
                     dialogService.ShowMessage(ex.Message);
                 }
             }
+        }
+
+        //check if the record has links with other tables before deleting
+        private bool CheckRecordBeforDelete(Subject subj)
+        {
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                try
+                {
+                    //check in Orderlines table
+                    var res = db.Orderlines;
+                    foreach (OrderLine item in res)
+                        if (item.Subject.SubjectId == subj.SubjectId ||
+                           item.Subject.SubName == subj.SubName)
+                            return true;
+                    //if previos check  in Orderlines table wasn't true - check in Author table
+                    var authorRes = db.Authors;
+                    foreach (Author item in authorRes)
+                        foreach (Subject i in item.Subject)
+                            if (i.SubjectId == subj.SubjectId ||
+                               i.SubName == subj.SubName)
+                                return true;
+                    return false;
+
+                }
+                catch (ArgumentNullException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (OverflowException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+            }
+            //есть подозрение, что такой подход не очень то правомерен, но пока лень с этим заморачиваться
+            return false;
         }
 
         //===================================COMMAND FOR ADD Subj INTO AuthorSubjects ============      

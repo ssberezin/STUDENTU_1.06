@@ -134,26 +134,26 @@ namespace STUDENTU_1._06.ViewModel
             {
                 try
                 {
-                    //var res = db.Orderlines;
-                    //if (Status.StatusId != 1)
-                    //{
-                    //    if (dialogService.YesNoDialog("Точно нужно удалить эту запись?") == true)
-                    //    {
-                    //        //changing DB
-                    //        //we find all the records in which we have the desired Id and make a replacement
-                    //        foreach (OrderLine order in res)
-                    //        {
-                    //            if (order.Status.StatusId == Status.StatusId)
-                    //                order.Status = db.Statuses.Find(new Status() { StatusId = 1 }.StatusId);
-                    //        }
-                    //        db.Statuses.Remove(db.Statuses.Find(Status.StatusId));
-                    //        db.SaveChanges();
-                    //        //changing collection
-                    //        StatusRecords.Remove(Status);
-                    //    }
-                    //}
-                    //else
-                    //    dialogService.ShowMessage("Нельзя удалить эту запись");
+                    var res = db.Authors;
+                    if (AuthorStatus.AuthorStatusId != 1&& !CheckRecordBeforDelete(AuthorStatus))
+                    {
+                        if (dialogService.YesNoDialog("Точно нужно удалить эту запись?") == true)
+                        {
+                            //changing DB
+                            //we find all the records in which we have the desired Id and make a replacement
+                            foreach (Author item in res)
+                            {
+                                if (item.AuthorStatus.AuthorStatusId == AuthorStatus.AuthorStatusId)
+                                    item.AuthorStatus = db.AuthorStatuses.Find(new AuthorStatus() { AuthorStatusId = 1 }.AuthorStatusId);
+                            }
+                            db.AuthorStatuses.Remove(db.AuthorStatuses.Find(AuthorStatus.AuthorStatusId));
+                            db.SaveChanges();
+                            //changing collection
+                            AuthorStatusRecords.Remove(AuthorStatus);
+                        }
+                    }
+                    else
+                        dialogService.ShowMessage("Нельзя удалить эту запись");
 
                 }
                 catch (ArgumentNullException ex)
@@ -178,6 +178,47 @@ namespace STUDENTU_1._06.ViewModel
                 }
             }
         }
+        //check if the record has links with other tables before deleting
+        private bool CheckRecordBeforDelete(AuthorStatus authorStatus)
+        {
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                try
+                {
+                    
+                    var res = db.Authors;
+                    foreach (Author item in res)
+                        if(item.AuthorStatus.AuthorStatusId==authorStatus.AuthorStatusId||
+                           item.AuthorStatus.AuthorStatusName == authorStatus.AuthorStatusName )                        
+                            return true;
+
+                    return false;
+
+                }
+                catch (ArgumentNullException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (OverflowException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+            }
+            //есть подозрение, что такой подход не очень то правомерен, но пока лень с этим заморачиваться
+            return false;
+        }
 
         //===================THIS METHOD IS FOR ADD RECORDS IN STATUS TABLES==============
         public void AddAuthorStatus()
@@ -186,24 +227,24 @@ namespace STUDENTU_1._06.ViewModel
             {
                 try
                 {
-                    //var res4 = db.Statuses.Any(o => o.StatusName == Status.StatusName);
-                    //if (!res4)
-                    //{
-                    //    if (!string.IsNullOrEmpty(Status.StatusName))
-                    //    {
-                    //        Status.StatusName = Status.StatusName.ToLower();
-                    //        db.Statuses.Add(Status);
-                    //        db.SaveChanges();
-                    //        StatusRecords.Clear();
-                    //        LoadStatusData();
-                    //        Status = new Status();
+                    var res4 = db.AuthorStatuses.Any(o => o.AuthorStatusName == AuthorStatus.AuthorStatusName);
+                    if (!res4)
+                    {
+                        if (!string.IsNullOrEmpty(AuthorStatus.AuthorStatusName))
+                        {
+                            AuthorStatus.AuthorStatusName = AuthorStatus.AuthorStatusName.ToLower();
+                            db.AuthorStatuses.Add(AuthorStatus);
+                            db.SaveChanges();
+                            AuthorStatusRecords.Clear();
+                            LoadData();
+                            AuthorStatus = new AuthorStatus();
 
-                    //    }
-                    //    else
-                    //        return;
-                    //}
-                    //else
-                    //    dialogService.ShowMessage("Уже есть такое название в базе данных");
+                        }
+                        else
+                            return;
+                    }
+                    else
+                        dialogService.ShowMessage("Уже есть такое название в базе данных");
                 }
                 catch (ArgumentNullException ex)
                 {
@@ -235,13 +276,13 @@ namespace STUDENTU_1._06.ViewModel
             {
                 try
                 {
-                    //var res4 = db.Statuses.Find(Status.StatusId);
-                    //if (res4 != null)
-                    //{
-                    //    //changing DB
-                    //    res4.StatusName = Status.StatusName.ToLower();
-                    //    db.SaveChanges();
-                    //}
+                    var res4 = db.AuthorStatuses.Find(AuthorStatus.AuthorStatusId);
+                    if (res4 != null)
+                    {
+                        //changing DB
+                        res4.AuthorStatusName = AuthorStatus.AuthorStatusName.ToLower();
+                        db.SaveChanges();
+                    }
                 }
                 catch (ArgumentNullException ex)
                 {

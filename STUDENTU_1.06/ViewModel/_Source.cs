@@ -178,6 +178,46 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
+        //check if the record has links with other tables before deleting
+        private bool CheckRecordBeforDelete(Source source)
+        {
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                try
+                {
+                    //check in Orderlines table
+                    var res = db.Orderlines;
+                    foreach (OrderLine item in res)
+                        if (item.Source.SourceId == source.SourceId ||
+                           item.Source.SourceName == source.SourceName)
+                            return true;
+                    return false;
+                }
+                catch (ArgumentNullException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (OverflowException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+            }
+            //есть подозрение, что такой подход не очень то правомерен, но пока лень с этим заморачиваться
+            return false;
+        }
+
         //===================THIS METHOD IS FOR ADD RECORDS IN SOURCE TABLE==============
         public void AddSource()
         {
