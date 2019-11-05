@@ -294,8 +294,7 @@ namespace STUDENTU_1._06.ViewModel
 
         private void CancelAuthorEvaluateAuthorRecord()
         {
-            EvaluationRecord.Price = 0;
-            EvaluationRecord.EvaluateDescription = null;
+            EvaluationRecord = null;           
         }
 
     }

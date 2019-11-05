@@ -227,7 +227,7 @@
             <Button x:Name="AddDStatus" Width="40" Background="Gray" Content="..." TabIndex="11"
                     Command="{Binding _AuthorStatus.NewEditAuthorStatusCommand}" CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}"/>
-            <!--Command NewEditStatusCommand can find in StatusClass.cs-->
+            <!--Command NewEditStatusCommand can find in _AuthorStatus.cs-->
         </WrapPanel>
         <Button Grid.Row="7"  Content="Направления?+" Background="#FF0996AC" TabIndex="12"               
                 Command="{Binding AddDirectionsCommand}" 

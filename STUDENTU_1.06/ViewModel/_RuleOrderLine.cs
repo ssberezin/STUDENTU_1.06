@@ -37,11 +37,12 @@ namespace STUDENTU_1._06.ViewModel
             SelectedAuthorsRecords = new ObservableCollection<AuthorsRecord>();
 
             AuthorsRecord = new AuthorsRecord();
+          //  SelectetdAuthorContacts = new Contacts();
             _Dir = new _Direction();
             ExecuteAuthor = new AuthorsRecord();
             ExecuteAuthor.Persone.NickName = "не задан";
             SelectedExecuteAuthor = new Author();
-            SelectetdAuthorContacts = new Contacts();
+          
 
             showWindow = new DefaultShowWindowService();
             dialogService = new DefaultDialogService();
@@ -91,19 +92,19 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
-        private Contacts selectetdAuthorContacts;
-        public Contacts SelectetdAuthorContacts
-        {
-            get { return selectetdAuthorContacts; }
-            set
-            {
-                if (selectetdAuthorContacts != value)
-                {
-                    selectetdAuthorContacts = value;
-                    OnPropertyChanged(nameof(SelectetdAuthorContacts));
-                }
-            }
-        }
+        //private Contacts selectetdAuthorContacts;
+        //public Contacts SelectetdAuthorContacts
+        //{
+        //    get { return selectetdAuthorContacts; }
+        //    set
+        //    {
+        //        if (selectetdAuthorContacts != value)
+        //        {
+        //            selectetdAuthorContacts = value;
+        //            OnPropertyChanged(nameof(SelectetdAuthorContacts));
+        //        }
+        //    }
+        //}
 
         private _Direction  _dir;
         public _Direction _Dir
@@ -275,6 +276,48 @@ namespace STUDENTU_1._06.ViewModel
 
         }
 
+        
+        //=============================Copy to ClipBoard command====================
+        private RelayCommand copyEmailToClipBoardCommand;
+        public RelayCommand CopyEmailToClipBoardCommand =>
+            copyEmailToClipBoardCommand ?? (copyEmailToClipBoardCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        CopyEmailToClipBoard();
+                    }
+                    ));
+        private void CopyEmailToClipBoard()
+        {
+            Clipboard.SetText($"{AuthorsRecord.Contacts.Email1},{AuthorsRecord.Contacts.Email2}");
+        }
+
+        private RelayCommand copyPhone1ToClipBoardCommand;
+        public RelayCommand CopyPhone1ToClipBoardCommand =>
+            copyPhone1ToClipBoardCommand ?? (copyPhone1ToClipBoardCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        CopyPhone1ToClipBoard();
+                    }
+                    ));
+        private void CopyPhone1ToClipBoard()
+        {
+            Clipboard.SetText($"{AuthorsRecord.Contacts.Phone1}");
+        }
+
+        private RelayCommand copyPhone2ToClipBoardCommand;
+        public RelayCommand CopyPhone2ToClipBoardCommand =>
+            copyPhone2ToClipBoardCommand ?? (copyPhone2ToClipBoardCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        CopyPhone2ToClipBoard();
+                    }
+                    ));
+        private void CopyPhone2ToClipBoard()
+        {
+            Clipboard.SetText($"{AuthorsRecord.Contacts.Phone2}");
+        }
+
+
         //=============================fill listbox "AuthorsAvaluat" if press button "+"====================
         private RelayCommand addSelectedAuthorCommand;
         public RelayCommand AddSelectedAuthorCommand =>
@@ -290,8 +333,6 @@ namespace STUDENTU_1._06.ViewModel
                 SelectedAuthorsRecords.Add(AuthorsRecord);         
             else           
                 dialogService.ShowMessage("Нельзя добавить эту запись");
-           
-            
         }
 
         //=============================edit listbox "AuthorsAvaluat" if press button "-"====================

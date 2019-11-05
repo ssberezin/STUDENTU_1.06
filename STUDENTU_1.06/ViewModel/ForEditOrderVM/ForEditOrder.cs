@@ -27,34 +27,7 @@ namespace STUDENTU_1._06.ViewModel
         IShowWindowService showWindow;
 
         //==========================================PROPERTIES============================================
-        //for set value of order number. Need to work more
-        private OrderLine order;
-        public OrderLine Order
-        {
-            get { return order; }
-            set
-            {
-                if (order != value)
-                {
-                    order = value;
-                    OnPropertyChanged(nameof(Order));
-                }
-            }
-        }
-
-        private Persone persone;
-        public Persone Persone
-        {
-            get { return persone; }
-            set
-            {
-                if (persone != value)
-                {
-                    persone = value;
-                    OnPropertyChanged(nameof(Persone));
-                }
-            }
-        }
+        //for set value of order number. Need to work more            
 
         private Author author;
         public Author Author
@@ -70,16 +43,44 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
-        private Money price;
-        public Money Price
+        //private _AuthorStatus _authorStatus;
+        //public _AuthorStatus _AuthorStatus
+        //{
+        //    get { return _authorStatus; }
+        //    set
+        //    {
+        //        if (_authorStatus != value)
+        //        {
+        //            _authorStatus = value;
+        //            OnPropertyChanged(nameof(_AuthorStatus));
+        //        }
+        //    }
+        //}
+
+        private Contacts contacts;
+        public Contacts Contacts
         {
-            get { return price; }
+            get { return contacts; }
             set
             {
-                if (price != value)
+                if (contacts != value)
                 {
-                    price = value;
-                    OnPropertyChanged(nameof(Price));
+                    contacts = value;
+                    OnPropertyChanged(nameof(contacts));
+                }
+            }
+        }
+
+        private Dates date;
+        public Dates Date
+        {
+            get { return date; }
+            set
+            {
+                if (date != value)
+                {
+                    date = value;
+                    OnPropertyChanged(nameof(Date));
                 }
             }
         }
@@ -112,6 +113,48 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
+        private Persone persone;
+        public Persone Persone
+        {
+            get { return persone; }
+            set
+            {
+                if (persone != value)
+                {
+                    persone = value;
+                    OnPropertyChanged(nameof(Persone));
+                }
+            }
+        }
+
+        private Money price;
+        public Money Price
+        {
+            get { return price; }
+            set
+            {
+                if (price != value)
+                {
+                    price = value;
+                    OnPropertyChanged(nameof(Price));
+                }
+            }
+        }
+
+        private OrderLine order;
+        public OrderLine Order
+        {
+            get { return order; }
+            set
+            {
+                if (order != value)
+                {
+                    order = value;
+                    OnPropertyChanged(nameof(Order));
+                }
+            }
+        }
+
         private _Subject _subj;
         public _Subject _Subj
         {
@@ -139,6 +182,7 @@ namespace STUDENTU_1._06.ViewModel
                 }
             }
         }
+             
 
         private _Source _source;
         public _Source _Source
@@ -168,33 +212,7 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
-        private Contacts contacts;
-        public Contacts Contacts
-        {
-            get { return contacts; }
-            set
-            {
-                if (contacts != value)
-                {
-                    contacts = value;
-                    OnPropertyChanged(nameof(contacts));
-                }
-            }
-        }
-
-        private Dates date;
-        public Dates Date
-        {
-            get { return date; }
-            set
-            {
-                if (date!= value)
-                {
-                    date = value;
-                    OnPropertyChanged(nameof(Date));
-                }
-            }
-        }
+       
         
 
         private PersoneDescription personeDescription;
@@ -217,17 +235,35 @@ namespace STUDENTU_1._06.ViewModel
             
             ContactsRecords = new ObservableCollection<Contacts>();
             BlackListRecords = new ObservableCollection<BlackListHelpModel>();
-            editWindow.Loaded += EditWindow_Loaded;
+
+
+            Author = new Author();
+            //_AuthorStatus = new _AuthorStatus();
+            Contacts = new Contacts();
+            Date = new Dates();
+            _Dir = new _Direction();
+            _Evaluation = new _Evaluation(Date);
+            Order = new OrderLine { OrderNumber = GetOrderNumber() };
+            Persone = new Persone();
+            PersoneDescription = new PersoneDescription();
+            Price = new Money();
+            _Status = new _Status();
+            _Subj = new _Subject();
+            _Source = new _Source();
+            _WorkType = new _WorkType();
+
+            // editWindow.Loaded += EditWindow_Loaded;
             this.showWindow = showWindow;
             this.dialogService = dialogService;
         }
 
 
-
+        //есть мнение, что этот метод тут нахрен не приснился
         private void EditWindow_Loaded(object sender, RoutedEventArgs e)
         {
 
-            Author = new Author();            
+            Author = new Author();
+            //_AuthorStatus = new _AuthorStatus();       
             Contacts = new Contacts();
             Date = new Dates();           
             _Dir = new _Direction();
@@ -358,6 +394,7 @@ namespace STUDENTU_1._06.ViewModel
                     
                     db.SaveChanges();
                     dialogService.ShowMessage("Данные о заказе сохранены");
+                    
 
                 }
                 catch (ArgumentNullException ex)
@@ -389,8 +426,9 @@ namespace STUDENTU_1._06.ViewModel
 
         public RelayCommand CloseWindowCommand => closeWindowCommand ?? (closeWindowCommand = new RelayCommand(
                     (obj) =>
-                    {
-                        Window window = obj as Window;
+                    {                       
+                        
+                       Window window = obj as Window;
                         window.Close();                       
                     }
                     ));
