@@ -10,8 +10,14 @@
         mc:Ignorable="d"
          WindowStartupLocation="CenterScreen"
         Title="Равспределение заказа на выполнение" 
-        Height="500" Width="830" MinWidth="830" MinHeight="500"
-        >
+        Height="500" Width="850" MinWidth="850" MinHeight="500"
+         TextElement.Foreground="{DynamicResource MaterialDesignBody}" 
+             
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal" 
+        TextOptions.TextRenderingMode="Auto"
+        FontFamily="{DynamicResource MaterialDesignFont}">
 
     <Window.InputBindings>
         <KeyBinding Gesture="Esc" Command="{Binding CloseWindowCommand}"
@@ -53,6 +59,38 @@
                 </CollectionViewSource.SortDescriptions>
             </CollectionViewSource>
 
+            <ControlTemplate x:Key="TextBoxTemplate" TargetType="{x:Type TextBoxBase}">
+                <Grid >
+                    <Border Background="{TemplateBinding Background}" 
+                x:Name="Bd" BorderBrush="White"
+                BorderThickness="2" CornerRadius="0"  >
+                        <ScrollViewer x:Name="PART_ContentHost"/>
+                    </Border>
+                </Grid>
+            </ControlTemplate>
+
+            
+            <Style TargetType="{x:Type TextBox}">
+                <Setter Property="Template" Value="{StaticResource TextBoxTemplate}"/>
+                <Setter Property="FontFamily" Value="Verdana"/>
+                <Setter Property="Foreground" Value="Black"/>
+                <Setter Property="Margin" Value="5"/>
+                <Setter Property="TextAlignment" Value="Left"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="SpellCheck.IsEnabled" Value="True"/>                
+                <Setter Property="FontSize" Value="{Binding Path=ActualHeight, RelativeSource={RelativeSource Self}, Converter={StaticResource heightToFontSizeConverter}}"/>
+                
+            </Style>
+            <Style TargetType="ListBox" x:Name="ListBoxStyle">
+                <Setter Property="VerticalAlignment" Value="Stretch"/>
+                <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                <Setter Property="Margin" Value="3"/>
+                <Setter Property="Background" Value="White"/>
+                <Setter Property="SelectionMode" Value="Single"/>
+                <Setter Property="IsSynchronizedWithCurrentItem" Value="False"/>
+                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+            </Style>
+
             <Style TargetType="TextBlock" x:Name="TxtBlockStyle">
                 <Setter Property="FontWeight" Value="Bold"/>
                 <Setter Property="TextAlignment" Value="Center"/>
@@ -62,15 +100,7 @@
                 <Setter Property="FontWeight" Value="Bold"/>
             </Style>
 
-            <Style TargetType="ListBox" x:Name="ListBoxStyle">
-                <Setter Property="VerticalAlignment" Value="Stretch"/>
-                <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                <Setter Property="Margin" Value="5"/>
-                <Setter Property="Background" Value="White"/>
-                <Setter Property="SelectionMode" Value="Single"/>
-                <Setter Property="IsSynchronizedWithCurrentItem" Value="False"/>
-                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
-            </Style>
+           
         </ResourceDictionary>
     </Window.Resources>
 
@@ -109,12 +139,12 @@
             <RadioButton GroupName="GroupA" x:Name="AuthorNickFind" Content="Поиск по нику автора" IsChecked="False" Command="{Binding ThemAuthorsCallCommand}"
                              VerticalContentAlignment="Bottom" />
             <StackPanel Orientation="Horizontal">
-                <TextBox Width="100" Margin="5" Background="White" FontSize="12" VerticalContentAlignment="Center"
-                         IsEnabled="{Binding IsChecked,
-                      ElementName=AuthorNickFind}" Height="22"/>
-                <Button Content="Найти" Width="70"
-                         IsEnabled="{Binding IsChecked,
-                     ElementName=AuthorNickFind}"/>
+                <TextBox x:Name="AuthorNick" Width="100" Margin="3" Background="White"
+                         FontSize="12"
+                         IsEnabled="{Binding IsChecked, ElementName=AuthorNickFind}" Height="22"/>
+                <Button Content="Найти" Width="70" IsEnabled="{Binding IsChecked,ElementName=AuthorNickFind}"
+                        Command="{Binding  _Evaluation._RuleOrderLine.FindAuthorByNickCommand}"
+                        CommandParameter="{Binding Path=Text, ElementName=AuthorNick}"/>
             </StackPanel>
         </StackPanel>
         <ListBox x:Name="Authors"
@@ -197,27 +227,7 @@
             <!-- Command CompareAvaluationCommand does not exist yet-->
         </WrapPanel>
         <TextBlock Text="Контакты автора"  Grid.Column="3"/>
-        <!--<StackPanel Grid.Row="1" Grid.Column="3" Grid.RowSpan="5"
-                   DataContext="{Binding _Evaluation._RuleOrderLine.AuthorsRecord.Contacts}" >
-
-            <TextBox Text="{Binding Phone1}" Margin="5"
-                                   TextWrapping="WrapWithOverflow" 
-                                   TextAlignment="Center"
-                         MinWidth="190" Background="White"/>
-            <TextBox Text="{Binding _Evaluation._RuleOrderLine.AuthorsRecord.Contacts.Phone1}" Margin="5"
-                                   TextWrapping="WrapWithOverflow" 
-                                   TextAlignment="Center"
-                           MinWidth="190" Background="White"/>
-
-            <TextBox Text="{Binding _Evaluation._RuleOrderLine.AuthorsRecord.Contacts.Phone1}" Margin="5"
-                                   TextWrapping="WrapWithOverflow" 
-                                   TextAlignment="Center"
-                         MinWidth="190" Background="White"/>
-            <TextBox Text="{Binding _Evaluation._RuleOrderLine.AuthorsRecord.Contacts.Phone1}" Margin="5"
-                                   TextWrapping="WrapWithOverflow" 
-                                   TextAlignment="Center"
-                         MinWidth="190" Background="White"/>
-        </StackPanel>-->
+      
         <ListBox x:Name="AuthorContacts" 
                  Grid.Row="1" Grid.Column="3" Grid.RowSpan="5"                                   
                      TabIndex="8" >
@@ -229,20 +239,24 @@
                               Height="20"/>
                     <MenuItem Header="Скопировать 2-й номер телефона" Command="{Binding _Evaluation._RuleOrderLine.CopyPhone2ToClipBoardCommand}" 
                               Height="20"/>
+                    <MenuItem Header="Скопировать FaceBook" Command="{Binding _Evaluation._RuleOrderLine.CopyFBToClipBoardCommand}" 
+                              Height="20"/>
+                    <MenuItem Header="Скопировать VK" Command="{Binding _Evaluation._RuleOrderLine.CopyVKToClipBoardCommand}" 
+                              Height="20"/>
                 </ContextMenu>
             </ListBox.ContextMenu>
-            <TextBlock Text="{Binding  _Evaluation._RuleOrderLine.AuthorsRecord.Contacts.Email1}" Margin="2"
-                                   TextWrapping="WrapWithOverflow" 
+            <TextBlock Text="{Binding  _Evaluation._RuleOrderLine.AuthorsRecord.Contacts.Email1}" Margin="2"                                   
                                    TextAlignment="Center"/>
-            <TextBlock Text="{Binding _Evaluation._RuleOrderLine.AuthorsRecord.Contacts.Email2}" Margin="2"
-                                   TextWrapping="WrapWithOverflow" 
+            <TextBlock Text="{Binding _Evaluation._RuleOrderLine.AuthorsRecord.Contacts.Email2}" Margin="2"                                   
                                    TextAlignment="Center"/>
-            <TextBlock Text="{Binding _Evaluation._RuleOrderLine.AuthorsRecord.Contacts.Phone1}" Margin="2"
-                                   TextWrapping="WrapWithOverflow" 
+            <TextBlock Text="{Binding _Evaluation._RuleOrderLine.AuthorsRecord.Contacts.Phone1}" Margin="2"                                   
                                    TextAlignment="Center"/>
-            <TextBlock Text="{Binding _Evaluation._RuleOrderLine.AuthorsRecord.Contacts.Phone2}" Margin="2"
-                                   TextWrapping="WrapWithOverflow" 
-                                   TextAlignment="Center"/>                   
+            <TextBlock Text="{Binding _Evaluation._RuleOrderLine.AuthorsRecord.Contacts.Phone2}" Margin="2"                                  
+                                   TextAlignment="Center"/>
+            <TextBlock Text="{Binding _Evaluation._RuleOrderLine.AuthorsRecord.Contacts.FaceBook}" Margin="2"                                  
+                                   TextAlignment="Center"/>
+            <TextBlock Text="{Binding _Evaluation._RuleOrderLine.AuthorsRecord.Contacts.VK}" Margin="2"                                  
+                                   TextAlignment="Center"/>
         </ListBox>
         <Button Grid.Column="3" Grid.Row="6" Content="Выбрать автора" Background="#FF41BD41"
                 TabIndex="9"
@@ -276,10 +290,19 @@
         </StackPanel>
         <TextBlock  Text="Коменты автора при оценке:" Margin="5" Foreground="Blue"
                      Grid.Column="5" Grid.Row="3"/>
-        <TextBox  Text="{Binding _Evaluation.FinalEvaluationRecord.EvaluateDescription}"
+        <TextBox x:Name="AuthorEvalComment" Text="{Binding _Evaluation.FinalEvaluationRecord.EvaluateDescription}"
                   TextAlignment="Center" Grid.Column="5" Grid.Row="4" Grid.RowSpan="5"
                       VerticalContentAlignment="Center" Foreground="Red" Background="White"
-                      Margin="6,6,5.6,5.8" TextWrapping="Wrap" Grid.ColumnSpan="3"  />
+                      Margin="6,6,5.6,5.8" TextWrapping="Wrap" Grid.ColumnSpan="3"  >
+            <TextBox.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Скопировать в буфер обмена" Command="{Binding _Evaluation._RuleOrderLine.CopyToClipBoardCommand}" 
+                              Height="20"
+                              CommandParameter="{Binding Path=Text, ElementName=AuthorEvalComment}"/>
+                </ContextMenu>
+            </TextBox.ContextMenu>
+
+        </TextBox>
         <Button Grid.Column="4" Grid.Row="9" Content="Отмена" Background="Red"
                 TabIndex="9"                
                 Command="{Binding  _Evaluation.CancelAuthorEvaluateAuthorRecordCommand}"
@@ -290,12 +313,20 @@
                      Converter={StaticResource NullBoolConverter}, ElementName=AuthorsAvaluat}"
                 Command="{Binding _Evaluation.SaveAuthorEvaluateAuthorRecordCommand}"/>
         <TextBlock Grid.Row="6" Grid.Column="2"  Text="Постановка задачи для автора" Margin="5" Foreground="Blue"/>
-        
-        <TextBox  Grid.Row="7" Grid.RowSpan="2" Grid.ColumnSpan="4"    
+
+        <TextBox x:Name="AuthorTrablSet" Grid.Row="7" Grid.RowSpan="2" Grid.ColumnSpan="4"    
                  Text="{Binding Order.DescriptionForClient, Mode=TwoWay}"
-                  TextAlignment="Center"
+                  TextAlignment="Center"  
                       VerticalContentAlignment="Center" Foreground="Red" Background="White"
-                      Margin="6,6,5.4,6" TextWrapping="Wrap"  />
+                      Margin="6,6,5.4,6" TextWrapping="Wrap"  >
+            <TextBox.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Скопировать в буфер обмена" Command="{Binding _Evaluation._RuleOrderLine.CopyToClipBoardCommand}" 
+                              Height="20"
+                              CommandParameter="{Binding Path=Text, ElementName=AuthorTrablSet}"/>                    
+                </ContextMenu>
+            </TextBox.ContextMenu>
+        </TextBox>
         <!--Order can find in ForEditOrder.cs-->
 
     </Grid>

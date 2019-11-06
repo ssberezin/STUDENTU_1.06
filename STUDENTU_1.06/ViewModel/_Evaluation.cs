@@ -266,18 +266,25 @@ namespace STUDENTU_1._06.ViewModel
         private void SaveAuthorEvaluateAuthorRecord()
         {
             //check for the entry before adding
-            foreach (EvaluationRecord item in _RuleOrderLine.AuthorsRecord.EvaluationRecords)
-                if (item.DeadLine != EvaluationRecord.DeadLine &&
-                    item.Price != EvaluationRecord.Price &&
-                    item.EvaluateDescription != EvaluationRecord.EvaluateDescription)
-                {
-                    _RuleOrderLine.AuthorsRecord.EvaluationRecords.Add(EvaluationRecord);
-                    dialogService.ShowMessage("Данные сохранены");
-                    EvaluationRecord.Price = 0;
-                    EvaluationRecord.EvaluateDescription = null;
-                }
-                else
-                    dialogService.ShowMessage("Уже есть запись с такой оценкой");
+            if (_RuleOrderLine.AuthorsRecord.EvaluationRecords.Count() > 0)
+                foreach (EvaluationRecord item in _RuleOrderLine.AuthorsRecord.EvaluationRecords)
+                    if (item.DeadLine != EvaluationRecord.DeadLine &&
+                        item.Price != EvaluationRecord.Price &&
+                        item.EvaluateDescription != EvaluationRecord.EvaluateDescription)
+                    {
+
+                        _RuleOrderLine.AuthorsRecord.EvaluationRecords.Add(EvaluationRecord);
+                        dialogService.ShowMessage("Данные сохранены");
+                        EvaluationRecord.Price = 0;
+                        EvaluationRecord.EvaluateDescription = null;
+                    }
+                    else
+                        dialogService.ShowMessage("Уже есть запись с такой оценкой");
+            else
+            {
+                _RuleOrderLine.AuthorsRecord.EvaluationRecords.Add(EvaluationRecord);
+                dialogService.ShowMessage("Данные сохранены");
+            }
         }
 
         //===================================== For Cancel save evaluate order any author in EditAvaluatonWindow.xaml====================

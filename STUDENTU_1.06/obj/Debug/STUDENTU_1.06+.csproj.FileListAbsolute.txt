@@ -841,7 +841,6 @@ e:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\bin\Debug\ro\Xceed.Wpf.AvalonDo
 e:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\bin\Debug\ru\Xceed.Wpf.AvalonDock.resources.dll
 e:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\bin\Debug\sv\Xceed.Wpf.AvalonDock.resources.dll
 e:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\bin\Debug\zh-Hans\Xceed.Wpf.AvalonDock.resources.dll
-e:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\STUDENTU_1.06+.csprojAssemblyReference.cache
 e:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\AddContactsWindow.g.cs
 e:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\Evaluation\AddEvaluateWindow.g.cs
 e:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\BlackListWindow.g.cs
@@ -991,3 +990,4 @@ E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\PersoneOperati
 E:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\PersoneOperations\AuthorOperationsWindows\AuthorSubjectWindow.g.cs
 E:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\PersoneOperations\AuthorOperationsWindows\AuthorDirectionsWindow.baml
 E:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\PersoneOperations\AuthorOperationsWindows\AuthorSubjectWindow.baml
+E:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\STUDENTU_1.06+.csprojAssemblyReference.cache

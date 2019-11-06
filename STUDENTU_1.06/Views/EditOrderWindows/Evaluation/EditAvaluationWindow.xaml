@@ -30,7 +30,7 @@
             <helpes:BoolInverterConverter x:Key="boolInverterConverter"/>
 
             <!--for sorting in listbox without behind code-->
-            <CollectionViewSource x:Key="SortedSelectedAuthors" Source="{Binding SelectedAuthorsRecords}"
+            <CollectionViewSource x:Key="SortedSelectedAuthors" Source="{Binding _Evaluation._RuleOrderLine.SelectedAuthorsRecords}"
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
                 <!--"SelectedAuthorsRecords" can find in "RuleOrderLineClass.cs"-->
                 <CollectionViewSource.SortDescriptions>
@@ -84,21 +84,36 @@
         <TextBlock Text="Авторы, оцениваеющие работы" Grid.Column="0"/>
         <ListBox x:Name="Authors" Grid.Row="1" Grid.Column="0" Grid.RowSpan="5"
                     ItemsSource="{Binding Source={StaticResource SortedSelectedAuthors}, 
-                    UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding AuthorsRecord}"                   
+                    UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding _Evaluation._RuleOrderLine.AuthorsRecord}"                   
                    TabIndex="6" Margin="8"   >
             <!--"AuthorsRecord" can find in RuleOrderLineClass.cs-->
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <DockPanel >
-                        <TextBlock Text="{Binding NickName}" Margin="2"
+          
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel >
+                            <TextBlock Text="--------------------------------" Margin="2"
                                    TextWrapping="WrapWithOverflow" 
-                                   TextAlignment="Center"/>
-                    </DockPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
+                                   TextAlignment="Center" Background="AliceBlue"/>
+                            <TextBlock Text="{Binding Persone.NickName}" Margin="2"
+                                   TextWrapping="WrapWithOverflow" 
+                                   TextAlignment="Center"  />
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Persone.Surname}" Margin="2"
+                                   TextWrapping="WrapWithOverflow" 
+                                   TextAlignment="Center" Foreground="Red"/>
+                                <TextBlock Text="{Binding Persone.Name}" Margin="2"
+                                   TextWrapping="WrapWithOverflow" 
+                                   TextAlignment="Center" Foreground="Red"/>
+                                <TextBlock Text="{Binding Persone.Patronimic}" Margin="2"
+                                   TextWrapping="WrapWithOverflow" 
+                                   TextAlignment="Center" Foreground="Red"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
         </ListBox>
         <ListBox x:Name="Avaluation" Grid.Row="1" Grid.Column="2" Grid.RowSpan="5" Grid.ColumnSpan="2"
-                    ItemsSource="{Binding AuthorsRecord.EvaluationRecords, 
+                    ItemsSource="{Binding _Evaluation._RuleOrderLine.AuthorsRecord.EvaluationRecords, 
                     UpdateSourceTrigger=PropertyChanged}" 
                  SelectedItem="{Binding  EvaluationRecord}"                   
                    TabIndex="6" Margin="8" >
@@ -135,19 +150,19 @@
         <Button Grid.Column="1" Grid.Row="2" Content="+" Background="Green" TabIndex="6"
                IsEnabled="{Binding SelectedItem,
                      Converter={StaticResource NullBoolConverter}, ElementName=Authors}"
-                Command="{Binding AddEvaluationCommand}" CommandParameter="{Binding DataContext, RelativeSource=
+                Command="{Binding _Evaluation.AddEvaluationCommand}" CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}" RenderTransformOrigin="0.5,0.706" />
         <!--Command "AddEvaluationCommand" can find in EvaluationClass.cs -->
         <Button Grid.Column="1" Grid.Row="3" Content="-" Background="Red" FontWeight="ExtraBold" TabIndex="5"
                 IsEnabled="{Binding SelectedItem,
                      Converter={StaticResource NullBoolConverter}, ElementName=Avaluation}"
-                 Command="{Binding DeleteSelectedAvaluateRuleOrderCommand}"   />
+                 Command="{Binding _Evaluation.DeleteSelectedAvaluateRuleOrderCommand}"   />
         <!--Command "DeleteSelectedAvaluateRuleOrderCommand" can find in EvaluationClass.cs -->
         <Button Grid.Column="1" Grid.Row="4" Content="Ред." Background="BlueViolet"
                 FontWeight="ExtraBold" TabIndex="5"
                 IsEnabled="{Binding SelectedItem,
                      Converter={StaticResource NullBoolConverter}, ElementName=Avaluation}"
-                 Command="{Binding CallEditSelectedAvaluateRuleOrderWindowCommand}"    />
+                 Command="{Binding _Evaluation.CallEditSelectedAvaluateRuleOrderWindowCommand}"    />
         <!--Command "EditSelectedAvaluateRuleOrderCommand" can find in EvaluationClass.cs -->
         <TextBlock Text="Оценки авторов "  Grid.Column="2" Grid.ColumnSpan="2"/>
 

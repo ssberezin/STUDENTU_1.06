@@ -176,12 +176,7 @@ namespace STUDENTU_1._06.ViewModel
                             AuthorsRecord record;                            
                             foreach (Author item in result)
                             {
-                                //AuthorStatus authorStatus = new AuthorStatus()
-                                //{
-                                //    AuthorStatusId=item.AuthorStatus.AuthorStatusId,
-                                //    AuthorStatusName=item.AuthorStatus.AuthorStatusName,
-                                //    Description=item.AuthorStatus.Description
-                                //};
+                               
                                 Author author = new Author()
                                 {
                                     AuthorId = item.AuthorId,
@@ -277,7 +272,7 @@ namespace STUDENTU_1._06.ViewModel
         }
 
         
-        //=============================Copy to ClipBoard command====================
+        //=============================Copy to ClipBoard commands================================
         private RelayCommand copyEmailToClipBoardCommand;
         public RelayCommand CopyEmailToClipBoardCommand =>
             copyEmailToClipBoardCommand ?? (copyEmailToClipBoardCommand = new RelayCommand(
@@ -317,6 +312,144 @@ namespace STUDENTU_1._06.ViewModel
             Clipboard.SetText($"{AuthorsRecord.Contacts.Phone2}");
         }
 
+        private RelayCommand copyFBToClipBoardCommand;
+        public RelayCommand CopyFBToClipBoardCommand =>
+            copyFBToClipBoardCommand ?? (copyFBToClipBoardCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        CopyFBToClipBoard();
+                    }
+                    ));
+        private void CopyFBToClipBoard()
+        {
+            Clipboard.SetText($"{AuthorsRecord.Contacts.FaceBook}");
+        }
+
+        private RelayCommand copyVKToClipBoardCommand;
+        public RelayCommand CopyVKToClipBoardCommand =>
+            copyVKToClipBoardCommand ?? (copyVKToClipBoardCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        CopyVKToClipBoard();
+                    }
+                    ));
+        private void CopyVKToClipBoard()
+        {
+            Clipboard.SetText($"{AuthorsRecord.Contacts.VK}");
+        }
+
+        private RelayCommand copyToClipBoardCommand;
+        public RelayCommand CopyToClipBoardCommand =>
+            copyToClipBoardCommand ?? (copyToClipBoardCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        CopyToClipBoard();
+                    }
+                    ));
+        private void CopyToClipBoard()
+        {
+            Clipboard.SetText($"{AuthorsRecord.Contacts.VK}");
+        }
+
+        //==============================COMMAND TO FIND AUTHOR BY NICKNAME ================================
+
+        //FindAuthorByNickCommand
+
+        private RelayCommand findAuthorByNickCommand;
+        public RelayCommand FindAuthorByNickCommand =>
+            findAuthorByNickCommand ?? (findAuthorByNickCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        FindAuthorByNick(obj as string);
+                    }
+                    ));
+        private void FindAuthorByNick(string nick)
+        {
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                try
+                {
+                    if (nick != null || nick != " " || nick != "")
+                    {
+                        AuthorsRecord record=null;
+                        var res = db.Authors.Include("Persone").ToList();
+                        foreach (Author item in res)
+                            if (item.Persone.NickName == nick)
+                            {
+                                Author author = new Author()
+                                {
+                                    AuthorId = item.AuthorId,                                  
+                                    Source = item.Source,
+                                    Rating = item.Rating,
+                                    Punctually = item.Punctually,
+                                    CompletionCompliance = item.CompletionCompliance,
+                                    WorkQuality = item.WorkQuality,
+                                    Responsibility = item.Responsibility
+                                };
+                                Persone persone = new Persone()
+                                {
+                                    PersoneId = item.Persone.PersoneId,
+                                    PersoneDescription = item.Persone.PersoneDescription,
+                                    Name = item.Persone.Name,
+                                    Surname = item.Persone.Surname,
+                                    Patronimic = item.Persone.Patronimic,
+                                    Sex = item.Persone.Sex,
+                                    NickName = item.Persone.NickName
+                                };
+                                Contacts _contacts = new Contacts()
+                                {
+                                    Phone1 = item.Persone.Contacts.Phone1,
+                                    Phone2 = item.Persone.Contacts.Phone2,
+                                    Phone3 = item.Persone.Contacts.Phone3,
+                                    Email1 = item.Persone.Contacts.Email1,
+                                    Email2 = item.Persone.Contacts.Email2,
+                                    VK = item.Persone.Contacts.VK,
+                                    FaceBook = item.Persone.Contacts.FaceBook
+                                };
+                                record = new AuthorsRecord
+                                {
+                                    Author = author,
+                                    Persone = persone,
+                                    Contacts = _contacts
+                                };
+                                SelectedAuthorsRecords.Add(record);                                
+                                break;
+                            }
+                        if (record==null)                        
+                            dialogService.ShowMessage("Нет автора с таким ником");
+                        else
+                            dialogService.ShowMessage("Совпадение найдено.\nЗапись об авторе добавлена в писок");
+                    }
+                    else
+                        dialogService.ShowMessage("Поле ника автора не должно быть пустым");                  
+                  
+                }
+                catch (ArgumentNullException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (OverflowException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+            }
+
+         
+        }
+
+        
 
         //=============================fill listbox "AuthorsAvaluat" if press button "+"====================
         private RelayCommand addSelectedAuthorCommand;
