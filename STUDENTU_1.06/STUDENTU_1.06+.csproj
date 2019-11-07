@@ -121,8 +121,10 @@
     <Compile Include="Helpes\BoolInverterConverter.cs" />
     <Compile Include="Helpes\ImagePathConverter.cs" />
     <Compile Include="Helpes\NullToBooleanConverter.cs" />
+    <Compile Include="Helpes\StringToBoollConverter.cs" />
     <Compile Include="Helpes\StringToBrushConverter.cs" />
     <Compile Include="Helpes\TimeFormatConverter.cs" />
+    <Compile Include="Helpes\TMPStaticClass.cs" />
     <Compile Include="Model\DBModelClasses\AuthorStatus.cs" />
     <Compile Include="Model\DBModelClasses\Sourse.cs" />
     <Compile Include="Model\HelpModelClasses\AuthorsRecord.cs" />
@@ -244,7 +246,7 @@
     <Compile Include="ViewModel\ForEditOrderVM\EvaluationClass.cs" />
     <Compile Include="ViewModel\ForEditOrderVM\ForEditOrder.cs" />
     <Compile Include="ViewModel\ForEditOrderVM\ForEditOrderAddContacts.cs" />
-    <Compile Include="ViewModel\_RuleOrderLine.cs" />
+    <Compile Include="ViewModel\PersoneOperations\OrderLineOperations\RuleOrderLine.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="Views\EditOrderWindows\AddContactsWindow.xaml.cs">
       <DependentUpon>AddContactsWindow.xaml</DependentUpon>

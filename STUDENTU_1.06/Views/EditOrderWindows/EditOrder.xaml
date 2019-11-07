@@ -33,6 +33,7 @@
         <helpes:DateFormatConverter x:Key="dateFormatConverter"/>
         <helpes:HeightToFontSizeConverter x:Key="heightToFontSizeConverter"/>
         <helpes:BoolInverterConverter x:Key="boolInverterConverter"/>
+        <helpes:StringToBoollConverter x:Key="stringToBoollConverter"/>
 
 
         <!--for sorting in listbox without behind code-->
@@ -65,7 +66,7 @@
                 <scm1:SortDescription PropertyName="SubName"/>
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
-       
+
 
 
         <ControlTemplate x:Key="validationFailed">
@@ -95,7 +96,7 @@
             <Setter Property="TextAlignment" Value="Left"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="SpellCheck.IsEnabled" Value="True"/>
-            
+
             <Setter Property="Language" Value="ru-ru"/>
             <Setter Property="FontSize" Value="{Binding Path=ActualHeight, RelativeSource={RelativeSource Self}, Converter={StaticResource heightToFontSizeConverter}}"/>
             <Setter Property="VerticalAlignment" Value="Center"></Setter>
@@ -173,7 +174,7 @@
                     </Binding>
                 </TextBox.Text>
             </TextBox>
-                            <!--тут хз пока шо прилепить, забацал кнопку и забыл накой она нужна была-->
+            <!--тут хз пока шо прилепить, забацал кнопку и забыл накой она нужна была-->
             <Button Content="+ ?" Background="Yellow" Foreground="Black" Width="40" 
                     HorizontalAlignment="Right" TabIndex="3"/>
 
@@ -407,7 +408,7 @@
                     <!--SortedSources can find above in Window.Resources-->
                     <!--Source can find in _Source.cs-->
                 </ComboBox>
-                
+
                 <Button x:Name="AddSourse" Width="40" Background="Gray" Content="..." TabIndex="16"
                     Command="{Binding _Source.NewEditSource}" CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}"/>
@@ -415,13 +416,17 @@
             </WrapPanel>
             <Button Grid.Column="2" Content="Постготовность" Background="LightBlue" Foreground="Black" 
                 TabIndex="22" Margin="3"/>
+            <!--StatusName-->
             <Button Grid.Column="3" Content="Распределить заказ" Background="DarkOliveGreen" 
-                        Margin="3" Command="{Binding _Evaluation._RuleOrderLine.NewRuleOrderLineWindowCommand}"                    
+                        Margin="3,3,3,0" Command="{Binding _Evaluation._RuleOrderLine.NewRuleOrderLineWindowCommand}"                    
+                        IsEnabled="{Binding _Status.Status.StatusName,   Converter={StaticResource stringToBoollConverter}}"
                         CommandParameter="{Binding DataContext, 
-                                            RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>            
+                                            RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Height="35" VerticalAlignment="Top"
+                     ToolTip="Кнопка станет активной только после сохранения заказа" />
+            
             <!-- Command NewRuleOrderLineWindowCommand  can find  _RuleOrderLineClass.cs-->
         </Grid>
-        
+
         <WrapPanel Grid.Row="9" Grid.Column="2" Grid.ColumnSpan="2" Margin="3">
             <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
                      VerticalAlignment="Stretch">

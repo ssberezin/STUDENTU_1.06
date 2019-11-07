@@ -1,4 +1,7 @@
-﻿using System;
+﻿using STUDENTU_1._06.Model.HelpModelClasses.DialogWindows;
+using STUDENTU_1._06.Model.HelpModelClasses.ShowWindows;
+using STUDENTU_1._06.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,12 +22,14 @@ namespace STUDENTU_1._06.Views.EditOrderWindows
     /// </summary>
     public partial class RuleOrderLineWindow : Window
     {
-        public RuleOrderLineWindow(object DataContext)
+        
+
+        public RuleOrderLineWindow()
         {
             InitializeComponent();
-            this.DataContext = DataContext;
+            this.DataContext = new RuleOrderLine();
         }
 
-    
-    }
+
+}
 }

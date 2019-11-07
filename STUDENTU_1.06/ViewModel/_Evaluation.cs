@@ -32,18 +32,20 @@ namespace STUDENTU_1._06.ViewModel
 
             FinalEvaluationRecord = new EvaluationRecord()
             {
-                DeadLine = new DateTime(1900, 1, 1),
+                DeadLine = EvaluationRecord.DeadLine,
                 Price = 0,
                 EvaluateDescription = ""
             };
-            _RuleOrderLine = new _RuleOrderLine();
+            _RuleOrderLine = new RuleOrderLine();
+            TMPDate = date.AuthorDeadLine;
             //LoadData();
             showWindow = new DefaultShowWindowService();
             dialogService = new DefaultDialogService();
+
         }
 
-       
-       
+
+        DateTime TMPDate;
 
 
         private Evaluation evaluation;
@@ -106,10 +108,11 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
-        
+       
 
-        private _RuleOrderLine _ruleOrderLine;
-        public _RuleOrderLine _RuleOrderLine
+
+        private RuleOrderLine _ruleOrderLine;
+        public RuleOrderLine _RuleOrderLine
         {
             get { return _ruleOrderLine; }
             set
@@ -268,22 +271,27 @@ namespace STUDENTU_1._06.ViewModel
             //check for the entry before adding
             if (_RuleOrderLine.AuthorsRecord.EvaluationRecords.Count() > 0)
                 foreach (EvaluationRecord item in _RuleOrderLine.AuthorsRecord.EvaluationRecords)
-                    if (item.DeadLine != EvaluationRecord.DeadLine &&
-                        item.Price != EvaluationRecord.Price &&
-                        item.EvaluateDescription != EvaluationRecord.EvaluateDescription)
+                    if (item.DeadLine == EvaluationRecord.DeadLine &&
+                        item.Price == EvaluationRecord.Price &&
+                        item.EvaluateDescription == EvaluationRecord.EvaluateDescription)
+                        dialogService.ShowMessage("Уже есть запись с такой оценкой");
+                    else
                     {
-
                         _RuleOrderLine.AuthorsRecord.EvaluationRecords.Add(EvaluationRecord);
                         dialogService.ShowMessage("Данные сохранены");
-                        EvaluationRecord.Price = 0;
-                        EvaluationRecord.EvaluateDescription = null;
+                        //EvaluationRecord.Price = 0;
+                        //EvaluationRecord.EvaluateDescription = null;
+                        EvaluationRecord = new EvaluationRecord() { DeadLine = TMPDate };
+                        break;
                     }
-                    else
-                        dialogService.ShowMessage("Уже есть запись с такой оценкой");
+
             else
             {
                 _RuleOrderLine.AuthorsRecord.EvaluationRecords.Add(EvaluationRecord);
                 dialogService.ShowMessage("Данные сохранены");
+                EvaluationRecord = new EvaluationRecord() { DeadLine = TMPDate };
+                //EvaluationRecord.Price = 0;
+                //EvaluationRecord.EvaluateDescription = null;
             }
         }
 
@@ -302,6 +310,99 @@ namespace STUDENTU_1._06.ViewModel
         private void CancelAuthorEvaluateAuthorRecord()
         {
             EvaluationRecord = null;           
+        }
+
+        //==================================== COMMAND FOR ADD EVALUATION TO ORDER ====================================
+
+        private RelayCommand addEvaluationToOrderCommand;
+        public RelayCommand AddEvaluationToOrderCommand => addEvaluationToOrderCommand ?? (addEvaluationToOrderCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        AddEvaluationToOrder();
+                    }
+                    ));
+
+        private void AddEvaluationToOrder()
+        {
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                try
+                {
+                    
+                    if (_RuleOrderLine.SelectedExecuteAuthor.AuthorId == 0)
+                        Order.Author = _Evaluation._RuleOrderLine.ExecuteAuthor.Author;
+                    else
+                    {
+                        //лагов тут еще пилить и пилить( (02/11/19)
+                        //добавили авторов из AuthorsRecords в Evaluation
+                        foreach (var item in _Evaluation._RuleOrderLine.AuthorsRecords)
+                        {
+                            _Evaluation.Evaluation.Authors.Add(item.Author);//вот эта хрень уже под сомнение. Накой она теперь?...
+                            Order.Authors.Add(item.Author);
+                        }
+
+                        //добавили оценки Evaluation авторам  Order.Authors  из _Evaluation._RuleOrderLine.AuthorsRecord.EvaluationRecords
+                        //т.е. получили полноценный список оценок авторов по текущему заказу
+                        foreach (var i in Order.Authors)
+                        {
+                            foreach (var item in _Evaluation._RuleOrderLine.AuthorsRecord.EvaluationRecords)
+                            {
+
+                                _Evaluation.Evaluation.Moneys.Add(new Money() { Price = item.Price });
+                                _Evaluation.Evaluation.Description = item.EvaluateDescription;
+                                _Evaluation.Evaluation.Dates.Add(new Dates() { DeadLine = item.DeadLine });
+                                i.Evaluation.Add(_Evaluation.Evaluation);
+                            }
+                        }
+                        Order.Author = db.Authors.Find(new Author() { AuthorId = _Evaluation._RuleOrderLine.SelectedExecuteAuthor.AuthorId }.AuthorId);
+                        Order.Author.Evaluation.Add(_Evaluation.Evaluation);
+                    }
+
+
+                    Persone.Contacts = Contacts;
+                    Order.Direction = db.Directions.Find(_Dir.Dir.DirectionId);
+                    Order.Client = new Client() { Persone = Persone };
+                    Order.WorkType = db.WorkTypes.Find(_WorkType.WorkType.WorkTypeId);
+
+                    Order.Dates = Date;
+                    Order.Subject = db.Subjects.Find(_Subj.Subj.SubjectId); ;
+                    Order.Money = Price;
+                    if (_Status.Status.StatusName == "принимается")
+                        // set a default entry to status field
+                        Order.Status = db.Statuses.Find(new Status() { StatusId = 1 }.StatusId);
+                    else
+                        //set realy selected status
+                        Order.Status = _Status.Status;
+
+                    db.Orderlines.Add(Order);
+
+                    db.SaveChanges();
+                    dialogService.ShowMessage("Данные о заказе сохранены");
+
+
+                }
+                catch (ArgumentNullException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (OverflowException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+            }
+
         }
 
     }

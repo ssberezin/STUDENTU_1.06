@@ -43,19 +43,6 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
-        //private _AuthorStatus _authorStatus;
-        //public _AuthorStatus _AuthorStatus
-        //{
-        //    get { return _authorStatus; }
-        //    set
-        //    {
-        //        if (_authorStatus != value)
-        //        {
-        //            _authorStatus = value;
-        //            OnPropertyChanged(nameof(_AuthorStatus));
-        //        }
-        //    }
-        //}
 
         private Contacts contacts;
         public Contacts Contacts
@@ -251,32 +238,13 @@ namespace STUDENTU_1._06.ViewModel
             _Subj = new _Subject();
             _Source = new _Source();
             _WorkType = new _WorkType();
-
-            // editWindow.Loaded += EditWindow_Loaded;
+           
             this.showWindow = showWindow;
             this.dialogService = dialogService;
         }
 
 
-        //есть мнение, что этот метод тут нахрен не приснился
-        private void EditWindow_Loaded(object sender, RoutedEventArgs e)
-        {
-
-            Author = new Author();
-            //_AuthorStatus = new _AuthorStatus();       
-            Contacts = new Contacts();
-            Date = new Dates();           
-            _Dir = new _Direction();
-            _Evaluation = new _Evaluation(Date);
-            Order = new OrderLine { OrderNumber = GetOrderNumber() };
-            Persone = new Persone ();
-            PersoneDescription = new PersoneDescription();
-            Price = new Money();            
-            _Status = new _Status();
-            _Subj = new _Subject();
-            _Source = new _Source();
-            _WorkType = new _WorkType();
-        }
+        
 
         //=================================METHODS FOR PREVIOS LOAD TO CONTROLS OF EditOrder.xaml =====
 
@@ -345,36 +313,6 @@ namespace STUDENTU_1._06.ViewModel
             {
                 try
                 {
-                    if (_Evaluation._RuleOrderLine.SelectedExecuteAuthor.AuthorId==0)
-                        Order.Author = _Evaluation._RuleOrderLine.ExecuteAuthor.Author;
-                    else
-                    {
-                        //лагов тут еще пилить и пилить( (02/11/19)
-                        //добавили авторов из AuthorsRecords в Evaluation
-                        foreach (var item in _Evaluation._RuleOrderLine.AuthorsRecords)
-                        {
-                            _Evaluation.Evaluation.Authors.Add(item.Author);//вот эта хрень уже под сомнение. Накой она теперь?...
-                            Order.Authors.Add(item.Author);
-                        }
-
-                        //добавили оценки Evaluation авторам  Order.Authors  из _Evaluation._RuleOrderLine.AuthorsRecord.EvaluationRecords
-                        //т.е. получили полноценный список оценок авторов по текущему заказу
-                        foreach (var i in Order.Authors)
-                        {
-                            foreach (var item in _Evaluation._RuleOrderLine.AuthorsRecord.EvaluationRecords)
-                            {
-
-                                _Evaluation.Evaluation.Moneys.Add(new Money() { Price = item.Price });
-                                _Evaluation.Evaluation.Description = item.EvaluateDescription;
-                                _Evaluation.Evaluation.Dates.Add(new Dates() { DeadLine = item.DeadLine });
-                                i.Evaluation.Add(_Evaluation.Evaluation);
-                            }                            
-                        }
-                        Order.Author = db.Authors.Find(new Author() { AuthorId = _Evaluation._RuleOrderLine.SelectedExecuteAuthor.AuthorId }.AuthorId);
-                        Order.Author.Evaluation.Add(_Evaluation.Evaluation);
-                    }
-
-                    
                     Persone.Contacts=Contacts;
                     Order.Direction = db.Directions.Find(_Dir.Dir.DirectionId);                    
                     Order.Client=new Client() { Persone=Persone};
@@ -394,7 +332,9 @@ namespace STUDENTU_1._06.ViewModel
                     
                     db.SaveChanges();
                     dialogService.ShowMessage("Данные о заказе сохранены");
-                    
+                    TMPStaticClass.Order = Order;
+
+
 
                 }
                 catch (ArgumentNullException ex)
