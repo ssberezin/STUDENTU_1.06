@@ -320,7 +320,7 @@ namespace STUDENTU_1._06.ViewModel
                     Order.Direction = db.Directions.Find(_Dir.Dir.DirectionId);                    
                     Order.Client=new Client() { Persone=Persone};
                     Order.WorkType = db.WorkTypes.Find(_WorkType.WorkType.WorkTypeId);
-                    //Order.ExecuteAuthor = db.Authors.Find(new Author() { AuthorId=1}.AuthorId);
+                    Order.ExecuteAuthor = db.Authors.Find(new Author() { AuthorId=1}.AuthorId);
                     Order.Dates = Date;
                     Order.Subject = db.Subjects.Find(_Subj.Subj.SubjectId); ;
                     Order.Money = Price;                   

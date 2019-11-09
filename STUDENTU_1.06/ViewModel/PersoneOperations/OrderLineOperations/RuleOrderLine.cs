@@ -220,34 +220,35 @@ namespace STUDENTU_1._06.ViewModel
                                 };
                                 AuthorsRecords.Add(record);
                             }
-
                             break;
                         case "ThemAuthors":
-                            var result1 = db.Orderlines.Include("Direction").
-                                                        Include("Author").
+                            var result1 = db.Authors.Include("Direction").                                                        
                                                         ToList();
+                            foreach (Author item in result1)
+                            {
+                                foreach (Direction i in item.Direction)
+                                    if (i.DirectionName == TMPStaticClass.CurrentOrder.Direction.DirectionName)
+                                    {
+                                        AuthorsRecord AuthorsRecordTMP = new AuthorsRecord()
+                                        {
+                                            Author = item,
+                                            //AuthorRecordId = item.Author.AuthorId,
+                                            Persone = new Persone()
+                                            {
+                                                PersoneId = item.Persone.PersoneId,
+                                                PersoneDescription = item.Persone.PersoneDescription,
+                                                Name = item.Persone.Name,
+                                                Surname = item.Persone.Surname,
+                                                Patronimic = item.Persone.Patronimic,
+                                                Sex = item.Persone.Sex,
+                                                NickName = item.Persone.NickName
+                                            },
+                                            Contacts = item.Persone.Contacts
+                                        };
+                                        SelectedAuthorsRecords.Add(AuthorsRecordTMP);
+                                    }
+                            }
 
-                            var tmp = (from item in result1
-                                       where (item.Direction.DirectionName ==TMPStaticClass.CurrentOrder.Direction.DirectionName)
-                                       select new AuthorsRecord
-                                       {
-                                           Author=item.Author,
-                                           //AuthorRecordId = item.Author.AuthorId,
-                                           Persone = new Persone() {
-                                               PersoneId= item.Author.Persone.PersoneId,
-                                               PersoneDescription = item.Author.Persone.PersoneDescription,
-                                               Name = item.Author.Persone.Name,
-                                               Surname = item.Author.Persone.Surname,
-                                               Patronimic = item.Author.Persone.Patronimic,
-                                               Sex = item.Author.Persone.Sex,
-                                               NickName = item.Author.Persone.NickName
-                                           },                                          
-                                           Contacts = item.Author.Persone.Contacts
-                                       });
-                           
-                            foreach (var item in tmp)                           
-                                SelectedAuthorsRecords.Add(item);                                
-                           
                             break;
                     }
                 }

@@ -990,3 +990,4 @@ E:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\PersoneOperatio
 E:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\STUDENTU_1.06+.csprojAssemblyReference.cache
 E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\RuleOrderLine\RuleOrderLineWindow.g.cs
 E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\RuleOrderLine\RuleOrderLineWindow.baml
+E:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\RuleOrderLine\RuleOrderLineWindow.g.cs

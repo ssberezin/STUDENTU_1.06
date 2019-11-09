@@ -30,6 +30,7 @@ namespace STUDENTU_1._06.Model
         [Column("DescriptionForClient", TypeName = "nvarchar")]
         [MaxLength(2000)]
         public string DescriptionForClient { get; set; }
+
         [Column("WorkDescription", TypeName = "nvarchar")]
         [MaxLength(2000)]
         public string WorkDescription { get; set; }        
@@ -42,9 +43,11 @@ namespace STUDENTU_1._06.Model
 
         public Author ExecuteAuthor { get; set; }
         public decimal ExecuteAuthorPrice { get; set; }
+
         [Column("ExecuteAuthorComments", TypeName = "nvarchar")]
         [MaxLength(2000)]
         public string ExecuteAuthorComments { get; set; }
+
         [Column(TypeName = "datetime2")]
         public DateTime ExecuteAuthorDeadLine { get; set; }
 
