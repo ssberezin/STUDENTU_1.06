@@ -106,7 +106,9 @@ namespace STUDENTU_1._06.ViewModel
                             Prepayment = item.Money.Prepayment,
                             Status = item.Status.StatusName,
                             TypeOfWork = item.WorkType.TypeOfWork,
-                            AuthorNickName = item.ExecuteAuthor.Persone.NickName,
+                            //GetExecuteAuthor()
+                            //AuthorNickName = item.ExecuteAuthor==null?"---": item.ExecuteAuthor.Persone.NickName,
+                            AuthorNickName = item.GetExecuteAuthor() == null ? "---" : item.GetExecuteAuthor().Persone.NickName,
                             ClientName = item.Client.Persone.Name+' '+ item.Client.Persone.Patronimic,
                             SubName = item.Direction.DirectionName
                         };

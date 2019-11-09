@@ -347,12 +347,12 @@ namespace STUDENTU_1._06.ViewModel
                     foreach (var item in _RuleOrderLine.SelectedAuthorsRecords)
                         {
                             Evaluation.Authors.Add(item.Author);//вот эта хрень уже под сомнение. Накой она теперь?...
-                            Order.Authors.Add(item.Author);
+                            Order.Author.Add(item.Author);
                         }
 
                         //добавили оценки Evaluation авторам  Order.Authors  из _Evaluation._RuleOrderLine.AuthorsRecord.EvaluationRecords
                         //т.е. получили полноценный список оценок авторов по текущему заказу
-                        foreach (var i in Order.Authors)
+                        foreach (var i in Order.Author)
                         {
                             foreach (var item in _RuleOrderLine.AuthorsRecord.EvaluationRecords)
                             {

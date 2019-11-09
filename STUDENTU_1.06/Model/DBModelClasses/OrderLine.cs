@@ -16,7 +16,7 @@ namespace STUDENTU_1._06.Model
            // this.AfterDoneDescriptions = new List<AfterDoneDescription>();
             this.WorkInCredit = true;
             this.OrderCount = 1;
-            this.Authors = new ObservableCollection<Author>();
+            this.Author = new ObservableCollection<Author>();
            
         }
 
@@ -41,7 +41,7 @@ namespace STUDENTU_1._06.Model
         [MaxLength(2000)]
         public string RedactionLog { get; set; }
 
-        public Author ExecuteAuthor { get; set; }
+       // public Author ExecuteAuthor { get; set; }
         public decimal ExecuteAuthorPrice { get; set; }
 
         [Column("ExecuteAuthorComments", TypeName = "nvarchar")]
@@ -63,7 +63,24 @@ namespace STUDENTU_1._06.Model
         public virtual Source Source { get; set; }
         public virtual AfterDoneDescription AfterDoneDescriptions { get; set; }
 
-        public virtual ObservableCollection<Author> Authors { get; set; }
+        public virtual ObservableCollection<Author> Author { get; set; }
+
+
+        public Author GetExecuteAuthor()
+        {
+                       
+            foreach (Author item in this.Author)
+            {
+                foreach (Evaluation i in item.Evaluation)
+                    if (i.Winner == true)
+                    {
+                        return item;
+                        break;
+                    }
+
+            }
+            return null;
+        }
 
     }
 }

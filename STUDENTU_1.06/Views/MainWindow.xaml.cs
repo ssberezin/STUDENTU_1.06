@@ -15,5 +15,7 @@ namespace STUDENTU_1._06
             InitializeComponent();
             this.DataContext = new MainViewModel(this, new DefaultShowWindowService());
         }
+
+     
     }
 }

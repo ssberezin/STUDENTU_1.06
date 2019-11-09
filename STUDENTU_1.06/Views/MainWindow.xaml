@@ -99,7 +99,7 @@
         <DataGrid x:Name="GridOrders" Grid.Row="1" ItemsSource="{Binding Records, UpdateSourceTrigger=PropertyChanged}" 
                   SelectedItem="{Binding SelectedOrderLine}"                  
                   AutoGenerateColumns="False" SelectionMode="Single"
-                  IsReadOnly="True" Grid.ColumnSpan="2" >
+                  IsReadOnly="True" Grid.ColumnSpan="2"  >
             <!--"Records" , "SelectedOrderLine" we can find in  "MainViewModel.cs"-->
             <DataGrid.RowStyle>
                 <Style TargetType="DataGridRow">
