@@ -313,15 +313,18 @@ namespace STUDENTU_1._06.ViewModel
             {
                 try
                 {
+                    Order.ExecuteAuthor = db.Authors.Find(new Author() { AuthorId = 1 }.AuthorId);
+                   
+
                     Persone.Contacts=Contacts;
                     Order.Direction = db.Directions.Find(_Dir.Dir.DirectionId);                    
                     Order.Client=new Client() { Persone=Persone};
                     Order.WorkType = db.WorkTypes.Find(_WorkType.WorkType.WorkTypeId);
-                    
+                    //Order.ExecuteAuthor = db.Authors.Find(new Author() { AuthorId=1}.AuthorId);
                     Order.Dates = Date;
                     Order.Subject = db.Subjects.Find(_Subj.Subj.SubjectId); ;
                     Order.Money = Price;                   
-                    if (_Status.Status.StatusName=="принимается")
+                    if (_Status.Status.StatusName=="---")
                         // set a default entry to status field
                         Order.Status = db.Statuses.Find(new Status() { StatusId = 1 }.StatusId); 
                     else
@@ -332,7 +335,7 @@ namespace STUDENTU_1._06.ViewModel
                     
                     db.SaveChanges();
                     dialogService.ShowMessage("Данные о заказе сохранены");
-                    TMPStaticClass.Order = Order;
+                    TMPStaticClass.CurrentOrder = Order;
 
 
 

@@ -106,7 +106,7 @@ namespace STUDENTU_1._06.ViewModel
                             Prepayment = item.Money.Prepayment,
                             Status = item.Status.StatusName,
                             TypeOfWork = item.WorkType.TypeOfWork,
-                            AuthorNickName = item.Author.Persone.NickName,
+                            AuthorNickName = item.ExecuteAuthor.Persone.NickName,
                             ClientName = item.Client.Persone.Name+' '+ item.Client.Persone.Patronimic,
                             SubName = item.Direction.DirectionName
                         };
@@ -227,7 +227,7 @@ namespace STUDENTU_1._06.ViewModel
                         //db.SaveChanges();
                         
                         Persone = new Persone() { NickName = "---" };
-                        Contacts Contacts = new Contacts() { Phone1 = "+380000000000" };
+                        Contacts Contacts = new Contacts() { Phone1 = "---" };
                         Persone.Contacts = Contacts;
                         Author = new Author();
                         Persone.Author.Add(Author);

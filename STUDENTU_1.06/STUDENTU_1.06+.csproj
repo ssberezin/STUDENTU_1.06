@@ -206,7 +206,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\EditOrderWindows\RuleOrderLineWindow.xaml">
+    <Page Include="Views\EditOrderWindows\RuleOrderLine\RuleOrderLineWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -284,7 +284,7 @@
     <Compile Include="Views\EditOrderWindows\Evaluation\SetFinalAvaluationWindow.xaml.cs">
       <DependentUpon>SetFinalAvaluationWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\EditOrderWindows\RuleOrderLineWindow.xaml.cs">
+    <Compile Include="Views\EditOrderWindows\RuleOrderLine\RuleOrderLineWindow.xaml.cs">
       <DependentUpon>RuleOrderLineWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">

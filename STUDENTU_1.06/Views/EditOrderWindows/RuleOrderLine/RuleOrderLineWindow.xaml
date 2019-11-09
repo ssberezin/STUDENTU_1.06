@@ -34,7 +34,7 @@
             <helpes:BoolInverterConverter x:Key="boolInverterConverter"/>
 
             <!--for sorting in listbox without behind code-->
-            <CollectionViewSource x:Key="SortedItems" Source="{Binding _Evaluation._RuleOrderLine.AuthorsRecords}"
+            <CollectionViewSource x:Key="SortedItems" Source="{Binding AuthorsRecords}"
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
                 <!--AuthorsRecords can find in RuleOrderLineClass.cs-->
                 <CollectionViewSource.SortDescriptions>
@@ -51,7 +51,7 @@
             </CollectionViewSource>
 
             <CollectionViewSource x:Key="SortedSelectedAuthors" 
-                                  Source="{Binding _Evaluation._RuleOrderLine.SelectedAuthorsRecords}"
+                                  Source="{Binding SelectedAuthorsRecords}"
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
                 <!--SelectedAuthorsRecords can find in RuleOrderLineClass.cs-->
                 <CollectionViewSource.SortDescriptions>
@@ -127,9 +127,9 @@
         <StackPanel Grid.ColumnSpan="2" Margin="2" >
             <TextBlock Text="Авторы" />
             <StackPanel>
-                <RadioButton GroupName="GroupA" Content="Все авторы" IsChecked="False" Command="{Binding _Evaluation._RuleOrderLine.AllAuthorsCallCommand}"/>
+                <RadioButton GroupName="GroupA" Content="Все авторы" IsChecked="False" Command="{Binding AllAuthorsCallCommand}"/>
                 <!--Command AllAuthorsCallCommand can find in _RuleOrderLine.cs -->
-                <RadioButton GroupName="GroupA" Content="Авторы по тематике" IsChecked="False" Command="{Binding _Evaluation._RuleOrderLine.ThemAuthorsCallCommand}"/>
+                <RadioButton GroupName="GroupA" Content="Авторы по тематике" IsChecked="False" Command="{Binding ThemAuthorsCallCommand}"/>
                 <!--Command ThemAuthorsCallCommand  can find in _RuleOrderLine.cs -->
             </StackPanel >
         </StackPanel>
@@ -143,14 +143,14 @@
                          FontSize="12"
                          IsEnabled="{Binding IsChecked, ElementName=AuthorNickFind}" Height="22"/>
                 <Button Content="Найти" Width="70" IsEnabled="{Binding IsChecked,ElementName=AuthorNickFind}"
-                        Command="{Binding  _Evaluation._RuleOrderLine.FindAuthorByNickCommand}"
+                        Command="{Binding  FindAuthorByNickCommand}"
                         CommandParameter="{Binding Path=Text, ElementName=AuthorNick}"/>
             </StackPanel>
         </StackPanel>
         <ListBox x:Name="Authors"
                      Grid.Row="1" Grid.RowSpan="5"
                     ItemsSource="{Binding Source={StaticResource SortedItems}, 
-                    UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding _Evaluation._RuleOrderLine.AuthorsRecord}" 
+                    UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding AuthorsRecord}" 
                      TabIndex="2" >
             <!--SortedItems can find above in Window.Resources-->
             <ListBox.ItemTemplate>
@@ -181,7 +181,7 @@
         <ListBox x:Name="AuthorsAvaluat" Grid.Row="2" Grid.Column="2" Grid.RowSpan="4"
                     ItemsSource="{Binding Source={StaticResource SortedSelectedAuthors}, 
                     UpdateSourceTrigger=PropertyChanged}" 
-                   SelectedItem="{Binding _Evaluation._RuleOrderLine.AuthorsRecord}"                   
+                   SelectedItem="{Binding AuthorsRecord}"                   
                    TabIndex="6">
             <!--SortedItems can find above in Window.Resources-->
             <ListBox.ItemTemplate>
@@ -197,12 +197,12 @@
         <Button Grid.Column="1" Grid.Row="2" Content="+" Background="Green" TabIndex="6"
                 IsEnabled="{Binding SelectedItem,
                      Converter={StaticResource NullBoolConverter}, ElementName=Authors}"
-                Command="{Binding _Evaluation._RuleOrderLine.AddSelectedAuthorCommand}" Height="33" Margin="3,3,3,0" VerticalAlignment="Top"/>
+                Command="{Binding AddSelectedAuthorCommand}" Height="33" Margin="3,3,3,0" VerticalAlignment="Top"/>
         <!-- Command AddSelectedAuthorCommand can find in RuleOrderLineClass.cs-->
         <Button Grid.Column="1" Grid.Row="3" Content="-" Background="Red" FontWeight="ExtraBold" TabIndex="5"
                 IsEnabled="{Binding SelectedItem,
                      Converter={StaticResource NullBoolConverter}, ElementName=AuthorsAvaluat}"
-                 Command="{Binding _Evaluation._RuleOrderLine.DelSelectedAuthorCommand}"/>
+                 Command="{Binding DelSelectedAuthorCommand}"/>
         <!-- Command DelSelectedAuthorCommand can find in RuleOrderLineClass.cs-->
         <WrapPanel Grid.Row="9" Grid.ColumnSpan="3"  Margin="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" >
             <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
@@ -233,36 +233,36 @@
                      TabIndex="8" >
             <ListBox.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Скопировать оба Email" Command="{Binding _Evaluation._RuleOrderLine.CopyEmailToClipBoardCommand}" 
+                    <MenuItem Header="Скопировать оба Email" Command="{Binding CopyEmailToClipBoardCommand}" 
                               Height="20"/>
-                    <MenuItem Header="Скопировать 1-й номер телефона" Command="{Binding _Evaluation._RuleOrderLine.CopyPhone1ToClipBoardCommand}" 
+                    <MenuItem Header="Скопировать 1-й номер телефона" Command="{Binding CopyPhone1ToClipBoardCommand}" 
                               Height="20"/>
-                    <MenuItem Header="Скопировать 2-й номер телефона" Command="{Binding _Evaluation._RuleOrderLine.CopyPhone2ToClipBoardCommand}" 
+                    <MenuItem Header="Скопировать 2-й номер телефона" Command="{Binding CopyPhone2ToClipBoardCommand}" 
                               Height="20"/>
-                    <MenuItem Header="Скопировать FaceBook" Command="{Binding _Evaluation._RuleOrderLine.CopyFBToClipBoardCommand}" 
+                    <MenuItem Header="Скопировать FaceBook" Command="{Binding CopyFBToClipBoardCommand}" 
                               Height="20"/>
-                    <MenuItem Header="Скопировать VK" Command="{Binding _Evaluation._RuleOrderLine.CopyVKToClipBoardCommand}" 
+                    <MenuItem Header="Скопировать VK" Command="{Binding CopyVKToClipBoardCommand}" 
                               Height="20"/>
                 </ContextMenu>
             </ListBox.ContextMenu>
-            <TextBlock Text="{Binding  _Evaluation._RuleOrderLine.AuthorsRecord.Contacts.Email1}" Margin="2"                                   
+            <TextBlock Text="{Binding  AuthorsRecord.Contacts.Email1}" Margin="2"                                   
                                    TextAlignment="Center"/>
-            <TextBlock Text="{Binding _Evaluation._RuleOrderLine.AuthorsRecord.Contacts.Email2}" Margin="2"                                   
+            <TextBlock Text="{Binding AuthorsRecord.Contacts.Email2}" Margin="2"                                   
                                    TextAlignment="Center"/>
-            <TextBlock Text="{Binding _Evaluation._RuleOrderLine.AuthorsRecord.Contacts.Phone1}" Margin="2"                                   
+            <TextBlock Text="{Binding AuthorsRecord.Contacts.Phone1}" Margin="2"                                   
                                    TextAlignment="Center"/>
-            <TextBlock Text="{Binding _Evaluation._RuleOrderLine.AuthorsRecord.Contacts.Phone2}" Margin="2"                                  
+            <TextBlock Text="{Binding AuthorsRecord.Contacts.Phone2}" Margin="2"                                  
                                    TextAlignment="Center"/>
-            <TextBlock Text="{Binding _Evaluation._RuleOrderLine.AuthorsRecord.Contacts.FaceBook}" Margin="2"                                  
+            <TextBlock Text="{Binding AuthorsRecord.Contacts.FaceBook}" Margin="2"                                  
                                    TextAlignment="Center"/>
-            <TextBlock Text="{Binding _Evaluation._RuleOrderLine.AuthorsRecord.Contacts.VK}" Margin="2"                                  
+            <TextBlock Text="{Binding AuthorsRecord.Contacts.VK}" Margin="2"                                  
                                    TextAlignment="Center"/>
         </ListBox>
         <Button Grid.Column="3" Grid.Row="6" Content="Выбрать автора" Background="#FF41BD41"
                 TabIndex="9"
                  IsEnabled="{Binding SelectedItem,
                      Converter={StaticResource NullBoolConverter}, ElementName=AuthorsAvaluat}"
-                Command="{Binding _Evaluation._RuleOrderline.SetExecuteAuthorCommand}" 
+                Command="{Binding SetExecuteAuthorCommand}" 
                 CommandParameter="{Binding ElementName=AuthorsAvaluat , Path=SelectedItem}"/>
         <!--Command SetExecuteAuthorCommand can find in  RuleOrderLineClass.cs-->
         <Button Grid.Column="0" Grid.Row="6" Content="Задать оценку для автора" Background="CadetBlue"
@@ -276,7 +276,7 @@
         <StackPanel Grid.Column="4" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" >
             <TextBlock x:Name="AothorWinner"  
                     Foreground="#FFEB6934" Margin="5"                   
-                    Text="{Binding _Evaluation._RuleOrderLine.ExecuteAuthor.Persone.NickName}"  />
+                    Text="{Binding ExecuteAuthor.Persone.NickName}"  />
             <WrapPanel>
                 <TextBlock  Text="Цена:" Margin="5" Foreground="Blue"/>
                 <TextBlock  Text="{Binding _Evaluation.FinalEvaluationRecord.Price}" Foreground="Red" />
@@ -296,7 +296,7 @@
                       Margin="6,6,5.6,5.8" TextWrapping="Wrap" Grid.ColumnSpan="3"  >
             <TextBox.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Скопировать в буфер обмена" Command="{Binding _Evaluation._RuleOrderLine.CopyToClipBoardCommand}" 
+                    <MenuItem Header="Скопировать в буфер обмена" Command="{Binding CopyToClipBoardCommand}" 
                               Height="20"
                               CommandParameter="{Binding Path=Text, ElementName=AuthorEvalComment}"/>
                 </ContextMenu>
@@ -321,7 +321,7 @@
                       Margin="6,6,5.4,6" TextWrapping="Wrap"  >
             <TextBox.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Скопировать в буфер обмена" Command="{Binding _Evaluation._RuleOrderLine.CopyToClipBoardCommand}" 
+                    <MenuItem Header="Скопировать в буфер обмена" Command="{Binding CopyToClipBoardCommand}" 
                               Height="20"
                               CommandParameter="{Binding Path=Text, ElementName=AuthorTrablSet}"/>                    
                 </ContextMenu>

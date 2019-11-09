@@ -36,6 +36,7 @@ namespace STUDENTU_1._06.ViewModel
                 Price = 0,
                 EvaluateDescription = ""
             };
+            Order = new OrderLine(); 
             _RuleOrderLine = new RuleOrderLine();
             TMPDate = date.AuthorDeadLine;
             //LoadData();
@@ -108,7 +109,19 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
-       
+        private OrderLine order;
+        public OrderLine Order
+        {
+            get { return order; }
+            set
+            {
+                if (order != value)
+                {
+                    order = value;
+                    OnPropertyChanged(nameof(Order));
+                }
+            }
+        }
 
 
         private RuleOrderLine _ruleOrderLine;
@@ -328,16 +341,12 @@ namespace STUDENTU_1._06.ViewModel
             {
                 try
                 {
-                    
-                    if (_RuleOrderLine.SelectedExecuteAuthor.AuthorId == 0)
-                        Order.Author = _Evaluation._RuleOrderLine.ExecuteAuthor.Author;
-                    else
-                    {
-                        //лагов тут еще пилить и пилить( (02/11/19)
-                        //добавили авторов из AuthorsRecords в Evaluation
-                        foreach (var item in _Evaluation._RuleOrderLine.AuthorsRecords)
+                    Order = db.Orderlines.Find(TMPStaticClass.CurrentOrder.OrderLineId);
+                    //лагов тут еще пилить и пилить( (02/11/19)
+                    //добавили авторов из AuthorsRecords в Evaluation
+                    foreach (var item in _RuleOrderLine.SelectedAuthorsRecords)
                         {
-                            _Evaluation.Evaluation.Authors.Add(item.Author);//вот эта хрень уже под сомнение. Накой она теперь?...
+                            Evaluation.Authors.Add(item.Author);//вот эта хрень уже под сомнение. Накой она теперь?...
                             Order.Authors.Add(item.Author);
                         }
 
@@ -345,39 +354,39 @@ namespace STUDENTU_1._06.ViewModel
                         //т.е. получили полноценный список оценок авторов по текущему заказу
                         foreach (var i in Order.Authors)
                         {
-                            foreach (var item in _Evaluation._RuleOrderLine.AuthorsRecord.EvaluationRecords)
+                            foreach (var item in _RuleOrderLine.AuthorsRecord.EvaluationRecords)
                             {
-
-                                _Evaluation.Evaluation.Moneys.Add(new Money() { Price = item.Price });
-                                _Evaluation.Evaluation.Description = item.EvaluateDescription;
-                                _Evaluation.Evaluation.Dates.Add(new Dates() { DeadLine = item.DeadLine });
-                                i.Evaluation.Add(_Evaluation.Evaluation);
+                               Evaluation.Moneys.Add(new Money() { Price = item.Price });
+                               Evaluation.Description = item.EvaluateDescription;
+                               Evaluation.Dates.Add(new Dates() { DeadLine = item.DeadLine });
+                               Evaluation.Winner = item.FinalEvaluation;
+                                i.Evaluation.Add(Evaluation);
                             }
                         }
-                        Order.Author = db.Authors.Find(new Author() { AuthorId = _Evaluation._RuleOrderLine.SelectedExecuteAuthor.AuthorId }.AuthorId);
-                        Order.Author.Evaluation.Add(_Evaluation.Evaluation);
-                    }
+                        //TMPStaticClass.CurrentOrder.Author = db.Authors.Find(new Author() { AuthorId = _Evaluation._RuleOrderLine.SelectedExecuteAuthor.AuthorId }.AuthorId);
+                        //TMPStaticClass.CurrentOrder.Author.Evaluation.Add(Evaluation);
 
+                   
 
-                    Persone.Contacts = Contacts;
-                    Order.Direction = db.Directions.Find(_Dir.Dir.DirectionId);
-                    Order.Client = new Client() { Persone = Persone };
-                    Order.WorkType = db.WorkTypes.Find(_WorkType.WorkType.WorkTypeId);
+                    //Persone.Contacts = Contacts;
+                    //Order.Direction = db.Directions.Find(_Dir.Dir.DirectionId);
+                    //Order.Client = new Client() { Persone = Persone };
+                    //Order.WorkType = db.WorkTypes.Find(_WorkType.WorkType.WorkTypeId);
 
-                    Order.Dates = Date;
-                    Order.Subject = db.Subjects.Find(_Subj.Subj.SubjectId); ;
-                    Order.Money = Price;
-                    if (_Status.Status.StatusName == "принимается")
-                        // set a default entry to status field
-                        Order.Status = db.Statuses.Find(new Status() { StatusId = 1 }.StatusId);
-                    else
-                        //set realy selected status
-                        Order.Status = _Status.Status;
+                    //Order.Dates = Date;
+                    //Order.Subject = db.Subjects.Find(_Subj.Subj.SubjectId); ;
+                    //Order.Money = Price;
+                    //if (_Status.Status.StatusName == "принимается")
+                    //    // set a default entry to status field
+                    //    Order.Status = db.Statuses.Find(new Status() { StatusId = 1 }.StatusId);
+                    //else
+                    //    //set realy selected status
+                    //    Order.Status = _Status.Status;
 
-                    db.Orderlines.Add(Order);
+                    //db.Orderlines.Add(Order);
 
-                    db.SaveChanges();
-                    dialogService.ShowMessage("Данные о заказе сохранены");
+                    //db.SaveChanges();
+                    //dialogService.ShowMessage("Данные о заказе сохранены");
 
 
                 }
