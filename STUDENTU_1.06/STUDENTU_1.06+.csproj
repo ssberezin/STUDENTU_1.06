@@ -139,6 +139,9 @@
     <Compile Include="ViewModel\_Subject.cs" />
     <Compile Include="ViewModel\_Direction.cs" />
     <Compile Include="ViewModel\_WorkType.cs" />
+    <Compile Include="Views\EditOrderWindows\EditOrderLine\EditOrderFull.xaml.cs">
+      <DependentUpon>EditOrderFull.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PersoneOperations\AuthorOperationsWindows\AuthorDirectionsWindow.xaml.cs">
       <DependentUpon>AuthorDirectionsWindow.xaml</DependentUpon>
     </Compile>
@@ -155,6 +158,10 @@
       <DependentUpon>EditAuthorStatusWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\EditOrderWindows\AddContactsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EditOrderWindows\EditOrderLine\EditOrderFull.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -190,7 +197,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\EditOrderWindows\EditOrder.xaml">
+    <Page Include="Views\EditOrderWindows\EditOrderLine\EditOrder.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -272,7 +279,7 @@
     <Compile Include="Views\EditOrderWindows\EditDirection.xaml.cs">
       <DependentUpon>EditDirection.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\EditOrderWindows\EditOrder.xaml.cs">
+    <Compile Include="Views\EditOrderWindows\EditOrderLine\EditOrder.xaml.cs">
       <DependentUpon>EditOrder.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\EditOrderWindows\EditWorkTypeWindow.xaml.cs">
