@@ -38,10 +38,11 @@ namespace STUDENTU_1._06.ViewModel
 
             AuthorsRecords = new ObservableCollection<AuthorsRecord>();
             SelectedAuthorsRecords = new ObservableCollection<AuthorsRecord>();
-            Order = order;
+            
             AuthorsRecord = new AuthorsRecord();
           //  SelectetdAuthorContacts = new Contacts();
             _Dir = new _Direction();
+            _Evaluation = new _Evaluation();
             ExecuteAuthor = new AuthorsRecord();
             ExecuteAuthor.Persone.NickName = "не задан";
             SelectedExecuteAuthor = new Author();
@@ -120,6 +121,20 @@ namespace STUDENTU_1._06.ViewModel
                 {
                     _dir = value;
                     OnPropertyChanged(nameof(_Dir));
+                }
+            }
+        }
+
+        private _Evaluation _evaluation;
+        public _Evaluation _Evaluation
+        {
+            get { return _evaluation; }
+            set
+            {
+                if (_evaluation != value)
+                {
+                    _evaluation = value;
+                    OnPropertyChanged(nameof(_Evaluation));
                 }
             }
         }

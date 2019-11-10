@@ -216,6 +216,20 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
+        private RuleOrderLine ruleOrderLine;
+        public RuleOrderLine RuleOrderLine
+        {
+            get { return ruleOrderLine; }
+            set
+            {
+                if (ruleOrderLine != value)
+                {
+                    ruleOrderLine = value;
+                    OnPropertyChanged(nameof(RuleOrderLine));
+                }
+            }
+        }
+
         public ForEditOrder(Window editWindow, DefaultShowWindowService showWindow,
            IDialogService dialogService)
         {
@@ -229,11 +243,12 @@ namespace STUDENTU_1._06.ViewModel
             Contacts = new Contacts();
             Date = new Dates();
             _Dir = new _Direction();
-            _Evaluation = new _Evaluation(Date);
+            _Evaluation = new _Evaluation();
             Order = new OrderLine { OrderNumber = GetOrderNumber() };
             Persone = new Persone();
             PersoneDescription = new PersoneDescription();
             Price = new Money();
+            RuleOrderLine = new RuleOrderLine();
             _Status = new _Status();
             _Subj = new _Subject();
             _Source = new _Source();

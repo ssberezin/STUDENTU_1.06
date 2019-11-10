@@ -25,10 +25,11 @@ namespace STUDENTU_1._06.ViewModel
         IShowWindowService showWindow;
 
 
-        public _Evaluation(Dates date)
+        public _Evaluation()
         {  
             Evaluation = new Evaluation();
-            EvaluationRecord = new EvaluationRecord() { DeadLine = date.AuthorDeadLine };           
+            //EvaluationRecord = new EvaluationRecord() { DeadLine = TMPStaticClass.CurrentOrder.Dates.AuthorDeadLine };           
+            EvaluationRecord = new EvaluationRecord() { DeadLine = DateTime.Now };
 
             FinalEvaluationRecord = new EvaluationRecord()
             {
@@ -37,8 +38,10 @@ namespace STUDENTU_1._06.ViewModel
                 EvaluateDescription = ""
             };
             Order = new OrderLine(); 
-            _RuleOrderLine = new RuleOrderLine();
-            TMPDate = date.AuthorDeadLine;
+           
+
+            //TMPDate = TMPStaticClass.CurrentOrder.Dates.AuthorDeadLine;
+            TMPDate = DateTime.Now;
             //LoadData();
             showWindow = new DefaultShowWindowService();
             dialogService = new DefaultDialogService();

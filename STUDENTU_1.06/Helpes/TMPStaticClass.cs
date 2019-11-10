@@ -10,6 +10,8 @@ namespace STUDENTU_1._06.Helpes
     public class TMPStaticClass
     {
 
-        public static OrderLine CurrentOrder { get; set; }
+       // public static OrderLine CurrentOrder = new OrderLine() { Dates=new Dates()};
+
+                public static OrderLine CurrentOrder { get; set; }
     }
 }
