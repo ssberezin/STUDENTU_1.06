@@ -265,7 +265,7 @@
                 Command="{Binding SetExecuteAuthorCommand}" 
                 CommandParameter="{Binding ElementName=AuthorsAvaluat , Path=SelectedItem}"/>
         <!--Command SetExecuteAuthorCommand can find in  RuleOrderLineClass.cs-->
-        <Button Grid.Column="0" Grid.Row="6" Content="Задать оценку для автора" Background="CadetBlue"
+        <Button Grid.Column="0" Grid.Row="6" Content="Задать оценку автору" Background="CadetBlue"
                 TabIndex="9"
                   IsEnabled="{Binding SelectedItem,
                      Converter={StaticResource NullBoolConverter}, ElementName=AuthorsAvaluat}"
@@ -317,8 +317,8 @@
         <TextBox x:Name="AuthorTrablSet" Grid.Row="7" Grid.RowSpan="2" Grid.ColumnSpan="4"    
                  Text="{Binding Order.DescriptionForClient, Mode=TwoWay}"
                   TextAlignment="Center"  
-                      VerticalContentAlignment="Center" Foreground="Red" Background="White"
-                      Margin="6,6,5.4,6" TextWrapping="Wrap"  >
+                      VerticalContentAlignment="Stretch" HorizontalContentAlignment="Left" Foreground="Red" Background="White"
+                      Margin="6,6,5.4,6" TextWrapping="Wrap" FontSize="12" >
             <TextBox.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Скопировать в буфер обмена" Command="{Binding CopyToClipBoardCommand}" 

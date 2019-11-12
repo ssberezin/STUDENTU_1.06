@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace STUDENTU_1._06.Model
 {
-    public class OrderLine
+    public class OrderLine : Helpes.ObservableObject
     {
         
         public OrderLine()
@@ -17,6 +17,7 @@ namespace STUDENTU_1._06.Model
             this.WorkInCredit = true;
             this.OrderCount = 1;
             this.Author = new ObservableCollection<Author>();
+            this.variant = null;
            
         }
 
@@ -26,6 +27,23 @@ namespace STUDENTU_1._06.Model
         //это свойство нужно для отслеживания кол-ва подзаказов, на котрое может разбиться один заказ
         // this property is needed to track the number of sub-orders on which one order can be broken
         public int OrderCount { get; set; }
+
+               
+        [Column("Variant", TypeName = "nvarchar")]
+        [MaxLength(255)]
+        private string  variant;
+        public string Variant
+        {
+            get { return variant; }
+            set
+            {
+                if (variant != value)
+                {
+                    variant = value;
+                    OnPropertyChanged(nameof(Variant));
+                }
+            }
+        }
 
         [Column("DescriptionForClient", TypeName = "nvarchar")]
         [MaxLength(2000)]
@@ -72,12 +90,8 @@ namespace STUDENTU_1._06.Model
             foreach (Author item in this.Author)
             {
                 foreach (Evaluation i in item.Evaluation)
-                    if (i.Winner == true)
-                    {
+                    if (i.Winner == true)                   
                         return item;
-                        break;
-                    }
-
             }
             return null;
         }

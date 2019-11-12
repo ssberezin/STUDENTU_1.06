@@ -43,6 +43,12 @@ namespace STUDENTU_1._06.ViewModel
           //  SelectetdAuthorContacts = new Contacts();
             _Dir = new _Direction();
             _Evaluation = new _Evaluation();
+            Order = new OrderLine();
+            if (TMPStaticClass.CurrentOrder != null)
+            {
+                Order = TMPStaticClass.CurrentOrder;
+                Order.DescriptionForClient = "Вариант(ы): " + Order.Variant + ". " + Order.DescriptionForClient;
+            }
             ExecuteAuthor = new AuthorsRecord();
             ExecuteAuthor.Persone.NickName = "не задан";
             SelectedExecuteAuthor = new Author();
