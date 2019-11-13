@@ -330,7 +330,7 @@ namespace STUDENTU_1._06.ViewModel
                 {
                     //Order.ExecuteAuthor = db.Authors.Find(new Author() { AuthorId = 1 }.AuthorId);
                    
-
+                    
                     Persone.Contacts=Contacts;
                     Order.Direction = db.Directions.Find(_Dir.Dir.DirectionId);                    
                     Order.Client=new Client() { Persone=Persone};

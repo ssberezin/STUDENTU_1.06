@@ -52,6 +52,7 @@ namespace STUDENTU_1._06.ViewModel
             ExecuteAuthor = new AuthorsRecord();
             ExecuteAuthor.Persone.NickName = "не задан";
             SelectedExecuteAuthor = new Author();
+                        
         }
 
       

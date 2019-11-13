@@ -14,9 +14,7 @@ namespace STUDENTU_1._06.Model.HelpModelClasses
         {
             this.FinalEvaluation = false;            
         }
-       // public string EvaluateDescription { get; set; }
-        //public DateTime DeadLine { get; set; }       
-       // public decimal Price { get; set; }
+      
         public bool FinalEvaluation { get; set; }
 
         private string evaluateDescription;
