@@ -849,11 +849,9 @@ e:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindow
 e:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\EditStatusWindow.g.cs
 e:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\EditSubject.g.cs
 e:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\EditDirection.g.cs
-e:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\EditOrder.g.cs
 e:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\EditWorkTypeWindow.g.cs
 e:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\Evaluation\EditEvaluateWindow.xaml.g.cs
 e:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\Evaluation\SetFinalAvaluationWindow.g.cs
-e:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\RuleOrderLineWindow.g.cs
 e:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\MainWindow.g.cs
 e:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\App.g.cs
 e:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\GeneratedInternalTypeHelper.g.cs
@@ -869,11 +867,9 @@ e:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindow
 e:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\EditStatusWindow.baml
 e:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\EditSubject.baml
 e:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\EditDirection.baml
-e:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\EditOrder.baml
 e:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\EditWorkTypeWindow.baml
 e:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\Evaluation\EditEvaluateWindow.xaml.baml
 e:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\Evaluation\SetFinalAvaluationWindow.baml
-e:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\RuleOrderLineWindow.baml
 e:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\MainWindow.baml
 e:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\STUDENTU_1.06.g.resources
 e:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\STUDENTU_1._06.Properties.Resources.resources
@@ -994,3 +990,8 @@ E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindo
 E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\EditOrderLine\EditOrderFull.baml
 E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\EditOrderLine\EditOrder.baml
 E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\STUDENTU_1.06+.csprojAssemblyReference.cache
+E:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\EditOrderLine\EditOrderFull.g.cs
+E:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\EditOrderLine\EditOrder.g.cs
+E:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\EditOrderLine\EditOrderFull.baml
+E:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\EditOrderLine\EditOrder.baml
+E:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\RuleOrderLine\RuleOrderLineWindow.baml

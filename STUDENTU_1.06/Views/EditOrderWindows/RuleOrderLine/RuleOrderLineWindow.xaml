@@ -315,8 +315,8 @@
         <TextBlock Grid.Row="6" Grid.Column="2"  Text="Постановка задачи для автора" Margin="5" Foreground="Blue"/>
 
         <TextBox x:Name="AuthorTrablSet" Grid.Row="7" Grid.RowSpan="2" Grid.ColumnSpan="4"    
-                 Text="{Binding Order.DescriptionForClient, Mode=TwoWay}"
-                  TextAlignment="Center"  
+                 Text="{Binding Order.DescriptionForClient}"
+                  TextAlignment="Center"  AcceptsReturn="True"
                       VerticalContentAlignment="Stretch" HorizontalContentAlignment="Left" Foreground="Red" Background="White"
                       Margin="6,6,5.4,6" TextWrapping="Wrap" FontSize="12" >
             <TextBox.ContextMenu>

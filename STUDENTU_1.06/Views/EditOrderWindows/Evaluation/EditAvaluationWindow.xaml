@@ -85,41 +85,48 @@
         
         
         <ListBox x:Name="Avaluation" Grid.Row="1" Grid.Column="0" Grid.RowSpan="5" Grid.ColumnSpan="4"
-                    ItemsSource="{Binding _Evaluation._RuleOrderLine.AuthorsRecord.EvaluationRecords, 
+                    ItemsSource="{Binding AuthorsRecord.EvaluationRecords, 
                     UpdateSourceTrigger=PropertyChanged}" 
                  SelectedItem="{Binding  EvaluationRecord}"                   
                    TabIndex="6" Margin="8" >
             <!--"AuthorsRecords" can find in "RuleOrderLineClass.cs"-->
-          
-               
-                    <DockPanel >
-                        <WrapPanel>
-                            <Label Content="Дата: " Foreground="Red" Background="Black" />
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Дата: " Foreground="Red" FontWeight="Bold"  />
                             <TextBlock Text="{Binding DeadLine, Converter={StaticResource dateFormatConverter}}" 
-                                   Margin="2" Background="Black" Foreground="Red"
-                                   TextWrapping="WrapWithOverflow" 
-                                   TextAlignment="Center"/>
-                            <Label Content="Время: " Foreground="Orange" Background="Black" />
+                                     Foreground="Red" FontWeight="Bold"
+                                   TextWrapping="WrapWithOverflow" />
+                            <TextBlock Text="      Время: " Foreground="#FF55240C" />
                             <TextBlock Text="{Binding DeadLine, Converter={StaticResource timeFormatConverter}}" 
-                                   Margin="2" Background="Black" Foreground="Orange"
+                                   Foreground="#FF55240C" FontWeight="Bold"
+                                   TextWrapping="WrapWithOverflow"  />
+                            <TextBlock Text="      Цена: " Foreground="Blue" FontWeight="Bold" />
+                            <TextBlock Text="{Binding Price}" 
+                                   Margin="2"  Foreground="Red" FontWeight="Bold"
                                    TextWrapping="WrapWithOverflow" 
                                    TextAlignment="Center"/>
-                        </WrapPanel>
-                        <Label Content="Цена: " Foreground="Blue" Background="Yellow" />
-                        <TextBlock Text="{Binding Price}" 
-                                   Margin="2" Background="Yellow" Foreground="Red"
-                                   TextWrapping="WrapWithOverflow" 
-                                   TextAlignment="Center"/>                        
-                    </DockPanel>
-            <StackPanel>
-                <Label Content="Комментарии"  HorizontalAlignment="Center"/>
-                <TextBlock Text="{Binding EvaluateDescription}" 
+                        </StackPanel>
+                        <StackPanel>
+                            <Label Content="Комментарии"  HorizontalAlignment="Center" Background="AliceBlue" FontWeight="Bold"/>
+                            <TextBlock Text="{Binding EvaluateDescription}" 
                                    Margin="2" 
                                    TextWrapping="WrapWithOverflow" 
                                    TextAlignment="Center"/>
-                <Label Content="------------------------------------------------------------------" 
-                       Background="Blue" HorizontalAlignment="Center"/>
-            </StackPanel>
+                            <Label Content="------------------------------------------------------------------------------------------------------------------------------------" 
+                       Foreground="Blue" HorizontalAlignment="Center"/>
+                        </StackPanel>
+
+
+                    </StackPanel>
+                       
+                </DataTemplate>
+                
+            </ListBox.ItemTemplate>
+                
+                
+
             
         </ListBox>
         

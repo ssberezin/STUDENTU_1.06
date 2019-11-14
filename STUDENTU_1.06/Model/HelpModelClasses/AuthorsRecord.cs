@@ -21,5 +21,7 @@ namespace STUDENTU_1._06.Model.HelpModelClasses
         public Contacts Contacts { get; set; }
         public ObservableCollection<EvaluationRecord> EvaluationRecords { get; set; }
 
+
+
     }
 }

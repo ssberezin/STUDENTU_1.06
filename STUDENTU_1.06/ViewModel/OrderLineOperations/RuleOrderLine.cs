@@ -51,11 +51,14 @@ namespace STUDENTU_1._06.ViewModel
             }
             ExecuteAuthor = new AuthorsRecord();
             ExecuteAuthor.Persone.NickName = "не задан";
+
+            TMPDate = DateTime.Now;
+
             SelectedExecuteAuthor = new Author();
                         
         }
 
-      
+        DateTime TMPDate;
 
         private AuthorsRecord authorsRecord;
         public AuthorsRecord AuthorsRecord
@@ -156,6 +159,7 @@ namespace STUDENTU_1._06.ViewModel
                         RuleOrderLineWindow ruleOrderLineWindow = new RuleOrderLineWindow();
                         ruleOrderLineWindow.Owner = Application.Current.MainWindow;
                         showWindow.ShowWindow(ruleOrderLineWindow);
+                        
                     }
                     ));
 
@@ -526,7 +530,48 @@ namespace STUDENTU_1._06.ViewModel
                     }
                     ));
 
-   
+        //===================================== For save evaluate order any author in EditAvaluatonWindow.xaml====================
+        private RelayCommand saveAuthorEvaluateAuthorRecordCommand;
+        public RelayCommand SaveAuthorEvaluateAuthorRecordCommand =>
+                            saveAuthorEvaluateAuthorRecordCommand ??
+                            (saveAuthorEvaluateAuthorRecordCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        SaveAuthorEvaluateAuthorRecord();
+                    }
+                    ));
+
+        private void SaveAuthorEvaluateAuthorRecord()
+        {
+            
+            //check for the entry before adding
+            if (AuthorsRecord.EvaluationRecords.Count() > 0)
+                
+                foreach (var item in AuthorsRecord.EvaluationRecords)
+                    if (item.DeadLine == _Evaluation.EvaluationRecord.DeadLine &&
+                        item.Price == _Evaluation.EvaluationRecord.Price &&
+                        item.EvaluateDescription == _Evaluation.EvaluationRecord.EvaluateDescription)
+                        dialogService.ShowMessage("Уже есть запись с такой оценкой");
+                    else
+                    {
+                        AuthorsRecord.EvaluationRecords.Add(_Evaluation.EvaluationRecord);
+                        dialogService.ShowMessage("Данные сохранены");
+                        //EvaluationRecord.Price = 0;
+                        //EvaluationRecord.EvaluateDescription = null;
+                        _Evaluation.EvaluationRecord = new EvaluationRecord() { DeadLine = TMPDate };
+                        break;
+                    }
+            //AuthorsRecord.EvaluationRecords
+            else
+            {
+               AuthorsRecord.EvaluationRecords.Add(_Evaluation.EvaluationRecord);
+                dialogService.ShowMessage("Данные сохранены");
+                _Evaluation.EvaluationRecord = new EvaluationRecord() { DeadLine = TMPDate };
+                //EvaluationRecord.Price = 0;
+                //EvaluationRecord.EvaluateDescription = null;
+            }
+        }
+
 
     }
 }

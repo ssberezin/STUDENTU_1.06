@@ -41,7 +41,7 @@ namespace STUDENTU_1._06.ViewModel
            
 
             //TMPDate = TMPStaticClass.CurrentOrder.Dates.AuthorDeadLine;
-            TMPDate = DateTime.Now;
+          
             //LoadData();
             showWindow = new DefaultShowWindowService();
             dialogService = new DefaultDialogService();
@@ -271,45 +271,7 @@ namespace STUDENTU_1._06.ViewModel
 
         }
 
-        //===================================== For save evaluate order any author in EditAvaluatonWindow.xaml====================
-        private RelayCommand saveAuthorEvaluateAuthorRecordCommand;
-        public RelayCommand SaveAuthorEvaluateAuthorRecordCommand =>
-                            saveAuthorEvaluateAuthorRecordCommand ??
-                            (saveAuthorEvaluateAuthorRecordCommand = new RelayCommand(
-                    (obj) =>
-                    {
-                        SaveAuthorEvaluateAuthorRecord();
-                    }
-                    ));
-
-        private void SaveAuthorEvaluateAuthorRecord()
-        {
-            //check for the entry before adding
-            if (_RuleOrderLine.AuthorsRecord.EvaluationRecords.Count() > 0)
-                foreach (EvaluationRecord item in _RuleOrderLine.AuthorsRecord.EvaluationRecords)
-                    if (item.DeadLine == EvaluationRecord.DeadLine &&
-                        item.Price == EvaluationRecord.Price &&
-                        item.EvaluateDescription == EvaluationRecord.EvaluateDescription)
-                        dialogService.ShowMessage("Уже есть запись с такой оценкой");
-                    else
-                    {
-                        _RuleOrderLine.AuthorsRecord.EvaluationRecords.Add(EvaluationRecord);
-                        dialogService.ShowMessage("Данные сохранены");
-                        //EvaluationRecord.Price = 0;
-                        //EvaluationRecord.EvaluateDescription = null;
-                        EvaluationRecord = new EvaluationRecord() { DeadLine = TMPDate };
-                        break;
-                    }
-
-            else
-            {
-                _RuleOrderLine.AuthorsRecord.EvaluationRecords.Add(EvaluationRecord);
-                dialogService.ShowMessage("Данные сохранены");
-                EvaluationRecord = new EvaluationRecord() { DeadLine = TMPDate };
-                //EvaluationRecord.Price = 0;
-                //EvaluationRecord.EvaluateDescription = null;
-            }
-        }
+       
 
         //===================================== For Cancel save evaluate order any author in EditAvaluatonWindow.xaml====================
         private RelayCommand cancelAuthorEvaluateAuthorRecordCommand;
