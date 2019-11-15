@@ -13,12 +13,11 @@
         Height="350" Width="600"
         >
     <Window.InputBindings>
-        <KeyBinding Gesture="Esc" Command="{Binding CloseWindowCommand}"
+        <KeyBinding Gesture="Esc" Command="{Binding CancelEvaluateCommand}"
                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
-        <KeyBinding Gesture="Ctrl+n" Command="{Binding AddEvaluationCommand}"
-                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
-        <KeyBinding Gesture="Ctrl+d" Command="{Binding AddEvaluationCommand}"
-                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
+        <KeyBinding Gesture="Ctrl+n" Command="{Binding AddEvaluationCommand}"/>
+        <KeyBinding Gesture="Ctrl+e" Command="{Binding EditEvaluationCommand}"/>
+        <KeyBinding Gesture="Ctrl+d" Command="{Binding DeleteSelectedAvaluateCommand}"/>
     </Window.InputBindings>
     <Window.Resources>
 
@@ -81,13 +80,13 @@
           
 
         </Grid.RowDefinitions>
-            
-        
-        
+
+
+        <!--SelectedItem="{Binding  _Evaluation.EvaluationRecord}"-->
         <ListBox x:Name="Avaluation" Grid.Row="1" Grid.Column="0" Grid.RowSpan="5" Grid.ColumnSpan="4"
                     ItemsSource="{Binding AuthorsRecord.EvaluationRecords, 
                     UpdateSourceTrigger=PropertyChanged}" 
-                 SelectedItem="{Binding  EvaluationRecord}"                   
+                                  
                    TabIndex="6" Margin="8" >
             <!--"AuthorsRecords" can find in "RuleOrderLineClass.cs"-->
             <ListBox.ItemTemplate>
@@ -165,7 +164,8 @@
             <Button Grid.Column="1"  Content="Удалить" Background="Red" FontWeight="ExtraBold" TabIndex="5"
                 IsEnabled="{Binding SelectedItem,
                      Converter={StaticResource NullBoolConverter}, ElementName=Avaluation}"
-                 Command="{Binding _Evaluation.DeleteSelectedAvaluateRuleOrderCommand}"   />
+                 Command="{Binding DeleteSelectedAvaluateCommand}" 
+                    CommandParameter="{Binding ElementName=Avaluation, Path=SelectedItem}"/>
             <!--Command "DeleteSelectedAvaluateRuleOrderCommand" can find in EvaluationClass.cs -->
             <Button Grid.Column="2"  Content="Редактировать" Background="BlueViolet"
                 FontWeight="ExtraBold" TabIndex="5"
@@ -177,10 +177,11 @@
             <!--Command "EditSelectedAvaluateRuleOrderCommand" can find in EvaluationClass.cs -->
             <Button Grid.Column="3" Content="Отменить" Background="Red"
                 FontWeight="ExtraBold" TabIndex="5"                
-                 Command="{Binding _Evaluation.CancelEvaluateCommand}"    />
+                 Command="{Binding CancelEvaluateCommand}" 
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
             <Button Grid.Column="4" Content="Сохранить" Background="LawnGreen"
                 FontWeight="ExtraBold" TabIndex="5"                
-                 Command="{Binding _Evaluation.CancelEvaluateCommand}"    />
+                 Command="{Binding AddEvaluationToAuthorCommand}"    />
            
         </Grid>
     </Grid>

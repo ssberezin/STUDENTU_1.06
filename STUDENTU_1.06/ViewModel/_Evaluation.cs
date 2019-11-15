@@ -29,8 +29,8 @@ namespace STUDENTU_1._06.ViewModel
         {  
             Evaluation = new Evaluation();
             //EvaluationRecord = new EvaluationRecord() { DeadLine = TMPStaticClass.CurrentOrder.Dates.AuthorDeadLine };           
-            EvaluationRecord = new EvaluationRecord() { DeadLine = DateTime.Now };
-
+            //EvaluationRecord = new EvaluationRecord() { DeadLine = DateTime.Now };
+            EvaluationRecord = new EvaluationRecord();
             FinalEvaluationRecord = new EvaluationRecord()
             {
                 DeadLine = EvaluationRecord.DeadLine,
@@ -40,7 +40,7 @@ namespace STUDENTU_1._06.ViewModel
             Order = new OrderLine(); 
            
 
-            //TMPDate = TMPStaticClass.CurrentOrder.Dates.AuthorDeadLine;
+           
           
             //LoadData();
             showWindow = new DefaultShowWindowService();
@@ -49,7 +49,7 @@ namespace STUDENTU_1._06.ViewModel
         }
 
 
-        DateTime TMPDate;
+        
 
 
         private Evaluation evaluation;
@@ -205,21 +205,7 @@ namespace STUDENTU_1._06.ViewModel
                     }
                     ));
 
-        //===================================== For delete evaluate order any author in EditAvaluationWindow.xaml====================
-        private RelayCommand deleteSelectedAvaluateRuleOrderCommand;
-        public RelayCommand DeleteSelectedAvaluateRuleOrderCommand =>
-                            deleteSelectedAvaluateRuleOrderCommand ??
-                            (deleteSelectedAvaluateRuleOrderCommand = new RelayCommand(
-                    (obj) =>
-                    {
-                        DeleteSelectedAvaluateRuleOrder();
-                    }
-                    ));
-
-        private void DeleteSelectedAvaluateRuleOrder()
-        {
-             _RuleOrderLine.AuthorsRecord.EvaluationRecords.Remove(EvaluationRecord);
-        }
+        
 
 
         //===================================== For call EDIT window  EditAvaluatWindow.xaml====================
@@ -273,23 +259,7 @@ namespace STUDENTU_1._06.ViewModel
 
        
 
-        //===================================== For Cancel save evaluate order any author in EditAvaluatonWindow.xaml====================
-        private RelayCommand cancelAuthorEvaluateAuthorRecordCommand;
-        public RelayCommand CancelAuthorEvaluateAuthorRecordCommand =>
-            cancelAuthorEvaluateAuthorRecordCommand ?? (cancelAuthorEvaluateAuthorRecordCommand = new RelayCommand(
-                    (obj) =>
-                    {
-                        CancelAuthorEvaluateAuthorRecord();
-                        Window window = obj as Window;
-                        window.Close();
-                    }
-                    ));
-
-        private void CancelAuthorEvaluateAuthorRecord()
-        {
-            EvaluationRecord = null;           
-        }
-
+        
         //==================================== COMMAND FOR ADD EVALUATION TO ORDER ====================================
 
         private RelayCommand addEvaluationToOrderCommand;
@@ -310,28 +280,28 @@ namespace STUDENTU_1._06.ViewModel
                     //лагов тут еще пилить и пилить( (02/11/19)
                     //добавили авторов из AuthorsRecords в Evaluation
                     foreach (var item in _RuleOrderLine.SelectedAuthorsRecords)
-                        {
-                            Evaluation.Authors.Add(item.Author);//вот эта хрень уже под сомнение. Накой она теперь?...
-                            Order.Author.Add(item.Author);
-                        }
+                    {
+                        Evaluation.Authors.Add(item.Author);//вот эта хрень уже под сомнение. Накой она теперь?...
+                        Order.Author.Add(item.Author);
+                    }
 
-                        //добавили оценки Evaluation авторам  Order.Authors  из _Evaluation._RuleOrderLine.AuthorsRecord.EvaluationRecords
-                        //т.е. получили полноценный список оценок авторов по текущему заказу
-                        foreach (var i in Order.Author)
+                    //добавили оценки Evaluation авторам  Order.Authors  из _Evaluation._RuleOrderLine.AuthorsRecord.EvaluationRecords
+                    //т.е. получили полноценный список оценок авторов по текущему заказу
+                    foreach (var i in Order.Author)
+                    {
+                        foreach (var item in _RuleOrderLine.AuthorsRecord.EvaluationRecords)
                         {
-                            foreach (var item in _RuleOrderLine.AuthorsRecord.EvaluationRecords)
-                            {
-                               Evaluation.Moneys.Add(new Money() { Price = item.Price });
-                               Evaluation.Description = item.EvaluateDescription;
-                               Evaluation.Dates.Add(new Dates() { DeadLine = item.DeadLine });
-                               Evaluation.Winner = item.FinalEvaluation;
-                                i.Evaluation.Add(Evaluation);
-                            }
+                            Evaluation.Moneys.Add(new Money() { Price = item.Price });
+                            Evaluation.Description = item.EvaluateDescription;
+                            Evaluation.Dates.Add(new Dates() { DeadLine = item.DeadLine });
+                            Evaluation.Winner = item.FinalEvaluation;
+                            i.Evaluation.Add(Evaluation);
                         }
-                        //TMPStaticClass.CurrentOrder.Author = db.Authors.Find(new Author() { AuthorId = _Evaluation._RuleOrderLine.SelectedExecuteAuthor.AuthorId }.AuthorId);
-                        //TMPStaticClass.CurrentOrder.Author.Evaluation.Add(Evaluation);
+                    }
+                    //TMPStaticClass.CurrentOrder.Author = db.Authors.Find(new Author() { AuthorId = _Evaluation._RuleOrderLine.SelectedExecuteAuthor.AuthorId }.AuthorId);
+                    //TMPStaticClass.CurrentOrder.Author.Evaluation.Add(Evaluation);
 
-                   
+
 
                     //Persone.Contacts = Contacts;
                     //Order.Direction = db.Directions.Find(_Dir.Dir.DirectionId);
@@ -378,6 +348,24 @@ namespace STUDENTU_1._06.ViewModel
             }
 
         }
+
+        //===================================== For Cancel  evaluate order any author in AddAvaluatonWindow.xaml====================
+        private RelayCommand cancelAuthorEvaluateAuthorRecordCommand;
+        public RelayCommand CancelAuthorEvaluateAuthorRecordCommand =>
+            cancelAuthorEvaluateAuthorRecordCommand ?? (cancelAuthorEvaluateAuthorRecordCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        CancelAuthorEvaluateAuthorRecord();
+                        Window window = obj as Window;
+                        window.Close();
+                    }
+                    ));
+
+        private void CancelAuthorEvaluateAuthorRecord()
+        {           
+           EvaluationRecord = new EvaluationRecord() { DeadLine = DateTime.Now };
+        }
+
 
     }
 

@@ -233,6 +233,12 @@ namespace STUDENTU_1._06.ViewModel
                         if (!string.IsNullOrEmpty(AuthorStatus.AuthorStatusName))
                         {
                             AuthorStatus.AuthorStatusName = AuthorStatus.AuthorStatusName.ToLower();
+                            AuthorStatus.AuthorStatusName.Trim();
+                            if (AuthorStatus.AuthorStatusName[0] == ' ')
+                            {
+                                dialogService.ShowMessage("Нельзя добавить пустую строку");
+                                return;
+                            }
                             db.AuthorStatuses.Add(AuthorStatus);
                             db.SaveChanges();
                             AuthorStatusRecords.Clear();

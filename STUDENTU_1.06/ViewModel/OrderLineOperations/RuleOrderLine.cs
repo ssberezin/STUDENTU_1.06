@@ -47,7 +47,8 @@ namespace STUDENTU_1._06.ViewModel
             if (TMPStaticClass.CurrentOrder != null)
             {
                 Order = TMPStaticClass.CurrentOrder;
-                Order.DescriptionForClient = "Вариант(ы): " + Order.Variant + ". " + Order.DescriptionForClient;
+                Order.DescriptionForClient = "Вариант(ы): " + Order.Variant + ". "  + Order.DescriptionForClient+
+                    "\n\nСрок выполнения: "+Order.Dates.DeadLine.ToOADate();
             }
             ExecuteAuthor = new AuthorsRecord();
             ExecuteAuthor.Persone.NickName = "не задан";
@@ -555,22 +556,86 @@ namespace STUDENTU_1._06.ViewModel
                     else
                     {
                         AuthorsRecord.EvaluationRecords.Add(_Evaluation.EvaluationRecord);
-                        dialogService.ShowMessage("Данные сохранены");
-                        //EvaluationRecord.Price = 0;
-                        //EvaluationRecord.EvaluateDescription = null;
-                        _Evaluation.EvaluationRecord = new EvaluationRecord() { DeadLine = TMPDate };
+                        dialogService.ShowMessage("Данные сохранены");                        
+                        //_Evaluation.EvaluationRecord = new EvaluationRecord() { DeadLine = TMPDate };
+                        _Evaluation.EvaluationRecord = new EvaluationRecord();
                         break;
-                    }
-            //AuthorsRecord.EvaluationRecords
+                    }            
             else
             {
                AuthorsRecord.EvaluationRecords.Add(_Evaluation.EvaluationRecord);
                 dialogService.ShowMessage("Данные сохранены");
-                _Evaluation.EvaluationRecord = new EvaluationRecord() { DeadLine = TMPDate };
-                //EvaluationRecord.Price = 0;
-                //EvaluationRecord.EvaluateDescription = null;
+                //_Evaluation.EvaluationRecord = new EvaluationRecord() { DeadLine = TMPDate };
+                _Evaluation.EvaluationRecord = new EvaluationRecord();
             }
         }
+
+        //===================================== For delete evaluate selected author in EditAvaluationWindow.xaml====================
+        private RelayCommand deleteSelectedAvaluateCommand;
+        public RelayCommand DeleteSelectedAvaluateCommand =>
+                            deleteSelectedAvaluateCommand ??
+                            (deleteSelectedAvaluateCommand = new RelayCommand(
+                    (obj) =>
+                    {                       
+                        DeleteSelectedAvaluate(obj as EvaluationRecord);
+                    }
+                    ));
+
+        private void DeleteSelectedAvaluate(EvaluationRecord i)
+        {
+            AuthorsRecord.EvaluationRecords.Remove(i);
+        }
+
+        //==================================== COMMAND FOR ADD EVALUATION TO SELECTED AUTHOR ====================================
+
+        private RelayCommand addEvaluationToAuthorCommand;
+        public RelayCommand AddEvaluationToAuthorCommand => addEvaluationToAuthorCommand ?? (addEvaluationToAuthorCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        AddEvaluationToAuthor();
+                    }
+                    ));
+
+        private void AddEvaluationToAuthor()
+        {
+            if (AuthorsRecord.EvaluationRecords.Count() != 0)
+            {
+                //добавляем к выбранным авторам оценки
+                //add evaluations to selected authors
+                foreach (var item in SelectedAuthorsRecords)
+                    if (item.Author.AuthorId == AuthorsRecord.Author.AuthorId)
+                    {
+                        foreach (var i in AuthorsRecord.EvaluationRecords)
+                        {
+                            item.EvaluationRecords.Add(i);
+                        }
+                        dialogService.ShowMessage("Оценка добавлена");
+                        break;
+                    }
+            }
+            else
+                dialogService.ShowMessage("Нечего добавлять");
+
+        }
+
+        //===================================== For Cancel save evaluate order any author in EditAvaluatonWindow.xaml====================
+        private RelayCommand cancelEvaluateCommand;
+        public RelayCommand CancelEvaluateCommand =>
+            cancelEvaluateCommand ?? (cancelEvaluateCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        CancelAuthorEvaluate();
+                        Window window = obj as Window;
+                        window.Close();
+                    }
+                    ));
+
+        private void CancelAuthorEvaluate()
+        {
+            AuthorsRecord = new AuthorsRecord();
+            _Evaluation.EvaluationRecord = new EvaluationRecord() { DeadLine = DateTime.Now };
+        }
+
 
 
     }

@@ -19,7 +19,7 @@ namespace STUDENTU_1._06.Model
             this.EndDateWork = DateTime.Now; 
             this.DayBirth = new DateTime(1900, 1, 1);
             this.DeadLine = DateTime.Now.AddDays(1);
-            DeadLine=DeadLine.AddHours(-DateTime.Now.Hour).AddMinutes(-DateTime.Now.Minute).AddHours(9);
+            DeadLine=GetDefaultDate();
             this.DateDone = new DateTime(1900, 1, 1);
             this.DateOfPaid = new DateTime(1900, 1, 1);
             this.AuthorDeadLine = DeadLine.AddMinutes(-30);           
@@ -71,6 +71,11 @@ namespace STUDENTU_1._06.Model
         public virtual Evaluation Evaluation { get; set; }
         public virtual Persone Persone { get; set; }
         public virtual List<OrderLine> OrderLine { get; set; }
-        
+
+        public DateTime GetDefaultDate()
+        {
+            return DeadLine.AddHours(-DateTime.Now.Hour).AddMinutes(-DateTime.Now.Minute).AddHours(9);
+        }
+
     }
 }

@@ -417,10 +417,10 @@
             <Button Grid.Column="2" Content="Постготовность" Background="LightBlue" Foreground="Black" 
                 TabIndex="22" Margin="3"/>
             <!--StatusName-->
-            <!--IsEnabled="{Binding _Status.Status.StatusName,   Converter={StaticResource stringToBoollConverter}}"-->
+            
             <Button Grid.Column="3" Content="Распределить заказ" Background="DarkOliveGreen" 
                         Margin="3,3,3,0" Command="{Binding RuleOrderLine.NewRuleOrderLineWindowCommand}"                    
-                        
+            IsEnabled="{Binding _Status.Status.StatusName,   Converter={StaticResource stringToBoollConverter}}"            
                         CommandParameter="{Binding DataContext, 
                                             RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Height="35" VerticalAlignment="Top"
                      ToolTip="Кнопка станет активной только после сохранения заказа" />

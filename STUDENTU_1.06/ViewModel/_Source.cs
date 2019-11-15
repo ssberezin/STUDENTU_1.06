@@ -230,6 +230,12 @@ namespace STUDENTU_1._06.ViewModel
                     {
                         if (!string.IsNullOrEmpty(Source.SourceName))
                         {
+                            Source.SourceName.Trim();
+                            if (Source.SourceName[0] == ' ')
+                            {
+                                dialogService.ShowMessage("Нельзя добавить пустую строку");
+                                return;
+                            }
                             db.Sources.Add(Source);
                             db.SaveChanges();
                             SourcesRecords.Clear();

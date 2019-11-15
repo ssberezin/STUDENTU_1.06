@@ -226,9 +226,15 @@ namespace STUDENTU_1._06.ViewModel
                     var res = db.WorkTypes.Any(o => o.TypeOfWork == WorkType.TypeOfWork);
                     if (!res)
                     {
-                        if (!string.IsNullOrEmpty(WorkType.TypeOfWork))
+                        if (!string.IsNullOrEmpty(WorkType.TypeOfWork)||WorkType.TypeOfWork!="---")
                         {
                             WorkType.TypeOfWork = WorkType.TypeOfWork.ToLower();
+                            WorkType.TypeOfWork.Trim();
+                            if (WorkType.TypeOfWork[0] == ' ')
+                            {
+                                dialogService.ShowMessage("Нельзя добавить пустую строку");
+                                return;
+                            }
                             db.WorkTypes.Add(WorkType);
                             db.SaveChanges();
                             WorkTypesRecords.Clear();

@@ -230,6 +230,12 @@ namespace STUDENTU_1._06.ViewModel
                         if (!string.IsNullOrEmpty(Status.StatusName))
                         {
                             Status.StatusName = Status.StatusName.ToLower();
+                            Status.StatusName.Trim();
+                            if (Status.StatusName[0] == ' ')
+                            {
+                                dialogService.ShowMessage("Нельзя добавить пустую строку");
+                                return;
+                            }
                             db.Statuses.Add(Status);
                             db.SaveChanges();
                             StatusRecords.Clear();

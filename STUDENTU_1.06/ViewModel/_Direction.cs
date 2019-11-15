@@ -135,9 +135,17 @@ namespace STUDENTU_1._06.ViewModel
                     var res1 = db.Directions.Any(o => o.DirectionName == Dir.DirectionName);
                     if (!res1)
                     {
+
+                    
                         if (!string.IsNullOrEmpty(Dir.DirectionName)|| Dir.DirectionName!="---")
                         {
                             Dir.DirectionName = Dir.DirectionName.ToLower();
+                            Dir.DirectionName.Trim();
+                            if (Dir.DirectionName[0] == ' ')
+                            {
+                                dialogService.ShowMessage("Нельзя добавить пустую строку");
+                                return;
+                            }
                             db.Directions.Add(Dir);
                             db.SaveChanges();
                             DirRecords.Clear();
@@ -174,6 +182,8 @@ namespace STUDENTU_1._06.ViewModel
                 }
             }
         }
+
+     
 
         //===================THIS METHOD IS FOR DELETE RECORDS IN DIRECTIONS TABLE==============
         public void DeleteDir()
@@ -290,6 +300,8 @@ namespace STUDENTU_1._06.ViewModel
                     {
                         //changing DB
                         res1.DirectionName = Dir.DirectionName.ToLower();
+                        Dir.DirectionName.Trim();
+                            
                         db.SaveChanges();
                     }                 
 
@@ -330,12 +342,14 @@ namespace STUDENTU_1._06.ViewModel
 
         private void AddAuthorDirection()
         {
-            if (FindDir())
+            if (FindDir() || string.IsNullOrEmpty(Dir.DirectionName)|| Dir.DirectionName=="---")
             {
-                dialogService.ShowMessage("Уже есть такое название в списке");
+                dialogService.ShowMessage("Нельязя добавить эту запись");
             }
             else            
-            AuthorDirections.Add(Dir);
+                AuthorDirections.Add(Dir);
+
+
         }
 
         //here we check AuthorDirections for the added item

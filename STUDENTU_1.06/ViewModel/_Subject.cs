@@ -135,8 +135,14 @@ namespace STUDENTU_1._06.ViewModel
                     var res2 = db.Subjects.Any(o => o.SubName == Subj.SubName);
                     if (!res2)
                     {
-                        if (!string.IsNullOrEmpty(Subj.SubName))
+                        if (!string.IsNullOrEmpty(Subj.SubName) || Subj.SubName != "---")
                         {
+                            Subj.SubName.Trim();
+                            if (Subj.SubName[0] == ' ')
+                            {
+                                dialogService.ShowMessage("Нельзя добавить пустую строку");
+                                return;
+                            }
                             db.Subjects.Add(Subj);
                             db.SaveChanges();
                             SubjRecords.Clear();
