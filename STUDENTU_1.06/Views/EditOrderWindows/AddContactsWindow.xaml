@@ -7,6 +7,7 @@
        
         mc:Ignorable="d"
         Title="Редактирование дополнительных контатов" Height="450" Width="345" MinHeight="450" MinWidth="345"
+        MaxHeight="450" MaxWidth="345"
          TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
         TextOptions.TextFormattingMode="Ideal" 
@@ -16,7 +17,7 @@
         WindowStartupLocation="CenterScreen" 
         >
     <Window.InputBindings>
-        <KeyBinding Gesture="Esc" Command="{Binding CloseWindowCommand}"
+        <KeyBinding Gesture="Esc" Command="{Binding CancelSaveContactsCommand}" 
                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
         <KeyBinding Gesture="Ctrl+S" Command="{Binding SaveContactCommand}"/>
         <!--Command CloseWindowCommand  can find in ForEditOrder.cs-->
@@ -44,7 +45,7 @@
                 <TextBlock Text="№ телефона 1: " FontWeight="Bold"  Foreground="Brown"/>
             </Viewbox>
             <TextBox x:Name="Phone1"  Margin="2" MinWidth="205" 
-                 Text="{Binding Contacts.Phone1 , Mode=TwoWay,
+                 Text="{Binding TmpContacts.Phone1 , Mode=TwoWay,
             UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="0"
                   TextAlignment="Center" MaxLength="13"/>
             <!--Contatcts can find in ForEditOrder.cs-->
@@ -55,7 +56,7 @@
                 <TextBlock Text="№ телефона 2: " FontWeight="Bold"  Foreground="Brown"/>
             </Viewbox>
             <TextBox x:Name="Phone2"  Margin="2" MinWidth="205" HorizontalAlignment="Stretch"
-                 Text="{Binding Contacts.Phone2 , Mode=TwoWay,
+                 Text="{Binding TmpContacts.Phone2 , Mode=TwoWay,
             UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="1"
                   TextAlignment="Center" Width="205" MaxLength="13"/>
             <!--Contatcts can find in ForEditOrder.cs-->
@@ -66,7 +67,7 @@
                 <TextBlock Text="№ телефона 3: " FontWeight="Bold"  Foreground="Brown"/>
             </Viewbox>
             <TextBox x:Name="Phone3"  Margin="2" MinWidth="200" 
-                 Text="{Binding Contacts.Phone3 , Mode=TwoWay,
+                 Text="{Binding TmpContacts.Phone3 , Mode=TwoWay,
             UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="2"
                   TextAlignment="Center" Width="203" MaxLength="13"/>
             <!--Contatcts can find in ForEditOrder.cs-->
@@ -77,7 +78,7 @@
                 <TextBlock Text="Email1: " FontWeight="Bold"  Foreground="Brown"/>
             </Viewbox>
             <TextBox x:Name="Email1"  Margin="2" MinWidth="260" 
-                 Text="{Binding Contacts.Email1 , Mode=TwoWay,
+                 Text="{Binding TmpContacts.Email1 , Mode=TwoWay,
             UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="3"
                   TextAlignment="Center"/>
             <!--Contatcts can find in ForEditOrder.cs-->
@@ -88,7 +89,7 @@
                 <TextBlock Text="VK: " FontWeight="Bold"  Foreground="Brown"/>
             </Viewbox>
             <TextBox x:Name="VK"  Margin="2" MinWidth="285" 
-                 Text="{Binding Contacts.VK , Mode=TwoWay,
+                 Text="{Binding TmpContacts.VK , Mode=TwoWay,
             UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="5"
                   TextAlignment="Center"/>
             <!--Contatcts can find in ForEditOrder.cs-->
@@ -99,7 +100,7 @@
                 <TextBlock Text="Email2: " FontWeight="Bold"  Foreground="Brown"/>
             </Viewbox>
             <TextBox x:Name="Email2"  Margin="2" MinWidth="260" 
-                 Text="{Binding Contacts.Email2 , Mode=TwoWay,
+                 Text="{Binding TmpContacts.Email2 , Mode=TwoWay,
             UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="3"
                   TextAlignment="Center" Width="257"/>
             <!--Contatcts can find in ForEditOrder.cs-->
@@ -110,7 +111,7 @@
                 <TextBlock Text="Skype: " FontWeight="Bold"  Foreground="Brown"/>
             </Viewbox>
             <TextBox x:Name="Skype"  Margin="2" MinWidth="260" 
-                 Text="{Binding Contacts.Skype , Mode=TwoWay,
+                 Text="{Binding TmpContacts.Skype , Mode=TwoWay,
             UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="5"
                   TextAlignment="Center"/>
             <!--Contatcts can find in ForEditOrder.cs-->
@@ -121,7 +122,7 @@
                 <TextBlock Text="FaceBook: " FontWeight="Bold"  Foreground="Brown"/>
             </Viewbox>
             <TextBox  Margin="2" MinWidth="235" 
-                 Text="{Binding Contacts.FaceBook, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="5"
+                 Text="{Binding TmpContacts.FaceBook, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="5"
                   TextAlignment="Center" Width="235" Height="27"/>
             <!--Contatcts can find in ForEditOrder.cs-->
         </WrapPanel>
@@ -130,9 +131,15 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
                 <ColumnDefinition />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Grid.ColumnSpan="3"  Content="Сохранить" Background="Green"
+            <Button Grid.Column="0" Grid.ColumnSpan="2"  Content="Сохранить" Background="Green"
                     Command="{Binding SaveContactCommand}"                                      
+                TabIndex="7">
+            </Button>
+            <Button Grid.Column="2" Grid.ColumnSpan="2"  Content="Отменить" Background="Red"
+                    Command="{Binding CancelSaveContactsCommand}" 
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
                 TabIndex="7">
             </Button>
             <!--Command SaveContactCommand can find in ForEditOrderAddContacts.cs-->

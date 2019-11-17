@@ -89,9 +89,8 @@ namespace STUDENTU_1._06.ViewModel
         public RelayCommand NewEditWorkType => newEditWorkType ?? (newEditWorkType = new RelayCommand(
                     (obj) =>
                     {
-                        EditWorkTypeWindow уditWorkTypeWindow = new EditWorkTypeWindow(obj);
-                        уditWorkTypeWindow.Owner = Application.Current.MainWindow;
-                        showWindow.ShowWindow(уditWorkTypeWindow);
+                        EditWorkTypeWindow уditWorkTypeWindow = new EditWorkTypeWindow(obj);                        
+                        showWindow.ShowDialog(уditWorkTypeWindow);
                     }
                     ));
 

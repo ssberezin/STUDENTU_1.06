@@ -53,9 +53,8 @@ namespace STUDENTU_1._06.ViewModel
             (newEditContactsCommand = new RelayCommand(
                     (obj) =>
                     {
-                        AddContactsWindow addContactsWindow = new AddContactsWindow(obj);
-                        addContactsWindow.Owner = Application.Current.MainWindow;
-                        showWindow.ShowWindow(addContactsWindow);
+                        AddContactsWindow addContactsWindow = new AddContactsWindow(obj);                        
+                        showWindow.ShowDialog(addContactsWindow);
                     }
                     ));
 

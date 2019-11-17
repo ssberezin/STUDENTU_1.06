@@ -90,9 +90,8 @@ namespace STUDENTU_1._06.ViewModel
         public RelayCommand NewEditStatusCommand => newEditStatusCommand ?? (newEditStatusCommand = new RelayCommand(
                     (obj) =>
                     {
-                        EditStatusWindow editStatus = new EditStatusWindow(obj);
-                        editStatus.Owner = Application.Current.MainWindow;
-                        showWindow.ShowWindow(editStatus);
+                        EditStatusWindow editStatus = new EditStatusWindow(obj);                        
+                        showWindow.ShowDialog(editStatus);
                     }
                     ));
 

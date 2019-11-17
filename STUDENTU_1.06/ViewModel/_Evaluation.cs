@@ -186,9 +186,8 @@ namespace STUDENTU_1._06.ViewModel
             addEvaluationCommand ?? (addEvaluationCommand = new RelayCommand(
                     (obj) =>
                     {
-                        AddEvaluateWindow addEvaluateWindow = new AddEvaluateWindow(obj);
-                        addEvaluateWindow.Owner = Application.Current.MainWindow;
-                        showWindow.ShowWindow(addEvaluateWindow);
+                        AddEvaluateWindow addEvaluateWindow = new AddEvaluateWindow(obj);                        
+                        showWindow.ShowDialog(addEvaluateWindow);
                     }
                     ));
 
@@ -198,9 +197,8 @@ namespace STUDENTU_1._06.ViewModel
                     (obj) =>
                     {
                         //editAvaluationWindow
-                        EditAvaluationWindow editAvaluationWindow = new EditAvaluationWindow(obj);
-                        editAvaluationWindow.Owner = Application.Current.MainWindow;
-                        showWindow.ShowWindow(editAvaluationWindow);
+                        EditAvaluationWindow editAvaluationWindow = new EditAvaluationWindow(obj);                        
+                        showWindow.ShowDialog(editAvaluationWindow);
 
                     }
                     ));
@@ -216,9 +214,8 @@ namespace STUDENTU_1._06.ViewModel
                     (obj) =>
                     {
                         TmpEvaluationRecord = EvaluationRecord;
-                        EditEvaluateWindow editAvaluatWindow = new EditEvaluateWindow(obj);
-                        editAvaluatWindow.Owner = Application.Current.MainWindow;
-                        showWindow.ShowWindow(editAvaluatWindow);
+                        EditEvaluateWindow editAvaluatWindow = new EditEvaluateWindow(obj);                       
+                        showWindow.ShowDialog(editAvaluatWindow);
                     }
                     ));
 

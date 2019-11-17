@@ -10,7 +10,7 @@
         mc:Ignorable="d"
          WindowStartupLocation="CenterScreen"
         Title="Равспределение заказа на выполнение" 
-        Height="500" Width="850" MinWidth="850" MinHeight="500"
+        Height="560" Width="850" MinWidth="850" MinHeight="500"
          TextElement.Foreground="{DynamicResource MaterialDesignBody}" 
              
         TextElement.FontWeight="Regular"
@@ -131,6 +131,7 @@
                 <!--Command AllAuthorsCallCommand can find in _RuleOrderLine.cs -->
                 <RadioButton GroupName="GroupA" Content="Авторы по тематике" IsChecked="False" Command="{Binding ThemAuthorsCallCommand}"/>
                 <!--Command ThemAuthorsCallCommand  can find in _RuleOrderLine.cs -->
+                <CheckBox Content="Поиск среди потенциальных" Command="{Binding AddPotentialAuthorsCommand}"/>
             </StackPanel >
         </StackPanel>
         <StackPanel Grid.Column="1" Grid.ColumnSpan="2">

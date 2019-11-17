@@ -192,91 +192,130 @@ namespace STUDENTU_1._06.ViewModel
 
         private void AuthorsCall(string param)
         {
+            if (_Dir.Dir.DirectionName == "---")
+                param = "AllAuthors";
+            switch (param)
+            {
+                case "AllAuthors":
+                    AllAuthorsCall();
+                    break;
+                case "ThemAuthors":
+                    ThemAuthorsCall();
+                    break;
+            }
+        }
+
+        //call for all authors
+        private void AllAuthorsCall()
+        {
             using (StudentuConteiner db = new StudentuConteiner())
             {
                 try
                 {
-                    if (_Dir.Dir.DirectionName == "---")
-                        param = "AllAuthors";
                     var contacts = db.Contacts.Include("Persone").ToList();
-                    switch (param)
+                    var result = db.Authors.Include("Persone").ToList();
+                    AuthorsRecord record;
+                    foreach (Author item in result)
                     {
-                        
-                        case "AllAuthors":
-                            var result = db.Authors.Include("Persone").ToList();
-                            AuthorsRecord record;                            
-                            foreach (Author item in result)
-                            {
-                               
-                                Author author = new Author()
-                                {
-                                    AuthorId = item.AuthorId,
-                                    //AuthorStatus= authorStatus,
-                                    Source = item.Source,
-                                    Rating = item.Rating,
-                                    Punctually = item.Punctually,
-                                    CompletionCompliance = item.CompletionCompliance,
-                                    WorkQuality = item.WorkQuality,
-                                    Responsibility = item.Responsibility
-                                };
-                                Persone persone = new Persone()
-                                {
-                                    PersoneId = item.Persone.PersoneId,
-                                    PersoneDescription = item.Persone.PersoneDescription,
-                                    Name = item.Persone.Name,
-                                    Surname = item.Persone.Surname,
-                                    Patronimic = item.Persone.Patronimic,
-                                    Sex = item.Persone.Sex,
-                                    NickName = item.Persone.NickName
-                                };
-                                Contacts _contacts = new Contacts()
-                                {
-                                    Phone1 = item.Persone.Contacts.Phone1,
-                                    Phone2 = item.Persone.Contacts.Phone2,
-                                    Phone3 = item.Persone.Contacts.Phone3,
-                                    Email1 = item.Persone.Contacts.Email1,
-                                    Email2 = item.Persone.Contacts.Email2,
-                                    VK = item.Persone.Contacts.VK,
-                                    FaceBook = item.Persone.Contacts.FaceBook
-                                };
-                                record = new AuthorsRecord
-                                {                                   
-                                    Author = author,
-                                    Persone = persone,
-                                    Contacts=_contacts                                    
-                                };
-                                AuthorsRecords.Add(record);
-                            }
-                            break;
-                        case "ThemAuthors":
-                            var result1 = db.Authors.Include("Direction").                                                        
-                                                        ToList();
-                            foreach (Author item in result1)
-                            {
-                                foreach (Direction i in item.Direction)
-                                    if (i.DirectionName == TMPStaticClass.CurrentOrder.Direction.DirectionName)
-                                    {
-                                        AuthorsRecord AuthorsRecordTMP = new AuthorsRecord()
-                                        {
-                                            Author = item,
-                                            //AuthorRecordId = item.Author.AuthorId,
-                                            Persone = new Persone()
-                                            {
-                                                PersoneId = item.Persone.PersoneId,
-                                                PersoneDescription = item.Persone.PersoneDescription,
-                                                Name = item.Persone.Name,
-                                                Surname = item.Persone.Surname,
-                                                Patronimic = item.Persone.Patronimic,
-                                                Sex = item.Persone.Sex,
-                                                NickName = item.Persone.NickName
-                                            },
-                                            Contacts = item.Persone.Contacts
-                                        };
-                                        SelectedAuthorsRecords.Add(AuthorsRecordTMP);
-                                    }
-                            }
+                        if (item.AuthorStatus.AuthorStatusName != "работает")
+                            continue;
+                        Author author = new Author()
+                        {
+                            AuthorId = item.AuthorId,
+                            AuthorStatus= item.AuthorStatus,
+                            Source = item.Source,
+                            Rating = item.Rating,
+                            Punctually = item.Punctually,
+                            CompletionCompliance = item.CompletionCompliance,
+                            WorkQuality = item.WorkQuality,
+                            Responsibility = item.Responsibility
+                        };                        
+                        Persone persone = new Persone()
+                        {
+                            PersoneId = item.Persone.PersoneId,
+                            PersoneDescription = item.Persone.PersoneDescription,
+                            Name = item.Persone.Name,
+                            Surname = item.Persone.Surname,
+                            Patronimic = item.Persone.Patronimic,
+                            Sex = item.Persone.Sex,
+                            NickName = item.Persone.NickName
+                        };                        
+                        Contacts _contacts = new Contacts()
+                        {
+                            Phone1 = item.Persone.Contacts.Phone1,
+                            Phone2 = item.Persone.Contacts.Phone2,
+                            Phone3 = item.Persone.Contacts.Phone3,
+                            Email1 = item.Persone.Contacts.Email1,
+                            Email2 = item.Persone.Contacts.Email2,
+                            VK = item.Persone.Contacts.VK,
+                            FaceBook = item.Persone.Contacts.FaceBook
+                        };
+                        record = new AuthorsRecord
+                        {
+                            Author = author,
+                            Persone = persone,
+                            Contacts = _contacts
+                        };
+                        AuthorsRecords.Add(record);
+                    }
+                }
+                catch (ArgumentNullException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (OverflowException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+            }
 
-                            break;
+        }
+
+        //call for only authors by direction order
+        private void ThemAuthorsCall()
+        {
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                try
+                {
+                    var result1 = db.Authors.Include("Direction").ToList();
+                    foreach (Author item in result1)
+                    {
+                        if (item.AuthorStatus.AuthorStatusName != "работает")
+                            continue;
+                        foreach (Direction i in item.Direction)
+                            if (i.DirectionName == TMPStaticClass.CurrentOrder.Direction.DirectionName)
+                            {
+                                AuthorsRecord AuthorsRecordTMP = new AuthorsRecord()
+                                {
+                                    Author = item,
+                                    Persone = new Persone()
+                                    {
+                                        PersoneId = item.Persone.PersoneId,
+                                        PersoneDescription = item.Persone.PersoneDescription,
+                                        Name = item.Persone.Name,
+                                        Surname = item.Persone.Surname,
+                                        Patronimic = item.Persone.Patronimic,
+                                        Sex = item.Persone.Sex,
+                                        NickName = item.Persone.NickName
+
+                                    },
+                                    Contacts = item.Persone.Contacts
+                                };
+                                SelectedAuthorsRecords.Add(AuthorsRecordTMP);
+                            }
                     }
                 }
                 catch (ArgumentNullException ex)
@@ -303,7 +342,7 @@ namespace STUDENTU_1._06.ViewModel
 
         }
 
-        
+
         //=============================Copy to ClipBoard commands================================
         private RelayCommand copyEmailToClipBoardCommand;
         public RelayCommand CopyEmailToClipBoardCommand =>
@@ -382,10 +421,22 @@ namespace STUDENTU_1._06.ViewModel
         {
             Clipboard.SetText($"{AuthorsRecord.Contacts.VK}");
         }
+        //==============================COMMAND TO ADD POTENTIAL AUTHORS TO LIST ================================
 
-        //==============================COMMAND TO FIND AUTHOR BY NICKNAME ================================
+        //
 
-        //FindAuthorByNickCommand
+        private RelayCommand addPotentialAuthorsCommand;
+        public RelayCommand AddPotentialAuthorsCommand =>
+            addPotentialAuthorsCommand ?? (addPotentialAuthorsCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        
+                    }
+                    ));
+
+        
+
+        //==============================COMMAND TO FIND AUTHOR BY NICKNAME ================================        
 
         private RelayCommand findAuthorByNickCommand;
         public RelayCommand FindAuthorByNickCommand =>
@@ -525,9 +576,8 @@ namespace STUDENTU_1._06.ViewModel
             setExecuteAuthorCommand ?? (setExecuteAuthorCommand = new RelayCommand(
                     (obj) =>
                     {
-                        SetFinalAvaluationWindow setFinalAvaluationWindow = new SetFinalAvaluationWindow(obj);
-                        setFinalAvaluationWindow.Owner = Application.Current.MainWindow;
-                        showWindow.ShowWindow(setFinalAvaluationWindow);                        
+                        SetFinalAvaluationWindow setFinalAvaluationWindow = new SetFinalAvaluationWindow(obj);                        
+                        showWindow.ShowDialog(setFinalAvaluationWindow);                        
                     }
                     ));
 

@@ -11,5 +11,6 @@ namespace STUDENTU_1._06.Model.HelpModelClasses.ShowWindows
     {
         void ShowWindow(Window window);
         void CloseWindow(Window window);
+        void ShowDialog(Window window);
     }
 }

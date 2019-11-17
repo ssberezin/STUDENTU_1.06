@@ -327,30 +327,21 @@ namespace STUDENTU_1._06.ViewModel
             using (StudentuConteiner db = new StudentuConteiner())
             {
                 try
-                {
-                    //Order.ExecuteAuthor = db.Authors.Find(new Author() { AuthorId = 1 }.AuthorId);
-                   
-                    
+                {                    
                     Persone.Contacts=Contacts;
                     Order.Direction = db.Directions.Find(_Dir.Dir.DirectionId);                    
                     Order.Client=new Client() { Persone=Persone};
-                    Order.WorkType = db.WorkTypes.Find(_WorkType.WorkType.WorkTypeId);
-                    //Order.ExecuteAuthor = db.Authors.Find(new Author() { AuthorId=1}.AuthorId);
+                    Order.WorkType = db.WorkTypes.Find(_WorkType.WorkType.WorkTypeId);                  
                     Order.Dates = Date;
                     Order.Subject = db.Subjects.Find(_Subj.Subj.SubjectId); ;
                     Order.Money = Price;
                     _Status.Status= db.Statuses.Find(new Status() { StatusId = 2 }.StatusId);
                     Order.Status = _Status.Status;
-                    
 
-                    db.Orderlines.Add(Order);
-                    
+                    db.Orderlines.Add(Order);                    
                     db.SaveChanges();
                     dialogService.ShowMessage("Данные о заказе сохранены");
                     TMPStaticClass.CurrentOrder = Order;
-
-
-
                 }
                 catch (ArgumentNullException ex)
                 {
@@ -381,14 +372,28 @@ namespace STUDENTU_1._06.ViewModel
 
         public RelayCommand CloseWindowCommand => closeWindowCommand ?? (closeWindowCommand = new RelayCommand(
                     (obj) =>
-                    {                       
-                        
-                       Window window = obj as Window;
-                        window.Close();                       
+                    {
+                        CloseWindow(obj as Window);                       
                     }
                     ));
         //========================================================================================================================
 
+        private void CloseWindow(Window window)
+        {
+            window.Close();
+        }
+        
+
+        //==================================COMMAND FOR CLOSE WINDOW ==========================
+        private RelayCommand cancelSaveContactsCommand;
+
+        public RelayCommand CancelSaveContactsCommand => cancelSaveContactsCommand ?? (cancelSaveContactsCommand = new RelayCommand(
+                    (obj) =>
+                    {
+
+                        CloseWindow(obj as Window);
+                    }
+                    ));
 
     }
 }

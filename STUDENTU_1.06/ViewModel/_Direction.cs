@@ -91,9 +91,8 @@ namespace STUDENTU_1._06.ViewModel
         public RelayCommand NewEditDirection => newEditDirection ?? (newEditDirection = new RelayCommand(
                     (obj) =>
                     {
-                        EditDirection editDirection = new EditDirection(obj);
-                        editDirection.Owner = Application.Current.MainWindow;
-                        showWindow.ShowWindow(editDirection);
+                        EditDirection editDirection = new EditDirection(obj);                        
+                        showWindow.ShowDialog(editDirection);
                     }
                     ));
 

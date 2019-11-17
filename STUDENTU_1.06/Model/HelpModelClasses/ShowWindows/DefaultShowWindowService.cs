@@ -17,5 +17,10 @@ namespace STUDENTU_1._06.Model.HelpModelClasses.ShowWindows
         {
             window.Close();
         }
+
+        public void ShowDialog(Window window)
+        {
+            window.ShowDialog();
+        }
     }
 }

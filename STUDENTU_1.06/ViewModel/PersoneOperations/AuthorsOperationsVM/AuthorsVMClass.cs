@@ -38,6 +38,20 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
             }
         }
 
+        private Contacts tmpContacts;
+        public Contacts TmpContacts
+        {
+            get { return tmpContacts; }
+            set
+            {
+                if (tmpContacts != value)
+                {
+                    tmpContacts = value;
+                    OnPropertyChanged(nameof(TmpContacts));
+                }
+            }
+        }
+
         //for display default image
         private string defaultPhoto;
         public string DefaultPhoto
@@ -181,6 +195,8 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
             Author = new Author();
             _AuthorStatus = new _AuthorStatus();
             Contacts = new Contacts();
+            TmpContacts = new Contacts();
+            TmpContacts = Contacts;
             Date = new Dates();
             _Dir = new _Direction();
             Persone = new Persone();
@@ -248,8 +264,9 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                     (obj) =>
                     {
                         AddContactsWindow addContactsWindow = new AddContactsWindow(obj);
-                        addContactsWindow.Owner = Application.Current.MainWindow;
-                        showWindow.ShowWindow(addContactsWindow);
+                        //addContactsWindow.Owner = Application.Current.MainWindow;
+                        //showWindow.ShowWindow(addContactsWindow);
+                        showWindow.ShowDialog(addContactsWindow);
                     }
                     ));
 
@@ -259,20 +276,8 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
         public RelayCommand SaveContactCommand => saveContactCommand ?? (saveContactCommand = new RelayCommand(
                     (obj) =>
                     {
-                        //тут над придумать, шо толком сюад впилить, 
-                        //т.к. банальный вывод сообщения о том, гр все сохраненор - это не айс
-                        
-                        
-                        //тут у нас просто вывод сообщения , т.к. все данные и так привязаны к нужным 
-                        //полям в окне редактирования + сохранение данных о контактах происходит
-                        
-                        //в SaveNewOrder
-                        // here we just have a message output, because all data is already tied to the right
-                        // fields in the edit window + saving contact data occurs
-                        // in SaveNewOrder
-
-                        //а это делаем пока на всякий случай
-                       // ContactsRecords.Add(Contacts);
+                        Contacts = TmpContacts;
+                        Persone.Contacts = Contacts;
                         dialogService.ShowMessage("Данные сохранены");
                     }
                     ));
@@ -293,6 +298,23 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
             //мож потом будет какая мысля...
         }
 
+        //=========================================COMMAND FOR CANCEL SAVE CONTACTS=========================================== 
+
+        private RelayCommand cancelSaveContactsCommand;
+        public RelayCommand CancelSaveContactsCommand => cancelSaveContactsCommand ??
+            (cancelSaveContactsCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        CancelSaveContacts();                        
+                        Window window = obj as Window;
+                        window.Close();
+                    }
+                    ));
+        private void CancelSaveContacts()
+        {
+            TmpContacts = Contacts;
+        }
+
 
         //====================================COMMAND FOR CALL AuthorDirectionsWindow.XAML =========================
 
@@ -302,9 +324,9 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                     (obj) =>
                     {
                         AuthorDirectionsWindow authorDirectionWindow = new AuthorDirectionsWindow(obj);
-                        authorDirectionWindow.Owner = Application.Current.MainWindow;
-                        showWindow.ShowWindow(authorDirectionWindow);
-
+                        //authorDirectionWindow.Owner = Application.Current.MainWindow;
+                        //showWindow.ShowWindow(authorDirectionWindow);
+                        showWindow.ShowDialog(authorDirectionWindow);
                     }
                     ));
 
@@ -317,8 +339,10 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                     (obj) =>
                     {
                         AuthorSubjectWindow authorSubjectWindow = new AuthorSubjectWindow(obj);
-                        authorSubjectWindow.Owner = Application.Current.MainWindow;
-                        showWindow.ShowWindow(authorSubjectWindow);
+                        //authorSubjectWindow.Owner = Application.Current.MainWindow;
+                  
+                        //showWindow.ShowWindow(authorSubjectWindow);
+                        showWindow.ShowDialog(authorSubjectWindow);
                     }
                     ));
 
@@ -351,7 +375,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                     else
                     {
                         Persone.Dates.Add(Date);
-                        Persone.Contacts = Contacts;
+                        
                         Persone.PersoneDescription = PersoneDescription;
                         Author.Persone = Persone;
                         Author.AuthorStatus = _AuthorStatus.AuthorStatus;
@@ -384,6 +408,18 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                        
                        
                         dialogService.ShowMessage("Данные автора сохранены");
+                        //обнуляем поля окна
+                        //clear window fields
+                        Contacts = new Contacts();
+                        Persone = new Persone();
+                        TmpContacts = new Contacts();
+                        _AuthorStatus = new _AuthorStatus();
+                        Author = new Author();
+                        Date = new Dates();
+                        _Subj = new _Subject();
+                        _Dir = new _Direction();
+                        PersoneDescription = new PersoneDescription();
+
                     }
 
                 }

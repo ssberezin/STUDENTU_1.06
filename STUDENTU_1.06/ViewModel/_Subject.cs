@@ -90,9 +90,8 @@ namespace STUDENTU_1._06.ViewModel
         public RelayCommand NewEditSubject => newEditSubject ?? (newEditSubject = new RelayCommand(
                     (obj) =>
                     {
-                        EditSubject editSubject = new EditSubject(obj);
-                        editSubject.Owner = Application.Current.MainWindow;
-                        showWindow.ShowWindow(editSubject);
+                        EditSubject editSubject = new EditSubject(obj);                        
+                        showWindow.ShowDialog(editSubject);
                     }
                     ));
 

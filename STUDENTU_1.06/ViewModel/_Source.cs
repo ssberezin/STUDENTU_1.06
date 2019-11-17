@@ -92,9 +92,8 @@ namespace STUDENTU_1._06.ViewModel
         public RelayCommand NewEditSource => newEditSource ?? (newEditSource = new RelayCommand(
                     (obj) =>
                     {
-                        EditSourceWindow editSourceWindow = new EditSourceWindow(obj);
-                        editSourceWindow.Owner = Application.Current.MainWindow;
-                        showWindow.ShowWindow(editSourceWindow);
+                        EditSourceWindow editSourceWindow = new EditSourceWindow(obj);                       
+                        showWindow.ShowDialog(editSourceWindow);
                     }
                     ));
 
