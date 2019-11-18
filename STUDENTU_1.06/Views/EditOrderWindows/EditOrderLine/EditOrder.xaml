@@ -247,21 +247,6 @@
                 <!--SortedItems can find above in Window.Resources-->
                 <!--Dir can find in _Direction.cs-->
             </ComboBox>
-
-
-            <!--<ComboBox x:Name="DirList"  MinWidth="165"  TabIndex="9" SelectedIndex="0"                     
-                      ItemsSource="{Binding Source={StaticResource SortedItems}, 
-                      UpdateSourceTrigger=PropertyChanged}" 
-                     SelectedItem="{Binding Path=Dir}">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <DockPanel >
-                            <TextBlock Margin="2" TextWrapping="WrapWithOverflow" TextAlignment="Center"
-                                                    Text="{Binding Path=DirectionName}"/>
-                        </DockPanel>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>-->
             <Button x:Name="AddDirection" Width="40" Background="Gray" Content="..." TabIndex="10"
                     Command="{Binding _Dir.NewEditDirection}" CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}"/>

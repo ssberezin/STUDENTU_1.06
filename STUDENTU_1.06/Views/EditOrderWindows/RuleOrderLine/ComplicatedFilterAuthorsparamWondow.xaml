@@ -127,14 +127,14 @@
             <!--Command NewEditDirection can find in _Direction.cs-->
         </WrapPanel>
         <Button Grid.Row="0"   Content="Применить" Background="Green"
-                    Command="{Binding SaveContactCommand}"                                      
+                    Command="{Binding InitComplicatedFilterCommand}"                                      
                 TabIndex="7" Width="175">            
         </Button>
         <Button Grid.Row="0" Grid.Column="1"  Content="Снять все фильтры" Background="Gray"
                     Command="{Binding ClearAllFilters}"                                      
                 TabIndex="7" Width="175"/>
         <Button Grid.Column="2" Grid.Row="0"  Content="Отменить" Background="Red" Width="175"
-                    Command="{Binding CancelSaveContactsCommand}" 
+                    Command="{Binding CancelSetAuthorComlicatedFilterCommand}" 
                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
                 TabIndex="7">
         </Button>

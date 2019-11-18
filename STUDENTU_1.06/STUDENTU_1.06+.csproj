@@ -142,6 +142,9 @@
     <Compile Include="Views\EditOrderWindows\EditOrderLine\EditOrderFull.xaml.cs">
       <DependentUpon>EditOrderFull.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\EditOrderWindows\RuleOrderLine\ComplicatedFilterAuthorsparamWondow.xaml.cs">
+      <DependentUpon>ComplicatedFilterAuthorsparamWondow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PersoneOperations\AuthorOperationsWindows\AuthorDirectionsWindow.xaml.cs">
       <DependentUpon>AuthorDirectionsWindow.xaml</DependentUpon>
     </Compile>
@@ -210,6 +213,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\EditOrderWindows\Evaluation\SetFinalAvaluationWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EditOrderWindows\RuleOrderLine\ComplicatedFilterAuthorsparamWondow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

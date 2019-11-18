@@ -230,7 +230,7 @@ namespace STUDENTU_1._06.ViewModel
             switch (param)
             {
                 case "AllAuthors":
-                    AllAuthorsCall();
+                    AllAuthorsCall("Все работающие авторы");
                     break;
                 case "ThemAuthors":
                     ThemAuthorsCall();
@@ -238,8 +238,9 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
-        //call for all authors
-        private void AllAuthorsCall()
+        //call for all authors. If param=="all" et last we'll see all authors with any asuthorstatus
+        //if  param=="all"  et last we'll see all authors with asuthorstatus "работает"
+        private void AllAuthorsCall(string param)
         {
             using (StudentuConteiner db = new StudentuConteiner())
             {
@@ -251,6 +252,7 @@ namespace STUDENTU_1._06.ViewModel
                     AuthorsRecord record;
                     foreach (Author item in result)
                     {
+                        if (param!="all")
                         if (item.AuthorStatus.AuthorStatusName != "работает")
                             continue;
                         Author author = new Author()
@@ -316,6 +318,8 @@ namespace STUDENTU_1._06.ViewModel
             }
 
         }
+
+   
 
         //call for only authors by direction order
         private void ThemAuthorsCall()
@@ -455,21 +459,7 @@ namespace STUDENTU_1._06.ViewModel
         {
             Clipboard.SetText($"{AuthorsRecord.Contacts.VK}");
         }
-        //==============================COMMAND TO ADD POTENTIAL AUTHORS TO LIST ================================
-
-        //
-
-        private RelayCommand addPotentialAuthorsCommand;
-        public RelayCommand AddPotentialAuthorsCommand =>
-            addPotentialAuthorsCommand ?? (addPotentialAuthorsCommand = new RelayCommand(
-                    (obj) =>
-                    {
-                        
-                    }
-                    ));
-
-        
-
+       
         //==============================COMMAND TO FIND AUTHOR BY NICKNAME ================================        
 
         private RelayCommand findAuthorByNickCommand;
@@ -480,6 +470,7 @@ namespace STUDENTU_1._06.ViewModel
                         FindAuthorByNick(obj as string);
                     }
                     ));
+
         private void FindAuthorByNick(string nick)
         {
             using (StudentuConteiner db = new StudentuConteiner())
@@ -577,6 +568,7 @@ namespace STUDENTU_1._06.ViewModel
                         AddSelectedAuthor();
                     }
                     ));
+
         private void AddSelectedAuthor()
         {
             if (AuthorsRecord.Persone.NickName != "---")           
@@ -728,7 +720,15 @@ namespace STUDENTU_1._06.ViewModel
 
         private void InitComplicatedFilter()
         {
-            //тут надо допилить логику
+            AuthorsRecords.Clear();
+            if (_Dir.Dir.DirectionName == "---" && _Subject.Subj.SubName == "---" && _AuthorStatus.AuthorStatus.AuthorStatusName == "---")
+            {
+                //
+                AllAuthorsCall("all");
+                return;
+            }
+
+
         }
 
 

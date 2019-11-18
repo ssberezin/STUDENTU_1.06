@@ -43,7 +43,7 @@
                 <scm1:SortDescription PropertyName="AuthorStatusName"/>
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
-        <!--SourcesRecords can find in SourceClass.cs-->
+        
 
         <CollectionViewSource x:Key="SortedItems" Source="{Binding  _Dir.DirRecords}"
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
