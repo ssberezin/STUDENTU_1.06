@@ -127,18 +127,27 @@
         <StackPanel Grid.ColumnSpan="2" Margin="2" >
             <TextBlock Text="Авторы" />
             <StackPanel>
-                <RadioButton GroupName="GroupA" Content="Все авторы" IsChecked="False" Command="{Binding AllAuthorsCallCommand}"/>
+                <RadioButton GroupName="GroupA" Content="Все авторы" IsChecked="False" Command="{Binding AllAuthorsCallCommand}"
+                             IsEnabled="{Binding ElementName=ComplicatedFilter, Path=IsChecked, Converter={StaticResource boolInverterConverter}}"/>
                 <!--Command AllAuthorsCallCommand can find in _RuleOrderLine.cs -->
-                <RadioButton GroupName="GroupA" Content="Авторы по тематике" IsChecked="False" Command="{Binding ThemAuthorsCallCommand}"/>
+                <RadioButton GroupName="GroupA"
+                              IsEnabled="{Binding ElementName=ComplicatedFilter, Path=IsChecked, Converter={StaticResource boolInverterConverter}}"
+                             Content="Авторы по тематике" IsChecked="False" Command="{Binding ThemAuthorsCallCommand}"/>
                 <!--Command ThemAuthorsCallCommand  can find in _RuleOrderLine.cs -->
-                <CheckBox Content="Поиск среди потенциальных" Command="{Binding AddPotentialAuthorsCommand}"/>
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox x:Name="ComplicatedFilter" IsChecked="False"/>
+                    <Button x:Name="ComplicatedFilterButton" Content="Сложный фильтр"   IsEnabled="{Binding IsChecked,ElementName=ComplicatedFilter}"
+                        Command="{Binding  InitComplicatedFilterCommand}"
+                       Margin="3,1.5,60,0" />
+                </StackPanel>
             </StackPanel >
         </StackPanel>
         <StackPanel Grid.Column="1" Grid.ColumnSpan="2">
             <StackPanel HorizontalAlignment="Stretch"/>
             <TextBlock/>
             <RadioButton GroupName="GroupA" x:Name="AuthorNickFind" Content="Поиск по нику автора" IsChecked="False" Command="{Binding ThemAuthorsCallCommand}"
-                             VerticalContentAlignment="Bottom" />
+                             VerticalContentAlignment="Bottom"
+                         IsEnabled="{Binding ElementName=ComplicatedFilter, Path=IsChecked, Converter={StaticResource boolInverterConverter}}"/>
             <StackPanel Orientation="Horizontal">
                 <TextBox x:Name="AuthorNick" Width="100" Margin="3" Background="White"
                          FontSize="12"

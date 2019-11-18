@@ -16,6 +16,7 @@ using STUDENTU_1._06.Views.EditOrderWindows.Evaluation;
 using STUDENTU_1._06.Model.DBModelClasses;
 using STUDENTU_1._06.Model.HelpModelClasses.DialogWindows;
 using STUDENTU_1._06.Model.HelpModelClasses.ShowWindows;
+using STUDENTU_1._06.Views.EditOrderWindows.RuleOrderLine;
 
 namespace STUDENTU_1._06.ViewModel
 {
@@ -40,9 +41,10 @@ namespace STUDENTU_1._06.ViewModel
             SelectedAuthorsRecords = new ObservableCollection<AuthorsRecord>();
             
             AuthorsRecord = new AuthorsRecord();
-          //  SelectetdAuthorContacts = new Contacts();
+            _AuthorStatus = new _AuthorStatus();           
             _Dir = new _Direction();
             _Evaluation = new _Evaluation();
+            _Subject = new _Subject();
             Order = new OrderLine();
             if (TMPStaticClass.CurrentOrder != null)
             {
@@ -75,6 +77,23 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
+        //for show authorstatus in Complicated filter
+        private _AuthorStatus _authorStatus;
+        public _AuthorStatus _AuthorStatus
+        {
+            get { return _authorStatus; }
+            set
+            {
+                if (_authorStatus != value)
+                {
+                    _authorStatus = value;
+                    OnPropertyChanged(nameof(_AuthorStatus));
+                }
+            }
+        }
+
+        
+
         private Author selectedExecuteAuthor;
         public Author SelectedExecuteAuthor
         {
@@ -89,8 +108,22 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
+        //for show subject in Complicated filter
+        private _Subject _subject;
+        public _Subject _Subject
+        {
+            get { return _subject; }
+            set
+            {
+                if (_subject != value)
+                {
+                    _subject = value;
+                    OnPropertyChanged(nameof(_Subject));
+                }
+            }
+        }
 
-        
+
         private AuthorsRecord executeAuthor;
         public AuthorsRecord ExecuteAuthor
         {
@@ -213,7 +246,8 @@ namespace STUDENTU_1._06.ViewModel
                 try
                 {
                     var contacts = db.Contacts.Include("Persone").ToList();
-                    var result = db.Authors.Include("Persone").ToList();
+                    var result = db.Authors.Include("Persone")
+                                           .Include("AuthorStatus").ToList();
                     AuthorsRecord record;
                     foreach (Author item in result)
                     {
@@ -581,6 +615,20 @@ namespace STUDENTU_1._06.ViewModel
                     }
                     ));
 
+        //ComplicatedFilterAuthorsparamWondow
+
+        //=============================Call window ComplicatedFilterAuthorsparamWondow.xaml========================================
+
+        private RelayCommand callAuthorsComlicatedFilterCommand;
+        public RelayCommand CallAuthorsComlicatedFilterCommand =>
+            callAuthorsComlicatedFilterCommand ?? (callAuthorsComlicatedFilterCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        ComplicatedFilterAuthorsparamWondow window = new ComplicatedFilterAuthorsparamWondow(obj);
+                        showWindow.ShowWindow(window);
+                    }
+                    ));
+
         //===================================== For save evaluate order any author in EditAvaluatonWindow.xaml====================
         private RelayCommand saveAuthorEvaluateAuthorRecordCommand;
         public RelayCommand SaveAuthorEvaluateAuthorRecordCommand =>
@@ -668,6 +716,42 @@ namespace STUDENTU_1._06.ViewModel
 
         }
 
+        //===================================== For show complicated filter window  EditAvaluatonWindow.xaml====================
+        private RelayCommand initComplicatedFilterCommand;
+        public RelayCommand InitComplicatedFilterCommand =>
+            initComplicatedFilterCommand ?? (initComplicatedFilterCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        InitComplicatedFilter();                        
+                    }
+                    ));
+
+        private void InitComplicatedFilter()
+        {
+            //тут надо допилить логику
+        }
+
+
+        //===================================== For Cancel set author complicated filter and close window w.xaml====================
+        private RelayCommand cancelSetAuthorComlicatedFilterCommand;
+        public RelayCommand CancelSetAuthorComlicatedFilterCommand =>
+            cancelSetAuthorComlicatedFilterCommand ?? (cancelSetAuthorComlicatedFilterCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        CancelSetAuthorComlicatedFilter();
+                        Window window = obj as Window;
+                        window.Close();
+                    }
+                    ));
+
+        private void CancelSetAuthorComlicatedFilter()
+        {
+            _Dir = new _Direction();
+            _Subject = new _Subject();
+            _AuthorStatus = new _AuthorStatus();
+            
+        }
+
         //===================================== For Cancel save evaluate order any author in EditAvaluatonWindow.xaml====================
         private RelayCommand cancelEvaluateCommand;
         public RelayCommand CancelEvaluateCommand =>
@@ -686,6 +770,17 @@ namespace STUDENTU_1._06.ViewModel
             _Evaluation.EvaluationRecord = new EvaluationRecord() { DeadLine = DateTime.Now };
         }
 
+        //===================================== For close any window ===========================================
+        private RelayCommand closeWindowCommand;
+        public RelayCommand CloseWindowCommand =>
+            closeWindowCommand ?? (closeWindowCommand = new RelayCommand(
+                    (obj) =>
+                    {                        
+                        Window window = obj as Window;
+                        window.Close();
+                    }
+                    ));
+        
 
 
     }

@@ -227,11 +227,14 @@ namespace STUDENTU_1._06.ViewModel
                         //Author.Subject.Add(db.Subjects.Find(new Subject() { SubjectId = 1 }.SubjectId));                        
                         //db.Authors.Add(Author);
                         //db.SaveChanges();
-                        
+                        //var res = db.Subjects.ToList();
+
                         Persone = new Persone() { NickName = "---" };
                         Contacts Contacts = new Contacts() { Phone1 = "---" };
                         Persone.Contacts = Contacts;
                         Author = new Author();
+                        Author.AuthorStatus= db.AuthorStatuses.Find(new AuthorStatus() { AuthorStatusId = 1 }.AuthorStatusId);
+                        Author.Subject.Add(db.Subjects.Find(new Subject() { SubjectId=1}.SubjectId));
                         Persone.Author.Add(Author);
                         db.Persones.Add(Persone);
                         db.SaveChanges();
