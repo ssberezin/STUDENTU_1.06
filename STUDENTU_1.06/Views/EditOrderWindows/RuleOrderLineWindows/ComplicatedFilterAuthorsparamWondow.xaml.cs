@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace STUDENTU_1._06.Views.EditOrderWindows.RuleOrderLine
+namespace STUDENTU_1._06.Views.EditOrderWindows.RuleOrderLineWindows
 {
     /// <summary>
     /// Логика взаимодействия для ComplicatedFilterAuthorsparamWondow.xaml
@@ -24,5 +24,7 @@ namespace STUDENTU_1._06.Views.EditOrderWindows.RuleOrderLine
             InitializeComponent();
             this.DataContext = DataContext;
         }
+
+       
     }
 }

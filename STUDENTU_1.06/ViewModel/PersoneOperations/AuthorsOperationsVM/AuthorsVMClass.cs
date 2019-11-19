@@ -314,6 +314,16 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
         {
             TmpContacts = Contacts;
         }
+        //=====================Comman for call Editing window of AuthorSTATUS ======================================
+
+        private RelayCommand newEditAuthorStatusCommand;
+        public RelayCommand NewEditAuthorStatusCommand => newEditAuthorStatusCommand ?? (newEditAuthorStatusCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        EditAuthorStatusWindow editStatus = new EditAuthorStatusWindow(obj);
+                        showWindow.ShowDialog(editStatus);
+                    }
+                    ));
 
 
         //====================================COMMAND FOR CALL AuthorDirectionsWindow.XAML =========================
@@ -377,8 +387,9 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                         Persone.Dates.Add(Date);
                         
                         Persone.PersoneDescription = PersoneDescription;
-                        Author.Persone = Persone;
-                        Author.AuthorStatus = _AuthorStatus.AuthorStatus;
+                        Author.Persone = Persone;                        
+                        Author.AuthorStatus = db.AuthorStatuses.Find(_AuthorStatus.AuthorStatus.AuthorStatusId);
+                            
                         db.Authors.Add(Author);
                         db.SaveChanges();
                         //here we add author in directions

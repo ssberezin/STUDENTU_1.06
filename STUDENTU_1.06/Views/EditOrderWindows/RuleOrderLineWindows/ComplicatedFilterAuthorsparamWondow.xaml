@@ -1,4 +1,4 @@
-﻿<Window x:Class="STUDENTU_1._06.Views.EditOrderWindows.RuleOrderLine.ComplicatedFilterAuthorsparamWondow"
+﻿<Window x:Class="STUDENTU_1._06.Views.EditOrderWindows.RuleOrderLineWindows.ComplicatedFilterAuthorsparamWondow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:STUDENTU_1._06.Views"
         xmlns:scm1="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         mc:Ignorable="d"
-        Title="Сложный фильтр по авторам" Height="120" Width="900" MinHeight="120" MinWidth="1000"
+        Title="Сложный фильтр по авторам" Height="120" Width="1040" MinHeight="120" MinWidth="1040"
         MaxHeight="450" MaxWidth="700"
          TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
@@ -30,7 +30,7 @@
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
 
-        <CollectionViewSource x:Key="SortedSubjects" Source="{Binding  _Subj.SubjRecords}"
+        <CollectionViewSource x:Key="SortedSubjects" Source="{Binding  _Subject.SubjRecords}"
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
             <!--SubjRecords can find in _Subject.cs-->
             <CollectionViewSource.SortDescriptions>
@@ -91,16 +91,16 @@
                       
                      ItemsSource="{Binding Source={StaticResource SortedSubjects}, 
                       UpdateSourceTrigger=PropertyChanged}" 
-                     SelectedItem="{Binding _Subj.Subj}"
+                     SelectedItem="{Binding _Subject.Subj}"
                      DisplayMemberPath="SubName"
-                      ToolTip="{Binding _Subj.Subj.SubName}" 
+                      ToolTip="{Binding _Subject.Subj.SubName}" 
                      HorizontalContentAlignment="Center"                      
                      Background="White" >
                 <!--SortedSubjects can find above in Window.Resources-->
                 <!--Subj can find in _Subject.cs-->
             </ComboBox>
             <Button x:Name="AddSubject" Width="40" Background="Gray" Content="..." TabIndex="12"
-                    Command="{Binding _Subj.NewEditSubject}" CommandParameter="{Binding DataContext, RelativeSource=
+                    Command="{Binding _Subject.NewEditSubject}" CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}"/>
             <!--Command NewEditSubject in _Subject.cs-->
         </WrapPanel>

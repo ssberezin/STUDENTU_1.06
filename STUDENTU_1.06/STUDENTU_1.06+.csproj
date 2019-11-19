@@ -142,7 +142,7 @@
     <Compile Include="Views\EditOrderWindows\EditOrderLine\EditOrderFull.xaml.cs">
       <DependentUpon>EditOrderFull.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\EditOrderWindows\RuleOrderLine\ComplicatedFilterAuthorsparamWondow.xaml.cs">
+    <Compile Include="Views\EditOrderWindows\RuleOrderLineWindows\ComplicatedFilterAuthorsparamWondow.xaml.cs">
       <DependentUpon>ComplicatedFilterAuthorsparamWondow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PersoneOperations\AuthorOperationsWindows\AuthorDirectionsWindow.xaml.cs">
@@ -216,11 +216,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\EditOrderWindows\RuleOrderLine\ComplicatedFilterAuthorsparamWondow.xaml">
+    <Page Include="Views\EditOrderWindows\RuleOrderLineWindows\ComplicatedFilterAuthorsparamWondow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\EditOrderWindows\RuleOrderLine\RuleOrderLineWindow.xaml">
+    <Page Include="Views\EditOrderWindows\RuleOrderLineWindows\RuleOrderLineWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -297,7 +297,7 @@
     <Compile Include="Views\EditOrderWindows\Evaluation\SetFinalAvaluationWindow.xaml.cs">
       <DependentUpon>SetFinalAvaluationWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\EditOrderWindows\RuleOrderLine\RuleOrderLineWindow.xaml.cs">
+    <Compile Include="Views\EditOrderWindows\RuleOrderLineWindows\RuleOrderLineWindow.xaml.cs">
       <DependentUpon>RuleOrderLineWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">

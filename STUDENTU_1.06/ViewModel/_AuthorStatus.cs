@@ -87,39 +87,29 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
-        //=====================Comman for call Editing window of STATUS ======================================
-
-        private RelayCommand newEditAuthorStatusCommand;
-        public RelayCommand NewEditAuthorStatusCommand => newEditAuthorStatusCommand ?? (newEditAuthorStatusCommand = new RelayCommand(
-                    (obj) =>
-                    {
-                        EditAuthorStatusWindow editStatus = new EditAuthorStatusWindow(obj);                        
-                        showWindow.ShowDialog(editStatus);
-                        
-                    }
-                    ));
+      
 
         //==================Commands for edit STATUSES =========================================
 
-        private RelayCommand addStatusCommand;
-        public RelayCommand AddStatusCommand => addStatusCommand ?? (addStatusCommand = new RelayCommand(
+        private RelayCommand addAuthorStatusCommand;
+        public RelayCommand AddAuthorStatusCommand => addAuthorStatusCommand ?? (addAuthorStatusCommand = new RelayCommand(
                     (obj) =>
                     {
                         AddAuthorStatus();
                     }
                     ));
 
-        private RelayCommand deleteStatusCommand;
-        public RelayCommand DeleteStatusCommand => deleteStatusCommand ??
-            (deleteStatusCommand = new RelayCommand((selectedItem) =>
+        private RelayCommand deleteAuthorStatusCommand;
+        public RelayCommand DeleteAuthorStatusCommand => deleteAuthorStatusCommand ??
+            (deleteAuthorStatusCommand = new RelayCommand((selectedItem) =>
             {
                 if (selectedItem == null) return;
                 DeleteAuthorStatus();
             }
             ));
 
-        private RelayCommand editStatusCommand;
-        public RelayCommand EditStatusCommand => editStatusCommand ?? (editStatusCommand = new RelayCommand(
+        private RelayCommand editAuthorStatusCommand;
+        public RelayCommand EditAuthorStatusCommand => editAuthorStatusCommand ?? (editAuthorStatusCommand = new RelayCommand(
                     (selectedItem) =>
                     {
                         if (selectedItem == null) return;
