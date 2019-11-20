@@ -10,7 +10,7 @@
         mc:Ignorable="d"
          WindowStartupLocation="CenterScreen"
         Title="Равспределение заказа на выполнение" 
-        Height="560" Width="850" MinWidth="850" MinHeight="500"
+        Height="600" Width="850" MinWidth="850" MinHeight="600"
          TextElement.Foreground="{DynamicResource MaterialDesignBody}" 
              
         TextElement.FontWeight="Regular"
@@ -219,7 +219,8 @@
                      Converter={StaticResource NullBoolConverter}, ElementName=AuthorsAvaluat}"
                  Command="{Binding DelSelectedAuthorCommand}"/>
         <!-- Command DelSelectedAuthorCommand can find in RuleOrderLineClass.cs-->
-        <WrapPanel Grid.Row="9" Grid.ColumnSpan="3"  Margin="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" >
+        <StackPanel Grid.Row="9" Grid.ColumnSpan="3" Orientation="Horizontal"
+                    Margin="3" HorizontalAlignment="Center" VerticalAlignment="Center" >
             <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
                      VerticalAlignment="Stretch">
                 <TextBlock Text="Статус заказа: " FontWeight="Bold"  Foreground="Brown"/>
@@ -236,11 +237,14 @@
                     Command="{Binding _Status.NewEditStatusCommand}" CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}"/>
             <!--Command NewEditStatusCommand can find in _Status.cs-->
-            <Button x:Name="CompareAvaluation"  Background="Orange" Content="Сравнить оценки" TabIndex="7"
+            <StackPanel>
+                <Button x:Name="CompareAvaluation"  Background="Orange" Content="Сравнить оценки" TabIndex="7"
                     Command="{Binding CompareAvaluationCommand}" CommandParameter="{Binding DataContext, RelativeSource=
-                    {RelativeSource AncestorType={x:Type Window}}}"/>
+                    {RelativeSource AncestorType={x:Type Window}}}" MinHeight="30"/>
+                
+            </StackPanel>
             <!-- Command CompareAvaluationCommand does not exist yet-->
-        </WrapPanel>
+        </StackPanel>
         <TextBlock Text="Контакты автора"  Grid.Column="3"/>
       
         <ListBox x:Name="AuthorContacts" 
@@ -273,7 +277,7 @@
             <TextBlock Text="{Binding AuthorsRecord.Contacts.VK}" Margin="2"                                  
                                    TextAlignment="Center"/>
         </ListBox>
-        <Button Grid.Column="3" Grid.Row="6" Content="Выбрать автора" Background="#FF41BD41"
+        <Button Grid.Column="5" Grid.Row="3" Content="Выбрать автора" Background="#FF41BD41"
                 TabIndex="9"
                  IsEnabled="{Binding SelectedItem,
                      Converter={StaticResource NullBoolConverter}, ElementName=AuthorsAvaluat}"
@@ -303,12 +307,12 @@
             <TextBlock  Text="{ Binding _Evaluation.FinalEvaluationRecord.Deadline,
                 Converter={StaticResource dateFormatConverter}}" Foreground="Red" />
         </StackPanel>
-        <TextBlock  Text="Коменты автора при оценке:" Margin="5" Foreground="Blue"
-                     Grid.Column="5" Grid.Row="3"/>
+        
+        
         <TextBox x:Name="AuthorEvalComment" Text="{Binding _Evaluation.FinalEvaluationRecord.EvaluateDescription}"
                   TextAlignment="Center" Grid.Column="5" Grid.Row="4" Grid.RowSpan="5"
                       VerticalContentAlignment="Center" Foreground="Red" Background="White"
-                      Margin="6,6,5.6,5.8" TextWrapping="Wrap" Grid.ColumnSpan="3"  >
+                       TextWrapping="Wrap" Grid.ColumnSpan="3"  >            
             <TextBox.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Скопировать в буфер обмена" Command="{Binding CopyToClipBoardCommand}" 
@@ -316,8 +320,24 @@
                               CommandParameter="{Binding Path=Text, ElementName=AuthorEvalComment}"/>
                 </ContextMenu>
             </TextBox.ContextMenu>
-
         </TextBox>
+        <TextBlock  Grid.Column="5" Grid.Row="4" Grid.RowSpan="5"
+            IsHitTestVisible="False" Text="комменты автора по оценке работы" FontSize="25" 
+                    
+                    TextWrapping="Wrap" VerticalAlignment="Center"
+                    TextAlignment="Center" 
+                    HorizontalAlignment="Center"  Foreground="DarkGray">
+            <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Text, ElementName=AuthorEvalComment}" Value="">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
         <Button Grid.Column="4" Grid.Row="9" Content="Отмена" Background="Red"
                 TabIndex="9"                
                 Command="{Binding  _Evaluation.CancelAuthorEvaluateAuthorRecordCommand}"
@@ -328,12 +348,23 @@
                      Converter={StaticResource NullBoolConverter}, ElementName=AuthorsAvaluat}"
                 Command="{Binding _Evaluation.SaveAuthorEvaluateAuthorRecordCommand}"/>
         <TextBlock Grid.Row="6" Grid.Column="2"  Text="Постановка задачи для автора" Margin="5" Foreground="Blue"/>
-
+        <StackPanel Orientation="Horizontal"  Grid.Row="6" Grid.Column="3" HorizontalAlignment="Center" >
+            <CheckBox x:Name="TimePlus" IsChecked="False"
+                       ToolTip="Будет назначено время с запасом по умолчанию"
+                      Command="{Binding  TimePlusDefaultCommand}"/>
+            <Button x:Name="gg" Content="С запасом по сроку?"   
+                    IsEnabled="{Binding IsChecked,ElementName=TimePlus}"
+                        Command="{Binding  TimePlusSettingsCommand}"
+                      CommandParameter="{Binding DataContext, RelativeSource=
+                    {RelativeSource AncestorType={x:Type Window}}}"
+                    ToolTip="Можно настроить ложное время готовности работы для автора"
+                     Background="#FF4C58DD"   />
+        </StackPanel>
         <TextBox x:Name="AuthorTrablSet" Grid.Row="7" Grid.RowSpan="2" Grid.ColumnSpan="4"    
                  Text="{Binding Order.DescriptionForClient}"
                   TextAlignment="Center"  AcceptsReturn="True"
                       VerticalContentAlignment="Stretch" HorizontalContentAlignment="Left" Foreground="Red" Background="White"
-                      Margin="6,6,5.4,6" TextWrapping="Wrap" FontSize="12" >
+                      Margin="6,6,5.4,6" TextWrapping="Wrap" FontSize="11" >
             <TextBox.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Скопировать в буфер обмена" Command="{Binding CopyToClipBoardCommand}" 

@@ -44,7 +44,7 @@ namespace STUDENTU_1._06.ViewModel
                 Order = TMPStaticClass.CurrentOrder;
                 Order.DescriptionForClient = "Вариант(ы): " + CheckForEmpty(Order.Variant) + ". \n"  + Order.DescriptionForClient+
                     "\n\nСрок выполнения: "+Order.Dates.DeadLine.ToShortDateString()+
-                    "\n Время: к "+ Order.Dates.DeadLine.ToShortTimeString();
+                    "\n Время: к "+ Order.Dates.DeadLine.ToShortTimeString()+" или свой вариант. ";
             }
             ExecuteAuthor = new AuthorsRecord();
             ExecuteAuthor.Persone.NickName = "не задан";
