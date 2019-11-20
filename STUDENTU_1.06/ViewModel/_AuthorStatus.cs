@@ -176,7 +176,7 @@ namespace STUDENTU_1._06.ViewModel
                 try
                 {
                     
-                    var res = db.Authors;
+                    var res = db.Authors.ToList();
                     foreach (Author item in res)
                         if(item.AuthorStatus.AuthorStatusId==authorStatus.AuthorStatusId||
                            item.AuthorStatus.AuthorStatusName == authorStatus.AuthorStatusName )                        

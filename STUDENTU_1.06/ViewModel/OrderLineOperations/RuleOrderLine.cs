@@ -42,8 +42,9 @@ namespace STUDENTU_1._06.ViewModel
             if (TMPStaticClass.CurrentOrder != null)
             {
                 Order = TMPStaticClass.CurrentOrder;
-                Order.DescriptionForClient = "Вариант(ы): " + Order.Variant + ". "  + Order.DescriptionForClient+
-                    "\n\nСрок выполнения: "+Order.Dates.DeadLine.ToOADate();
+                Order.DescriptionForClient = "Вариант(ы): " + CheckForEmpty(Order.Variant) + ". \n"  + Order.DescriptionForClient+
+                    "\n\nСрок выполнения: "+Order.Dates.DeadLine.ToShortDateString()+
+                    "\n Время: к "+ Order.Dates.DeadLine.ToShortTimeString();
             }
             ExecuteAuthor = new AuthorsRecord();
             ExecuteAuthor.Persone.NickName = "не задан";
@@ -54,6 +55,19 @@ namespace STUDENTU_1._06.ViewModel
                         
         }
 
+        //проверяем не пустое ли поле с вариантами. Возращает "не задано" если пустое. Если не пустое - возвращет исходное значение
+        // check if the field with options is empty. Returns "not set" if empty. If not empty, returns the original value.
+        private string CheckForEmpty(string str)
+        {
+            if (str==null ||str==" ")
+                return "не задано";
+            str.Trim();
+            if (str[0] == ' '|| str=="")           
+                return "не задано";           
+            return str;            
+        }
+
+        //эта переменная скорее всего нигде не используется, над проверить
         DateTime TMPDate;
 
         private AuthorsRecord authorsRecord;
@@ -394,7 +408,7 @@ namespace STUDENTU_1._06.ViewModel
                     List<Author> tmpres = new List<Author>();
                     //filtered authors by status
                     if (authorStatus != "---")
-                        foreach (Author item in tmpres)
+                        foreach (Author item in result)
                         {
                             if (item.AuthorStatus.AuthorStatusName == authorStatus)
                                 tmpres.Add(item);
@@ -605,7 +619,7 @@ namespace STUDENTU_1._06.ViewModel
                     ));
         private void CopyToClipBoard()
         {
-            Clipboard.SetText($"{AuthorsRecord.Contacts.VK}");
+            Clipboard.SetText($"{ Order.DescriptionForClient}");
         }
        
         //==============================COMMAND TO FIND AUTHOR BY NICKNAME ================================        
@@ -864,7 +878,7 @@ namespace STUDENTU_1._06.ViewModel
             initComplicatedFilterCommand ?? (initComplicatedFilterCommand = new RelayCommand(
                     (obj) =>
                     {
-                                          
+                        InitComplicatedFilter();
                     }
                     ));
 

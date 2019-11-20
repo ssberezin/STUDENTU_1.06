@@ -184,6 +184,9 @@
                             <TextBlock Text="{Binding Persone.Patronimic}" Margin="2"
                                    TextWrapping="WrapWithOverflow" 
                                    TextAlignment="Center" Foreground="Red"/>
+                            <TextBlock Text="{Binding Author.AuthorStatus.AuthorStatusName}" Margin="2"
+                                   TextWrapping="WrapWithOverflow" 
+                                   TextAlignment="Left" Foreground="Green" FontWeight="Bold"/> 
                         </StackPanel>
                     </StackPanel>
                 </DataTemplate>

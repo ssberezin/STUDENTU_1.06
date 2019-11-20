@@ -146,6 +146,10 @@
                 <TextBlock Text="{Binding AuthorsRecord.Persone.Patronimic}" Margin="2"
                                    TextWrapping="WrapWithOverflow" 
                                    TextAlignment="Center" Foreground="Red"/>
+                <TextBlock Text="Ник: " Margin="2" Foreground="Blue"/>
+                <TextBlock Text="{Binding AuthorsRecord.Persone.NickName}" Margin="2"
+                                   TextWrapping="WrapWithOverflow" 
+                                   TextAlignment="Center" Foreground="Blue"/>
             </StackPanel>
         </StackPanel>
         <Grid Grid.Row="6" Grid.ColumnSpan="4">

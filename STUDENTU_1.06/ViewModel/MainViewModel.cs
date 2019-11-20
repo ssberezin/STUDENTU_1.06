@@ -210,25 +210,6 @@ namespace STUDENTU_1._06.ViewModel
                    //add default author
                     if (db.Authors.Count() == 0)
                     {
-
-                        //Persone = new Persone() { Name = "---", NickName = "---" };
-
-                        //Contacts Contacts = new Contacts() { Phone1 = "+380000000000" };
-                        //Persone.Contacts = Contacts;
-
-                        //PersoneDescription PersoneDescription = new PersoneDescription();
-                        //Persone.PersoneDescription = PersoneDescription;
-
-
-                        //Persone.Dates.Add(new Dates());
-
-                        //Author.AuthorStatus = db.AuthorStatuses.Find(new AuthorStatus() { AuthorStatusId = 1 }.AuthorStatusId);                         
-                        //Author.Direction.Add(db.Directions.Find(new Direction() { DirectionId = 1 }.DirectionId));
-                        //Author.Subject.Add(db.Subjects.Find(new Subject() { SubjectId = 1 }.SubjectId));                        
-                        //db.Authors.Add(Author);
-                        //db.SaveChanges();
-                        //var res = db.Subjects.ToList();
-
                         Persone = new Persone() { NickName = "---" };
                         Contacts Contacts = new Contacts() { Phone1 = "---" };
                         Persone.Contacts = Contacts;
