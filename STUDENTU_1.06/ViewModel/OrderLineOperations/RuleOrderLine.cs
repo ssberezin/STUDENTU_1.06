@@ -43,13 +43,13 @@ namespace STUDENTU_1._06.ViewModel
             {
                 Order = TMPStaticClass.CurrentOrder;
                 Order.DescriptionForClient = "Вариант(ы): " + CheckForEmpty(Order.Variant) + ". \n"  + Order.DescriptionForClient+
-                    "\n\nСрок выполнения: "+Order.Dates.DeadLine.ToShortDateString()+
-                    "\n Время: к "+ Order.Dates.DeadLine.ToShortTimeString()+" или свой вариант. ";
+                    "\n\nСрок выполнения: "+Order.Dates.DeadLine.ToShortDateString() + " или свой вариант. "+
+                    "\n Время: к " + Order.Dates.DeadLine.ToShortTimeString()+" или свой вариант. ";
             }
             ExecuteAuthor = new AuthorsRecord();
             ExecuteAuthor.Persone.NickName = "не задан";
 
-            TMPDate = DateTime.Now;
+          
 
             SelectedExecuteAuthor = new Author();
                         
@@ -67,8 +67,7 @@ namespace STUDENTU_1._06.ViewModel
             return str;            
         }
 
-        //эта переменная скорее всего нигде не используется, над проверить
-        DateTime TMPDate;
+      
 
         private AuthorsRecord authorsRecord;
         public AuthorsRecord AuthorsRecord
@@ -98,7 +97,6 @@ namespace STUDENTU_1._06.ViewModel
                 }
             }
         }
-
         
 
         private Author selectedExecuteAuthor;
@@ -191,18 +189,7 @@ namespace STUDENTU_1._06.ViewModel
         }
 
 
-        //call RuleOrderLineWindow
-        private RelayCommand newRuleOrderLineWindowCommand;
-        public RelayCommand NewRuleOrderLineWindowCommand =>
-            newRuleOrderLineWindowCommand ?? (newRuleOrderLineWindowCommand = new RelayCommand(
-                    (obj) =>
-                    {
-                        RuleOrderLineWindow ruleOrderLineWindow = new RuleOrderLineWindow();
-                        ruleOrderLineWindow.Owner = Application.Current.MainWindow;
-                        showWindow.ShowWindow(ruleOrderLineWindow);
-                        
-                    }
-                    ));
+       
 
         //=============================fill listbox "Authors" if check "All authors"====================
 
@@ -565,6 +552,7 @@ namespace STUDENTU_1._06.ViewModel
                         CopyPhone1ToClipBoard();
                     }
                     ));
+
         private void CopyPhone1ToClipBoard()
         {
             Clipboard.SetText($"{AuthorsRecord.Contacts.Phone1}");
@@ -621,7 +609,25 @@ namespace STUDENTU_1._06.ViewModel
         {
             Clipboard.SetText($"{ Order.DescriptionForClient}");
         }
-       
+
+
+        //==============================COMMAND TO EDIT Order.DescriptionForClient BY EDIT DEADLINE ================================        
+        private RelayCommand timePlusDefaultCommand;
+        public RelayCommand TimePlusDefaultCommand =>
+            timePlusDefaultCommand ?? (timePlusDefaultCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        TimePlusDefault();
+                    }
+                    ));
+        private void TimePlusDefault()
+        {
+
+            int tmp = Order.Dates.DeadLine.Day - Order.Dates.StartDateWork.Day;
+            if (tmp>5 && Order.WorkType.TypeOfWork!="чертежи")
+                Order.Dates.DeadLine.AddDays(-2);            
+        }
+
         //==============================COMMAND TO FIND AUTHOR BY NICKNAME ================================        
 
         private RelayCommand findAuthorByNickCommand;
@@ -759,15 +765,15 @@ namespace STUDENTU_1._06.ViewModel
 
         //=============================Call window SetFinalAvaluationWindow.xaml========================================
 
-        private RelayCommand setExecuteAuthorCommand;
-        public RelayCommand SetExecuteAuthorCommand =>
-            setExecuteAuthorCommand ?? (setExecuteAuthorCommand = new RelayCommand(
-                    (obj) =>
-                    {
-                        SetFinalAvaluationWindow setFinalAvaluationWindow = new SetFinalAvaluationWindow(obj);                        
-                        showWindow.ShowDialog(setFinalAvaluationWindow);                        
-                    }
-                    ));
+        //private RelayCommand setExecuteAuthorCommand;
+        //public RelayCommand SetExecuteAuthorCommand =>
+        //    setExecuteAuthorCommand ?? (setExecuteAuthorCommand = new RelayCommand(
+        //            (obj) =>
+        //            {
+        //                SetFinalAvaluationWindow setFinalAvaluationWindow = new SetFinalAvaluationWindow(obj);                        
+        //                showWindow.ShowDialog(setFinalAvaluationWindow);                        
+        //            }
+        //            ));
 
         //ComplicatedFilterAuthorsparamWondow
 
@@ -779,11 +785,11 @@ namespace STUDENTU_1._06.ViewModel
                     (obj) =>
                     {
                         ComplicatedFilterAuthorsparamWondow window = new ComplicatedFilterAuthorsparamWondow(obj);
-                        showWindow.ShowWindow(window);
-
-                        
+                        showWindow.ShowWindow(window);                       
                     }
                     ));
+
+
 
         //===================================== For save evaluate order any author in EditAvaluatonWindow.xaml====================
         private RelayCommand saveAuthorEvaluateAuthorRecordCommand;
@@ -798,7 +804,12 @@ namespace STUDENTU_1._06.ViewModel
 
         private void SaveAuthorEvaluateAuthorRecord()
         {
-            
+            if (_Evaluation.EvaluationRecord.Price == 0)
+            {
+                dialogService.ShowMessage("Цена работы не может быть нулевой");
+                return;
+            }
+
             //check for the entry before adding
             if (AuthorsRecord.EvaluationRecords.Count() > 0)
                 
@@ -812,15 +823,16 @@ namespace STUDENTU_1._06.ViewModel
                         AuthorsRecord.EvaluationRecords.Add(_Evaluation.EvaluationRecord);
                         dialogService.ShowMessage("Данные сохранены");                        
                         //_Evaluation.EvaluationRecord = new EvaluationRecord() { DeadLine = TMPDate };
-                        _Evaluation.EvaluationRecord = new EvaluationRecord();
+                        //_Evaluation.EvaluationRecord = new EvaluationRecord();
                         break;
                     }            
             else
             {
                AuthorsRecord.EvaluationRecords.Add(_Evaluation.EvaluationRecord);
                 dialogService.ShowMessage("Данные сохранены");
-                //_Evaluation.EvaluationRecord = new EvaluationRecord() { DeadLine = TMPDate };
-                _Evaluation.EvaluationRecord = new EvaluationRecord();
+                _Evaluation.EvaluationRecord = new EvaluationRecord()
+                { DeadLine = TMPStaticClass.CurrentOrder.Dates.DeadLine };
+                //_Evaluation.EvaluationRecord = new EvaluationRecord();
             }
         }
 
@@ -871,6 +883,8 @@ namespace STUDENTU_1._06.ViewModel
                 dialogService.ShowMessage("Нечего добавлять");
 
         }
+
+
 
         //===================================== For show complicated filter window  EditAvaluatonWindow.xaml====================
         private RelayCommand initComplicatedFilterCommand;

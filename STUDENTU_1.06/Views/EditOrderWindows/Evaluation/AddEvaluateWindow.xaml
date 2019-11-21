@@ -11,7 +11,7 @@
         Title="Добавление оценки" HorizontalAlignment="Center" MaxHeight="450" MaxWidth="450" MinHeight="450" MinWidth="450" Height="350" Width="350"
         Background="#FFDEE6D6">
     <Window.InputBindings>
-        <KeyBinding Gesture="Esc" Command="{Binding _Evaluation.CancelAuthorEvaluateAuthorRecordCommand}"
+        <KeyBinding Gesture="Esc" Command="{Binding _Evaluation.CloseWindowCommand}"
                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
         <!--Command "CloseWindowCommand" can find in "ForEditOrder.cs"-->
     </Window.InputBindings>
@@ -100,7 +100,7 @@
                 IsEnabled="{Binding ElementName=Price,  Path=Text.Length}"
                  Command="{Binding SaveAuthorEvaluateAuthorRecordCommand}"/>
         <Button Grid.Column="4" Grid.Row="4" Grid.ColumnSpan="2" Content="Отменить" Background="Red" FontWeight="ExtraBold" TabIndex="5"                
-                 Command="{Binding _Evaluation.CancelAuthorEvaluateAuthorRecordCommand}"
+                 Command="{Binding _Evaluation.CloseWindowCommand}"
                 CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
         <!--Command "SaveAuthorEvaluateAuthorRecordCommand" can find in "EvaluationClass.cs"-->
     </Grid>

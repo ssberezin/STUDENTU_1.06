@@ -82,13 +82,14 @@
         </Grid.RowDefinitions>
 
 
-        <!--SelectedItem="{Binding  _Evaluation.EvaluationRecord}"-->
+        
         <ListBox x:Name="Avaluation" Grid.Row="1" Grid.Column="0" Grid.RowSpan="5" Grid.ColumnSpan="4"
                     ItemsSource="{Binding AuthorsRecord.EvaluationRecords, 
                     UpdateSourceTrigger=PropertyChanged}" 
-                                  
+                    SelectedItem="{Binding  _Evaluation.EvaluationRecord}"
                    TabIndex="6" Margin="8" >
             <!--"AuthorsRecords" can find in "RuleOrderLineClass.cs"-->
+            
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel VerticalAlignment="Center">
@@ -116,17 +117,21 @@
                             <Label Content="------------------------------------------------------------------------------------------------------------------------------------" 
                        Foreground="Blue" HorizontalAlignment="Center"/>
                         </StackPanel>
-
-
-                    </StackPanel>
-                       
-                </DataTemplate>
-                
+                    </StackPanel>                       
+                </DataTemplate>                
             </ListBox.ItemTemplate>
-                
-                
 
-            
+            <ListBox.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Сделать выделенную запись финальной?" 
+                              Command="{Binding _Evaluation.SetSelectEvaluationCommand}" 
+                              CommandParameter="{Binding SelectedItem, ElementName=Avaluation}"
+                              Height="20" 
+                              />
+                </ContextMenu>
+            </ListBox.ContextMenu>
+
+
         </ListBox>
         
         
@@ -183,7 +188,7 @@
                 FontWeight="ExtraBold" TabIndex="5"                
                  Command="{Binding CancelEvaluateCommand}" 
                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
-            <Button Grid.Column="4" Content="Сохранить" Background="LawnGreen"
+            <Button Grid.Column="4" Content="Сохранить" Background="#FF0B422B"
                 FontWeight="ExtraBold" TabIndex="5"                
                  Command="{Binding AddEvaluationToAuthorCommand}"    />
            

@@ -277,11 +277,13 @@
             <TextBlock Text="{Binding AuthorsRecord.Contacts.VK}" Margin="2"                                  
                                    TextAlignment="Center"/>
         </ListBox>
+
+        <!--SetFinalEvaluationCommand-->
         <Button Grid.Column="5" Grid.Row="3" Content="Выбрать автора" Background="#FF41BD41"
                 TabIndex="9"
                  IsEnabled="{Binding SelectedItem,
                      Converter={StaticResource NullBoolConverter}, ElementName=AuthorsAvaluat}"
-                Command="{Binding SetExecuteAuthorCommand}" 
+                Command="{Binding _Evaluation.SetFinalEvaluationCommand}" 
                 CommandParameter="{Binding ElementName=AuthorsAvaluat , Path=SelectedItem}"/>
         <!--Command SetExecuteAuthorCommand can find in  RuleOrderLineClass.cs-->
         <Button Grid.Column="0" Grid.Row="6" Content="Задать оценку автору" Background="CadetBlue"
@@ -351,18 +353,12 @@
         <StackPanel Orientation="Horizontal"  Grid.Row="6" Grid.Column="3" HorizontalAlignment="Center" >
             <CheckBox x:Name="TimePlus" IsChecked="False"
                        ToolTip="Будет назначено время с запасом по умолчанию"
-                      Command="{Binding  TimePlusDefaultCommand}"/>
-            <Button x:Name="gg" Content="С запасом по сроку?"   
-                    IsEnabled="{Binding IsChecked,ElementName=TimePlus}"
-                        Command="{Binding  TimePlusSettingsCommand}"
-                      CommandParameter="{Binding DataContext, RelativeSource=
-                    {RelativeSource AncestorType={x:Type Window}}}"
-                    ToolTip="Можно настроить ложное время готовности работы для автора"
-                     Background="#FF4C58DD"   />
+                      Command="{Binding  TimePlusDefaultCommand}" Content="С запасом по времени?"/>
+            
         </StackPanel>
         <TextBox x:Name="AuthorTrablSet" Grid.Row="7" Grid.RowSpan="2" Grid.ColumnSpan="4"    
                  Text="{Binding Order.DescriptionForClient}"
-                  TextAlignment="Center"  AcceptsReturn="True"
+                  TextAlignment="Justify"  AcceptsReturn="True"
                       VerticalContentAlignment="Stretch" HorizontalContentAlignment="Left" Foreground="Red" Background="White"
                       Margin="6,6,5.4,6" TextWrapping="Wrap" FontSize="11" >
             <TextBox.ContextMenu>

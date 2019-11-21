@@ -28,9 +28,7 @@ namespace STUDENTU_1._06.ViewModel
         public _Evaluation()
         {  
             Evaluation = new Evaluation();
-            //EvaluationRecord = new EvaluationRecord() { DeadLine = TMPStaticClass.CurrentOrder.Dates.AuthorDeadLine };           
-            //EvaluationRecord = new EvaluationRecord() { DeadLine = DateTime.Now };
-            EvaluationRecord = new EvaluationRecord();
+            EvaluationRecord = new EvaluationRecord() { DeadLine = TMPStaticClass.CurrentOrder.Dates.AuthorDeadLine };                                   
             FinalEvaluationRecord = new EvaluationRecord()
             {
                 DeadLine = EvaluationRecord.DeadLine,
@@ -149,38 +147,93 @@ namespace STUDENTU_1._06.ViewModel
             setSelectEvaluationCommand ?? (setSelectEvaluationCommand = new RelayCommand(
                     (obj) =>
                     {
-                        SetSelectEvaluation();
+                        if (obj as EvaluationRecord == null)
+                        {
+                            dialogService.ShowMessage("Должна быть хоть одна запись в списке оценок");
+                            return;
+                        }
+
+                        if (SetSelectEvaluation()!=null)
+                            dialogService.ShowMessage("Оценка задана");
+                        else
+                            dialogService.ShowMessage("Оценка НЕ задана");
                     }
                     ));
 
         private EvaluationRecord SetSelectEvaluation()
         {
-            //нашли в оценках автора нужную и присвоили ей статус "финальной оценки" (EvaluationRecord.FinalEvaluation = true)
+            
+            foreach (EvaluationRecord item in _RuleOrderLine.AuthorsRecord.EvaluationRecords)
+            {
+                //проверка на наличие финальной оценки
+                //check for existing final evaluation
+                if (item.FinalEvaluation)
+                {
+                    if (dialogService.YesNoDialog("Уже заданиа финальная оценка. Переназначить?"))
+                    {
+                        //нашходим в оценках автора нужную и присвоили ей статус "финальной оценки" (EvaluationRecord.FinalEvaluation = true)
+                        // found what was needed in the author’s evaluations and assigned her the status of “final evaluation” (EvaluationRecord.FinalEvaluation = true)
+
+                        //также задали значение свойству ExecuteAuthor, в котором задаем информацию о победителе тендера на выполнение заказа
+                        //also set the value to the ExecuteAuthor property, in which we set information about the winner of the tender
+
+                        foreach (EvaluationRecord i in _RuleOrderLine.AuthorsRecord.EvaluationRecords)
+                        {
+                            if (i.DeadLine == EvaluationRecord.DeadLine &&
+                                i.EvaluateDescription == EvaluationRecord.EvaluateDescription &&
+                                i.Price == EvaluationRecord.Price)
+                            {
+                                EvaluationRecord.FinalEvaluation = true;
+                                _RuleOrderLine.ExecuteAuthor = _RuleOrderLine.AuthorsRecord;
+                                _RuleOrderLine.SelectedExecuteAuthor = _RuleOrderLine.AuthorsRecord.Author;
+                                FinalEvaluationRecord = EvaluationRecord;
+                                return FinalEvaluationRecord;
+                            }
+                        }
+
+                    }
+                    else
+                        return null;
+                    
+                }
+            }
+            //нашходим в оценках автора нужную и присвоили ей статус "финальной оценки" (EvaluationRecord.FinalEvaluation = true)
             // found what was needed in the author’s evaluations and assigned her the status of “final evaluation” (EvaluationRecord.FinalEvaluation = true)
 
             //также задали значение свойству ExecuteAuthor, в котором задаем информацию о победителе тендера на выполнение заказа
             //also set the value to the ExecuteAuthor property, in which we set information about the winner of the tender
 
-            foreach (EvaluationRecord item in _RuleOrderLine.AuthorsRecord.EvaluationRecords)
+            foreach (EvaluationRecord i in _RuleOrderLine.AuthorsRecord.EvaluationRecords)
             {
-                if (item.DeadLine == EvaluationRecord.DeadLine &&
-                    item.EvaluateDescription == EvaluationRecord.EvaluateDescription &&
-                    item.Price == EvaluationRecord.Price)
+                if (i.DeadLine == EvaluationRecord.DeadLine &&
+                    i.EvaluateDescription == EvaluationRecord.EvaluateDescription &&
+                    i.Price == EvaluationRecord.Price)
                 {
                     EvaluationRecord.FinalEvaluation = true;
                     _RuleOrderLine.ExecuteAuthor = _RuleOrderLine.AuthorsRecord;
                     _RuleOrderLine.SelectedExecuteAuthor = _RuleOrderLine.AuthorsRecord.Author;
                     FinalEvaluationRecord = EvaluationRecord;
-                    return FinalEvaluationRecord; 
-                }               
+                    return FinalEvaluationRecord;
+                }
             }
             return null;
 
         }
 
+        //SetFinalEvaluationCommand
+
+        private RelayCommand setFinalEvaluationCommand;
+        public RelayCommand SetFinalEvaluationCommand =>
+            setFinalEvaluationCommand ?? (setFinalEvaluationCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        SetFinalAvaluationWindow finalEvaluateWindow = new SetFinalAvaluationWindow(obj);
+                        showWindow.ShowDialog(finalEvaluateWindow);
+                    }
+                    ));
 
 
-        //call AddEvaluateWindow
+        //===============================================call AddEvaluateWindow==========================================
         private RelayCommand addEvaluationCommand;
         public RelayCommand AddEvaluationCommand =>
             addEvaluationCommand ?? (addEvaluationCommand = new RelayCommand(
@@ -199,7 +252,6 @@ namespace STUDENTU_1._06.ViewModel
                         //editAvaluationWindow
                         EditAvaluationWindow editAvaluationWindow = new EditAvaluationWindow(obj);                        
                         showWindow.ShowDialog(editAvaluationWindow);
-
                     }
                     ));
 
@@ -363,6 +415,16 @@ namespace STUDENTU_1._06.ViewModel
            EvaluationRecord = new EvaluationRecord() { DeadLine = DateTime.Now };
         }
 
+        //===================================== For close any window ===========================================
+        private RelayCommand closeWindowCommand;
+        public RelayCommand CloseWindowCommand =>
+            closeWindowCommand ?? (closeWindowCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        Window window = obj as Window;
+                        window.Close();
+                    }
+                    ));
 
     }
 

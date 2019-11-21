@@ -12,6 +12,7 @@ using STUDENTU_1._06.Model.HelpModelClasses;
 using STUDENTU_1._06.Model.HelpModelClasses.DialogWindows;
 using STUDENTU_1._06.Model.HelpModelClasses.ShowWindows;
 using STUDENTU_1._06.Views;
+using STUDENTU_1._06.Views.EditOrderWindows.RuleOrderLineWindows;
 
 namespace STUDENTU_1._06.ViewModel
 {
@@ -86,19 +87,19 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
-        private _Evaluation _evaluation;
-        public _Evaluation _Evaluation
-        {
-            get { return _evaluation; }
-            set
-            {
-                if (_evaluation != value)
-                {
-                    _evaluation = value;
-                    OnPropertyChanged(nameof(_Evaluation));
-                }
-            }
-        }
+        //private _Evaluation _evaluation;
+        //public _Evaluation _Evaluation
+        //{
+        //    get { return _evaluation; }
+        //    set
+        //    {
+        //        if (_evaluation != value)
+        //        {
+        //            _evaluation = value;
+        //            OnPropertyChanged(nameof(_Evaluation));
+        //        }
+        //    }
+        //}
 
         private Persone persone;
         public Persone Persone
@@ -216,19 +217,19 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
-        private RuleOrderLine ruleOrderLine;
-        public RuleOrderLine RuleOrderLine
-        {
-            get { return ruleOrderLine; }
-            set
-            {
-                if (ruleOrderLine != value)
-                {
-                    ruleOrderLine = value;
-                    OnPropertyChanged(nameof(RuleOrderLine));
-                }
-            }
-        }
+        //private RuleOrderLine ruleOrderLine;
+        //public RuleOrderLine RuleOrderLine
+        //{
+        //    get { return ruleOrderLine; }
+        //    set
+        //    {
+        //        if (ruleOrderLine != value)
+        //        {
+        //            ruleOrderLine = value;
+        //            OnPropertyChanged(nameof(RuleOrderLine));
+        //        }
+        //    }
+        //}
 
         public ForEditOrder(Window editWindow, DefaultShowWindowService showWindow,
            IDialogService dialogService)
@@ -243,12 +244,16 @@ namespace STUDENTU_1._06.ViewModel
             Contacts = new Contacts();
             Date = new Dates();
             _Dir = new _Direction();
-            _Evaluation = new _Evaluation();
+           // _Evaluation = new _Evaluation();
             Order = new OrderLine { OrderNumber = GetOrderNumber() };
             Persone = new Persone();
             PersoneDescription = new PersoneDescription();
             Price = new Money();
-            RuleOrderLine = new RuleOrderLine();
+
+            //для возможности запуска окна вырула заказа RuleOrderLineWindow.xaml
+            //for cant initialize RuleOrderLineWindow.xaml
+           // RuleOrderLine = new RuleOrderLine();
+
             _Status = new _Status();
             _Subj = new _Subject();
             _Source = new _Source();
@@ -392,6 +397,18 @@ namespace STUDENTU_1._06.ViewModel
                     {
 
                         CloseWindow(obj as Window);
+                    }
+                    ));
+
+        //call RuleOrderLineWindow
+        private RelayCommand newRuleOrderLineWindowCommand;
+        public RelayCommand NewRuleOrderLineWindowCommand =>
+            newRuleOrderLineWindowCommand ?? (newRuleOrderLineWindowCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        RuleOrderLineWindow ruleOrderLineWindow = new RuleOrderLineWindow();
+                        showWindow.ShowDialog(ruleOrderLineWindow);
+
                     }
                     ));
 
