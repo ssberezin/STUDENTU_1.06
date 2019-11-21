@@ -147,11 +147,6 @@ namespace STUDENTU_1._06.ViewModel
             setSelectEvaluationCommand ?? (setSelectEvaluationCommand = new RelayCommand(
                     (obj) =>
                     {
-                        if (obj as EvaluationRecord == null)
-                        {
-                            dialogService.ShowMessage("Должна быть хоть одна запись в списке оценок");
-                            return;
-                        }
 
                         if (SetSelectEvaluation()!=null)
                             dialogService.ShowMessage("Оценка задана");
