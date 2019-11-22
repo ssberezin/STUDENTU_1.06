@@ -60,7 +60,7 @@
             <TextBlock x:Name="PrLable" Text="Цена: " FontWeight="Bold" Foreground="Blue"/>
         </Viewbox>
         <TextBox x:Name="Price" Grid.Row="0" Grid.Column="4"  
-                 Text="{Binding EvaluationRecord.Price, Mode=TwoWay}" 
+                 Text="{Binding _Evaluation.EvaluationRecord.Price, Mode=TwoWay}" 
                  Foreground="Red" TextAlignment="Center" 
                      VerticalAlignment="Center" FontWeight="Bold"
                     FontSize="{Binding ElementName=PrLable, Path=ActualHeight}"
@@ -73,7 +73,7 @@
             </Viewbox>
             <DatePicker Name="DateOfDeadLine" IsDropDownOpen="False" SelectedDateFormat="Short" 
                         MaxWidth="150" TabIndex="13" HorizontalAlignment="Center"
-                        SelectedDate="{Binding EvaluationRecord.DeadLine,Mode=TwoWay}"
+                        SelectedDate="{Binding _Evaluation.EvaluationRecord.DeadLine,Mode=TwoWay}"
                         />
             <!-- "EvaluationRecord" can find in "EvaluationClass.cs"-->
             <!--x:Static sys:DateTime.Now-->
@@ -83,11 +83,11 @@
             <TextBlock  Text="Время" FontWeight="Bold" Foreground="Blue"/>
         </Viewbox>
         <wpfTool:TimePicker Grid.ColumnSpan="2" Grid.Row="1" Grid.Column="4" Margin="20"
-                             Value="{Binding Date.DeadLine, Mode=TwoWay}"
+                             Value="{Binding _Evaluation.EvaluationRecord.DeadLine, Mode=TwoWay}"
                             MaxWidth="90" MaxHeight="40"/>
         <!--Command "Date" can find in "ForEditOrder.cs"-->
         <TextBox  Grid.Row="2" Grid.RowSpan="2" Grid.ColumnSpan="6"    
-                 Text="{Binding EvaluationRecord.EvaluateDescription, Mode=TwoWay}"
+                 Text="{Binding _Evaluation.EvaluationRecord.EvaluateDescription, Mode=TwoWay}"
                   TextAlignment="Center"
                   VerticalScrollBarVisibility="Auto"
                   VerticalContentAlignment="Center" Foreground="Red" Background="White"

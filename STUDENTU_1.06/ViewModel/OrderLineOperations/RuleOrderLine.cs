@@ -97,7 +97,21 @@ namespace STUDENTU_1._06.ViewModel
                 }
             }
         }
-        
+
+        //для получения значения индекса выбранной записи в массиве оценок автора
+        private int index;
+        public int Index
+        {
+            get { return index; }
+            set
+            {
+                if (index != value)
+                {
+                    index = value;
+                    OnPropertyChanged(nameof(Index));
+                }
+            }
+        }
 
         private Author selectedExecuteAuthor;
         public Author SelectedExecuteAuthor
@@ -852,6 +866,44 @@ namespace STUDENTU_1._06.ViewModel
             AuthorsRecord.EvaluationRecords.Remove(i);
         }
 
+        //=======================================here we set final e value of evaluation ==================================================
+        private RelayCommand setSelectEvaluationCommand;
+        public RelayCommand SetSelectEvaluationCommand =>
+            setSelectEvaluationCommand ?? (setSelectEvaluationCommand = new RelayCommand(
+                    (obj) =>
+                    {
+
+                        if (SetSelectEvaluation())
+                            dialogService.ShowMessage("Оценка задана");
+                        else
+                            dialogService.ShowMessage("Оценка НЕ задана");
+                    }
+                    ));
+
+        private bool SetSelectEvaluation()
+        {
+            foreach (EvaluationRecord item in AuthorsRecord.EvaluationRecords)
+            {                
+                _Evaluation.EvaluationRecord = AuthorsRecord.EvaluationRecords[Index];
+                //проверка на наличие финальной оценки
+                //check for existing final evaluation
+                if (item.FinalEvaluation)
+                {
+                    if (dialogService.YesNoDialog("Уже заданиа финальная оценка. Переназначить?"))
+                    {
+                        AuthorsRecord.EvaluationRecords[Index].FinalEvaluation = true;
+                        item.FinalEvaluation = false;
+                        return true;  
+                    }
+                    else
+                        return false;
+                }
+            }
+            AuthorsRecord.EvaluationRecords[Index].FinalEvaluation = true;           
+            return true;  
+        }
+
+
         //==================================== COMMAND FOR ADD EVALUATION TO SELECTED AUTHOR ====================================
 
         private RelayCommand addEvaluationToAuthorCommand;
@@ -884,7 +936,22 @@ namespace STUDENTU_1._06.ViewModel
 
         }
 
+        private RelayCommand editAuthorEvaluateAuthorRecordCommand;
+        public RelayCommand EditAuthorEvaluateAuthorRecordCommand =>
+                            editAuthorEvaluateAuthorRecordCommand ??
+                            (editAuthorEvaluateAuthorRecordCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        EditAuthorEvaluateAuthorRecord();
+                    }
+                    ));
 
+        //редактируем записи по оценке авторов
+        // edit entries by authors evaluation
+        private void EditAuthorEvaluateAuthorRecord()
+        {
+            AuthorsRecord.EvaluationRecords[Index] = _Evaluation.EvaluationRecord;
+        }
 
         //===================================== For show complicated filter window  EditAvaluatonWindow.xaml====================
         private RelayCommand initComplicatedFilterCommand;
@@ -907,9 +974,21 @@ namespace STUDENTU_1._06.ViewModel
             
             AuthorsCallByParams(_Dir.Dir.DirectionName, _Subject.Subj.SubName, _AuthorStatus.AuthorStatus.AuthorStatusName);
             
-
-
         }
+
+
+        //===================================== For call EDIT window  EditAvaluatWindow.xaml====================
+        private RelayCommand calleditSelectedAvaluateRuleOrderWindowCommand;
+        public RelayCommand CallEditSelectedAvaluateRuleOrderWindowCommand =>
+                            calleditSelectedAvaluateRuleOrderWindowCommand ??
+                            (calleditSelectedAvaluateRuleOrderWindowCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        _Evaluation.EvaluationRecord = AuthorsRecord.EvaluationRecords[Index];
+                        EditEvaluateWindow editAvaluatWindow = new EditEvaluateWindow(obj);
+                        showWindow.ShowDialog(editAvaluatWindow);
+                    }
+                    ));
 
 
         //===================================== For Cancel set author complicated filter and close window w.xaml====================
@@ -960,7 +1039,97 @@ namespace STUDENTU_1._06.ViewModel
                         window.Close();
                     }
                     ));
-        
+
+        //==================================== COMMAND FOR ADD EVALUATION TO ORDER ====================================
+
+        private RelayCommand addEvaluationToOrderCommand;
+        public RelayCommand AddEvaluationToOrderCommand => addEvaluationToOrderCommand ?? (addEvaluationToOrderCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        AddEvaluationToOrder();
+                    }
+                    ));
+
+        private void AddEvaluationToOrder()
+        {
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                try
+                {
+                    Order = db.Orderlines.Find(TMPStaticClass.CurrentOrder.OrderLineId);
+
+                    ////лагов тут еще пилить и пилить( (02/11/19)
+                    ////добавили авторов из AuthorsRecords в Evaluation
+                    //foreach (var item in SelectedAuthorsRecords)
+                    //{
+                    //    Evaluation.Authors.Add(item.Author);//вот эта хрень уже под сомнение. Накой она теперь?...
+                    //    Order.Author.Add(item.Author);
+                    //}
+
+                    ////добавили оценки Evaluation авторам  Order.Authors  из _Evaluation._RuleOrderLine.AuthorsRecord.EvaluationRecords
+                    ////т.е. получили полноценный список оценок авторов по текущему заказу
+                    //foreach (var i in Order.Author)
+                    //{
+                    //    foreach (var item in _RuleOrderLine.AuthorsRecord.EvaluationRecords)
+                    //    {
+                    //        Evaluation.Moneys.Add(new Money() { Price = item.Price });
+                    //        Evaluation.Description = item.EvaluateDescription;
+                    //        Evaluation.Dates.Add(new Dates() { DeadLine = item.DeadLine });
+                    //        Evaluation.Winner = item.FinalEvaluation;
+                    //        i.Evaluation.Add(Evaluation);
+                    //    }
+                    //}
+                    ////TMPStaticClass.CurrentOrder.Author = db.Authors.Find(new Author() { AuthorId = _Evaluation._RuleOrderLine.SelectedExecuteAuthor.AuthorId }.AuthorId);
+                    ////TMPStaticClass.CurrentOrder.Author.Evaluation.Add(Evaluation);
+
+
+
+                    ////Persone.Contacts = Contacts;
+                    ////Order.Direction = db.Directions.Find(_Dir.Dir.DirectionId);
+                    ////Order.Client = new Client() { Persone = Persone };
+                    ////Order.WorkType = db.WorkTypes.Find(_WorkType.WorkType.WorkTypeId);
+
+                    ////Order.Dates = Date;
+                    ////Order.Subject = db.Subjects.Find(_Subj.Subj.SubjectId); ;
+                    ////Order.Money = Price;
+                    ////if (_Status.Status.StatusName == "принимается")
+                    ////    // set a default entry to status field
+                    ////    Order.Status = db.Statuses.Find(new Status() { StatusId = 1 }.StatusId);
+                    ////else
+                    ////    //set realy selected status
+                    ////    Order.Status = _Status.Status;
+
+                    ////db.Orderlines.Add(Order);
+
+                    ////db.SaveChanges();
+                    ////dialogService.ShowMessage("Данные о заказе сохранены");
+
+
+                }
+                catch (ArgumentNullException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (OverflowException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+            }
+
+        }
+
 
 
     }
