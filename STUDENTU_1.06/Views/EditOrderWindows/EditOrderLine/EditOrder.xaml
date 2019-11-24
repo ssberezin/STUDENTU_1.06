@@ -26,6 +26,7 @@
     <Window.InputBindings>
         <KeyBinding Gesture="Esc" Command="{Binding CloseWindowCommand}"
                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
+        <KeyBinding Gesture="Ctrl+S" Command="{Binding CreateNewOrderLine}"/>
         <!--CloseWindowCommand can find in ForEditOrder.cs-->
     </Window.InputBindings>
 

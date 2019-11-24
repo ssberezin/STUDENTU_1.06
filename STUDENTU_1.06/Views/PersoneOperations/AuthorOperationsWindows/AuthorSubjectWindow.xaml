@@ -30,13 +30,7 @@
                     <scm1:SortDescription PropertyName="SubName"/>
                 </CollectionViewSource.SortDescriptions>
             </CollectionViewSource>
-            <CollectionViewSource x:Key="SortedItems" Source="{Binding _Subj.AuthorSubjects}"
-                xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
-                <!--SubjRecords can find in _Subject.cs-->
-                <CollectionViewSource.SortDescriptions>
-                    <scm1:SortDescription PropertyName="SubName"/>
-                </CollectionViewSource.SortDescriptions>
-            </CollectionViewSource>
+            
 
         </ResourceDictionary>
 
@@ -80,8 +74,8 @@
         </WrapPanel>
         <ListBox x:Name="DirList" 
                      Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="2" Margin="5" 
-                    ItemsSource="{Binding Source={StaticResource SortedItems}, 
-                    UpdateSourceTrigger=PropertyChanged}"  SelectedItem="{Binding _Subj.Subj}"                   
+                    ItemsSource="{Binding _Subj.AuthorSubjects}" 
+                 SelectedIndex="{Binding _Subj.Index}"
                      SelectionMode="Single" 
                      IsSynchronizedWithCurrentItem="False"
                      TabIndex="3"
@@ -106,7 +100,8 @@
             <!--Command AddAuthorSubjectCommand can find in _Subject.cs-->
         </Button>
 
-        <Button Grid.Column="2" Grid.Row="3" Content="Удалить" Command="{Binding _Subj.DelFromAuthorSubjectCommand}"                 
+        <Button Grid.Column="2" Grid.Row="3" Content="Удалить"
+                Command="{Binding _Subj.DelFromAuthorSubjectCommand}"                 
                 IsEnabled="{Binding SelectedItem, 
                      Converter={StaticResource NullBoolConverter}, ElementName=DirList}"
                 TabIndex="5" RenderTransformOrigin="0.5,0.681"/>

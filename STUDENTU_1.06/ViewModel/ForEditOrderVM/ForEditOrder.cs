@@ -87,19 +87,6 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
-        //private _Evaluation _evaluation;
-        //public _Evaluation _Evaluation
-        //{
-        //    get { return _evaluation; }
-        //    set
-        //    {
-        //        if (_evaluation != value)
-        //        {
-        //            _evaluation = value;
-        //            OnPropertyChanged(nameof(_Evaluation));
-        //        }
-        //    }
-        //}
 
         private Persone persone;
         public Persone Persone
@@ -217,19 +204,7 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
-        //private RuleOrderLine ruleOrderLine;
-        //public RuleOrderLine RuleOrderLine
-        //{
-        //    get { return ruleOrderLine; }
-        //    set
-        //    {
-        //        if (ruleOrderLine != value)
-        //        {
-        //            ruleOrderLine = value;
-        //            OnPropertyChanged(nameof(RuleOrderLine));
-        //        }
-        //    }
-        //}
+        
 
         public ForEditOrder(Window editWindow, DefaultShowWindowService showWindow,
            IDialogService dialogService)

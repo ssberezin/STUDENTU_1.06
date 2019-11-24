@@ -208,6 +208,15 @@
                     </DockPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
+            <ListBox.ContextMenu>
+                <ContextMenu DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}">
+                    <MenuItem Header="Очистить список выбранных авторов" 
+                              Command="{Binding DataContext.ClearSelectedAuthorsListCommand}" 
+                              IsEnabled="{Binding Path=SelectedItem, Converter={StaticResource NullBoolConverter}}"
+                              Height="20" 
+                              />
+                </ContextMenu>
+            </ListBox.ContextMenu>
         </ListBox>
         <Button Grid.Column="1" Grid.Row="2" Content="+" Background="Green" TabIndex="6"
                 IsEnabled="{Binding SelectedItem,
@@ -348,7 +357,7 @@
                 TabIndex="9" 
                 IsEnabled="{Binding SelectedItem,
                      Converter={StaticResource NullBoolConverter}, ElementName=AuthorsAvaluat}"
-                Command="{Binding _Evaluation.SaveAuthorEvaluateAuthorRecordCommand}"/>
+                Command="{Binding AddEvaluationToOrderCommand}"/>
         <TextBlock Grid.Row="6" Grid.Column="2"  Text="Постановка задачи для автора" Margin="5" Foreground="Blue"/>
         <StackPanel Orientation="Horizontal"  Grid.Row="6" Grid.Column="3" HorizontalAlignment="Center" >
             <CheckBox x:Name="TimePlus" IsChecked="False"

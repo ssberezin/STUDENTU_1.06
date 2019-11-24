@@ -43,6 +43,20 @@ namespace STUDENTU_1._06.ViewModel
                 }
             }
         }
+        //for fast delete from AuthorDirections
+        private int index;
+        public int Index
+        {
+            get { return index; }
+            set
+            {
+                if (index != value)
+                {
+                    index = value;
+                    OnPropertyChanged(nameof(Index));
+                }
+            }
+        }
 
         //load data array from "Directions" table
         public void LoadDirectionsData()
@@ -354,16 +368,10 @@ namespace STUDENTU_1._06.ViewModel
         //here we check AuthorDirections for the added item
         private bool FindDir()
         {
-            bool flag = false;
             foreach (Direction item in AuthorDirections)
-            {
                 if (Dir.DirectionId == item.DirectionId || Dir.DirectionName == "---")
-                {
-                    flag = true;
-                    break;
-                }
-            }
-            return flag;
+                    return true;
+            return false;
         }
 
         //===================================COMMAND FOR DELETE DIRECTIONS FROM AuthorDirections ============      
@@ -378,7 +386,7 @@ namespace STUDENTU_1._06.ViewModel
 
         private void DelFromAuthorDirection()
         {            
-                AuthorDirections.Remove(Dir);
+                AuthorDirections.Remove(AuthorDirections[Index]);
         }
     }
    

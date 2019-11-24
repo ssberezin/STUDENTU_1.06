@@ -29,14 +29,7 @@
                 </CollectionViewSource.SortDescriptions>
             </CollectionViewSource>
 
-            <CollectionViewSource x:Key="SortedDirs" Source="{Binding _Dir.AuthorDirections}"
-                xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
-                <!--SubjRecords can find in _Subject.cs-->
-                <CollectionViewSource.SortDescriptions>
-                    <scm1:SortDescription PropertyName="DirectionName"/>
-                </CollectionViewSource.SortDescriptions>
-            </CollectionViewSource>
-
+           
         </ResourceDictionary>
 
 
@@ -84,8 +77,10 @@
         </WrapPanel>
         <ListBox x:Name="DirList" 
                      Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="2" Margin="5" 
-                     ItemsSource="{Binding Source={StaticResource SortedDirs}, 
-                    UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding _Dir.Dir}"                   
+                 
+                     ItemsSource="{Binding _Dir.AuthorDirections, 
+                    UpdateSourceTrigger=PropertyChanged}"  
+                    SelectedIndex="{Binding _Dir.Index}"
                      SelectionMode="Single" 
                      IsSynchronizedWithCurrentItem="False"
                      TabIndex="3"

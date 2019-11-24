@@ -29,6 +29,21 @@ namespace STUDENTU_1._06.ViewModel
         public ObservableCollection<Subject> SubjRecords { get; set; }
         public ObservableCollection<Subject> AuthorSubjects { get; set; }
 
+        //for fast delete from AuthorSubjects
+        private int index;
+        public int Index
+        {
+            get { return index; }
+            set
+            {
+                if (index != value)
+                {
+                    index = value;
+                    OnPropertyChanged(nameof(Index));
+                }
+            }
+        }
+
         private Subject subj;
         public Subject Subj
         {
@@ -326,9 +341,14 @@ namespace STUDENTU_1._06.ViewModel
 
         private void AddAuthorSubject()
         {
+            if (Subj.SubName=="---")
+            {
+                dialogService.ShowMessage("Нельзя добавить эту запись");
+                return;
+            }
             if (FindSubj())
             {
-                dialogService.ShowMessage("Уже есть такое название в в списке");
+                dialogService.ShowMessage("Уже есть такая запись в списке");
             }
             else
                 AuthorSubjects.Add(Subj);
@@ -337,19 +357,13 @@ namespace STUDENTU_1._06.ViewModel
         //here we check AuthorSubjects for the added item
         private bool FindSubj()
         {
-            bool flag = false;
+            
             foreach (Subject item in AuthorSubjects)
             {
-                flag = Subj.SubjectId == item.SubjectId ? true : false;
-                break;
-
-                if (Subj.SubjectId == item.SubjectId ||Subj.SubName == "---")
-                {
-                    flag = true;
-                    break;
-                }
+                if (Subj.SubjectId == item.SubjectId)                
+                    return true;
             }
-            return flag;
+            return false;
         }
 
         //===================================COMMAND FOR DELETE DIRECTIONS FROM AuthorDirections ============      
@@ -364,7 +378,7 @@ namespace STUDENTU_1._06.ViewModel
 
         private void DelFromAuthorSubjects()
         {            
-            AuthorSubjects.Remove(Subj);
+            AuthorSubjects.Remove(AuthorSubjects[Index]);
         }
 
     }
