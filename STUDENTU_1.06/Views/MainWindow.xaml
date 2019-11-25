@@ -178,6 +178,9 @@
                     Background="DarkRed"
                       IsEnabled="{Binding SelectedItem,
                      Converter={StaticResource NullBoolConverter}, ElementName=GridOrders}"/>
+            <!--<Button Content="Добавить тестовую информацию в БД" Grid.Column="3"
+                     Margin="5"  Command="{Binding AddTestInfoCommand}"
+                    Background="LightBlue" Foreground="Black"/>-->
         </Grid>
     </Grid>
 

@@ -127,8 +127,7 @@
                     <MenuItem Header="Сделать выделенную запись финальной?" 
                               Command="{Binding DataContext.SetSelectEvaluationCommand}" 
                               IsEnabled="{Binding Path=SelectedItem, Converter={StaticResource NullBoolConverter}}"
-                              Height="20" 
-                              />
+                              Height="20" />
                 </ContextMenu>
             </ListBox.ContextMenu>
 
@@ -177,7 +176,7 @@
                  Command="{Binding DeleteSelectedAvaluateCommand}" 
                     CommandParameter="{Binding ElementName=Avaluation, Path=SelectedItem}"/>
             <!--Command "DeleteSelectedAvaluateRuleOrderCommand" can find in EvaluationClass.cs -->
-            <Button Grid.Column="2"  Content="Редактировать" Background="BlueViolet"
+            <Button Grid.Column="3"  Content="Редактировать" Background="BlueViolet"
                 FontWeight="ExtraBold" TabIndex="5"
                 IsEnabled="{Binding SelectedItem,
                      Converter={StaticResource NullBoolConverter}, ElementName=Avaluation}"
@@ -185,13 +184,13 @@
                     CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}"/>
             <!--Command "EditSelectedAvaluateRuleOrderCommand" can find in EvaluationClass.cs -->
-            <Button Grid.Column="3" Content="Отменить" Background="Red"
+            <Button Grid.Column="4" Content="Закрыть" Background="Red"
                 FontWeight="ExtraBold" TabIndex="5"                
                  Command="{Binding CancelEvaluateCommand}" 
-                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
-            <Button Grid.Column="4" Content="Сохранить" Background="#FF0B422B"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" Margin="0.6,3,4.6,3.4"/>
+            <!--<Button Grid.Column="4" Content="Сохранить" Background="#FF0B422B"
                 FontWeight="ExtraBold" TabIndex="5"                
-                 Command="{Binding AddEvaluationToAuthorCommand}"    />
+                 Command="{Binding AddEvaluationToAuthorCommand}"    />-->
            
         </Grid>
     </Grid>

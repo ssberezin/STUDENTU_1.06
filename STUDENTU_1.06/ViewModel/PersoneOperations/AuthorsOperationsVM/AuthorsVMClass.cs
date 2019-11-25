@@ -399,11 +399,11 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                             if (res1 != null)
                             {
                                 //changing DB
-                                res1.Author.Add(Author);
-                                db.SaveChanges();
+                                res1.Author.Add(Author);                                
                                 continue;
                             }
                         }
+                        db.SaveChanges();
                         //here we add author in subjects
                         foreach (Subject item in _Subj.AuthorSubjects)
                         {
@@ -411,13 +411,12 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                             if (res1 != null)
                             {
                                 //changing DB
-                                res1.Authors.Add(Author);
-                                db.SaveChanges();
+                                res1.Authors.Add(Author);                                
                                 continue;
                             }
                         }
-                       
-                       
+                        db.SaveChanges();
+
                         dialogService.ShowMessage("Данные автора сохранены");
                         //обнуляем поля окна
                         //clear window fields

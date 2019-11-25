@@ -37,14 +37,15 @@ namespace STUDENTU_1._06.ViewModel
             _AuthorStatus = new _AuthorStatus();           
             _Dir = new _Direction();
             _Evaluation = new _Evaluation();
-            _Subject = new _Subject();
             Order = new OrderLine();
+            _Subject = new _Subject();
+            _Status = new _Status();
             if (TMPStaticClass.CurrentOrder != null)
             {
                 Order = TMPStaticClass.CurrentOrder;
                 Order.DescriptionForClient = "Вариант(ы): " + CheckForEmpty(Order.Variant) + ". \n"  + Order.DescriptionForClient+
-                    "\n\nСрок выполнения: "+Order.Dates.DeadLine.ToShortDateString() + " или свой вариант. "+
-                    "\n Время: к " + Order.Dates.DeadLine.ToShortTimeString()+" или свой вариант. ";
+                    "\n\nСрок выполнения: "+Order.Dates.AuthorDeadLine.ToShortDateString() + " или свой вариант. "+
+                    "\n Время: к " + Order.Dates.AuthorDeadLine.ToShortTimeString()+" или свой вариант. ";
             }
             ExecuteAuthor = new AuthorsRecord();
             ExecuteAuthor.Persone.NickName = "не задан";
@@ -138,6 +139,20 @@ namespace STUDENTU_1._06.ViewModel
                 {
                     _subject = value;
                     OnPropertyChanged(nameof(_Subject));
+                }
+            }
+        }
+        //for oreder status show
+        private _Status _status;
+        public _Status _Status
+        {
+            get { return _status; }
+            set
+            {
+                if (_status != value)
+                {
+                    _status = value;
+                    OnPropertyChanged(nameof(_Status));
                 }
             }
         }
@@ -654,10 +669,22 @@ namespace STUDENTU_1._06.ViewModel
                     ));
         private void TimePlusDefault()
         {
+            if (Order.WorkType.TypeOfWork == "чертежи")
+            {
+                dialogService.ShowMessage("На чертежи время с запасом поставить нельзя");
+                return;
+            }
+            int tmp = Order.Dates.DeadLine.Day - DateTime.Now.Day;
+            
+            if (tmp>=7&&tmp<=10)
+                Order.Dates.AuthorDeadLine.AddDays(-2);
+            else
+                if (tmp <7 && tmp>=4)
+                Order.Dates.AuthorDeadLine.AddDays(-1);
+            else
+                if (tmp >11)
+                Order.Dates.AuthorDeadLine.AddDays(-3);
 
-            int tmp = Order.Dates.DeadLine.Day - Order.Dates.StartDateWork.Day;
-            if (tmp>5 && Order.WorkType.TypeOfWork!="чертежи")
-                Order.Dates.DeadLine.AddDays(-2);            
         }
 
         //==============================COMMAND TO FIND AUTHOR BY NICKNAME ================================        
@@ -859,14 +886,14 @@ namespace STUDENTU_1._06.ViewModel
                 AuthorsRecord.EvaluationRecords.Add(_Evaluation.EvaluationRecord);
                 dialogService.ShowMessage("Данные сохранены");
                 _Evaluation.EvaluationRecord = new EvaluationRecord()
-                { DeadLine = TMPStaticClass.CurrentOrder.Dates.DeadLine };
+                { DeadLine = TMPStaticClass.CurrentOrder.Dates.AuthorDeadLine };
             }
             else
             {
                 AuthorsRecord.EvaluationRecords.Add(_Evaluation.EvaluationRecord);
                 dialogService.ShowMessage("Данные сохранены");
                 _Evaluation.EvaluationRecord = new EvaluationRecord()
-                { DeadLine = TMPStaticClass.CurrentOrder.Dates.DeadLine };
+                { DeadLine = TMPStaticClass.CurrentOrder.Dates.AuthorDeadLine };
                 //_Evaluation.EvaluationRecord = new EvaluationRecord();
             }
         }
@@ -937,7 +964,8 @@ namespace STUDENTU_1._06.ViewModel
 
 
         //==================================== COMMAND FOR ADD EVALUATION TO SELECTED AUTHOR ====================================
-
+        //Эта команда нахрен не нужна сдесь. Исключил ее из работы в XAML, ранее бЫла на кнопке
+        //"Сохранить" в окне EditAvaluationWindow.xaml
         private RelayCommand addEvaluationToAuthorCommand;
         public RelayCommand AddEvaluationToAuthorCommand => addEvaluationToAuthorCommand ?? (addEvaluationToAuthorCommand = new RelayCommand(
                     (obj) =>
@@ -945,7 +973,7 @@ namespace STUDENTU_1._06.ViewModel
                         AddEvaluationToAuthor();
                     }
                     ));
-
+        
         private void AddEvaluationToAuthor()
         {
             if (AuthorsRecord.EvaluationRecords.Count() != 0)
@@ -1049,7 +1077,8 @@ namespace STUDENTU_1._06.ViewModel
 
         //===================================== For Cancel save evaluate order any author in EditAvaluatonWindow.xaml====================
         private RelayCommand cancelEvaluateCommand;
-        public RelayCommand CancelEvaluateCommand =>
+        public RelayCommand 
+            CancelEvaluateCommand =>
             cancelEvaluateCommand ?? (cancelEvaluateCommand = new RelayCommand(
                     (obj) =>
                     {
@@ -1062,7 +1091,7 @@ namespace STUDENTU_1._06.ViewModel
         private void CancelAuthorEvaluate()
         {
             AuthorsRecord = new AuthorsRecord();
-            _Evaluation.EvaluationRecord = new EvaluationRecord() { DeadLine = DateTime.Now };
+            _Evaluation.EvaluationRecord = new EvaluationRecord() { DeadLine = TMPStaticClass.CurrentOrder.Dates.AuthorDeadLine };
         }
 
         //===================================== For close any window ===========================================
@@ -1100,11 +1129,11 @@ namespace STUDENTU_1._06.ViewModel
             {
                 try
                 {
-                    Order = db.Orderlines.Find(TMPStaticClass.CurrentOrder.OrderLineId);
+                   var res = db.Orderlines.Find(TMPStaticClass.CurrentOrder.OrderLineId);
 
                     foreach (var item1 in SelectedAuthorsRecords)
                     {
-                        Order.Author.Add(item1.Author);
+                        //Order.Author.Add(item1.Author);
                         foreach (var item2 in item1.EvaluationRecords)
                         {
                             Dates date = new Dates();
@@ -1114,10 +1143,13 @@ namespace STUDENTU_1._06.ViewModel
                             Evaluation evaluation = new Evaluation();
                             evaluation.Description = item2.EvaluateDescription;
                             evaluation.Winner = item2.FinalEvaluation;
-                            evaluation.Dates.Add(date);
+                            evaluation.Dates.Add(date);                           
                             evaluation.Moneys.Add(money);
+                            evaluation.Authors.Add(db.Authors.Find(item1.Author.AuthorId));
+                            db.Evaluations.Add(evaluation);//вот тут хз, надло было это или нет. Вроде надо.
                             item1.Author.Evaluation.Add(evaluation);
-                            db.Orderlines.Find(TMPStaticClass.CurrentOrder.OrderLineId).Author.Add(item1.Author);
+                            res.Author.Add(db.Authors.Find(item1.Author.AuthorId));
+                            res.Status = db.Statuses.Find(_Status.Status.StatusId);
                         }
                     }
                     db.SaveChanges();

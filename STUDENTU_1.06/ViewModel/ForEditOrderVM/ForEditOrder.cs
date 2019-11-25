@@ -314,10 +314,9 @@ namespace STUDENTU_1._06.ViewModel
                     Order.WorkType = db.WorkTypes.Find(_WorkType.WorkType.WorkTypeId);                  
                     Order.Dates = Date;
                     Order.Subject = db.Subjects.Find(_Subj.Subj.SubjectId); ;
-                    Order.Money = Price;
-                    _Status.Status= db.Statuses.Find(new Status() { StatusId = 2 }.StatusId);
-                    Order.Status = _Status.Status;
-
+                    Order.Money = Price;                    
+                    Order.Status = db.Statuses.Find(new Status() { StatusId = 2 }.StatusId);
+                    Order.Source = db.Sources.Find(_Source.Source.SourceId);
                     db.Orderlines.Add(Order);                    
                     db.SaveChanges();
                     dialogService.ShowMessage("Данные о заказе сохранены");

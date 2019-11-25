@@ -19,7 +19,7 @@ namespace STUDENTU_1._06.Model
             this.OrderLine = new ObservableCollection<OrderLine>();
         }
 
-
+        [ForeignKey("OrderLine")]
         public int AfterDoneDescriptionId { get; set; }
         
         public bool InputToBase { get; set; }

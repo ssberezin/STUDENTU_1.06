@@ -88,16 +88,22 @@ namespace STUDENTU_1._06.ViewModel
                                                .Include("Status")
                                                .Include("Money")
                                                .Include("WorkType")
-                        .ToList<OrderLine>();                   
-
+                        .ToList<OrderLine>();
+                    string authorNickName;
                     //creat a orderlist in datagrid (mainwindow)
                     foreach (var item in COrders)
                     {
-                        
+
+                        if (item.GetExecuteAuthor(item.Author) == null)
+                            authorNickName = "---";
+                        else
+                            authorNickName = item.GetExecuteAuthor(item.Author).Persone.NickName;
+
+
                         Records record = new Records
                         {
-                            RecordId= item.OrderLineId,
-                            OrderCount=item.OrderCount,
+                            RecordId = item.OrderLineId,
+                            OrderCount = item.OrderCount,
                             OrderNumber = item.OrderNumber,
                             DateOfReception = item.Dates.DateOfReception,
                             DeadLine = item.Dates.DeadLine,
@@ -108,7 +114,11 @@ namespace STUDENTU_1._06.ViewModel
                             TypeOfWork = item.WorkType.TypeOfWork,
                             //GetExecuteAuthor()
                             //AuthorNickName = item.ExecuteAuthor==null?"---": item.ExecuteAuthor.Persone.NickName,
-                            AuthorNickName = item.GetExecuteAuthor() == null ? "---" : item.GetExecuteAuthor().Persone.NickName,
+                            //AuthorNickName = item.GetExecuteAuthor() == null ? "---" : item.GetExecuteAuthor().Persone.NickName,
+                             AuthorNickName=authorNickName,
+                            //AuthorNickName = "---",
+
+
                             ClientName = item.Client.Persone.Name+' '+ item.Client.Persone.Patronimic,
                             SubName = item.Direction.DirectionName
                         };
@@ -145,14 +155,14 @@ namespace STUDENTU_1._06.ViewModel
             {
                 try
                 {
-                    var COrders = db.Orderlines.Include("Client")
-                                               .Include("Dates")
-                                               .Include("Subject")
-                                               .Include("Author")
-                                               .Include("Status")
-                                               .Include("Money")
-                                               .Include("WorkType")
-                                               .ToList<OrderLine>();
+                    //var COrders = db.Orderlines.Include("Client")
+                    //                           .Include("Dates")
+                    //                           .Include("Subject")
+                    //                           .Include("Author")
+                    //                           .Include("Status")
+                    //                           .Include("Money")
+                    //                           .Include("WorkType")
+                    //                           .ToList<OrderLine>();
                     //add default orders statuses
                     if (db.Statuses.Count() == 0)
                     {                       
@@ -180,7 +190,18 @@ namespace STUDENTU_1._06.ViewModel
                     }
                     if (db.Directions.Count() == 0)
                     {
-                        db.Directions.Add(new Direction() { DirectionName = "---" });                        
+                        db.Directions.Add(new Direction() { DirectionName = "---" });
+                        db.Directions.Add(new Direction() { DirectionName = "физика" });
+                        db.Directions.Add(new Direction() { DirectionName = "математика" });
+                        db.Directions.Add(new Direction() { DirectionName = "химия" });
+                        db.Directions.Add(new Direction() { DirectionName = "экономика" });
+                        db.Directions.Add(new Direction() { DirectionName = "бухгалтерский учет" });
+                        db.Directions.Add(new Direction() { DirectionName = "история" });
+                        db.Directions.Add(new Direction() { DirectionName = "педагогика" });
+                        db.Directions.Add(new Direction() { DirectionName = "психология" });
+                        db.Directions.Add(new Direction() { DirectionName = "программирование" });
+                        db.Directions.Add(new Direction() { DirectionName = "информатика" });
+                        db.Directions.Add(new Direction() { DirectionName = "лингвистика" });
                         db.SaveChanges();
                     }
                     //add default worktype
@@ -205,6 +226,13 @@ namespace STUDENTU_1._06.ViewModel
                     if (db.Subjects.Count() == 0)
                     {
                         db.Subjects.Add(new Subject() { SubName = "---" });
+                        db.Subjects.Add(new Subject() { SubName = "высшая математика" });                        
+                        db.Subjects.Add(new Subject() { SubName = "теория вероятностей" });
+                        db.Subjects.Add(new Subject() { SubName = "математическая статистика" });
+                        db.Subjects.Add(new Subject() { SubName = "ТОЭ(теоретические основы электротехники)" });
+                        db.Subjects.Add(new Subject() { SubName = "дошкольная педагогика" });
+                        db.Subjects.Add(new Subject() { SubName = "украинский язык" });
+                        db.Subjects.Add(new Subject() { SubName = "английский язык" });
                         db.SaveChanges();
                     }
                    //add default author
@@ -297,6 +325,129 @@ namespace STUDENTU_1._06.ViewModel
                         showWindow.ShowWindow(authorWindow);
                     }
                     ));
+
+        //AddTestInfoCommand не работает нихера, падло. Дета лаги,надо шукать,а лень
+        //======================================COMMAND FOR ADD TEST INFO TO DB==========================
+        private RelayCommand addTestInfoCommand;
+        public RelayCommand AddTestInfoCommand => addTestInfoCommand ?? (addTestInfoCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        AddTestInfo();
+                    }
+                    ));
+        private void AddTestInfo()
+        {
+            AddAuthor("Ольга", "Кравченко", "о1", "+3809625148765",1,3, 4,2, 1, 9);
+            AddAuthor("Ольга", "", "о2", "+3809725118764", 1,6, 8, 5, 2, 9);
+            AddAuthor("Ирина", "Петрусь", "и_укр", "+3809625218785", 1,5, 6, 4, 5, 7.5);
+            SaveNewOrder("Иван", "+380962514258", 3, 2,4, 350, 350, 2);
+            SaveNewOrder("Егор", "+380972514456", 5, 6, 3, 950, 950, 2);
+            SaveNewOrder("Виктор", "+380662514214", 6, 3,5, 450, 450, 2);
+        }
+        private void AddAuthor(string name,string surname, string nickName,
+                               string phone1, int authorstatus, int subj1, int subj2, 
+                               int dir1, int dir2, double authorrating)
+        {
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                try
+                {   
+                        Persone = new Persone(){
+                            Name =name,
+                            Surname=surname,
+                            NickName = nickName
+                        };
+                        Contacts Contacts = new Contacts() { Phone1 = phone1 };
+                        Persone.Contacts = Contacts;
+                        Author = new Author();
+                        Author.AuthorStatus = db.AuthorStatuses.Find(new AuthorStatus() {
+                            AuthorStatusId =authorstatus}.AuthorStatusId);
+                        Author.Subject.Add(db.Subjects.Find(new Subject() { SubjectId=subj1 }.SubjectId));
+                        Author.Subject.Add(db.Subjects.Find(new Subject() { SubjectId = subj2 }.SubjectId));
+                    Author.Direction.Add(db.Directions.Find(new Direction() { DirectionId = dir1 }.DirectionId));
+                        Author.Direction.Add(db.Directions.Find(new Direction() { DirectionId = dir2 }.DirectionId));
+                        Author.Rating = authorrating;
+                        Persone.Author.Add(Author);                        
+                        db.Persones.Add(Persone);
+                        db.SaveChanges();
+                }
+                catch (ArgumentNullException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (OverflowException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+            }
+
+        }
+
+        private void SaveNewOrder(string name,string phone1, int dir, int workType,
+                                int subj,decimal price, decimal prepayment, int source)
+        {
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                try
+                {
+                    OrderLine Order = new OrderLine();
+                    Persone = new Persone()
+                    {
+                        Name = name                                            
+                    };
+                    Contacts Contacts = new Contacts() { Phone1 = phone1 };
+                    Order.Direction = db.Directions.Find(new Direction() {DirectionId=dir}.DirectionId);
+                    Order.Client = new Client() { Persone = Persone };
+                    Order.WorkType = db.WorkTypes.Find(new WorkType() { WorkTypeId=workType}.WorkTypeId);
+                    Order.Dates = new Dates() {
+                        DateOfReception =DateTime.Now,
+                        DeadLine=DateTime.Now.AddDays(5),
+                        AuthorDeadLine= DateTime.Now.AddDays(4)
+                    };
+                    Order.Subject = db.Subjects.Find(new Subject() { SubjectId=subj}.SubjectId);
+                    Order.Money = new Money() {Price=price, Prepayment=prepayment };
+                    Order.Status = db.Statuses.Find(new Status() { StatusId = 2 }.StatusId);
+                    Order.Source = db.Sources.Find(new Source() { SourceId=source}.SourceId);
+                    db.Orderlines.Add(Order);
+                    db.SaveChanges();                    
+                    
+                }
+                catch (ArgumentNullException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (OverflowException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+            }
+
+        }
+
 
     }
 }

@@ -321,9 +321,9 @@
         
         
         <TextBox x:Name="AuthorEvalComment" Text="{Binding _Evaluation.FinalEvaluationRecord.EvaluateDescription}"
-                  TextAlignment="Center" Grid.Column="5" Grid.Row="4" Grid.RowSpan="5"
+                  TextAlignment="Justify" Grid.Column="5" Grid.Row="4" Grid.RowSpan="5"
                       VerticalContentAlignment="Center" Foreground="Red" Background="White"
-                       TextWrapping="Wrap" Grid.ColumnSpan="3"  >            
+                       TextWrapping="Wrap" Grid.ColumnSpan="3" FontSize="12"  >            
             <TextBox.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Скопировать в буфер обмена" Command="{Binding CopyToClipBoardCommand}" 

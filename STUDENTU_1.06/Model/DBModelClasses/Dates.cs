@@ -74,7 +74,9 @@ namespace STUDENTU_1._06.Model
 
         public DateTime GetDefaultDate()
         {
-            return DeadLine.AddHours(-DateTime.Now.Hour).AddMinutes(-DateTime.Now.Minute).AddHours(9);
+            //фактически задаем формат даты и времени в день выдачи заказа на время 9:00:00
+            // actually set the date and time format on the day the order is issued at 9:00:00
+            return DeadLine.AddHours(-DateTime.Now.Hour).AddMinutes(-DateTime.Now.Minute).AddHours(9).AddSeconds(-DateTime.Now.Second).AddMilliseconds(-DateTime.Now.Millisecond);
         }
 
     }

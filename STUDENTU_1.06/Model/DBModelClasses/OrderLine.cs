@@ -59,15 +59,15 @@ namespace STUDENTU_1._06.Model
         [MaxLength(2000)]
         public string RedactionLog { get; set; }
 
-       // public Author ExecuteAuthor { get; set; }
-        public decimal ExecuteAuthorPrice { get; set; }
+       //// public Author ExecuteAuthor { get; set; }
+       // public decimal ExecuteAuthorPrice { get; set; }
 
-        [Column("ExecuteAuthorComments", TypeName = "nvarchar")]
-        [MaxLength(2000)]
-        public string ExecuteAuthorComments { get; set; }
+       // [Column("ExecuteAuthorComments", TypeName = "nvarchar")]
+       // [MaxLength(2000)]
+       // public string ExecuteAuthorComments { get; set; }
 
-        [Column(TypeName = "datetime2")]
-        public DateTime ExecuteAuthorDeadLine { get; set; }
+       // [Column(TypeName = "datetime2")]
+       // public DateTime ExecuteAuthorDeadLine { get; set; }
 
         public virtual User User { get; set; }
         public virtual Client Client { get; set; }
@@ -84,10 +84,10 @@ namespace STUDENTU_1._06.Model
         public virtual ObservableCollection<Author> Author { get; set; }
 
 
-        public Author GetExecuteAuthor()
+        public Author GetExecuteAuthor(ObservableCollection<Author> authors)
         {
                        
-            foreach (Author item in this.Author)
+            foreach (Author item in authors)
             {
                 foreach (Evaluation i in item.Evaluation)
                     if (i.Winner == true)                   

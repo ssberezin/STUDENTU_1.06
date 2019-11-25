@@ -73,7 +73,7 @@
             </Viewbox>
             <DatePicker Name="DateOfDeadLine" IsDropDownOpen="False" SelectedDateFormat="Short" 
                         MaxWidth="150" TabIndex="13" HorizontalAlignment="Center"
-                        SelectedDate="{Binding _Evaluation.EvaluationRecord.DeadLine,Mode=TwoWay,
+                        SelectedDate="{Binding _Evaluation.EvaluationRecord.AuthorDeadLine,Mode=TwoWay,
                                         UpdateSourceTrigger=PropertyChanged}"
                         />
             <!-- "EvaluationRecord" can find in "EvaluationClass.cs"-->
@@ -84,7 +84,7 @@
         <TextBlock  Text="Время" FontWeight="Bold" Foreground="Blue"/>
         </Viewbox>
         <wpfTool:TimePicker Grid.ColumnSpan="2" Grid.Row="1" Grid.Column="4" Margin="20"
-                             Value="{Binding _Evaluation.EvaluationRecord.DeadLine, Mode=TwoWay,
+                             Value="{Binding _Evaluation.EvaluationRecord.AuthorDeadLine, Mode=TwoWay,
                                 UpdateSourceTrigger=PropertyChanged}"
                             MaxWidth="90" MaxHeight="40"/>
         <!--Command "Date" can find in "ForEditOrder.cs"-->
@@ -99,7 +99,7 @@
         <Button Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Content="Сохранить" Background="Green" FontWeight="ExtraBold" TabIndex="5"
                 IsEnabled="{Binding ElementName=Price,  Path=Text.Length}"
                  Command="{Binding SaveAuthorEvaluateAuthorRecordCommand}"/>
-        <Button Grid.Column="4" Grid.Row="4" Grid.ColumnSpan="2" Content="Отменить" Background="Red" FontWeight="ExtraBold" TabIndex="5"                
+        <Button Grid.Column="4" Grid.Row="4" Grid.ColumnSpan="2" Content="Закрыть" Background="Red" FontWeight="ExtraBold" TabIndex="5"                
                  Command="{Binding _Evaluation.CloseWindowCommand}"
                 CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
         <!--Command "SaveAuthorEvaluateAuthorRecordCommand" can find in "EvaluationClass.cs"-->
