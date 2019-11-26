@@ -20,37 +20,7 @@ using System.Windows.Media.Imaging;
 namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
 {
    public partial class AuthorsVMClass : Helpes.ObservableObject
-    {
-
-        
-        //for edit DB table contacts
-        private Contacts contacts;
-        public Contacts Contacts
-        {
-            get { return contacts; }
-            set
-            {
-                if (contacts != value)
-                {
-                    contacts = value;
-                    OnPropertyChanged(nameof(contacts));
-                }
-            }
-        }
-
-        private Contacts tmpContacts;
-        public Contacts TmpContacts
-        {
-            get { return tmpContacts; }
-            set
-            {
-                if (tmpContacts != value)
-                {
-                    tmpContacts = value;
-                    OnPropertyChanged(nameof(TmpContacts));
-                }
-            }
-        }
+    {                 
 
         //for display default image
         private string defaultPhoto;
@@ -111,6 +81,20 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                 {
                     author = value;
                     OnPropertyChanged(nameof(Author));
+                }
+            }
+        }
+
+        private _Contacts _contacts;
+        public _Contacts _Contacts
+        {
+            get { return _contacts; }
+            set
+            {
+                if (_contacts != value)
+                {
+                    _contacts = value;
+                    OnPropertyChanged(nameof(_Contacts));
                 }
             }
         }
@@ -193,10 +177,8 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
             DefaultPhoto = "default_avatar.png";          
 
             Author = new Author();
-            _AuthorStatus = new _AuthorStatus();
-            Contacts = new Contacts();
-            TmpContacts = new Contacts();
-            TmpContacts = Contacts;
+            _AuthorStatus = new _AuthorStatus();            
+            _Contacts = new _Contacts();            
             Date = new Dates();
             _Dir = new _Direction();
             Persone = new Persone();
@@ -225,9 +207,8 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
         public RelayCommand NewEditRating => newEditRating ?? (newEditRating = new RelayCommand(
                     (obj) =>
                     {
-                        AuthorRatingEditWindow editRating = new AuthorRatingEditWindow(obj);
-                        editRating.Owner = Application.Current.MainWindow;
-                        showWindow.ShowWindow(editRating);
+                        AuthorRatingEditWindow editRating = new AuthorRatingEditWindow(obj);                      
+                        showWindow.ShowDialog(editRating);
                     }
                     ));
 
@@ -242,8 +223,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
 
         private void AuthorRatingCreate()
         {
-            Author.Rating = Author.RatingCreate();
-            int i = 4;
+           Author.Rating = Author.RatingCreate();           
         }
 
         //==================================COMMAND FOR CLOSE WINDOW ==========================
@@ -263,57 +243,10 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
             (newEditContactsCommand = new RelayCommand(
                     (obj) =>
                     {
-                        AddContactsWindow addContactsWindow = new AddContactsWindow(obj);
-                        //addContactsWindow.Owner = Application.Current.MainWindow;
-                        //showWindow.ShowWindow(addContactsWindow);
-                        showWindow.ShowDialog(addContactsWindow);
+                        _Contacts.NewEditContacts(new AddContactsWindow(obj));                       
                     }
                     ));
 
-        //====================================Save contact COMMAND================================
-
-        private RelayCommand saveContactCommand;
-        public RelayCommand SaveContactCommand => saveContactCommand ?? (saveContactCommand = new RelayCommand(
-                    (obj) =>
-                    {
-                        Contacts = TmpContacts;
-                        Persone.Contacts = Contacts;
-                        dialogService.ShowMessage("Данные сохранены");
-                    }
-                    ));
-        //=========================================COMMAND FOR CANCEL SAVE=========================================== 
-
-            //NOT USED ANYWEAR
-        private RelayCommand cencelSaveAuthorDataCommand;
-        public RelayCommand CencelSaveAuthorDataCommand => cencelSaveAuthorDataCommand ??
-            (cencelSaveAuthorDataCommand = new RelayCommand(
-                    (obj) =>
-                    {
-                        CencelSave();
-                    }
-                    ));
-        private void CencelSave()
-        {
-            //эта команда в принципе нахер не нужна, потому логику придумывать смысла не т. 
-            //мож потом будет какая мысля...
-        }
-
-        //=========================================COMMAND FOR CANCEL SAVE CONTACTS=========================================== 
-
-        private RelayCommand cancelSaveContactsCommand;
-        public RelayCommand CancelSaveContactsCommand => cancelSaveContactsCommand ??
-            (cancelSaveContactsCommand = new RelayCommand(
-                    (obj) =>
-                    {
-                        CancelSaveContacts();                        
-                        Window window = obj as Window;
-                        window.Close();
-                    }
-                    ));
-        private void CancelSaveContacts()
-        {
-            TmpContacts = Contacts;
-        }
         //=====================Comman for call Editing window of AuthorSTATUS ======================================
 
         private RelayCommand newEditAuthorStatusCommand;
@@ -333,9 +266,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
             (addDirectionsCommand = new RelayCommand(
                     (obj) =>
                     {
-                        AuthorDirectionsWindow authorDirectionWindow = new AuthorDirectionsWindow(obj);
-                        //authorDirectionWindow.Owner = Application.Current.MainWindow;
-                        //showWindow.ShowWindow(authorDirectionWindow);
+                        AuthorDirectionsWindow authorDirectionWindow = new AuthorDirectionsWindow(obj);                       
                         showWindow.ShowDialog(authorDirectionWindow);
                     }
                     ));
@@ -384,6 +315,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                     }
                     else
                     {
+                        Persone.Contacts = _Contacts.Contacts;
                         Persone.Dates.Add(Date);
                         
                         Persone.PersoneDescription = PersoneDescription;
@@ -420,9 +352,8 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                         dialogService.ShowMessage("Данные автора сохранены");
                         //обнуляем поля окна
                         //clear window fields
-                        Contacts = new Contacts();
-                        Persone = new Persone();
-                        TmpContacts = new Contacts();
+                        _Contacts = new _Contacts();
+                        Persone = new Persone();                        
                         _AuthorStatus = new _AuthorStatus();
                         Author = new Author();
                         Date = new Dates();
@@ -455,13 +386,14 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                 }
             }
         }
+
         //chek for  validation of of author name , contacts and direction
         private string ValidAuthorDataCheck()
         {
             string error;
             error = Persone.Name == "" ? "Поле имени не должно быть пустым" : null;
             error += _Dir.Dir.DirectionName == "---" ? "\nНЕ добавлено ни одного направления" : null;
-            error += !Contacts.ContactsValidation() ?"\nНи одно из полей контактных данных не заполнено":null;
+            error += !_Contacts.Contacts.ContactsValidation() ?"\nНи одно из полей контактных данных не заполнено":null;
             error = error == "" ? null:error ;
              return error;
         }

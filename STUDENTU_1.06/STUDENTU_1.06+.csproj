@@ -133,6 +133,7 @@
     <Compile Include="Model\HelpModelClasses\DialogWindows\IDialogService.cs" />
     <Compile Include="ViewModel\PersoneOperations\AuthorsOperationsVM\AuthorsVMClass.cs" />
     <Compile Include="ViewModel\_AuthorStatus.cs" />
+    <Compile Include="ViewModel\_Contacts.cs" />
     <Compile Include="ViewModel\_Evaluation.cs" />
     <Compile Include="ViewModel\_Source.cs" />
     <Compile Include="ViewModel\_Status.cs" />

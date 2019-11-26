@@ -87,6 +87,20 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
+        private _Contacts _contacts;
+        public _Contacts _Contacts
+        {
+            get { return _contacts; }
+            set
+            {
+                if (_contacts != value)
+                {
+                    _contacts = value;
+                    OnPropertyChanged(nameof(_Contacts));
+                }
+            }
+        }
+
 
         private Persone persone;
         public Persone Persone
@@ -217,6 +231,7 @@ namespace STUDENTU_1._06.ViewModel
             Author = new Author();
             //_AuthorStatus = new _AuthorStatus();
             Contacts = new Contacts();
+            _Contacts = new _Contacts();
             Date = new Dates();
             _Dir = new _Direction();
            // _Evaluation = new _Evaluation();
