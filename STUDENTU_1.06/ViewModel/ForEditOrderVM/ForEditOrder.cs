@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Data.Entity;
 using System.Linq;
 using System.Windows;
 using STUDENTU_1._06.Helpes;
@@ -23,6 +24,7 @@ namespace STUDENTU_1._06.ViewModel
         private Window editWindow;
         private Window editDirection;
 
+        bool saved = false;//флаг, для того, чтоб понимать, был ли сохранен заказ в первый раз или нет.
        
          IDialogService dialogService;
         IShowWindowService showWindow;
@@ -45,20 +47,21 @@ namespace STUDENTU_1._06.ViewModel
         }
 
 
-        private Contacts contacts;
-        public Contacts Contacts
+        private _Contacts _contacts;
+        public _Contacts _Contacts
         {
-            get { return contacts; }
+            get { return _contacts; }
             set
             {
-                if (contacts != value)
+                if (_contacts != value)
                 {
-                    contacts = value;
-                    OnPropertyChanged(nameof(contacts));
+                    _contacts = value;
+                    OnPropertyChanged(nameof(_Contacts));
                 }
             }
         }
 
+        
         private Dates date;
         public Dates Date
         {
@@ -87,19 +90,7 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
-        private _Contacts _contacts;
-        public _Contacts _Contacts
-        {
-            get { return _contacts; }
-            set
-            {
-                if (_contacts != value)
-                {
-                    _contacts = value;
-                    OnPropertyChanged(nameof(_Contacts));
-                }
-            }
-        }
+       
 
 
         private Persone persone;
@@ -230,7 +221,7 @@ namespace STUDENTU_1._06.ViewModel
 
             Author = new Author();
             //_AuthorStatus = new _AuthorStatus();
-            Contacts = new Contacts();
+           // Contacts = new Contacts();
             _Contacts = new _Contacts();
             Date = new Dates();
             _Dir = new _Direction();
@@ -313,29 +304,42 @@ namespace STUDENTU_1._06.ViewModel
         public RelayCommand CreateNewOrderLine => createNewOrderLine ?? (createNewOrderLine = new RelayCommand(
                     (obj) =>
                     {
-                        SaveNewOrder();
+                        //   SaveNewOrder();
+                        SaveOrderChanges();
                     }
                     ));
 
-        private void SaveNewOrder()
+        private void SaveOrderChanges()
+        {
+            if (saved)
+                SaveDoubleOrder();
+            else
+                SaveNewOrder();
+        }
+
+
+        private void SaveDoubleOrder()
         {
             using (StudentuConteiner db = new StudentuConteiner())
             {
                 try
-                {                    
-                    Persone.Contacts=Contacts;
-                    Order.Direction = db.Directions.Find(_Dir.Dir.DirectionId);                    
-                    Order.Client=new Client() { Persone=Persone};
-                    Order.WorkType = db.WorkTypes.Find(_WorkType.WorkType.WorkTypeId);                  
+                {
+                    Order = new OrderLine() { OrderNumber=TMPStaticClass.CurrentOrder.OrderNumber};
+                    Order.Client = new Client() { Persone = Persone };
+                    Order.Direction = db.Directions.Find(_Dir.Dir.DirectionId);
+                   
+                    Order.WorkType = db.WorkTypes.Find(_WorkType.WorkType.WorkTypeId);
                     Order.Dates = Date;
                     Order.Subject = db.Subjects.Find(_Subj.Subj.SubjectId); ;
-                    Order.Money = Price;                    
-                    Order.Status = db.Statuses.Find(new Status() { StatusId = 2 }.StatusId);
+                    Order.Money = Price;
+                    _Status.Status =TMPStaticClass.CurrentOrder.Status;
+                    Order.Status = _Status.Status;
                     Order.Source = db.Sources.Find(_Source.Source.SourceId);
-                    db.Orderlines.Add(Order);                    
+                    db.Entry(Order).State = Order.OrderLineId == 0 ? EntityState.Added : EntityState.Modified;
+                    //db.Orderlines.Add(Order);                    
                     db.SaveChanges();
                     dialogService.ShowMessage("Данные о заказе сохранены");
-                    TMPStaticClass.CurrentOrder = Order;
+                    TMPStaticClass.CurrentOrder = Order;                   
                 }
                 catch (ArgumentNullException ex)
                 {
@@ -361,6 +365,54 @@ namespace STUDENTU_1._06.ViewModel
 
         }
 
+        private void SaveNewOrder()
+        {
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                try
+                {
+                   
+                    Persone.Contacts=_Contacts.Contacts;                   
+                    Order.Direction = db.Directions.Find(_Dir.Dir.DirectionId);                    
+                    Order.Client=new Client() { Persone=Persone};
+                    Order.WorkType = db.WorkTypes.Find(_WorkType.WorkType.WorkTypeId);                  
+                    Order.Dates = Date;
+                    Order.Subject = db.Subjects.Find(_Subj.Subj.SubjectId); ;
+                    Order.Money = Price;
+                    _Status.Status = db.Statuses.Find(new Status() { StatusId = 2 }.StatusId);
+                    Order.Status = _Status.Status;
+                    Order.Source = db.Sources.Find(_Source.Source.SourceId);
+                    db.Entry(Order).State = Order.OrderLineId == 0 ? EntityState.Added : EntityState.Modified;                                   
+                    db.SaveChanges();
+                    dialogService.ShowMessage("Данные о заказе сохранены");
+                    TMPStaticClass.CurrentOrder = Order;
+                    saved = true;
+                }
+                catch (ArgumentNullException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (OverflowException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+            }
+
+        }
+
+      
         //==================================COMMAND FOR CLOSE WINDOW ==========================
         private RelayCommand closeWindowCommand;
 
@@ -398,6 +450,17 @@ namespace STUDENTU_1._06.ViewModel
                         RuleOrderLineWindow ruleOrderLineWindow = new RuleOrderLineWindow();
                         showWindow.ShowDialog(ruleOrderLineWindow);
 
+                    }
+                    ));
+
+        //=====================Command for call AddContactsWindow.xaml ======================================
+        private RelayCommand newEditContactCommand;
+        public RelayCommand NewEditContactCommand => newEditContactCommand ??
+            (newEditContactCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        _Contacts.TmpContacts = _Contacts.Contacts;
+                        _Contacts.NewEditContacts(new AddContactsWindow(obj));
                     }
                     ));
 

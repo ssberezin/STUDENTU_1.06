@@ -73,17 +73,17 @@ namespace STUDENTU_1._06.ViewModel
                     var resListPersons = (from a in listP
                                           where 
                                           (a.Client.Persone.PersoneDescription.BlackList == true&&
-                                            ((a.Client.Persone.Contacts.Phone1 == Contacts.Phone1 && Contacts.Phone1 != "---")||
-                                             (a.Client.Persone.Contacts.Phone1 == Contacts.Phone2 && Contacts.Phone2 != "---") ||
-                                             (a.Client.Persone.Contacts.Phone1 == Contacts.Phone3 && Contacts.Phone3 != "---") ||
-                                             (a.Client.Persone.Contacts.Phone2 == Contacts.Phone2 && Contacts.Phone2 != "---") ||
-                                             (a.Client.Persone.Contacts.Phone2== Contacts.Phone3 && Contacts.Phone3 != "---") ||
-                                             (a.Client.Persone.Contacts.Phone3 == Contacts.Phone3 && Contacts.Phone3 != "---") ||
-                                             (a.Client.Persone.Contacts.Email1 == Contacts.Email1 && Contacts.Email1 != "---") ||
-                                             (a.Client.Persone.Contacts.Email1 == Contacts.Email2 && Contacts.Email2 != "---") ||
-                                             (a.Client.Persone.Contacts.Email2 == Contacts.Email2 && Contacts.Email2 != "---") ||
-                                             (a.Client.Persone.Contacts.VK == Contacts.VK && Contacts.VK != "---") ||
-                                             (a.Client.Persone.Contacts.Skype == Contacts.Skype && Contacts.Skype != "---")
+                                            ((a.Client.Persone.Contacts.Phone1 == _Contacts.Contacts.Phone1 && _Contacts.Contacts.Phone1 != "---")||
+                                             (a.Client.Persone.Contacts.Phone1 == _Contacts.Contacts.Phone2 && _Contacts.Contacts.Phone2 != "---") ||
+                                             (a.Client.Persone.Contacts.Phone1 == _Contacts.Contacts.Phone3 && _Contacts.Contacts.Phone3 != "---") ||
+                                             (a.Client.Persone.Contacts.Phone2 == _Contacts.Contacts.Phone2 && _Contacts.Contacts.Phone2 != "---") ||
+                                             (a.Client.Persone.Contacts.Phone2== _Contacts.Contacts.Phone3 && _Contacts.Contacts.Phone3 != "---") ||
+                                             (a.Client.Persone.Contacts.Phone3 == _Contacts.Contacts.Phone3 && _Contacts.Contacts.Phone3 != "---") ||
+                                             (a.Client.Persone.Contacts.Email1 == _Contacts.Contacts.Email1 && _Contacts.Contacts.Email1 != "---") ||
+                                             (a.Client.Persone.Contacts.Email1 == _Contacts.Contacts.Email2 && _Contacts.Contacts.Email2 != "---") ||
+                                             (a.Client.Persone.Contacts.Email2 == _Contacts.Contacts.Email2 && _Contacts.Contacts.Email2 != "---") ||
+                                             (a.Client.Persone.Contacts.VK == _Contacts.Contacts.VK && _Contacts.Contacts.VK != "---") ||
+                                             (a.Client.Persone.Contacts.Skype == _Contacts.Contacts.Skype && _Contacts.Contacts.Skype != "---")
                                             )
                                           )
                                           select new BlackListHelpModel

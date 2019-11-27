@@ -17,8 +17,7 @@ namespace STUDENTU_1._06.Model
             this.WorkInCredit = true;
             this.OrderCount = 1;
             this.Author = new ObservableCollection<Author>();
-            this.variant = null;
-           
+            this.variant = null;           
         }
 
         public int OrderLineId { get; set; }
@@ -59,19 +58,9 @@ namespace STUDENTU_1._06.Model
         [MaxLength(2000)]
         public string RedactionLog { get; set; }
 
-       //// public Author ExecuteAuthor { get; set; }
-       // public decimal ExecuteAuthorPrice { get; set; }
-
-       // [Column("ExecuteAuthorComments", TypeName = "nvarchar")]
-       // [MaxLength(2000)]
-       // public string ExecuteAuthorComments { get; set; }
-
-       // [Column(TypeName = "datetime2")]
-       // public DateTime ExecuteAuthorDeadLine { get; set; }
-
+     
         public virtual User User { get; set; }
-        public virtual Client Client { get; set; }
-       // public virtual Author Author { get; set; }
+        public virtual Client Client { get; set; }     
         public virtual Dates Dates { get; set; }
         public virtual Money Money { get; set; }
         public virtual Status Status { get; set; }
@@ -82,7 +71,6 @@ namespace STUDENTU_1._06.Model
         public virtual AfterDoneDescription AfterDoneDescriptions { get; set; }
 
         public virtual ObservableCollection<Author> Author { get; set; }
-
 
         public Author GetExecuteAuthor(ObservableCollection<Author> authors)
         {

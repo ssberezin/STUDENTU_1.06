@@ -22,41 +22,41 @@ namespace STUDENTU_1._06.ViewModel
     public partial class ForEditOrder : Helpes.ObservableObject
     {
 
-        //====================================Save contact COMMAND================================
+        ////====================================Save contact COMMAND================================
 
-        private RelayCommand saveContactCommand;
-        public RelayCommand SaveContactCommand => saveContactCommand ?? (saveContactCommand = new RelayCommand(
-                    (obj) =>
-                    {
+        //private RelayCommand saveContactCommand;
+        //public RelayCommand SaveContactCommand => saveContactCommand ?? (saveContactCommand = new RelayCommand(
+        //            (obj) =>
+        //            {
 
-                        //тут у нас просто вывод сообщения , т.к. все данные и так привязаны к нужным 
-                        //полям в окне редактирования + сохранение данных о контактах происходит
-                        //в SaveNewOrder
-                        // here we just have a message output, because all data is already tied to the right
-                        // fields in the edit window + saving contact data occurs
-                        // in SaveNewOrder
+        //                //тут у нас просто вывод сообщения , т.к. все данные и так привязаны к нужным 
+        //                //полям в окне редактирования + сохранение данных о контактах происходит
+        //                //в SaveNewOrder
+        //                // here we just have a message output, because all data is already tied to the right
+        //                // fields in the edit window + saving contact data occurs
+        //                // in SaveNewOrder
 
-                        //а это делаем пока на всякий случай
-                        ContactsRecords.Add(Contacts);
-                        dialogService.ShowMessage("Данные сохранены");
-                    }
-                    ));
-
-
+        //                //а это делаем пока на всякий случай
+        //                ContactsRecords.Add(_Contacts.Contacts);
+        //                dialogService.ShowMessage("Данные сохранены");
+        //            }
+        //            ));
 
 
 
-        //=====================Command for call AddContactsWindow.xaml ======================================
 
-        private RelayCommand newEditContactsCommand;
-        public RelayCommand NewEditContactsCommand => newEditContactsCommand ?? 
-            (newEditContactsCommand = new RelayCommand(
-                    (obj) =>
-                    {
-                        AddContactsWindow addContactsWindow = new AddContactsWindow(obj);                        
-                        showWindow.ShowDialog(addContactsWindow);
-                    }
-                    ));
+
+        ////=====================Command for call AddContactsWindow.xaml ======================================
+
+        //private RelayCommand newEditContactsCommand;
+        //public RelayCommand NewEditContactsCommand => newEditContactsCommand ?? 
+        //    (newEditContactsCommand = new RelayCommand(
+        //            (obj) =>
+        //            {
+        //                AddContactsWindow addContactsWindow = new AddContactsWindow(obj);                        
+        //                showWindow.ShowDialog(addContactsWindow);
+        //            }
+        //            ));
 
     }
 }

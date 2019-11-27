@@ -219,12 +219,12 @@
                      VerticalAlignment="Stretch">
                 <TextBlock Text="№ телефона: " />
             </Viewbox>
-            <TextBox x:Name="PhoneNumber" MinWidth="240" Text="{Binding Contacts.Phone1 , Mode=TwoWay,
+            <TextBox x:Name="PhoneNumber" MinWidth="240" Text="{Binding _Contacts.Contacts.Phone1 , Mode=TwoWay,
             UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap"
                  SpellCheck.IsEnabled="True" Language="ru-ru" TextAlignment="Center" MaxLength="13" TabIndex="6"/>
             <!--Contacts can find in ForEditOrder.cs-->
             <Button Content="Дополнительные контакты" Background="YellowGreen" Height="30" TabIndex="7" Margin="5"
-                     Command="{Binding NewEditContactsCommand}" CommandParameter="{Binding DataContext, RelativeSource=
+                     Command="{Binding NewEditContactCommand}" CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}"/>
             <!--NewEditContactsCommand can find in ForEditOrderAddContacts.cs-->
             <Button Content="В ч.списке?" Background="Black" Height="30" Width="100" TabIndex="8" Margin="5"
