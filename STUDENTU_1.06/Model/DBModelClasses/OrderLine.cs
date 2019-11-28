@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace STUDENTU_1._06.Model
 {
-    public class OrderLine : Helpes.ObservableObject
+    public class OrderLine : Helpes.ObservableObject 
     {
         
         public OrderLine()
@@ -17,9 +17,10 @@ namespace STUDENTU_1._06.Model
             this.WorkInCredit = true;
             this.OrderCount = 1;
             this.Author = new ObservableCollection<Author>();
-            this.variant = null;           
+            this.variant = null;
+            this.Saved = false;
         }
-
+        [Key]
         public int OrderLineId { get; set; }
         public int OrderNumber { get; set; }
 
@@ -53,6 +54,25 @@ namespace STUDENTU_1._06.Model
         public string WorkDescription { get; set; }        
        
         public bool WorkInCredit { get; set; }
+
+        //для того, чтоб отслеживать состояние заказа из ...ForEditOrder.cs например. Это нужно для редактирования 
+        // in order to track the status of the order from ... ForEditOrder.cs for example. This is for editing.
+        private bool saved;
+        [NotMapped]
+        public bool Saved
+        {
+            get { return saved; }
+            set
+            {
+                if (saved != value)
+                {
+                    saved = value;
+                    OnPropertyChanged(nameof(Saved));
+                }
+            }
+        }
+
+
 
         [Column("RedactionLog", TypeName = "nvarchar")]
         [MaxLength(2000)]

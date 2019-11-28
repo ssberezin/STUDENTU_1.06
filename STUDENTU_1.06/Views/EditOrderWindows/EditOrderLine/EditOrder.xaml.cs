@@ -14,8 +14,9 @@ namespace STUDENTU_1._06.Views
         public EditOrder()
         {
             InitializeComponent();
-            this.DataContext = new ForEditOrder(this, new DefaultShowWindowService(),
-                new DefaultDialogService());
+            //this.DataContext = new ForEditOrder(this, new DefaultShowWindowService(),
+            //    new DefaultDialogService());
+            this.DataContext = new ForEditOrder();
 
         }
 

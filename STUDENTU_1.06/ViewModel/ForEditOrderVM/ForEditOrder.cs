@@ -209,39 +209,32 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
-        
+        //this.DataContext = new ForEditOrder(this, new DefaultShowWindowService(),
+        //    new DefaultDialogService());
 
-        public ForEditOrder(Window editWindow, DefaultShowWindowService showWindow,
-           IDialogService dialogService)
-        {
-            
+        //public ForEditOrder(Window editWindow, DefaultShowWindowService showWindow,
+        //   IDialogService dialogService)
+        public ForEditOrder()
+        {            
             ContactsRecords = new ObservableCollection<Contacts>();
             BlackListRecords = new ObservableCollection<BlackListHelpModel>();
-
-
-            Author = new Author();
-            //_AuthorStatus = new _AuthorStatus();
-           // Contacts = new Contacts();
+            Author = new Author();            
             _Contacts = new _Contacts();
             Date = new Dates();
-            _Dir = new _Direction();
-           // _Evaluation = new _Evaluation();
+            _Dir = new _Direction();           
             Order = new OrderLine { OrderNumber = GetOrderNumber() };
             Persone = new Persone();
             PersoneDescription = new PersoneDescription();
-            Price = new Money();
-
-            //для возможности запуска окна вырула заказа RuleOrderLineWindow.xaml
-            //for cant initialize RuleOrderLineWindow.xaml
-           // RuleOrderLine = new RuleOrderLine();
-
+            Price = new Money();        
             _Status = new _Status();
             _Subj = new _Subject();
             _Source = new _Source();
             _WorkType = new _WorkType();
-           
-            this.showWindow = showWindow;
-            this.dialogService = dialogService;
+
+            showWindow = new DefaultShowWindowService();
+            dialogService = new DefaultDialogService();
+            //this.showWindow = showWindow;
+            //this.dialogService = dialogService;
         }
 
 
@@ -335,10 +328,11 @@ namespace STUDENTU_1._06.ViewModel
                     _Status.Status =TMPStaticClass.CurrentOrder.Status;
                     Order.Status = _Status.Status;
                     Order.Source = db.Sources.Find(_Source.Source.SourceId);
-                    db.Entry(Order).State = Order.OrderLineId == 0 ? EntityState.Added : EntityState.Modified;
-                    //db.Orderlines.Add(Order);                    
+                    Order.Saved = true;
+                    //db.Entry(Order).State = Order.OrderLineId == 0 ? EntityState.Added : EntityState.Modified;
+                    db.Orderlines.Add(Order);                    
                     db.SaveChanges();
-                    dialogService.ShowMessage("Данные о заказе сохранены");
+                    dialogService.ShowMessage($"Заказ с номером {Order.OrderNumber} сохранен как новый");
                     TMPStaticClass.CurrentOrder = Order;                   
                 }
                 catch (ArgumentNullException ex)
@@ -382,7 +376,9 @@ namespace STUDENTU_1._06.ViewModel
                     _Status.Status = db.Statuses.Find(new Status() { StatusId = 2 }.StatusId);
                     Order.Status = _Status.Status;
                     Order.Source = db.Sources.Find(_Source.Source.SourceId);
-                    db.Entry(Order).State = Order.OrderLineId == 0 ? EntityState.Added : EntityState.Modified;                                   
+                    Order.Saved = true;
+                    //db.Entry(Order).State = Order.OrderLineId == 0 ? EntityState.Added : EntityState.Modified;                                   
+                    db.Orderlines.Add(Order);
                     db.SaveChanges();
                     dialogService.ShowMessage("Данные о заказе сохранены");
                     TMPStaticClass.CurrentOrder = Order;
@@ -412,7 +408,81 @@ namespace STUDENTU_1._06.ViewModel
 
         }
 
-      
+
+        //EditOrderLineCommand
+
+        //===========================================COMMAND FOR EDIT ORDER ======================================
+        private RelayCommand editOrderLineCommand;
+
+        public RelayCommand EditOrderLineCommand => editOrderLineCommand ?? (editOrderLineCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        EditOrderLine();
+                    }
+                    ));
+        //========================================================================================================================
+
+        private void EditOrderLine()
+        {
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                try
+                {
+                    db.Entry(Order).State = EntityState.Modified;
+                    Persone.Contacts = _Contacts.Contacts;
+                    Order.Client = new Client() { Persone = Persone };
+                    Order.Direction = db.Directions.Find(_Dir.Dir.DirectionId);                    
+                    Order.WorkType = db.WorkTypes.Find(_WorkType.WorkType.WorkTypeId);
+                    Order.Dates = Date;
+                    Order.Subject = db.Subjects.Find(_Subj.Subj.SubjectId); ;
+                    Order.Money = Price;
+                    _Status.Status = db.Statuses.Find(new Status() { StatusId = 2 }.StatusId);
+                    Order.Status = _Status.Status;
+                    Order.Source = db.Sources.Find(_Source.Source.SourceId);
+                    Order.Saved = true;
+                  
+                    db.SaveChanges();
+                    dialogService.ShowMessage("Данные о заказе сохранены");
+                    TMPStaticClass.CurrentOrder = Order;
+                    saved = true;
+                }
+                catch (ArgumentNullException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (OverflowException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+            }
+        }
+
+
+        //this method not used
+        //этот метод пока нигде не задейстован, но пусть типа будет
+        //взят от сюдава https://professorweb.ru/my/entity-framework/6/level3/3_6.php
+        public static void Update<TEntity>(TEntity entity, DbContext context)
+    where TEntity : class
+        {
+            //// Настройки контекста
+            //context.Database.Log = (s => System.Diagnostics.Debug.WriteLine(s));
+
+            context.Entry<TEntity>(entity).State = EntityState.Modified;
+            context.SaveChanges();
+        }
+
         //==================================COMMAND FOR CLOSE WINDOW ==========================
         private RelayCommand closeWindowCommand;
 

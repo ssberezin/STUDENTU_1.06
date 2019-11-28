@@ -10,13 +10,12 @@ using System.Threading.Tasks;
 namespace STUDENTU_1._06.Model
 {
     public class Client
-    {
-        
+    {        
         public Client()
         {
             this.OrderLine = new ObservableCollection<OrderLine>();
         }
-
+        //[ForeignKey("OrderLine")]
         public int ClientId { get; set; }
 
         [Column("UniversityName", TypeName = "ntext")]
