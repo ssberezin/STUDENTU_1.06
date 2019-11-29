@@ -297,30 +297,40 @@
             <!--Date can find in ForEditOrder.cs-->
         </StackPanel>
         <StackPanel Orientation="Horizontal"
-                    Grid.Column="0" Grid.Row="10"   Margin="3,2.8,0,2.8" Grid.ColumnSpan="5" HorizontalAlignment="Left" 
+                    Grid.Column="0" Grid.Row="10"   Margin="3,2.8,0,2.8" Grid.ColumnSpan="5" HorizontalAlignment="Stretch"
+                    VerticalAlignment="Center"
                    >
             <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5"  
                      VerticalAlignment="Stretch">
                 <TextBlock Text="Не позже, чем на (время) :" Foreground="Red" FontWeight="Bold"/>
             </Viewbox>
             <wpfTool:TimePicker Value="{Binding Date.DeadLine, Mode=TwoWay}"
-                Grid.ColumnSpan="2" Grid.Row="1" Grid.Column="4" Margin="3"
-                                MaxWidth="100" MaxHeight="30" Height="30" Width="110"/>
-            <Button Grid.Column="2" Grid.Row="10" Content="Сохранить" Background="Green" TabIndex="23"
-                IsEnabled="{Binding ElementName=TBxName,  Path=Text.Length}"
-                Command="{Binding CreateNewOrderLine}" MinWidth="150"/>
-            <Button Grid.Column="2" Grid.Row="10" Content="Редактировать" Background="#FF433BDC" TabIndex="23"
-                IsEnabled="{Binding Order.Saved}"
-                Command="{Binding EditOrderLineCommand}" MinWidth="150" Foreground="White"/>
-            <Button Grid.Column="3" Grid.Row="10" Content="Отменить" Background="OrangeRed" TabIndex="24" 
-                Command="{Binding CloseWindowCommand}" MinWidth="150"/>
-            <Button Content="Печать квитанции" Grid.Column="4" Grid.Row="110"
-                    Name="PrintCheck"   TabIndex="25" MinWidth="150"
-                    Background="Brown" Foreground="Black"/>
-            <!-- Command CloseWindowCommand  can find  ForEditOrder.cs-->
+                 Margin="3" MaxWidth="100" MaxHeight="30" Height="30" Width="110"/>
+            
+            
             <!-- Command CreateNewOrderLine  can find  ForEditOrder.cs-->
             <!--Date can find in ForEditOrder.cs-->
         </StackPanel>
+        <Grid  Grid.Row="10" Grid.Column="2" Grid.ColumnSpan="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button  Content="Сохранить" Background="Green" TabIndex="23"
+                IsEnabled="{Binding ElementName=TBxName,  Path=Text.Length}"
+                Command="{Binding CreateNewOrderLine}" />
+            <Button Grid.Column="1"  Content="Редактировать" Background="#FF433BDC" TabIndex="23"
+                IsEnabled="{Binding Order.Saved}"
+                Command="{Binding EditOrderLineCommand}" MinWidth="150" Foreground="White"/>
+            <Button Grid.Column="2"  Content="Отменить" Background="OrangeRed" TabIndex="24" 
+                Command="{Binding CloseWindowCommand}" />
+            <Button Content="Печать квитанции" Grid.Column="3" Grid.Row="110"
+                    Name="PrintCheck"   TabIndex="25" 
+                    Background="Brown" Foreground="Black"/>
+            <!-- Command CloseWindowCommand  can find  ForEditOrder.cs-->
+        </Grid>
         <StackPanel Grid.Row="0" Grid.Column="2" Margin="3" HorizontalAlignment="Center">
             <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5"  
                      >
@@ -441,7 +451,7 @@
                      VerticalAlignment="Stretch">
                 <TextBlock Text="Тип работы:" FontWeight="Bold" />
             </Viewbox>
-            <ComboBox x:Name="WorkTypeList"  Width="150" TabIndex="13"
+            <ComboBox x:Name="WorkTypeList"  MinWidth="150" TabIndex="13"
                         SelectedIndex="0" Margin="3"                        
                      ItemsSource="{Binding Source={StaticResource SortedWorkTypes}, 
                       UpdateSourceTrigger=PropertyChanged}" 

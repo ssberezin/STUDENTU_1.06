@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -57,7 +58,7 @@ namespace STUDENTU_1._06.Model
         public int ContactsId { get; set; }
 
         //  public virtual Persone Persone { get; set; }
-        public virtual List<Persone> Persone { get; set; }
+        public virtual ObservableCollection<Persone> Persone { get; set; }
 
         //check for validation of Contacts fields
         public bool ContactsValidation()

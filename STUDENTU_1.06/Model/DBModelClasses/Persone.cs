@@ -1,6 +1,7 @@
 ﻿using STUDENTU_1._06.Model.HelpModelClasses;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -65,11 +66,11 @@ namespace STUDENTU_1._06.Model
        
         public virtual Contacts Contacts { get; set; }
         public virtual PersoneDescription PersoneDescription { get; set; }
-      //  public virtual List<Contacts> Contacts { get; set; }        
-        public virtual List<User> User { get; set; }        
-        public virtual List<Client> Client { get; set; }        
-        public virtual List<Author> Author { get; set; }        
-        public virtual List<Dates> Dates { get; set; }
+     
+        public virtual ObservableCollection<User> User { get; set; }        
+        public virtual ObservableCollection<Client> Client { get; set; }        
+        public virtual ObservableCollection<Author> Author { get; set; }        
+        public virtual ObservableCollection<Dates> Dates { get; set; }
 
         public string ToString()
         {

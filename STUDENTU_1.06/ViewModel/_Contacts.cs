@@ -95,5 +95,69 @@ namespace STUDENTU_1._06.ViewModel
         }
 
 
+        //load data array from "Directions" table
+        public bool CheckAuthorContacts()
+        {
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                try
+                {
+                    var list = db.Persones.Include("Author").Include("Client").ToList();
+                    foreach (var item in list)
+                    {
+                        if (item.Author.Count()>0)                        
+                        if (item.Contacts.Phone1 == Contacts.Phone1 ||
+                           item.Contacts.Phone1 == Contacts.Phone2 ||
+                           item.Contacts.Phone1 == Contacts.Phone3 ||
+                           item.Contacts.Phone2 == Contacts.Phone2 ||
+                           item.Contacts.Phone2 == Contacts.Phone3 ||
+                           item.Contacts.Phone3 == Contacts.Phone1 ||
+                           item.Contacts.Email1 == Contacts.Email1 ||
+                           item.Contacts.Email1 == Contacts.Email2 ||
+                           item.Contacts.Email2 == Contacts.Email2 ||
+                           item.Contacts.VK == Contacts.VK ||
+                           item.Contacts.Skype == Contacts.Skype)
+                        {
+                                if (dialogService.YesNoDialog("Контактные данные этого автора уже есть в БД авторов\n" +
+                                    "Показать информацию по найденному совпадению?"))
+                                {
+                                    //тут надо запилить вызов окна с инфой об авторе
+
+                                    return true;
+                                }
+                                else
+                                    return false;
+
+                        }
+                        
+                    }                   
+
+                    return false;
+                }
+                catch (ArgumentNullException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (OverflowException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+            }
+            return false;
+        }
+
+
     }
 }
