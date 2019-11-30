@@ -123,6 +123,9 @@ namespace STUDENTU_1._06.ViewModel
                                 {
                                     //тут надо запилить вызов окна с инфой об авторе
 
+                                    RuleOrderLineWindow ruleOrderLineWindow = new RuleOrderLineWindow();
+                                    showWindow.ShowDialog(ruleOrderLineWindow);
+
                                     return true;
                                 }
                                 else

@@ -149,6 +149,9 @@
     <Compile Include="Views\PersoneOperations\AuthorOperationsWindows\AuthorDirectionsWindow.xaml.cs">
       <DependentUpon>AuthorDirectionsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PersoneOperations\AuthorOperationsWindows\AuthorInfo.xaml.cs">
+      <DependentUpon>AuthorInfo.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PersoneOperations\AuthorOperationsWindows\AuthorRatingEditWindow.xaml.cs">
       <DependentUpon>AuthorRatingEditWindow.xaml</DependentUpon>
     </Compile>
@@ -306,6 +309,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\PersoneOperations\AuthorOperationsWindows\AuthorDirectionsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PersoneOperations\AuthorOperationsWindows\AuthorInfo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
