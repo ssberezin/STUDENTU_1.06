@@ -163,29 +163,104 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
         IDialogService dialogService;
         IShowWindowService showWindow;
         
-        public AuthorsVMClass(Window editWindow, DefaultShowWindowService showWindow,
-           IDialogService dialogService)
-        {
-            this.showWindow = showWindow;
-            this.dialogService = dialogService;
-            editWindow.Loaded += EditWindow_Loaded;
+        //this.DataContext = new AuthorsVMClass(this, new DefaultShowWindowService(),
+        //        new DefaultDialogService());
 
+        public AuthorsVMClass()
+        {
+            DefaultDataLoad();
         }
 
-        private void EditWindow_Loaded(object sender, RoutedEventArgs e)
+        public AuthorsVMClass(Author author)
         {
-            DefaultPhoto = "default_avatar.png";          
+            Author = author;
+            DefaultPhoto = "default_avatar.png";
+            AuthorDafaultDataLoad(author);
+            dialogService = new DefaultDialogService();
+            showWindow = new DefaultShowWindowService();
+        }
 
+        private void DefaultDataLoad()
+        {
+            DefaultPhoto = "default_avatar.png";
             Author = new Author();
-            _AuthorStatus = new _AuthorStatus();            
-            _Contacts = new _Contacts();            
+            _AuthorStatus = new _AuthorStatus();
+            _Contacts = new _Contacts();
             Date = new Dates();
             _Dir = new _Direction();
             Persone = new Persone();
             PersoneDescription = new PersoneDescription();
             _Subj = new _Subject();
-            
+            dialogService = new DefaultDialogService();
+            showWindow = new DefaultShowWindowService();
         }
+
+        private void AuthorDafaultDataLoad(Author author)
+        {
+
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                try
+                {
+                    // db.WorkTypes.Find(_WorkType.WorkType.WorkTypeId);
+                    _AuthorStatus = new _AuthorStatus();
+                    var astatus = db.AuthorStatuses.ToList();
+                    bool flag = false;
+                    foreach (var item in astatus)
+                    {                        
+                        foreach (var i in item.Author)
+                            if (i.AuthorId == author.AuthorId)
+                            {
+                                _AuthorStatus.AuthorStatus = item;
+                                flag = true;
+                                break;
+                            }
+                        if (flag) break;
+                    }
+
+                    _Contacts = new _Contacts()
+                    { Contacts= db.Contacts.Find(author.Persone.Contacts.ContactsId) };
+
+                    //от сюдава надо дебажить далее(01.01.2019)
+                    Date = author.Persone.Dates[0];
+                    _Dir = new _Direction();
+                    foreach (var item in author.Direction)
+                        _Dir.DirRecords.Add(item);
+                    Persone = author.Persone ;
+                    PersoneDescription = author.Persone.PersoneDescription;
+                    _Subj = new _Subject();
+                    foreach (var item in author.Subject)
+                        _Subj.SubjRecords.Add(item);
+
+
+                }
+                catch (ArgumentNullException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (OverflowException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+            }         
+
+        }
+
+
+       
+      
 
         //==================================Command for add new photo to persone profile================
         private RelayCommand openFileDialogCommand;

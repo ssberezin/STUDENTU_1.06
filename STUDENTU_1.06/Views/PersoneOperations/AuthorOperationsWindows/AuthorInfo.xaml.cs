@@ -1,4 +1,6 @@
-﻿using System;
+﻿using STUDENTU_1._06.Model;
+using STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +24,14 @@ namespace STUDENTU_1._06.Views.PersoneOperations.AuthorOperationsWindows
         public AuthorInfo()
         {
             InitializeComponent();
+            this.DataContext = new AuthorsVMClass();
         }
+        public AuthorInfo (Author author)
+        {
+            InitializeComponent();
+            this.DataContext = new AuthorsVMClass(author);
+        }
+
+
     }
 }

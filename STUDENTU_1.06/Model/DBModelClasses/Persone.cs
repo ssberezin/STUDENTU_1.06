@@ -13,12 +13,12 @@ namespace STUDENTU_1._06.Model
     {
         public Persone()
         {
-            this.User = new List<User>();
-            this.Client = new List<Client>();
-            this.Author = new List<Author>();
+            this.User = new ObservableCollection<User>();
+            this.Client = new ObservableCollection<Client>();
+            this.Author = new ObservableCollection<Author>();
             // this.Contacts = new List<Contacts>();
 
-            this.Dates = new List<Dates>();
+            this.Dates = new ObservableCollection<Dates>();
             this.Sex = true;
             this.Name = "";
             this.NickName = null;

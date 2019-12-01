@@ -22,7 +22,7 @@ namespace STUDENTU_1._06.Model
             this.Skype = "---";
             this.VK = "---";
             this.FaceBook = "---";
-            this.Persone = new List<Persone>();
+            this.Persone = new ObservableCollection<Persone>();
 
         }
         [Column("Phone1", TypeName = "ntext")]

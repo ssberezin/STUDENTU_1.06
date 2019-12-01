@@ -25,8 +25,7 @@ namespace STUDENTU_1._06.Views.PersoneOperations.AuthorOperationsWindows
         public AuthorWindow()
         {
             InitializeComponent();
-            this.DataContext = new AuthorsVMClass(this, new DefaultShowWindowService(),
-                new DefaultDialogService());
+            this.DataContext = new AuthorsVMClass();
         }
 
         
