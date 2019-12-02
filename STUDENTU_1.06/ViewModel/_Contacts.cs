@@ -131,7 +131,7 @@ namespace STUDENTU_1._06.ViewModel
                            TmpContacts.VK != "---" && item.Persone.Contacts.VK == TmpContacts.VK ||
                            TmpContacts.Skype != "---" && item.Persone.Contacts.Skype == TmpContacts.Skype)
 
-                            return item;
+                            return item ;
                     }
                     return null;
 

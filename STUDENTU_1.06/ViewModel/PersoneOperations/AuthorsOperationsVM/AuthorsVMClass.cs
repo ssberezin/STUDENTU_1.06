@@ -173,7 +173,8 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
 
         public AuthorsVMClass(Author author)
         {
-            Author = author;
+            
+            Author=author;
             DefaultPhoto = "default_avatar.png";
             AuthorDafaultDataLoad(author);
             dialogService = new DefaultDialogService();
@@ -202,28 +203,12 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
             {
                 try
                 {
-                    // db.WorkTypes.Find(_WorkType.WorkType.WorkTypeId);
+                    db.Authors.Attach(author);
                     _AuthorStatus = new _AuthorStatus();
-                    var astatus = db.AuthorStatuses.ToList();
-                    bool flag = false;
-                    foreach (var item in astatus)
-                    {                        
-                        foreach (var i in item.Author)
-                            if (i.AuthorId == author.AuthorId)
-                            {
-                                _AuthorStatus.AuthorStatus = item;
-                                flag = true;
-                                break;
-                            }
-                        if (flag) break;
-                    }
-
-                    _Contacts = new _Contacts()
-                    { Contacts= db.Contacts.Find(author.Persone.Contacts.ContactsId) };
-
-                    //от сюдава надо дебажить далее(01.01.2019)
-                    Date = author.Persone.Dates[0];
-                    _Dir = new _Direction();
+                    _AuthorStatus.AuthorStatus = author.AuthorStatus;
+                    _Contacts = new _Contacts();
+                    _Contacts.Contacts = author.Persone.Contacts;
+                    _Dir = new _Direction();                 
                     foreach (var item in author.Direction)
                         _Dir.DirRecords.Add(item);
                     Persone = author.Persone ;
@@ -231,7 +216,6 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                     _Subj = new _Subject();
                     foreach (var item in author.Subject)
                         _Subj.SubjRecords.Add(item);
-
 
                 }
                 catch (ArgumentNullException ex)

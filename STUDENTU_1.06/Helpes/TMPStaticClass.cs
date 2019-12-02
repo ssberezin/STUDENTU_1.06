@@ -13,5 +13,6 @@ namespace STUDENTU_1._06.Helpes
        // public static OrderLine CurrentOrder = new OrderLine() { Dates=new Dates()};
 
                 public static OrderLine CurrentOrder { get; set; }
+                //public static Author CurrentAuthor { get; set; }
     }
 }
