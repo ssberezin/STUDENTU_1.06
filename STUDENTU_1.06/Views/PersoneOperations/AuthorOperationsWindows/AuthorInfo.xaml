@@ -220,10 +220,24 @@
                      VerticalAlignment="Stretch">
                 <TextBlock Text="Статус: " FontWeight="Bold"  Foreground="Brown"/>
             </Viewbox>
-            <ComboBox x:Name="StatusList"  MinWidth="165"  TabIndex="10" SelectedIndex="0" 
-                      IsEditable="False"
+            <!--<ComboBox x:Name="StatusList"  MinWidth="165"  TabIndex="10" 
+                      IsEditable="False" IsSynchronizedWithCurrentItem="True"
                      ItemsSource="{Binding Source={StaticResource SortedStatuses}, 
                       UpdateSourceTrigger=PropertyChanged}" 
+                     SelectedItem="{Binding _AuthorStatus.AuthorStatus,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     DisplayMemberPath="AuthorStatusName" Width="219" 
+                      HorizontalContentAlignment="Center"
+                     Background="White" >
+                --><!--Status can fint in _AuthorStatus.cs--><!--
+            </ComboBox>-->
+            
+            
+            <ComboBox x:Name="StatusList"  MinWidth="165"  TabIndex="10" 
+                      IsEditable="False" IsSynchronizedWithCurrentItem="True"
+                     ItemsSource="{Binding Source={StaticResource SortedStatuses}, 
+                      UpdateSourceTrigger=PropertyChanged}" 
+                      SelectedValue="{Binding _AuthorStatus.AuthorStatus.AuthorStatusId, Mode=TwoWay}"
+                      SelectedValuePath="AuthorStatusId"
                      SelectedItem="{Binding _AuthorStatus.AuthorStatus}"
                      DisplayMemberPath="AuthorStatusName" Width="219" 
                       HorizontalContentAlignment="Center"

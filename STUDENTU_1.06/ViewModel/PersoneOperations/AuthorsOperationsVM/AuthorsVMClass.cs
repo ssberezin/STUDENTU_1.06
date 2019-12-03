@@ -208,14 +208,15 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                     _AuthorStatus.AuthorStatus = author.AuthorStatus;
                     _Contacts = new _Contacts();
                     _Contacts.Contacts = author.Persone.Contacts;
+                    _Contacts.TmpContacts = _Contacts.Contacts;
                     _Dir = new _Direction();                 
                     foreach (var item in author.Direction)
-                        _Dir.DirRecords.Add(item);
+                        _Dir.AuthorDirections.Add(item);
                     Persone = author.Persone ;
                     PersoneDescription = author.Persone.PersoneDescription;
                     _Subj = new _Subject();
                     foreach (var item in author.Subject)
-                        _Subj.SubjRecords.Add(item);
+                        _Subj.AuthorSubjects.Add(item);
 
                 }
                 catch (ArgumentNullException ex)
