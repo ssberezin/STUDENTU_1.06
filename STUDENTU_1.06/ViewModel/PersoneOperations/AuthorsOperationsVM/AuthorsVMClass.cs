@@ -212,6 +212,8 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                     _Dir = new _Direction();                 
                     foreach (var item in author.Direction)
                         _Dir.AuthorDirections.Add(item);
+                    Date = new Dates();
+                    Date = author.Persone.Dates[0];
                     Persone = author.Persone ;
                     PersoneDescription = author.Persone.PersoneDescription;
                     _Subj = new _Subject();
