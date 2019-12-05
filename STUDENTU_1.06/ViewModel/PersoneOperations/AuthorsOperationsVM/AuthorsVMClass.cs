@@ -7,6 +7,7 @@ using STUDENTU_1._06.Views;
 using STUDENTU_1._06.Views.PersoneOperations.AuthorOperationsWindows;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -377,6 +378,13 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                     }
                     else
                     {
+                        //if we  need to modified entrie
+                        if (Author.AuthorId != 0)
+                        {
+                            db.Entry(Author).State = EntityState.Modified;
+                           
+                            //db.Entry(_Subj.Subj).State = EntityState.Modified;
+                        }
                         Persone.Contacts = _Contacts.Contacts;
                         Persone.Dates.Add(Date);
                         
@@ -390,9 +398,16 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                         foreach (Direction item in _Dir.AuthorDirections)
                         {
                             var res1 = db.Directions.Find(item.DirectionId);
-                            if (res1 != null)
+                            if (res1 != null&& !res1.Author.Contains(Author))
                             {
                                 //changing DB
+                                if (Author.AuthorId != 0)
+                                {
+                                   db.Entry(res1).State = EntityState.Modified;
+                                    res1.Author.Add(Author);
+                                    continue;
+                                }
+                                else                                    
                                 res1.Author.Add(Author);                                
                                 continue;
                             }
@@ -414,15 +429,17 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                         dialogService.ShowMessage("Данные автора сохранены");
                         //обнуляем поля окна
                         //clear window fields
-                        _Contacts = new _Contacts();
-                        Persone = new Persone();                        
-                        _AuthorStatus = new _AuthorStatus();
-                        Author = new Author();
-                        Date = new Dates();
-                        _Subj = new _Subject();
-                        _Dir = new _Direction();
-                        PersoneDescription = new PersoneDescription();
-
+                        if (Author.AuthorId == 0)
+                        {
+                            _Contacts = new _Contacts();
+                            Persone = new Persone();
+                            _AuthorStatus = new _AuthorStatus();
+                            Author = new Author();
+                            Date = new Dates();
+                            _Subj = new _Subject();
+                            _Dir = new _Direction();
+                            PersoneDescription = new PersoneDescription();
+                        }
                     }
 
                 }
@@ -454,7 +471,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
         {
             string error;
             error = Persone.Name == "" ? "Поле имени не должно быть пустым" : null;
-            error += _Dir.Dir.DirectionName == "---" ? "\nНЕ добавлено ни одного направления" : null;
+            error += _Dir.AuthorDirections.Count() == 0 ? "\nНЕ добавлено ни одного направления" : null;
             error += !_Contacts.Contacts.ContactsValidation() ?"\nНи одно из полей контактных данных не заполнено":null;
             error = error == "" ? null:error ;
              return error;
