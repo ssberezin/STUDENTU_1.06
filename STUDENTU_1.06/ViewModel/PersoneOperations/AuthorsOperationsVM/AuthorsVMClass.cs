@@ -174,8 +174,8 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
 
         public AuthorsVMClass(Author author)
         {
-            
-            Author=author;
+            Author = new Author();
+            Author =author;
             DefaultPhoto = "default_avatar.png";
             AuthorDafaultDataLoad(author);
             dialogService = new DefaultDialogService();
@@ -381,18 +381,22 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                         //if we  need to modified entrie
                         if (Author.AuthorId != 0)
                         {
+                            db.Entry(Persone).State = EntityState.Modified;
                             db.Entry(Author).State = EntityState.Modified;
-                           
-                            //db.Entry(_Subj.Subj).State = EntityState.Modified;
+                            db.Entry(_Dir.Dir).State = EntityState.Modified;
+                            db.Entry(_Subj.Subj).State = EntityState.Modified;
                         }
                         Persone.Contacts = _Contacts.Contacts;
-                        Persone.Dates.Add(Date);
+                        if (Author.AuthorId != 0)
+                            Persone.Dates[0]=Date;
+                        else
+                            Persone.Dates.Add(Date);
                         
                         Persone.PersoneDescription = PersoneDescription;
                         Author.Persone = Persone;                        
                         Author.AuthorStatus = db.AuthorStatuses.Find(_AuthorStatus.AuthorStatus.AuthorStatusId);
-                            
-                        db.Authors.Add(Author);
+                       if (Author.AuthorId == 0) 
+                            db.Authors.Add(Author);
                         db.SaveChanges();
                         //here we add author in directions
                         foreach (Direction item in _Dir.AuthorDirections)
@@ -403,7 +407,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                                 //changing DB
                                 if (Author.AuthorId != 0)
                                 {
-                                   db.Entry(res1).State = EntityState.Modified;
+                                  // db.Entry(res1).State = EntityState.Modified;
                                     res1.Author.Add(Author);
                                     continue;
                                 }
@@ -423,6 +427,10 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                                 res1.Authors.Add(Author);                                
                                 continue;
                             }
+                            else
+                                res1.Authors.Add(Author);
+                            continue;
+
                         }
                         db.SaveChanges();
 
