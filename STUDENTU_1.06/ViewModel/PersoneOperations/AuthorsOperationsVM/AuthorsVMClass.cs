@@ -382,9 +382,11 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                         if (Author.AuthorId != 0)
                         {
                             db.Entry(Persone).State = EntityState.Modified;
+                            db.Entry(Date).State = EntityState.Modified;
                             db.Entry(Author).State = EntityState.Modified;
                             db.Entry(_Dir.Dir).State = EntityState.Modified;
                             db.Entry(_Subj.Subj).State = EntityState.Modified;
+                            db.Entry(PersoneDescription).State = EntityState.Modified;                            
                         }
                         Persone.Contacts = _Contacts.Contacts;
                         if (Author.AuthorId != 0)

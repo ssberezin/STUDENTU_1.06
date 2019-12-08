@@ -1101,3 +1101,5 @@ E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\STUDEN
 E:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\STUDENTU_1.06+.csprojAssemblyReference.cache
 E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\PersoneOperations\AuthorOperationsWindows\AuthorInfo.g.cs
 E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\PersoneOperations\AuthorOperationsWindows\AuthorInfo.baml
+E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\PersoneOperations\AuthorOperationsWindows\AuthorEditWindow.g.cs
+E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\PersoneOperations\AuthorOperationsWindows\AuthorEditWindow.baml

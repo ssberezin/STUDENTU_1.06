@@ -70,7 +70,8 @@
                         <MenuItem Header="Добавить нового" Command="{Binding AddAuthorCommand}"
                                   Height="17" VerticalAlignment="Top"/>
                         <MenuItem Header="Редакция" 
-                                  Height="17" VerticalAlignment="Top"/>
+                                  Height="17" VerticalAlignment="Top"
+                                  Command="{Binding CallEditAuthorWindow}"/>
                     </MenuItem>
 
 

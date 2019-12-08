@@ -155,15 +155,7 @@ namespace STUDENTU_1._06.ViewModel
             {
                 try
                 {
-                    //var COrders = db.Orderlines.Include("Client")
-                    //                           .Include("Dates")
-                    //                           .Include("Subject")
-                    //                           .Include("Author")
-                    //                           .Include("Status")
-                    //                           .Include("Money")
-                    //                           .Include("WorkType")
-                    //                           .ToList<OrderLine>();
-                    //add default orders statuses
+                    
                     if (db.Statuses.Count() == 0)
                     {                       
                         db.Statuses.Add(new Status() { StatusName = "---" });
@@ -323,6 +315,17 @@ namespace STUDENTU_1._06.ViewModel
                         AuthorWindow authorWindow = new AuthorWindow();
                         authorWindow.Owner = Application.Current.MainWindow;
                         showWindow.ShowWindow(authorWindow);
+                    }
+                    ));
+
+        //for edit author data
+        private RelayCommand callEditAuthorWindow;
+        public RelayCommand CallEditAuthorWindow => callEditAuthorWindow ?? (callEditAuthorWindow = new RelayCommand(
+                    (obj) =>
+                    {
+                        AuthorEditWindow authorEditWindow = new AuthorEditWindow();
+                        authorEditWindow.Owner = Application.Current.MainWindow;
+                        showWindow.ShowWindow(authorEditWindow);
                     }
                     ));
 
