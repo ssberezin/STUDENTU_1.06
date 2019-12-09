@@ -1,5 +1,6 @@
 ﻿using STUDENTU_1._06.Helpes;
 using STUDENTU_1._06.Model;
+using STUDENTU_1._06.Model.HelpModelClasses;
 using STUDENTU_1._06.Model.HelpModelClasses.DialogWindows;
 
 using STUDENTU_1._06.Model.HelpModelClasses.ShowWindows;
@@ -161,6 +162,23 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
             }
         }
 
+        //to be able to display authors data in ListBox x:Name="Authors" AuthorEditWindow.xaml
+        private RuleOrderLine _ruleOrderLine;
+        public RuleOrderLine _RuleOrderLine
+        {
+            get { return _ruleOrderLine; }
+            set
+            {
+                if (_ruleOrderLine != value)
+                {
+                    _ruleOrderLine = value;
+                    OnPropertyChanged(nameof(_RuleOrderLine));
+                }
+            }
+        }
+
+
+
         IDialogService dialogService;
         IShowWindowService showWindow;
         
@@ -190,11 +208,12 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
             _Contacts = new _Contacts();
             Date = new Dates();
             _Dir = new _Direction();
+            _RuleOrderLine = new RuleOrderLine("");
             Persone = new Persone();
             PersoneDescription = new PersoneDescription();
             _Subj = new _Subject();
             dialogService = new DefaultDialogService();
-            showWindow = new DefaultShowWindowService();
+            showWindow = new DefaultShowWindowService();            
         }
 
         private void AuthorDafaultDataLoad(Author author)

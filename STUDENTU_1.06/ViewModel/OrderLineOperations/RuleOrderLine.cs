@@ -48,12 +48,25 @@ namespace STUDENTU_1._06.ViewModel
                     "\n Время: к " + Order.Dates.AuthorDeadLine.ToShortTimeString()+" или свой вариант. ";
             }
             ExecuteAuthor = new AuthorsRecord();
-            ExecuteAuthor.Persone.NickName = "не задан";
-
-          
+            ExecuteAuthor.Persone.NickName = "не задан";        
 
             SelectedExecuteAuthor = new Author();
                         
+        }
+        //for can create not so hard object  RuleOrderLine then we need to edit author onfo (can see AuthorEditWindow.xaml)
+        public RuleOrderLine(string editAuthorInfo)
+        {
+            showWindow = new DefaultShowWindowService();
+            dialogService = new DefaultDialogService();
+            AuthorsRecords = new ObservableCollection<AuthorsRecord>();
+            SelectedAuthorsRecords = new ObservableCollection<AuthorsRecord>();
+            AuthorsRecord = new AuthorsRecord();
+            _AuthorStatus = new _AuthorStatus();
+            _Dir = new _Direction();
+            _Subject = new _Subject();
+            //add all authors data to collection
+            AllAuthorsCall("");
+
         }
 
         //проверяем не пустое ли поле с вариантами. Возращает "не задано" если пустое. Если не пустое - возвращет исходное значение
@@ -409,7 +422,7 @@ namespace STUDENTU_1._06.ViewModel
 
         //call for all authors. If param=="all" et last we'll see all authors with any asuthorstatus
         //if  param=="all"  et last we'll see all authors with asuthorstatus "работает"
-        private void AuthorsCallByParams(string dir, string subj, string authorStatus)
+        public void AuthorsCallByParams(string dir, string subj, string authorStatus)
         {
             using (StudentuConteiner db = new StudentuConteiner())
             {
