@@ -72,7 +72,7 @@ namespace STUDENTU_1._06.ViewModel
                         new Direction
                         {
                             DirectionId = item.DirectionId,
-                            DirectionName = item.DirectionName
+                            DirectionName = item.DirectionName                            
                         });                       
                     }
                     Dir = DirRecords[0];

@@ -8,6 +8,7 @@ using STUDENTU_1._06.Views;
 using STUDENTU_1._06.Views.PersoneOperations.AuthorOperationsWindows;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
@@ -196,9 +197,12 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
             Author =author;
             DefaultPhoto = "default_avatar.png";
             AuthorDafaultDataLoad(author);
+           
             dialogService = new DefaultDialogService();
             showWindow = new DefaultShowWindowService();
         }
+
+       
 
         private void DefaultDataLoad()
         {
@@ -234,6 +238,8 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                         _Dir.AuthorDirections.Add(item);
                     Date = new Dates();
                     Date = author.Persone.Dates[0];
+
+                    
                     Persone = author.Persone ;
                     PersoneDescription = author.Persone.PersoneDescription;
                     _Subj = new _Subject();

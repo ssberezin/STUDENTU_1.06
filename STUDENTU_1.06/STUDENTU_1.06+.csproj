@@ -265,7 +265,6 @@
     <Compile Include="Model\HelpModelClasses\ShowWindows\IShowWindowService.cs" />
     <Compile Include="ViewModel\ForEditOrderVM\BlackListClass.cs" />
     <Compile Include="ViewModel\ForEditOrderVM\ForEditOrder.cs" />
-    <Compile Include="ViewModel\ForEditOrderVM\ForEditOrderAddContacts.cs" />
     <Compile Include="ViewModel\OrderLineOperations\RuleOrderLine.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="Views\EditOrderWindows\AddContactsWindow.xaml.cs">

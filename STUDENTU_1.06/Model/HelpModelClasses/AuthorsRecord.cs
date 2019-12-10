@@ -12,6 +12,7 @@ namespace STUDENTU_1._06.Model.HelpModelClasses
             this.Persone = new Persone();
             this.Contacts = new Contacts();
             this.Author = new Author();
+            this.Date = new Dates();
         }
 
         //public int AuthorRecordId { get; set; }        
@@ -19,6 +20,7 @@ namespace STUDENTU_1._06.Model.HelpModelClasses
         //public string Source { get; set; }
         public Author Author { get; set; }
         public Contacts Contacts { get; set; }
+        public Dates Date { get; set; }
         public ObservableCollection<EvaluationRecord> EvaluationRecords { get; set; }
 
 

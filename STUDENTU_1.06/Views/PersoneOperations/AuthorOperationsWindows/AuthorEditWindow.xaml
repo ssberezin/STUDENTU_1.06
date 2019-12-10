@@ -324,7 +324,7 @@
             </Viewbox>
             <DatePicker  IsDropDownOpen="False" SelectedDateFormat="Short" 
                         MaxWidth="150" TabIndex="9" HorizontalAlignment="Center"
-                        SelectedDate="{Binding _RuleOrderLine.AuthorsRecord.Persone.Date.DayBirth,Mode=TwoWay}"
+                        SelectedDate="{Binding _RuleOrderLine.AuthorsRecord.Date.DayBirth,Mode=TwoWay}"
                          IsEnabled="{Binding ElementName=BirthDate, Path=IsChecked}"/>
 
             <!--Date can find in AuthorsVMClass.cs-->
@@ -393,7 +393,7 @@
                 <DatePicker x:Name="DateOfReception" IsDropDownOpen="False" SelectedDateFormat="Short" 
                             IsEnabled="{Binding ElementName=StartWorkEnable,  Path=IsChecked}"
                         MaxWidth="150" TabIndex="13" HorizontalAlignment="Center"
-                        SelectedDate="{Binding _RuleOrderLine.AuthorsRecord.Persone.Date.StartDateWork, Mode=TwoWay}"  Width="111" Height="21" Margin="10,0,29.4,0"
+                        SelectedDate="{Binding _RuleOrderLine.AuthorsRecord.Date.StartDateWork, Mode=TwoWay}"  Width="111" Height="21" Margin="10,0,29.4,0"
                         HorizontalContentAlignment="Center"/>
             </StackPanel>
 
@@ -409,7 +409,7 @@
                 <DatePicker  IsDropDownOpen="False" SelectedDateFormat="Short" 
                              IsEnabled="{Binding ElementName=EndWorkEnable,  Path=IsChecked}"
                         MaxWidth="150" TabIndex="13" HorizontalAlignment="Center"
-                        SelectedDate="{Binding _RuleOrderLine.AuthorsRecord.Persone.Date.EndDateWork, Mode=TwoWay}"  Width="111" Height="21" Margin="10,0,29.4,0"
+                        SelectedDate="{Binding _RuleOrderLine.AuthorsRecord.Date.EndDateWork, Mode=TwoWay}"  Width="111" Height="21" Margin="10,0,29.4,0"
                         HorizontalContentAlignment="Center"/>
             </StackPanel>
 
@@ -510,9 +510,9 @@
             <ListBox x:Name="DirList" 
                      Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="2" Margin="5" 
                  
-                     ItemsSource="{Binding _RuleOrderLine._Dir.AuthorDirections, 
+                     ItemsSource="{Binding  _RuleOrderLine._Dir.AuthorDirections, 
                     UpdateSourceTrigger=PropertyChanged}"  
-                    SelectedIndex="{Binding _Dir.Index}"
+                    SelectedIndex="{Binding _RuleOrderLine._Dir.Index}"
                      SelectionMode="Single" 
                      IsSynchronizedWithCurrentItem="False"
                      TabIndex="3"
@@ -580,8 +580,8 @@
             </WrapPanel>
             <ListBox x:Name="DirList1" 
                      Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="2" Margin="5" 
-                    ItemsSource="{Binding _RuleOrderLine._Subj.AuthorSubjects}" 
-                 SelectedIndex="{Binding _Subj.Index}"
+                    ItemsSource="{Binding _RuleOrderLine._Subject.AuthorSubjects}" 
+                 SelectedIndex="{Binding _RuleOrderLine._Subject.Index}"
                      SelectionMode="Single" 
                      IsSynchronizedWithCurrentItem="False"
                      TabIndex="3"

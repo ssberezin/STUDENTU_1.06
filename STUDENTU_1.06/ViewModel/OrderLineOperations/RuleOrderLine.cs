@@ -10,6 +10,7 @@ using STUDENTU_1._06.Views.EditOrderWindows.Evaluation;
 using STUDENTU_1._06.Model.HelpModelClasses.DialogWindows;
 using STUDENTU_1._06.Model.HelpModelClasses.ShowWindows;
 using STUDENTU_1._06.Views.EditOrderWindows.RuleOrderLineWindows;
+using System.ComponentModel;
 
 namespace STUDENTU_1._06.ViewModel
 {
@@ -66,7 +67,56 @@ namespace STUDENTU_1._06.ViewModel
             _Subject = new _Subject();
             //add all authors data to collection
             AllAuthorsCall("");
+            PropertyChanged += ChangeProperty;
 
+        }
+        private void ChangeProperty(object sender, PropertyChangedEventArgs e)
+        {
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                try
+                {
+                    _Dir.AuthorDirections.Clear();
+                    var res1 = db.Directions.ToList();
+                    foreach (var item in res1)
+                        foreach (var i in item.Author)
+                        {
+                            if (i.AuthorId == AuthorsRecord.Author.AuthorId)
+                            {
+                                _Dir.AuthorDirections.Add(item);
+                                break;
+                            }
+                        }
+                    _Subject.AuthorSubjects.Clear();
+                    var res = db.Subjects.ToList();
+                    foreach (var item in res)
+                        foreach (var i in item.Authors)
+                        {
+                            if (i.AuthorId == AuthorsRecord.Author.AuthorId)
+                            {
+                                _Subject.AuthorSubjects.Add(item);
+                                break;
+                            }
+                        }
+
+                }
+                catch (ArgumentNullException ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
         }
 
         //проверяем не пустое ли поле с вариантами. Возращает "не задано" если пустое. Если не пустое - возвращет исходное значение
@@ -294,42 +344,52 @@ namespace STUDENTU_1._06.ViewModel
                         if (param!="all")
                         if (item.AuthorStatus.AuthorStatusName != "работает")
                             continue;
-                        Author author = new Author()
-                        {
-                            AuthorId = item.AuthorId,
-                            AuthorStatus= item.AuthorStatus,
-                            Source = item.Source,
-                            Rating = item.Rating,
-                            Punctually = item.Punctually,
-                            CompletionCompliance = item.CompletionCompliance,
-                            WorkQuality = item.WorkQuality,
-                            Responsibility = item.Responsibility
-                        };                        
-                        Persone persone = new Persone()
-                        {
-                            PersoneId = item.Persone.PersoneId,
-                            PersoneDescription = item.Persone.PersoneDescription,
-                            Name = item.Persone.Name,
-                            Surname = item.Persone.Surname,
-                            Patronimic = item.Persone.Patronimic,
-                            Sex = item.Persone.Sex,
-                            NickName = item.Persone.NickName
-                        };                        
-                        Contacts _contacts = new Contacts()
-                        {
-                            Phone1 = item.Persone.Contacts.Phone1,
-                            Phone2 = item.Persone.Contacts.Phone2,
-                            Phone3 = item.Persone.Contacts.Phone3,
-                            Email1 = item.Persone.Contacts.Email1,
-                            Email2 = item.Persone.Contacts.Email2,
-                            VK = item.Persone.Contacts.VK,
-                            FaceBook = item.Persone.Contacts.FaceBook
-                        };
+                        Author author = new Author();
+                        author = item;
+                        // Author author = new Author()
+                        // {
+                        //    AuthorId = item.AuthorId,
+                        //    AuthorStatus= item.AuthorStatus,
+                        //    Source = item.Source,
+                        //    Rating = item.Rating,
+                        //    Punctually = item.Punctually,
+                        //    CompletionCompliance = item.CompletionCompliance,
+                        //    WorkQuality = item.WorkQuality,
+                        //    Responsibility = item.Responsibility
+                        //};
+                        Persone persone = new Persone();
+                        persone = item.Persone;
+                        //Persone persone = new Persone()
+                        //{
+                        //    PersoneId = item.Persone.PersoneId,
+                        //    PersoneDescription = item.Persone.PersoneDescription,
+                        //    Name = item.Persone.Name,
+                        //    Surname = item.Persone.Surname,
+                        //    Patronimic = item.Persone.Patronimic,
+                        //    Sex = item.Persone.Sex,
+                        //    NickName = item.Persone.NickName
+                        //};
+                        Contacts _contacts = new Contacts();
+                        _contacts = item.Persone.Contacts;
+                        //Contacts _contacts = new Contacts()
+                        //{
+                        //    Phone1 = item.Persone.Contacts.Phone1,
+                        //    Phone2 = item.Persone.Contacts.Phone2,
+                        //    Phone3 = item.Persone.Contacts.Phone3,
+                        //    Email1 = item.Persone.Contacts.Email1,
+                        //    Email2 = item.Persone.Contacts.Email2,
+                        //    VK = item.Persone.Contacts.VK,
+                        //    FaceBook = item.Persone.Contacts.FaceBook
+                        //};
+                        Dates date = new Dates();
+                        date = item.Persone.Dates[0];
+
                         record = new AuthorsRecord
                         {
                             Author = author,
                             Persone = persone,
-                            Contacts = _contacts
+                            Contacts = _contacts,
+                            Date = date
                         };
                         AuthorsRecords.Add(record);
                     }
