@@ -47,7 +47,7 @@
                 <scm1:SortDescription PropertyName="Persone.NickName"/>
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
-        
+
         <!--for sorting in listbox without behind code-->
         <CollectionViewSource x:Key="SortedStatuses" Source="{Binding _RuleOrderLine.AuthorsRecord._AuthorStatus.AuthorStatusRecords}"
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
@@ -56,8 +56,15 @@
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
 
+        <CollectionViewSource x:Key="SortedItems2" Source="{Binding  _RuleOrderLine._Dir.DirRecords}"
+                xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
+            <!--DirRecords can find in _Direction.cs-->
+            <CollectionViewSource.SortDescriptions>
+                <scm1:SortDescription PropertyName="DirectionName"/>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
 
-        <CollectionViewSource x:Key="SortedItems" Source="{Binding  _Dir.DirRecords}"
+        <CollectionViewSource x:Key="SortedItems" Source="{Binding  _RuleOrderLine._Dir.DirRecords}"
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
             <!--DirRecords can find in _Direction.cs-->
             <CollectionViewSource.SortDescriptions>
@@ -72,7 +79,7 @@
                 <scm1:SortDescription PropertyName="TypeOfWork"/>
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
-        <CollectionViewSource x:Key="SortedSubjects" Source="{Binding  _Subj.SubjRecords}"
+        <CollectionViewSource x:Key="SortedSubjects" Source="{Binding  _RuleOrderLine._Subject.SubjRecords}"
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
             <!--SubjRecords can find in SubjectClass.cs-->
             <CollectionViewSource.SortDescriptions>
@@ -209,11 +216,11 @@
             </Viewbox>
             <ComboBox Grid.Column="1" Grid.Row="2" Margin="4"   TabIndex="2" SelectedIndex="0" 
                       IsEditable="False"
-                     ItemsSource="{Binding Source={StaticResource SortedItems}, 
+                     ItemsSource="{Binding Source={StaticResource SortedItems2}, 
                       UpdateSourceTrigger=PropertyChanged}" 
-                     SelectedItem="{Binding _Dir.Dir}"
+                     SelectedItem="{Binding _RuleOrderLine._Dir.Dir}"
                      DisplayMemberPath="DirectionName"
-                     ToolTip="{Binding _Dir.Dir.DirectionName}" 
+                     ToolTip="{Binding _RuleOrderLine._Dir.Dir.DirectionName}" 
                      HorizontalContentAlignment="Left"
                       MinWidth="100"
                      Background="White" >
@@ -451,7 +458,7 @@
         </StackPanel>
 
 
-        <StackPanel Grid.Column="5" HorizontalAlignment="Left"  Margin="10,11,0,0"
+        <StackPanel Grid.Column="5" HorizontalAlignment="Left"  Margin="10"
                     Grid.RowSpan="5" VerticalAlignment="Top" 
                     Orientation="Horizontal" >
             <StackPanel.ContextMenu>
@@ -484,7 +491,7 @@
                      VerticalAlignment="Stretch">
                     <TextBlock Text="Направление: " FontWeight="Bold"  Foreground="Brown"/>
                 </Viewbox>
-                <ComboBox x:Name="Direction"  MinWidth="185"  TabIndex="0" SelectedIndex="0" 
+                <ComboBox x:Name="Direction"  MinWidth="185"  TabIndex="0"  
                       IsEditable="False"
                      ItemsSource="{Binding Source={StaticResource SortedItems}, 
                       UpdateSourceTrigger=PropertyChanged}" 
@@ -501,7 +508,7 @@
 
 
                 <Button x:Name="AddDirection" Width="40" Background="Gray" Content="..." TabIndex="1"
-                    Command="{Binding _Dir.NewEditDirection}" 
+                    Command="{Binding _RuleOrderLine._Dir.NewEditDirection}" 
                     CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}" />
 
@@ -531,14 +538,14 @@
 
             </ListBox>
             <Button Grid.Column="0" Grid.Row="3"  Content="+" Background="Red"
-                    Command="{Binding _Dir.AddAuthorDirectionCommand}" 
+                    Command="{Binding AddAuthorDirectionCommand}" 
                  IsEnabled="{Binding SelectedItem, Converter={StaticResource NullBoolConverter}, ElementName=Direction}"
                 TabIndex="4" >
                 <!--Command AddDirectionCommand can find in DirectionClass.cs-->
             </Button>
 
             <Button Grid.Column="2" Grid.Row="3" Content="-" 
-                Command="{Binding _Dir.DelFromAuthorDirectionCommand}"                
+                Command="{Binding _RuleOrderLine._Dir.DelFromAuthorDirectionCommand}"                
                 IsEnabled="{Binding SelectedItem, 
                      Converter={StaticResource NullBoolConverter}, ElementName=DirList}"
                 TabIndex="5" RenderTransformOrigin="0.5,0.681"/>
@@ -550,10 +557,10 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.5*"/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition Height="0.5*"/>
+                <RowDefinition Height="37.6"/>
+                <RowDefinition Height="75*"/>
+                <RowDefinition Height="75*"/>
+                <RowDefinition Height="38*"/>
             </Grid.RowDefinitions>
             <WrapPanel  Grid.ColumnSpan="3"  Margin="3,3,0,3" HorizontalAlignment="Center"  VerticalAlignment="Center">
                 <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
@@ -564,16 +571,16 @@
                       
                      ItemsSource="{Binding Source={StaticResource SortedSubjects}, 
                       UpdateSourceTrigger=PropertyChanged}" 
-                     SelectedItem="{Binding _Subj.Subj}"
+                     SelectedItem="{Binding _RuleOrderLine._Subject.Subj}"
                      DisplayMemberPath="SubName"
-                      ToolTip="{Binding _Subj.Subj.SubName}" 
+                      ToolTip="{Binding _RuleOrderLine._Subject.Subj.SubName}" 
                      HorizontalContentAlignment="Center"
                      Background="White" >
                     <!--SortedSubjects can find above in Window.Resources-->
                     <!--Subj can find in _Subject.cs-->
                 </ComboBox>
                 <Button x:Name="AddSubject" Width="40" Background="Gray" Content="..." TabIndex="12"
-                    Command="{Binding _Subj.NewEditSubject}"
+                    Command="{Binding _RuleOrderLine._Subj.NewEditSubject}"
                     CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}" />
                 <!--Command NewEditSubject in _Subject.cs-->
@@ -600,14 +607,14 @@
 
             </ListBox>
             <Button Grid.Column="0" Grid.Row="3"  Content="+" Background="Red"
-                    Command="{Binding _Subj.AddAuthorSubjectCommand}" 
+                    Command="{Binding _RuleOrderLine._Subj.AddAuthorSubjectCommand}" 
                  IsEnabled="{Binding SelectedItem, Converter={StaticResource NullBoolConverter}, ElementName=Subject}"
                 TabIndex="4" >
                 <!--Command AddAuthorSubjectCommand can find in _Subject.cs-->
             </Button>
 
             <Button Grid.Column="2" Grid.Row="3" Content="-"
-                Command="{Binding _Subj.DelFromAuthorSubjectCommand}"                 
+                Command="{Binding _RuleOrderLine._Subj.DelFromAuthorSubjectCommand}"                 
                 IsEnabled="{Binding SelectedItem, 
                      Converter={StaticResource NullBoolConverter}, ElementName=DirList}"
                 TabIndex="5" />

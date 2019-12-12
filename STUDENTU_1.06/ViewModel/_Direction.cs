@@ -20,6 +20,7 @@ namespace STUDENTU_1._06.ViewModel
             DirRecords = new ObservableCollection<Direction>();
             AuthorDirections = new ObservableCollection<Direction>();
             LoadDirectionsData();
+            SelectDir=new Direction();
             showWindow = new DefaultShowWindowService();
             dialogService= new  DefaultDialogService();
         }
@@ -29,6 +30,20 @@ namespace STUDENTU_1._06.ViewModel
 
         public ObservableCollection<Direction> DirRecords { get; set; }
         public ObservableCollection<Direction> AuthorDirections { get; set; }
+
+        private Direction selectDir;
+        public Direction SelectDir
+        {
+            get { return dir; }
+            set
+            {
+                if (selectDir != value)
+                {
+                    selectDir = value;
+                    OnPropertyChanged(nameof(SelectDir));
+                }
+            }
+        }
 
         private Direction dir;
         public Direction Dir
@@ -361,6 +376,16 @@ namespace STUDENTU_1._06.ViewModel
             }
             else            
                 AuthorDirections.Add(Dir);
+        }
+
+        public void AddAuthorDirection(ObservableCollection<Direction> authorDirections, Direction _dir)
+        {
+            if (FindDir(authorDirections, _dir) || string.IsNullOrEmpty(_dir.DirectionName) || _dir.DirectionName == "---")
+            {
+                dialogService.ShowMessage("Нельязя добавить эту запись");
+            }
+            else
+                authorDirections.Add(_dir);
 
 
         }
@@ -370,6 +395,14 @@ namespace STUDENTU_1._06.ViewModel
         {
             foreach (Direction item in AuthorDirections)
                 if (Dir.DirectionId == item.DirectionId || Dir.DirectionName == "---")
+                    return true;
+            return false;
+        }
+
+        public bool FindDir(ObservableCollection<Direction> authorDirections, Direction _dir)
+        {
+            foreach (Direction item in authorDirections)
+                if (_dir.DirectionId == item.DirectionId || _dir.DirectionName == "---")
                     return true;
             return false;
         }
@@ -387,6 +420,11 @@ namespace STUDENTU_1._06.ViewModel
         private void DelFromAuthorDirection()
         {            
                 AuthorDirections.Remove(AuthorDirections[Index]);
+        }
+
+        public void DelFromAuthorDirection(ObservableCollection<Direction> authorDirections, int index)
+        {
+            AuthorDirections.Remove(authorDirections[index]);
         }
     }
    

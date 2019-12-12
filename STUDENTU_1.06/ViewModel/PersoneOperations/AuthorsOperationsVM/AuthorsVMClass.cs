@@ -189,6 +189,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
         public AuthorsVMClass()
         {
             DefaultDataLoad();
+             PropertyChanged += ChangeProperty;
         }
 
         public AuthorsVMClass(Author author)
@@ -202,9 +203,13 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
             showWindow = new DefaultShowWindowService();
         }
 
-       
+        private void ChangeProperty(object sender, PropertyChangedEventArgs e)
+        {
+           
+        }
 
-        private void DefaultDataLoad()
+
+            private void DefaultDataLoad()
         {
             DefaultPhoto = "default_avatar.png";
             Author = new Author();
@@ -511,5 +516,18 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
             error = error == "" ? null:error ;
              return error;
         }
+
+        //===================================COMMAND FOR ADD DIRECTIONS INTO AuthorDirections ============      
+
+        private RelayCommand addAuthorDirectionCommand;
+        public RelayCommand AddAuthorDirectionCommand => addAuthorDirectionCommand ??
+            (addAuthorDirectionCommand = new RelayCommand((selectedItem) =>
+            {
+                //AddAuthorDirection(ObservableCollection < Direction > authorDirections, Direction _dir)
+                _RuleOrderLine._Dir.AddAuthorDirection(_RuleOrderLine._Dir.AuthorDirections, _Dir.Dir);
+            }
+           ));
+
+        
     }
 }
