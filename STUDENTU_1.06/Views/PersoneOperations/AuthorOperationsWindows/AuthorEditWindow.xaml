@@ -56,6 +56,13 @@
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
 
+        <CollectionViewSource x:Key="SortedStatuses2" Source="{Binding _AuthorStatus.AuthorStatusRecords}"
+                xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
+            <CollectionViewSource.SortDescriptions>
+                <scm1:SortDescription PropertyName="AuthorStatusName"/>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+
         <CollectionViewSource x:Key="SortedItems2" Source="{Binding  _RuleOrderLine._Dir.DirRecords}"
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
             <!--DirRecords can find in _Direction.cs-->
@@ -79,14 +86,20 @@
                 <scm1:SortDescription PropertyName="TypeOfWork"/>
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
-        <CollectionViewSource x:Key="SortedSubjects" Source="{Binding  _RuleOrderLine._Subject.SubjRecords}"
+        <CollectionViewSource x:Key="SortedSubjects" Source="{Binding _Subj.SubjRecords}"
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
             <!--SubjRecords can find in SubjectClass.cs-->
             <CollectionViewSource.SortDescriptions>
                 <scm1:SortDescription PropertyName="SubName"/>
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
-
+        <CollectionViewSource x:Key="SortedSubjects2" Source="{Binding  _RuleOrderLine._Subject.SubjRecords}"
+                xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
+            <!--SubjRecords can find in SubjectClass.cs-->
+            <CollectionViewSource.SortDescriptions>
+                <scm1:SortDescription PropertyName="SubName"/>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
 
 
         <ControlTemplate x:Key="validationFailed">
@@ -180,7 +193,7 @@
             <ComboBox  Grid.Column="1" Margin="4"   TabIndex="0" SelectedIndex="0" 
                       IsEditable="False" 
                      MinWidth="100"
-                     ItemsSource="{Binding Source={StaticResource SortedStatuses}, 
+                     ItemsSource="{Binding Source={StaticResource SortedStatuses2}, 
                       UpdateSourceTrigger=PropertyChanged}" 
                      SelectedItem="{Binding _AuthorStatus.AuthorStatus}"
                      DisplayMemberPath="AuthorStatusName"                        
@@ -197,9 +210,9 @@
             </Viewbox>
             <ComboBox Grid.Row="1" Grid.Column="1"  Margin="4"   TabIndex="1"   SelectedIndex="0" 
                       MinWidth="100"
-                     ItemsSource="{Binding Source={StaticResource SortedSubjects}, 
+                     ItemsSource="{Binding Source={StaticResource SortedSubjects2}, 
                       UpdateSourceTrigger=PropertyChanged}" 
-                     SelectedItem="{Binding _Subject.Subj}"
+                     SelectedItem="{Binding _RuleOrderLine._Subject.Subj}"
                      DisplayMemberPath="SubName"
                       ToolTip="{Binding _Subject.Subj.SubName}" 
                      HorizontalContentAlignment="Left"
@@ -301,7 +314,7 @@
             </Viewbox>
             <TextBox    Text="{Binding _RuleOrderLine.AuthorsRecord.Persone.NickName, Mode=TwoWay}"  MinWidth="110"  TabIndex="3"/>
             <!--Persone can find in AuthorsVMClass.cs-->
-            <Button Content="Добавить контакты " Background="YellowGreen" Height="30" TabIndex="4" Margin="5"
+            <Button Content="Контакты" Background="YellowGreen" Height="30" TabIndex="4" Margin="5"
                      Command="{Binding NewEditContactsCommand}" CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}" Width="177"/>
             <!--NewEditContactsCommand can find in ForEditOrderAddContacts.cs-->
@@ -557,10 +570,10 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="37.6"/>
-                <RowDefinition Height="75*"/>
-                <RowDefinition Height="75*"/>
-                <RowDefinition Height="38*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition Height="38.4"/>
             </Grid.RowDefinitions>
             <WrapPanel  Grid.ColumnSpan="3"  Margin="3,3,0,3" HorizontalAlignment="Center"  VerticalAlignment="Center">
                 <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
@@ -571,9 +584,9 @@
                       
                      ItemsSource="{Binding Source={StaticResource SortedSubjects}, 
                       UpdateSourceTrigger=PropertyChanged}" 
-                     SelectedItem="{Binding _RuleOrderLine._Subject.Subj}"
+                     SelectedItem="{Binding _Subj.Subj}"
                      DisplayMemberPath="SubName"
-                      ToolTip="{Binding _RuleOrderLine._Subject.Subj.SubName}" 
+                      ToolTip="{Binding _Subj.Subj.SubName}" 
                      HorizontalContentAlignment="Center"
                      Background="White" >
                     <!--SortedSubjects can find above in Window.Resources-->
@@ -607,14 +620,14 @@
 
             </ListBox>
             <Button Grid.Column="0" Grid.Row="3"  Content="+" Background="Red"
-                    Command="{Binding _RuleOrderLine._Subj.AddAuthorSubjectCommand}" 
+                    Command="{Binding AddAuthorSubjectCommand}" 
                  IsEnabled="{Binding SelectedItem, Converter={StaticResource NullBoolConverter}, ElementName=Subject}"
                 TabIndex="4" >
                 <!--Command AddAuthorSubjectCommand can find in _Subject.cs-->
             </Button>
 
             <Button Grid.Column="2" Grid.Row="3" Content="-"
-                Command="{Binding _RuleOrderLine._Subj.DelFromAuthorSubjectCommand}"                 
+                Command="{Binding _RuleOrderLine._Subject.DelFromAuthorSubjectCommand}"                 
                 IsEnabled="{Binding SelectedItem, 
                      Converter={StaticResource NullBoolConverter}, ElementName=DirList}"
                 TabIndex="5" />
@@ -638,7 +651,7 @@
 
             <StackPanel  Orientation="Horizontal" MinHeight="25" HorizontalAlignment="Center" >
                 <TextBlock Text="Рейтинг: " Margin="3,0" VerticalAlignment="Center" Foreground="Brown" FontWeight="Bold"  />
-                <TextBlock Text="{Binding Author.Rating,UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Center" Foreground="Red" FontWeight="Bold"  />
+                <TextBlock Text="{Binding _RuleOrderLine.AuthorsRecord.Author.Rating,UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Center" Foreground="Red" FontWeight="Bold"  />
             </StackPanel>
             <TextBlock Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center"
                                Text="Пунктуальность:" FontWeight="Bold"  Foreground="Brown"   />

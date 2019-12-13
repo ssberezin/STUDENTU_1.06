@@ -386,8 +386,6 @@ namespace STUDENTU_1._06.ViewModel
             }
             else
                 authorDirections.Add(_dir);
-
-
         }
 
         //here we check AuthorDirections for the added item
