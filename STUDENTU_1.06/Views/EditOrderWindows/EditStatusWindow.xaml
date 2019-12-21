@@ -47,7 +47,7 @@
             <RowDefinition Height="0.5*"/>
         </Grid.RowDefinitions>
         <TextBox x:Name="DirName" Grid.ColumnSpan="3" Margin="5" 
-                 Text="{Binding _Status.Status.StatusName , Mode=TwoWay,
+                 Text="{Binding _Status.Status.StatusName , Mode=OneWay,
             UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="0"
                  SpellCheck.IsEnabled="True" Language="ru-ru" TextAlignment="Center"/>
         <!-- Statuse can find in _Statuse.cs-->

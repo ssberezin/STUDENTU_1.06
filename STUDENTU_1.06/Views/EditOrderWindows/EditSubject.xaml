@@ -46,7 +46,8 @@
             <RowDefinition/>
             <RowDefinition Height="0.5*"/>
         </Grid.RowDefinitions>
-        <TextBox x:Name="SubName" Grid.ColumnSpan="3" Margin="5" Text="{Binding _Subj.Subj.SubName , Mode=TwoWay,
+        <TextBox x:Name="SubName" Grid.ColumnSpan="3" Margin="5" 
+                 Text="{Binding _Subj.Subj.SubName , Mode=OneWay,
             UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap"
                  SpellCheck.IsEnabled="True" Language="ru-ru" TextAlignment="Center"
                  TabIndex="0"/>

@@ -8,6 +8,7 @@ using STUDENTU_1._06.Views;
 using STUDENTU_1._06.Views.PersoneOperations.AuthorOperationsWindows;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data.Entity;
 using System.IO;
@@ -23,7 +24,11 @@ using System.Windows.Media.Imaging;
 namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
 {
    public partial class AuthorsVMClass : Helpes.ObservableObject
-    {                 
+    {
+
+        public ObservableCollection<AuthorsRecord> AuthorsRecords { get; set; }
+        //метка указания режима редактирования. 
+        bool edit = false;
 
         //for display default image
         private string defaultPhoto;
@@ -58,6 +63,8 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
         }
 
 
+
+
         //for operations with records in AuthorStatus table
         private _AuthorStatus _authorStatus;
         public _AuthorStatus _AuthorStatus
@@ -84,6 +91,20 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                 {
                     author = value;
                     OnPropertyChanged(nameof(Author));
+                }
+            }
+        }
+
+        private AuthorsRecord authorsRecord;
+        public AuthorsRecord AuthorsRecord
+        {
+            get { return authorsRecord; }
+            set
+            {
+                if (authorsRecord != value)
+                {
+                    authorsRecord = value;
+                    OnPropertyChanged(nameof(AuthorsRecord));
                 }
             }
         }
@@ -163,21 +184,19 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
             }
         }
 
-        //to be able to display authors data in ListBox x:Name="Authors" AuthorEditWindow.xaml
-        private RuleOrderLine _ruleOrderLine;
-        public RuleOrderLine _RuleOrderLine
+        private RuleOrderLine ruleOrderLine;
+        public RuleOrderLine RuleOrderLine
         {
-            get { return _ruleOrderLine; }
+            get { return ruleOrderLine; }
             set
             {
-                if (_ruleOrderLine != value)
+                if (ruleOrderLine != value)
                 {
-                    _ruleOrderLine = value;
-                    OnPropertyChanged(nameof(_RuleOrderLine));
+                    ruleOrderLine = value;
+                    OnPropertyChanged(nameof(RuleOrderLine));
                 }
             }
         }
-
 
 
         IDialogService dialogService;
@@ -189,25 +208,83 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
         public AuthorsVMClass()
         {
             DefaultDataLoad();
-             PropertyChanged += ChangeProperty;
         }
 
         public AuthorsVMClass(Author author)
         {
+            edit = !edit;
             Author = new Author();
-            //Author =author;
+            Author =author;
             DefaultPhoto = "default_avatar.png";
             AuthorDafaultDataLoad(author);
-           
             dialogService = new DefaultDialogService();
             showWindow = new DefaultShowWindowService();
         }
 
-        private void ChangeProperty(object sender, PropertyChangedEventArgs e)
+        public AuthorsVMClass(string str)
         {
-            
+            AuthorsRecords = new ObservableCollection<AuthorsRecord>();    
+            AuthorsRecord = new AuthorsRecord();
+            RuleOrderLine = new RuleOrderLine("");
+            DefaultDataLoad();
+            AllAuthorsCall();
+            PropertyChanged += ChangeProperty;
         }
 
+        private void ChangeProperty(object sender, PropertyChangedEventArgs e)
+        {           
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                try
+                {
+                    if (AuthorsRecord != null)
+                    {
+                        db.Authors.Attach(AuthorsRecord.Author);
+                        db.Dates.Attach(AuthorsRecord.Persone.Dates[0]);
+                        db.PersoneDescriptions.Attach(AuthorsRecord.Persone.PersoneDescription);
+                        _Dir.AuthorDirections.Clear();
+                        foreach (var item in Author.Direction)
+                            _Dir.AuthorDirections.Add(item);
+                        _Subj.AuthorSubjects.Clear();
+                        foreach (var item in AuthorsRecord.Author.Subject)
+                            _Subj.AuthorSubjects.Add(item);
+                    }
+                    
+                }
+                catch (ArgumentNullException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (OverflowException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+            }
+            if (AuthorsRecord != null)
+            {
+                Persone = AuthorsRecord.Persone;
+                Author = AuthorsRecord.Author;
+                _AuthorStatus.AuthorStatus = Author.AuthorStatus;
+                _Contacts.Contacts = Persone.Contacts;
+                _Contacts.TmpContacts = _Contacts.Contacts;
+               
+                Date = AuthorsRecord.Persone.Dates[0];
+                PersoneDescription = AuthorsRecord.Persone.PersoneDescription;
+            }
+            
+        }
 
         private void DefaultDataLoad()
         {
@@ -217,12 +294,11 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
             _Contacts = new _Contacts();
             Date = new Dates();
             _Dir = new _Direction();
-            _RuleOrderLine = new RuleOrderLine("");
             Persone = new Persone();
             PersoneDescription = new PersoneDescription();
             _Subj = new _Subject();
             dialogService = new DefaultDialogService();
-            showWindow = new DefaultShowWindowService();            
+            showWindow = new DefaultShowWindowService();
         }
 
         private void AuthorDafaultDataLoad(Author author)
@@ -243,8 +319,6 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                         _Dir.AuthorDirections.Add(item);
                     Date = new Dates();
                     Date = author.Persone.Dates[0];
-
-                    
                     Persone = author.Persone ;
                     PersoneDescription = author.Persone.PersoneDescription;
                     _Subj = new _Subject();
@@ -277,8 +351,56 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
         }
 
 
-       
-      
+        private void AllAuthorsCall()
+        {
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                try
+                {
+                    //var contacts = db.Contacts.Include("Persone").ToList();
+                    var result = db.Authors.
+                                            Include("Subject")
+                                            .Include("Direction")
+                                            .Include("Persone")
+                                           .Include("AuthorStatus").ToList();
+                    AuthorsRecord record;
+                    foreach (Author item in result)
+                    {
+                      
+                        record = new AuthorsRecord
+                        {
+                            Author = item,
+                            Persone = item.Persone,
+                            Contacts = item.Persone.Contacts                                                       
+                        };                        
+                        AuthorsRecords.Add(record);
+                    }
+                }
+                catch (ArgumentNullException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (OverflowException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+            }
+
+        }
+
+
 
         //==================================Command for add new photo to persone profile================
         private RelayCommand openFileDialogCommand;
@@ -310,16 +432,13 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
         public RelayCommand CreateRatingCommand => createRatingCommand?? (createRatingCommand = new RelayCommand(
                     (obj) =>
                     {
-                        AuthorRatingCreate(_RuleOrderLine.AuthorsRecord.Author);
+                        AuthorRatingCreate();
                     }
                     ));
 
-        private void AuthorRatingCreate(Author author)
+        private void AuthorRatingCreate()
         {
-            if (author == null)
-                Author.Rating = Author.RatingCreate();
-            else
-                _RuleOrderLine.AuthorsRecord.Author.Rating = _RuleOrderLine.AuthorsRecord.Author.RatingCreate();
+           Author.Rating = Author.RatingCreate();           
         }
 
         //==================================COMMAND FOR CLOSE WINDOW ==========================
@@ -375,10 +494,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
             (addSubjectsCommand = new RelayCommand(
                     (obj) =>
                     {
-                        AuthorSubjectWindow authorSubjectWindow = new AuthorSubjectWindow(obj);
-                        //authorSubjectWindow.Owner = Application.Current.MainWindow;
-                  
-                        //showWindow.ShowWindow(authorSubjectWindow);
+                        AuthorSubjectWindow authorSubjectWindow = new AuthorSubjectWindow(obj);                        
                         showWindow.ShowDialog(authorSubjectWindow);
                     }
                     ));
@@ -392,21 +508,17 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
             (saveAuthorDataCommand = new RelayCommand(
                     (obj) =>
                     {
-                        if (_RuleOrderLine.AuthorsRecord.Author==null)
-                            SaveAuthorData();
-                        else
-                            SaveAuthorData(_RuleOrderLine.AuthorsRecord.Author);
+                        SaveAuthorData();
                     }
                     ));
 
-        //private void SaveAuthorData()
         private void SaveAuthorData()
         {
             using (StudentuConteiner db = new StudentuConteiner())
             {
                 try
                 {                    
-                    string errValidation = ValidAuthorDataCheck(Author);
+                    string errValidation = ValidAuthorDataCheck();
                     if (errValidation != null)
                     {
                         errValidation += "\n\n Данные автора НЕ были сохранены";
@@ -437,7 +549,18 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                        if (Author.AuthorId == 0) 
                             db.Authors.Add(Author);
                         db.SaveChanges();
-                        //here we add author in directions
+
+                        //удаляем из списка направлений упоминания об авторе, если в списке направлений автора нет более того или  иного направления после правки
+                        // remove the author’s mention from the list of directions if the author’s list does not have more than one direction or another after editing
+                        var res = db.Directions.ToList();
+                            foreach (var i in res)
+                            {                     
+                            if (i.Author.Contains(Author) && !_Dir.AuthorDirections.Contains(i))
+                                    i.Author.Remove(Author);
+                                continue;
+                            }
+                                                                               
+
                         foreach (Direction item in _Dir.AuthorDirections)
                         {
                             var res1 = db.Directions.Find(item.DirectionId);
@@ -446,7 +569,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                                 //changing DB
                                 if (Author.AuthorId != 0)
                                 {
-                                  // db.Entry(res1).State = EntityState.Modified;
+                                    
                                     res1.Author.Add(Author);
                                     continue;
                                 }
@@ -456,6 +579,16 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                             }
                         }
                         db.SaveChanges();
+
+                        //удаляем из списка предметов упоминания об авторе, если в списке предметов автора нет более того или  иного направления после правки
+                        // remove the author’s mention from the list of subjects if the author’s list does not have more than one subject or another after editing
+                        var res2 = db.Subjects.ToList();
+                        foreach (var i in res2)
+                        {
+                            if (i.Authors.Contains(Author) && !_Subj.AuthorSubjects.Contains(i))
+                                i.Authors.Remove(Author);
+                            continue;
+                        }
                         //here we add author in subjects
                         foreach (Subject item in _Subj.AuthorSubjects)
                         {
@@ -513,167 +646,36 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
             }
         }
 
-        private void SaveAuthorData(Author author)
-        {
-            using (StudentuConteiner db = new StudentuConteiner())
-            {
-                try
-                {
-                    string errValidation = ValidAuthorDataCheck(author);
-                    if (errValidation != null)
-                    {
-                        errValidation += "\n\n Данные автора НЕ были сохранены";
-                        dialogService.ShowMessage(errValidation);
-                        return;
-                    }
-                    else
-                    {
-                        //Author = _RuleOrderLine.AuthorsRecord.Author;                        
-                        //if we  need to modified entrie
-                        if (Author.AuthorId != 0)
-                        {
-                            db.Entry(_RuleOrderLine.AuthorsRecord.Persone).State = EntityState.Modified;
-                            db.Entry(Date).State = EntityState.Modified;
-                            db.Entry(_RuleOrderLine.AuthorsRecord.Author).State = EntityState.Modified;
-                            db.Entry(_RuleOrderLine._Dir.Dir).State = EntityState.Modified;
-                            db.Entry(_RuleOrderLine._Subject.Subj).State = EntityState.Modified;
-                            db.Entry(_RuleOrderLine.AuthorsRecord.Persone.Contacts).State = EntityState.Modified;
-                            db.Entry(_RuleOrderLine.AuthorsRecord.Persone.PersoneDescription).State = EntityState.Modified;
-                        }
-                        _RuleOrderLine.AuthorsRecord.Persone.Contacts = _Contacts.Contacts;
-                        if (Author.AuthorId != 0)
-                            _RuleOrderLine.AuthorsRecord.Persone.Dates[0] = Date;
-                        else
-                            _RuleOrderLine.AuthorsRecord.Persone.Dates.Add(Date);
-
-                        //Persone.PersoneDescription = _RuleOrderLine.AuthorsRecord.Persone.PersoneDescription;
-                        //Author.Persone = Persone;
-                        _RuleOrderLine.AuthorsRecord.Author.AuthorStatus = db.AuthorStatuses.Find(_AuthorStatus.AuthorStatus.AuthorStatusId);
-                        if (_RuleOrderLine.AuthorsRecord.Author.AuthorId == 0)
-                            db.Authors.Add(_RuleOrderLine.AuthorsRecord.Author);
-                        db.SaveChanges();
-                        //here we add author in directions
-                        foreach (Direction item in _RuleOrderLine._Dir.AuthorDirections)
-                        {
-                            var res1 = db.Directions.Find(item.DirectionId);
-                            if (res1 != null && !res1.Author.Contains(Author))
-                            {
-                                //changing DB
-                                if (_RuleOrderLine.AuthorsRecord.Author.AuthorId != 0)
-                                {
-                                    // db.Entry(res1).State = EntityState.Modified;
-                                    res1.Author.Add(Author);
-                                    continue;
-                                }
-                                else
-                                    res1.Author.Add(Author);
-                                continue;
-                            }
-                        }
-                        db.SaveChanges();
-                        //here we add author in subjects
-                        foreach (Subject item in _RuleOrderLine._Subject.AuthorSubjects)
-                        {
-                            var res1 = db.Subjects.Find(item.SubjectId);
-                            if (res1 != null)
-                            {
-                                //changing DB
-                                res1.Authors.Add(_RuleOrderLine.AuthorsRecord.Author);
-                                continue;
-                            }
-                            else
-                                res1.Authors.Add(_RuleOrderLine.AuthorsRecord.Author);
-                            continue;
-
-                        }
-                        db.SaveChanges();
-
-                        dialogService.ShowMessage("Данные автора сохранены");
-                        //обнуляем поля окна
-                        //clear window fields
-                        //if (_RuleOrderLine.AuthorsRecord.Author.AuthorId == 0)
-                        //{
-
-                        //    _Contacts = new _Contacts();
-                        //    Persone = new Persone();
-                        //    _AuthorStatus = new _AuthorStatus();
-                        //    Author = new Author();
-                        //    Date = new Dates();
-                        //    _Subj = new _Subject();
-                        //    _Dir = new _Direction();
-                        //    PersoneDescription = new PersoneDescription();
-                        //}
-                    }
-
-                }
-                catch (ArgumentNullException ex)
-                {
-                    dialogService.ShowMessage(ex.Message);
-                }
-                catch (OverflowException ex)
-                {
-                    dialogService.ShowMessage(ex.Message);
-                }
-                catch (System.Data.SqlClient.SqlException ex)
-                {
-                    dialogService.ShowMessage(ex.Message);
-                }
-                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
-                {
-                    dialogService.ShowMessage(ex.Message);
-                }
-                catch (System.Data.Entity.Core.EntityException ex)
-                {
-                    dialogService.ShowMessage(ex.Message);
-                }
-            }
-        }
-
         //chek for  validation of of author name , contacts and direction
-        private string ValidAuthorDataCheck(Author author)
+        private string ValidAuthorDataCheck()
         {
             string error;
-            if (author == null)
-            {
-                error = Persone.Name == "" ? "Поле имени не должно быть пустым" : null;
-                error += _Dir.AuthorDirections.Count() == 0 ? "\nНЕ добавлено ни одного направления" : null;
-                error += !_Contacts.Contacts.ContactsValidation() ? "\nНи одно из полей контактных данных не заполнено" : null;
-                error = error == "" ? null : error;
-                return error;
-            }
-            else
-            {
-                error = _RuleOrderLine.AuthorsRecord.Persone.Name == "" ? "Поле имени не должно быть пустым" : null;
-                error += _RuleOrderLine._Dir.AuthorDirections.Count() == 0 ? "\nНЕ добавлено ни одного направления" : null;
-                error += !_Contacts.Contacts.ContactsValidation() ? "\nНи одно из полей контактных данных не заполнено" : null;
-                error = error == "" ? null : error;
-                return error;
-            }
-            
+            error = Persone.Name == "" ? "Поле имени не должно быть пустым" : null;
+            error += _Dir.AuthorDirections.Count() == 0 ? "\nНЕ добавлено ни одного направления" : null;
+            error += !_Contacts.Contacts.ContactsValidation() ?"\nНи одно из полей контактных данных не заполнено":null;
+            error = error == "" ? null:error ;
+             return error;
         }
 
-        //===================================COMMAND FOR ADD DIRECTIONS INTO AuthorDirections ============      
+        private RelayCommand initComplicatedFilterCommand;
+        public RelayCommand InitComplicatedFilterCommand =>
+            initComplicatedFilterCommand ?? (initComplicatedFilterCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        InitComplicatedFilter();
+                    }
+                    ));
 
-        private RelayCommand addAuthorDirectionCommand;
-        public RelayCommand AddAuthorDirectionCommand => addAuthorDirectionCommand ??
-            (addAuthorDirectionCommand = new RelayCommand((selectedItem) =>
-            {
-                //AddAuthorDirection(ObservableCollection < Direction > authorDirections, Direction _dir)
-                _RuleOrderLine._Dir.AddAuthorDirection(_RuleOrderLine._Dir.AuthorDirections, _Dir.Dir);
-            }
-           ));
+        private void InitComplicatedFilter()
+        {
+            
+            AuthorsRecords.Clear();
+           
+            RuleOrderLine.AuthorsCallByParams
+                (_Dir.SelectedDir.DirectionName, _Subj.SelectedSubj.SubName,
+                _AuthorStatus.SelectedAuthorStatus.AuthorStatusName, AuthorsRecords);
 
-        //===================================COMMAND FOR ADD DIRECTIONS INTO AuthorSubjects ============      
-
-        private RelayCommand addAuthorSubjectCommand;
-        public RelayCommand AddAuthorSubjectCommand => addAuthorSubjectCommand ??
-            (addAuthorSubjectCommand = new RelayCommand((selectedItem) =>
-            {
-                _RuleOrderLine._Subject.AddAuthorSubject(_RuleOrderLine._Subject.AuthorSubjects, _Subj.Subj);
-            }
-           ));
-
-
+        }
 
 
     }

@@ -81,8 +81,10 @@
                      ItemsSource="{Binding _Dir.AuthorDirections, 
                     UpdateSourceTrigger=PropertyChanged}"  
                     SelectedIndex="{Binding _Dir.Index}"
+                    SelectedItem="{Binding _Dir.Dir}"
+                    ToolTip="{Binding _Dir.Dir.DirectionName}"
                      SelectionMode="Single" 
-                     IsSynchronizedWithCurrentItem="False"
+                     IsSynchronizedWithCurrentItem="True"
                      TabIndex="3"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled" >
         

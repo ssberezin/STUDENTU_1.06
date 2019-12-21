@@ -20,6 +20,7 @@ namespace STUDENTU_1._06.ViewModel
         public _AuthorStatus()
         {
             AuthorStatus = new AuthorStatus();
+            SelectedAuthorStatus = new AuthorStatus();
             AuthorStatusRecords = new ObservableCollection<AuthorStatus>();
             LoadData();
             showWindow = new DefaultShowWindowService();
@@ -41,6 +42,20 @@ namespace STUDENTU_1._06.ViewModel
                 {
                     authorStatus = value;
                     OnPropertyChanged(nameof(AuthorStatus));
+                }
+            }
+        }
+
+        private AuthorStatus selectedAuthorStatus;
+        public AuthorStatus SelectedAuthorStatus
+        {
+            get { return selectedAuthorStatus; }
+            set
+            {
+                if (selectedAuthorStatus != value)
+                {
+                    selectedAuthorStatus = value;
+                    OnPropertyChanged(nameof(SelectedAuthorStatus));
                 }
             }
         }
@@ -303,6 +318,17 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
+
+        //=====================Comman for call Editing window of AuthorSTATUS ======================================
+
+        private RelayCommand newEditAuthorStatusCommand;
+        public RelayCommand NewEditAuthorStatusCommand => newEditAuthorStatusCommand ?? (newEditAuthorStatusCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        EditAuthorStatusWindow editStatus = new EditAuthorStatusWindow(obj);
+                        showWindow.ShowDialog(editStatus);
+                    }
+                    ));
 
     }
 }

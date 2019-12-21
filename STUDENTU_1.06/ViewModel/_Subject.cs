@@ -16,6 +16,7 @@ namespace STUDENTU_1._06.ViewModel
         public _Subject()
         {
             Subj = new Subject();
+            SelectedSubj = new Subject();
             SubjRecords = new ObservableCollection<Subject>();
             AuthorSubjects = new ObservableCollection<Subject>();
             LoadSubjectsData();
@@ -54,6 +55,34 @@ namespace STUDENTU_1._06.ViewModel
                 {
                     subj = value;
                     OnPropertyChanged(nameof(Subj));
+                }
+            }
+        }
+
+        private Subject selectedSubj;
+        public Subject SelectedSubj
+        {
+            get { return selectedSubj; }
+            set
+            {
+                if (selectedSubj != value)
+                {
+                    selectedSubj = value;
+                    OnPropertyChanged(nameof(SelectedSubj));
+                }
+            }
+        }
+
+        private Subject selectedSubj2;
+        public Subject SelectedSubj2
+        {
+            get { return selectedSubj2; }
+            set
+            {
+                if (selectedSubj2 != value)
+                {
+                    selectedSubj2 = value;
+                    OnPropertyChanged(nameof(SelectedSubj2));
                 }
             }
         }
@@ -116,7 +145,7 @@ namespace STUDENTU_1._06.ViewModel
         public RelayCommand AddSubjectCommand => addSubjectCommand ?? (addSubjectCommand = new RelayCommand(
                     (obj) =>
                     {
-                        AddSubj();
+                        AddSubj(obj as string);
                     }
                     ));
 
@@ -140,8 +169,9 @@ namespace STUDENTU_1._06.ViewModel
 
 
         //===================THIS METHOD IS FOR ADD RECORDS SUBJECTS TABLE==============       
-        public void AddSubj()
+        public void AddSubj(string newSubName)
         {
+            Subj.SubName = newSubName;
             using (StudentuConteiner db = new StudentuConteiner())
             {
                 try
@@ -162,6 +192,7 @@ namespace STUDENTU_1._06.ViewModel
                             SubjRecords.Clear();
                             LoadSubjectsData();
                             Subj = new Subject();
+
                         }
                         else
                             return;
@@ -354,16 +385,6 @@ namespace STUDENTU_1._06.ViewModel
                 AuthorSubjects.Add(Subj);
         }
 
-        public void AddAuthorSubject(ObservableCollection<Subject> authorSubjects, Subject _sub)
-        {
-            if (FindSubj(authorSubjects, _sub) || string.IsNullOrEmpty(_sub.SubName) || _sub.SubName == "---")
-            {
-                dialogService.ShowMessage("Нельязя добавить эту запись");
-            }
-            else
-                authorSubjects.Add(_sub);
-        }
-
         //here we check AuthorSubjects for the added item
         private bool FindSubj()
         {
@@ -371,17 +392,6 @@ namespace STUDENTU_1._06.ViewModel
             foreach (Subject item in AuthorSubjects)
             {
                 if (Subj.SubjectId == item.SubjectId)                
-                    return true;
-            }
-            return false;
-        }
-
-        private bool FindSubj(ObservableCollection<Subject> authorSubjects, Subject _sub)
-        {
-
-            foreach (Subject item in authorSubjects)
-            {
-                if (_sub.SubjectId == item.SubjectId)
                     return true;
             }
             return false;
@@ -400,11 +410,6 @@ namespace STUDENTU_1._06.ViewModel
         private void DelFromAuthorSubjects()
         {            
             AuthorSubjects.Remove(AuthorSubjects[Index]);
-        }
-
-        public void DelFromAuthorSubjects(ObservableCollection<Subject> authorSubjects, int index)
-        {
-            authorSubjects.Remove(authorSubjects[index]);
         }
 
     }

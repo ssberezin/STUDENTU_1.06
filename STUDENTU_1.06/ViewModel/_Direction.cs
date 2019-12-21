@@ -8,42 +8,15 @@ using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using STUDENTU_1._06.Model.HelpModelClasses.DialogWindows;
 using STUDENTU_1._06.Model.HelpModelClasses.ShowWindows;
+using System.ComponentModel;
 
 namespace STUDENTU_1._06.ViewModel
 {
     //Class for operations with Direction table
     public  class _Direction : Helpes.ObservableObject
     {
-        public _Direction()
-        {
-            Dir = new Direction();
-            DirRecords = new ObservableCollection<Direction>();
-            AuthorDirections = new ObservableCollection<Direction>();
-            LoadDirectionsData();
-            SelectDir=new Direction();
-            showWindow = new DefaultShowWindowService();
-            dialogService= new  DefaultDialogService();
-        }
-
-        IDialogService dialogService;
-        IShowWindowService showWindow;
-
         public ObservableCollection<Direction> DirRecords { get; set; }
         public ObservableCollection<Direction> AuthorDirections { get; set; }
-
-        private Direction selectDir;
-        public Direction SelectDir
-        {
-            get { return dir; }
-            set
-            {
-                if (selectDir != value)
-                {
-                    selectDir = value;
-                    OnPropertyChanged(nameof(SelectDir));
-                }
-            }
-        }
 
         private Direction dir;
         public Direction Dir
@@ -58,6 +31,36 @@ namespace STUDENTU_1._06.ViewModel
                 }
             }
         }
+
+        private Direction selectedDir;
+        public Direction SelectedDir
+        {
+            get { return selectedDir; }
+            set
+            {
+                if (selectedDir != value)
+                {
+                    selectedDir = value;
+                    OnPropertyChanged(nameof(SelectedDir));
+                }
+            }
+        }
+
+        private Direction selectedDir2;
+        public Direction SelectedDir2
+        {
+            get { return selectedDir2; }
+            set
+            {
+                if (selectedDir2 != value)
+                {
+                    selectedDir2 = value;
+                    OnPropertyChanged(nameof(SelectedDir2));
+                }
+            }
+        }
+
+
         //for fast delete from AuthorDirections
         private int index;
         public int Index
@@ -73,6 +76,22 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
+        public _Direction()
+        {
+            Dir = new Direction();
+            SelectedDir = new Direction();
+            SelectedDir2 = new Direction();
+            DirRecords = new ObservableCollection<Direction>();
+            AuthorDirections = new ObservableCollection<Direction>();
+            LoadDirectionsData();
+            showWindow = new DefaultShowWindowService();
+            dialogService= new  DefaultDialogService();
+           
+        }
+
+        IDialogService dialogService;
+        IShowWindowService showWindow;
+
         //load data array from "Directions" table
         public void LoadDirectionsData()
         {
@@ -87,10 +106,11 @@ namespace STUDENTU_1._06.ViewModel
                         new Direction
                         {
                             DirectionId = item.DirectionId,
-                            DirectionName = item.DirectionName                            
+                            DirectionName = item.DirectionName
                         });                       
                     }
                     Dir = DirRecords[0];
+                    SelectedDir2 = Dir;
                 }
                 catch (ArgumentNullException ex)
                 {
@@ -131,7 +151,7 @@ namespace STUDENTU_1._06.ViewModel
         public RelayCommand AddDirectionCommand => addDirectionCommand ?? (addDirectionCommand = new RelayCommand(
                     (obj) =>
                     {
-                        AddDir();
+                        AddDir(obj as string);
                     }
                     ));
 
@@ -139,23 +159,25 @@ namespace STUDENTU_1._06.ViewModel
         public RelayCommand DeleteDirectionCommand => deleteDirectionCommand ??
             (deleteDirectionCommand = new RelayCommand((selectedItem) =>
             {
-                if (selectedItem == null) return;
+                //if (selectedItem == null) return;
                 DeleteDir();
             }
            ));
 
         private RelayCommand editDirectionCommand;
         public RelayCommand EditDirectionCommand => editDirectionCommand ?? (editDirectionCommand = new RelayCommand(
-                    (selectedItem) =>
+                    (obj) =>
                     {
-                        if (selectedItem == null) return;
-                        EditDir();
+                       // if (selectedItem == null) return;
+                        EditDir(obj as string);
                     }
                     ));
 
         //===================THIS METHOD IS FOR ADD RECORDS IN DIRECTIONS TABLE==============        
-       public void  AddDir()
+       public void  AddDir(string newDirName)
         {
+
+            Dir.DirectionName = newDirName;
             using (StudentuConteiner db = new StudentuConteiner())
             {
                 try
@@ -163,15 +185,13 @@ namespace STUDENTU_1._06.ViewModel
                     var res1 = db.Directions.Any(o => o.DirectionName == Dir.DirectionName);
                     if (!res1)
                     {
-
-                    
-                        if (!string.IsNullOrEmpty(Dir.DirectionName)|| Dir.DirectionName!="---")
+                        if (!string.IsNullOrEmpty(Dir.DirectionName) || Dir.DirectionName != "---")
                         {
                             Dir.DirectionName = Dir.DirectionName.ToLower();
                             Dir.DirectionName.Trim();
                             if (Dir.DirectionName[0] == ' ')
                             {
-                                dialogService.ShowMessage("Нельзя добавить пустую строку");
+                                dialogService.ShowMessage("Нельзя добавить пустую строку");                               
                                 return;
                             }
                             db.Directions.Add(Dir);
@@ -179,14 +199,13 @@ namespace STUDENTU_1._06.ViewModel
                             DirRecords.Clear();
                             LoadDirectionsData();
                             Dir = new Direction();
-                           
+                            SelectedDir2 = Dir;
                         }
                         else
-                            return ;
+                            return;                        
                     }
                     else
-                        dialogService.ShowMessage("Уже есть такое название в базе данных");
-                    
+                        dialogService.ShowMessage("Уже есть такое название в базе данных");   
                 }
                 catch (ArgumentNullException ex)
                 {
@@ -216,6 +235,7 @@ namespace STUDENTU_1._06.ViewModel
         //===================THIS METHOD IS FOR DELETE RECORDS IN DIRECTIONS TABLE==============
         public void DeleteDir()
         {
+            
             using (StudentuConteiner db = new StudentuConteiner())
             {
                 try
@@ -236,8 +256,12 @@ namespace STUDENTU_1._06.ViewModel
                                     db.Directions.Remove(db.Directions.Find(Dir.DirectionId));
                                     db.SaveChanges();
 
-                                    //changing collection
+                            //changing collection
+                                    AuthorDirections.Remove(Dir);
                                     DirRecords.Remove(Dir);
+                                   
+                                    Dir = DirRecords[0];
+                                    SelectedDir2 = Dir;
                                 }
                             }
                             else
@@ -317,8 +341,14 @@ namespace STUDENTU_1._06.ViewModel
 
 
         //===================THIS METHOD IS FOR EDIT RECORDS IN DIRECTIONS TABLE==============
-        public void EditDir()
+        public void EditDir(string newDirName)
         {
+            if (Dir.DirectionName == "---")
+            {
+                dialogService.ShowMessage("Нельзя редактировать эту запись");             
+                return;
+            } 
+            Dir.DirectionName = newDirName;
             using (StudentuConteiner db = new StudentuConteiner())
             {
                 try
@@ -331,6 +361,8 @@ namespace STUDENTU_1._06.ViewModel
                         Dir.DirectionName.Trim();
                             
                         db.SaveChanges();
+                        DirRecords.Clear();
+                        LoadDirectionsData();
                     }                 
 
                 }
@@ -362,45 +394,33 @@ namespace STUDENTU_1._06.ViewModel
 
         private RelayCommand addAuthorDirectionCommand;
         public RelayCommand AddAuthorDirectionCommand => addAuthorDirectionCommand ??
-            (addAuthorDirectionCommand = new RelayCommand((selectedItem) =>
+            (addAuthorDirectionCommand = new RelayCommand((obj) =>
             {
-                AddAuthorDirection();
+                //if (SelectedDir2.DirectionName!=null)
+                //    Dir = SelectedDir2;
+                    AddAuthorDirection();
+
             }
            ));
 
         private void AddAuthorDirection()
         {
-            if (FindDir() || string.IsNullOrEmpty(Dir.DirectionName)|| Dir.DirectionName=="---")
+            if (FindDir(SelectedDir2) || string.IsNullOrEmpty(SelectedDir2.DirectionName)|| SelectedDir2.DirectionName=="---")
             {
                 dialogService.ShowMessage("Нельязя добавить эту запись");
             }
             else            
-                AuthorDirections.Add(Dir);
-        }
+                AuthorDirections.Add(SelectedDir2);
 
-        public void AddAuthorDirection(ObservableCollection<Direction> authorDirections, Direction _dir)
-        {
-            if (FindDir(authorDirections, _dir) || string.IsNullOrEmpty(_dir.DirectionName) || _dir.DirectionName == "---")
-            {
-                dialogService.ShowMessage("Нельязя добавить эту запись");
-            }
-            else
-                authorDirections.Add(_dir);
+
         }
 
         //here we check AuthorDirections for the added item
-        private bool FindDir()
+        private bool FindDir(Direction dir)
         {
+           
             foreach (Direction item in AuthorDirections)
-                if (Dir.DirectionId == item.DirectionId || Dir.DirectionName == "---")
-                    return true;
-            return false;
-        }
-
-        public bool FindDir(ObservableCollection<Direction> authorDirections, Direction _dir)
-        {
-            foreach (Direction item in authorDirections)
-                if (_dir.DirectionId == item.DirectionId || _dir.DirectionName == "---")
+                if (dir.DirectionId == item.DirectionId || dir.DirectionName == "---")
                     return true;
             return false;
         }
@@ -418,11 +438,6 @@ namespace STUDENTU_1._06.ViewModel
         private void DelFromAuthorDirection()
         {            
                 AuthorDirections.Remove(AuthorDirections[Index]);
-        }
-
-        public void DelFromAuthorDirection(ObservableCollection<Direction> authorDirections, int index)
-        {
-            AuthorDirections.Remove(authorDirections[index]);
         }
     }
    

@@ -40,30 +40,26 @@
         <helpes:ImagePathConverter x:Key="imagePathConverter"/>
         <helpes:NullToBooleanConverter x:Key="NullBoolConverter" />
 
-        <CollectionViewSource x:Key="SortedAuthorRecords" Source="{Binding _RuleOrderLine.AuthorsRecords}"
+
+        <!--for sorting in listbox without behind code-->
+              
+        
+        <CollectionViewSource x:Key="SortedStatuses" Source="{Binding _AuthorStatus.AuthorStatusRecords}"
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
-            <!--AuthorsRecords can find in RuleOrderLineClass.cs-->
+            <CollectionViewSource.SortDescriptions>
+                <scm1:SortDescription PropertyName="AuthorStatusName"/>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+        <CollectionViewSource x:Key="SortedAuthorRecords" 
+                              Source="{Binding  AuthorsRecords, UpdateSourceTrigger=PropertyChanged}"
+                xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
+            <!--DirRecords can find in _Direction.cs-->
             <CollectionViewSource.SortDescriptions>
                 <scm1:SortDescription PropertyName="Persone.NickName"/>
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
-
-        <!--for sorting in listbox without behind code-->
-        <CollectionViewSource x:Key="SortedStatuses" Source="{Binding _RuleOrderLine.AuthorsRecord._AuthorStatus.AuthorStatusRecords}"
-                xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
-            <CollectionViewSource.SortDescriptions>
-                <scm1:SortDescription PropertyName="AuthorStatusName"/>
-            </CollectionViewSource.SortDescriptions>
-        </CollectionViewSource>
-
-        <CollectionViewSource x:Key="SortedStatuses2" Source="{Binding _AuthorStatus.AuthorStatusRecords}"
-                xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
-            <CollectionViewSource.SortDescriptions>
-                <scm1:SortDescription PropertyName="AuthorStatusName"/>
-            </CollectionViewSource.SortDescriptions>
-        </CollectionViewSource>
-
-        <CollectionViewSource x:Key="SortedItems2" Source="{Binding  _RuleOrderLine._Dir.DirRecords}"
+        
+        <CollectionViewSource x:Key="SortedItems" Source="{Binding  _Dir.DirRecords}"
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
             <!--DirRecords can find in _Direction.cs-->
             <CollectionViewSource.SortDescriptions>
@@ -71,35 +67,16 @@
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
 
-        <CollectionViewSource x:Key="SortedItems" Source="{Binding  _RuleOrderLine._Dir.DirRecords}"
+        
+       
+        <CollectionViewSource x:Key="SortedSubjects" Source="{Binding  _Subj.SubjRecords}"
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
-            <!--DirRecords can find in _Direction.cs-->
+            <!--SubjRecords can find in SubjectClass.cs-->
             <CollectionViewSource.SortDescriptions>
-                <scm1:SortDescription PropertyName="DirectionName"/>
+                <scm1:SortDescription PropertyName="SubName"/>
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
 
-        <CollectionViewSource x:Key="SortedWorkTypes" Source="{Binding  WorkTypesRecords}"
-                xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
-            <!--WorkTypesRecords can find in WorkTypeClass.cs-->
-            <CollectionViewSource.SortDescriptions>
-                <scm1:SortDescription PropertyName="TypeOfWork"/>
-            </CollectionViewSource.SortDescriptions>
-        </CollectionViewSource>
-        <CollectionViewSource x:Key="SortedSubjects" Source="{Binding _Subj.SubjRecords}"
-                xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
-            <!--SubjRecords can find in SubjectClass.cs-->
-            <CollectionViewSource.SortDescriptions>
-                <scm1:SortDescription PropertyName="SubName"/>
-            </CollectionViewSource.SortDescriptions>
-        </CollectionViewSource>
-        <CollectionViewSource x:Key="SortedSubjects2" Source="{Binding  _RuleOrderLine._Subject.SubjRecords}"
-                xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
-            <!--SubjRecords can find in SubjectClass.cs-->
-            <CollectionViewSource.SortDescriptions>
-                <scm1:SortDescription PropertyName="SubName"/>
-            </CollectionViewSource.SortDescriptions>
-        </CollectionViewSource>
 
 
         <ControlTemplate x:Key="validationFailed">
@@ -154,7 +131,7 @@
 
     <Grid  FocusManager.FocusedElement="{Binding ElementName=TBxName}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1.5*"/>
+            <ColumnDefinition Width="1.1*"/>
             <ColumnDefinition Width="0.75*"/>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="0.75*"/>
@@ -193,30 +170,33 @@
             <ComboBox  Grid.Column="1" Margin="4"   TabIndex="0" SelectedIndex="0" 
                       IsEditable="False" 
                      MinWidth="100"
-                     ItemsSource="{Binding Source={StaticResource SortedStatuses2}, 
+                     ItemsSource="{Binding Source={StaticResource SortedStatuses}, 
                       UpdateSourceTrigger=PropertyChanged}" 
-                     SelectedItem="{Binding _AuthorStatus.AuthorStatus}"
+                     SelectedItem="{Binding _AuthorStatus.SelectedAuthorStatus, Mode=TwoWay}"
                      DisplayMemberPath="AuthorStatusName"                        
-                      HorizontalContentAlignment="Left"
-                     Background="White" >
+                      HorizontalContentAlignment="Left"                        
+                     Background="White" 
+                       IsSynchronizedWithCurrentItem="False">
                 <!--Status can fint in _AuthorStatus.cs-->
             </ComboBox>
             <Button Grid.Column="2" MinWidth="30" Background="Gray" Content="..." TabIndex="11"
-                    Command="{Binding _AuthorStatus.NewEditAuthorStatusCommand}" CommandParameter="{Binding DataContext, RelativeSource=
+                    Command="{Binding _AuthorStatus.NewEditAuthorStatusCommand}" 
+                    CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}"/>
             <Viewbox Grid.Row="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
                      VerticalAlignment="Stretch">
                 <TextBlock Text="Предмет:" FontWeight="Bold" Foreground="Brown" />
             </Viewbox>
-            <ComboBox Grid.Row="1" Grid.Column="1"  Margin="4"   TabIndex="1"   SelectedIndex="0" 
+            <ComboBox Grid.Row="1" Grid.Column="1"  Margin="3.8,0,4,8.6"   TabIndex="1"   SelectedIndex="0" 
                       MinWidth="100"
-                     ItemsSource="{Binding Source={StaticResource SortedSubjects2}, 
+                     ItemsSource="{Binding Source={StaticResource SortedSubjects}, 
                       UpdateSourceTrigger=PropertyChanged}" 
-                     SelectedItem="{Binding _RuleOrderLine._Subject.Subj}"
+                     SelectedItem="{Binding _Subj.SelectedSubj}"
                      DisplayMemberPath="SubName"
-                      ToolTip="{Binding _Subject.Subj.SubName}" 
+                      ToolTip="{Binding _Subj.SelectedSubj.SubName}" 
                      HorizontalContentAlignment="Left"
-                     Background="White" >
+                     Background="White" VerticalAlignment="Bottom" 
+                      IsSynchronizedWithCurrentItem="False">
                 <!--SortedSubjects can find above in Window.Resources-->
                 <!--Subj can find in _Subject.cs-->
             </ComboBox>
@@ -229,14 +209,15 @@
             </Viewbox>
             <ComboBox Grid.Column="1" Grid.Row="2" Margin="4"   TabIndex="2" SelectedIndex="0" 
                       IsEditable="False"
-                     ItemsSource="{Binding Source={StaticResource SortedItems2}, 
+                     ItemsSource="{Binding Source={StaticResource SortedItems}, 
                       UpdateSourceTrigger=PropertyChanged}" 
-                     SelectedItem="{Binding _RuleOrderLine._Dir.Dir}"
+                     SelectedItem="{Binding _Dir.SelectedDir}"
                      DisplayMemberPath="DirectionName"
-                     ToolTip="{Binding _RuleOrderLine._Dir.Dir.DirectionName}" 
+                     ToolTip="{Binding _Dir.SelectedDir.DirectionName}" 
                      HorizontalContentAlignment="Left"
                       MinWidth="100"
-                     Background="White" >
+                     Background="White"
+                      IsSynchronizedWithCurrentItem="False">
                 <!--SortedItems can find above in Window.Resources-->
                 <!--Dir can find in _Direction.cs-->
             </ComboBox>
@@ -250,18 +231,18 @@
         </Button>
         <ListBox x:Name="Authors"
                      Grid.Row="4" Grid.RowSpan="8" Margin="4"
-                    ItemsSource="{Binding Source={StaticResource SortedAuthorRecords}, 
-                    UpdateSourceTrigger=PropertyChanged}"
-                    SelectedItem="{Binding _RuleOrderLine.AuthorsRecord}" 
-                     TabIndex="2" >
+                    ItemsSource="{Binding Source={StaticResource SortedAuthorRecords}}" 
+                    SelectedItem="{Binding AuthorsRecord}" 
+                     TabIndex="2"
+                 HorizontalContentAlignment="Center">
             <!--SortedItems can find above in Window.Resources-->
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel >
-                        <TextBlock Text="-----------------------------" Margin="2"
+                        <TextBlock Text="----------------------------------------------------------" Margin="2"
                                    TextWrapping="WrapWithOverflow" 
                                    TextAlignment="Center" Background="AliceBlue"/>
-                        <TextBlock Text="{Binding Persone.NickName}" Margin="2" Foreground="Red" FontWeight="Bold"
+                        <TextBlock Text="{Binding Persone.NickName}" Margin="2"
                                    TextWrapping="WrapWithOverflow" 
                                    TextAlignment="Center"  />
                         <StackPanel Orientation="Horizontal">
@@ -288,7 +269,7 @@
                 <TextBlock Text="Имя: " Foreground="Brown" FontWeight="Bold"/>
             </Viewbox>
             <TextBox x:Name="TBxName"  MinWidth="220" TabIndex="0"
-                    Text="{Binding _RuleOrderLine.AuthorsRecord.Persone.Name, Mode=TwoWay}"/>
+                    Text="{Binding Persone.Name, Mode=TwoWay}"/>
             <!--Persone can find in AuthorsVMClass.cs-->
         </WrapPanel>
         <WrapPanel Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="3">
@@ -296,7 +277,7 @@
                      VerticalAlignment="Stretch">
                 <TextBlock Text="Фамилия: " Foreground="Brown" />
             </Viewbox>
-            <TextBox x:Name="Surname"   Text="{Binding _RuleOrderLine.AuthorsRecord.Persone.Surname, Mode=TwoWay}" TabIndex="1"  MinWidth="250"/>
+            <TextBox x:Name="Surname"   Text="{Binding Persone.Surname, Mode=TwoWay}" TabIndex="1"  MinWidth="250"/>
         </WrapPanel>
         <!--Persone can find in AuthorsVMClass.cs-->
         <WrapPanel Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="3">
@@ -304,7 +285,7 @@
                      VerticalAlignment="Stretch">
                 <TextBlock Text="Отчество: " Foreground="Brown"/>
             </Viewbox>
-            <TextBox x:Name="Patronimic"   Text="{Binding _RuleOrderLine.AuthorsRecord.Persone.Patronimic, Mode=TwoWay}" TabIndex="2"  MinWidth="250"/>
+            <TextBox x:Name="Patronimic"   Text="{Binding Persone.Patronimic, Mode=TwoWay}" TabIndex="2"  MinWidth="250"/>
             <!--Persone can find in ForEditOrder.cs-->
         </WrapPanel>
         <WrapPanel Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Margin="3">
@@ -312,9 +293,9 @@
                      VerticalAlignment="Stretch">
                 <TextBlock Text="Ник: " FontWeight="Bold" Foreground="Brown"/>
             </Viewbox>
-            <TextBox    Text="{Binding _RuleOrderLine.AuthorsRecord.Persone.NickName, Mode=TwoWay}"  MinWidth="110"  TabIndex="3"/>
+            <TextBox    Text="{Binding Persone.NickName, Mode=TwoWay}"  MinWidth="110"  TabIndex="3"/>
             <!--Persone can find in AuthorsVMClass.cs-->
-            <Button Content="Контакты" Background="YellowGreen" Height="30" TabIndex="4" Margin="5"
+            <Button Content="Добавить контакты " Background="YellowGreen" Height="30" TabIndex="4" Margin="5"
                      Command="{Binding NewEditContactsCommand}" CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}" Width="177"/>
             <!--NewEditContactsCommand can find in ForEditOrderAddContacts.cs-->
@@ -326,10 +307,10 @@
                 <TextBlock Text="Пол:" FontWeight="Bold" Foreground="Brown"/>
             </Viewbox>
             <RadioButton GroupName="A" Content="Мужской" VerticalAlignment="Center" TabIndex="5"
-                          IsChecked="{Binding _RuleOrderLine.AuthorsRecord.Persone.Sex, Mode=TwoWay}" />
+                          IsChecked="{Binding Persone.Sex, Mode=TwoWay}" />
             <!--Persone can find in AuthorsVMClass.cs-->
             <RadioButton GroupName="A" Content="Женский" VerticalAlignment="Center" TabIndex="6" 
-                          IsChecked="{Binding _RuleOrderLine.AuthorsRecord.Persone.Sex, 
+                          IsChecked="{Binding Persone.Sex, 
                           Converter={StaticResource boolInverterConverter},
                           Mode=TwoWay}"/>
             <!--Persone can find in AuthorsVMClass.cs-->
@@ -344,7 +325,7 @@
             </Viewbox>
             <DatePicker  IsDropDownOpen="False" SelectedDateFormat="Short" 
                         MaxWidth="150" TabIndex="9" HorizontalAlignment="Center"
-                        SelectedDate="{Binding _RuleOrderLine.AuthorsRecord.Date.DayBirth,Mode=TwoWay}"
+                        SelectedDate="{Binding Date.DayBirth,Mode=TwoWay}"
                          IsEnabled="{Binding ElementName=BirthDate, Path=IsChecked}"/>
 
             <!--Date can find in AuthorsVMClass.cs-->
@@ -369,7 +350,7 @@
 
 
             <ComboBox x:Name="StatusList"  MinWidth="165"  TabIndex="10" 
-                      IsEditable="False" IsSynchronizedWithCurrentItem="True"
+                      IsEditable="False" IsSynchronizedWithCurrentItem="False"
                      ItemsSource="{Binding Source={StaticResource SortedStatuses}, 
                       UpdateSourceTrigger=PropertyChanged}" 
                       SelectedValue="{Binding _AuthorStatus.AuthorStatus.AuthorStatusId, Mode=TwoWay}"
@@ -377,7 +358,9 @@
                      SelectedItem="{Binding _AuthorStatus.AuthorStatus}"
                      DisplayMemberPath="AuthorStatusName" Width="219" 
                       HorizontalContentAlignment="Center"
-                     Background="White" >
+                      ToolTip="{Binding _AuthorStatus.AuthorStatus.AuthorStatusName}" 
+                     Background="White"
+                      >
                 <!--Status can fint in _AuthorStatus.cs-->
             </ComboBox>
             <Button x:Name="AddDStatus" Width="40" Background="Gray" Content="..." TabIndex="11"
@@ -395,7 +378,7 @@
                      VerticalAlignment="Stretch">
                 <TextBlock  Text="Источник " FontWeight="Bold" Foreground="Brown"/>
             </Viewbox>
-            <TextBox Grid.Column="1"    Text="{Binding _RuleOrderLine.AuthorsRecord.Author.Source, Mode=TwoWay}"
+            <TextBox Grid.Column="1"    Text="{Binding Author.Source, Mode=TwoWay}"
                      FontSize="12" TextWrapping="Wrap" TabIndex="14"
                         Height="120" TextAlignment="Center" VerticalContentAlignment="Center"
                         HorizontalAlignment="Stretch" Margin="5"  
@@ -413,7 +396,7 @@
                 <DatePicker x:Name="DateOfReception" IsDropDownOpen="False" SelectedDateFormat="Short" 
                             IsEnabled="{Binding ElementName=StartWorkEnable,  Path=IsChecked}"
                         MaxWidth="150" TabIndex="13" HorizontalAlignment="Center"
-                        SelectedDate="{Binding _RuleOrderLine.AuthorsRecord.Date.StartDateWork, Mode=TwoWay}"  Width="111" Height="21" Margin="10,0,29.4,0"
+                        SelectedDate="{Binding Date.StartDateWork, Mode=TwoWay}"  Width="111" Height="21" Margin="10,0,29.4,0"
                         HorizontalContentAlignment="Center"/>
             </StackPanel>
 
@@ -429,7 +412,7 @@
                 <DatePicker  IsDropDownOpen="False" SelectedDateFormat="Short" 
                              IsEnabled="{Binding ElementName=EndWorkEnable,  Path=IsChecked}"
                         MaxWidth="150" TabIndex="13" HorizontalAlignment="Center"
-                        SelectedDate="{Binding _RuleOrderLine.AuthorsRecord.Date.EndDateWork, Mode=TwoWay}"  Width="111" Height="21" Margin="10,0,29.4,0"
+                        SelectedDate="{Binding Date.EndDateWork, Mode=TwoWay}"  Width="111" Height="21" Margin="10,0,29.4,0"
                         HorizontalContentAlignment="Center"/>
             </StackPanel>
 
@@ -442,7 +425,7 @@
         <TextBox Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="4" Margin="5" 
                      FontSize="12" TabIndex="19" TextWrapping="Wrap"  AcceptsReturn="True" MinHeight="103"
                     VerticalScrollBarVisibility="Auto" 
-                    Text="{Binding _RuleOrderLine.AuthorsRecord.Persone.PersoneDescription.Description, Mode=TwoWay}" Height="169"/>
+                    Text="{Binding PersoneDescription.Description, Mode=TwoWay}" Height="169"/>
         <!--PersoneDescription can find in AuthorsVMClass.cs-->
         <StackPanel Grid.Column="3" Grid.Row="5" Grid.ColumnSpan="3" Grid.RowSpan="4"  Margin="3">
             <Viewbox MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Center" 
@@ -453,7 +436,7 @@
             <TextBox  Margin="5,5,4.8,5" FontSize="12" TabIndex="20" MinHeight="85"
                       TextWrapping="Wrap"  AcceptsReturn="True"
                       VerticalScrollBarVisibility="Auto"                     
-                      Text="{Binding _RuleOrderLine.AuthorsRecord.Persone.PersoneDescription.FeedBack, Mode=TwoWay}" Height="98"/>
+                      Text="{Binding PersoneDescription.FeedBack, Mode=TwoWay}" Height="98"/>
             <!--PersoneDescription can find in AuthorsVMClass.cs-->
         </StackPanel>
         <StackPanel Grid.Column="3" Grid.Row="8" Grid.ColumnSpan="3" Grid.RowSpan="3"  Margin="3">
@@ -465,13 +448,13 @@
             <TextBox  Margin="5,5,4.8,5" FontSize="12" TabIndex="21" MinHeight="85"
                       TextWrapping="Wrap"  AcceptsReturn="True"
                       VerticalScrollBarVisibility="Auto" Foreground="Red"
-                      Text="{Binding _RuleOrderLine.AuthorsRecord.Persone.PersoneDescription.ReasonFortermCoop, Mode=TwoWay}" Height="98"
+                      Text="{Binding PersoneDescription.ReasonFortermCoop, Mode=TwoWay}" Height="98"
                        IsEnabled="{Binding ElementName=EndWorkEnable,  Path=IsChecked}"/>
             <!--PersoneDescription can find in AuthorsVMClass.cs-->
         </StackPanel>
 
 
-        <StackPanel Grid.Column="5" HorizontalAlignment="Left"  Margin="10"
+        <StackPanel Grid.Column="5" HorizontalAlignment="Left"  Margin="4"
                     Grid.RowSpan="5" VerticalAlignment="Top" 
                     Orientation="Horizontal" >
             <StackPanel.ContextMenu>
@@ -485,7 +468,9 @@
 
             </StackPanel.Background>
             <!--<Image Source="{Binding Photo, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" />-->
-            <Image Source="{Binding Path=_RuleOrderLine.AuthorsRecord.Persone.Photo, Converter={StaticResource imagePathConverter}, Mode=OneWay}" VerticalAlignment="Center" />
+            <Image Source="{Binding Path=Persone.Photo, 
+                Converter={StaticResource imagePathConverter}, Mode=OneWay}"
+                   VerticalAlignment="Center" />
         </StackPanel>
         <Grid Grid.Row="11" Grid.Column="1" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
@@ -504,13 +489,13 @@
                      VerticalAlignment="Stretch">
                     <TextBlock Text="Направление: " FontWeight="Bold"  Foreground="Brown"/>
                 </Viewbox>
-                <ComboBox x:Name="Direction"  MinWidth="185"  TabIndex="0"  
+                <ComboBox x:Name="Direction"  MinWidth="185"  TabIndex="0" SelectedIndex="0" 
                       IsEditable="False"
                      ItemsSource="{Binding Source={StaticResource SortedItems}, 
                       UpdateSourceTrigger=PropertyChanged}" 
-                     SelectedItem="{Binding _Dir.Dir}"
+                     SelectedItem="{Binding _Dir.SelectedDir2,  UpdateSourceTrigger=PropertyChanged}"
                      DisplayMemberPath="DirectionName"
-                     ToolTip="{Binding _Dir.Dir.DirectionName}" 
+                     ToolTip="{Binding _Dir.SelectedDir2.DirectionName}" 
                      HorizontalContentAlignment="Center"
                      Background="White" >
 
@@ -521,7 +506,7 @@
 
 
                 <Button x:Name="AddDirection" Width="40" Background="Gray" Content="..." TabIndex="1"
-                    Command="{Binding _RuleOrderLine._Dir.NewEditDirection}" 
+                    Command="{Binding _Dir.NewEditDirection}" 
                     CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}" />
 
@@ -530,9 +515,9 @@
             <ListBox x:Name="DirList" 
                      Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="2" Margin="5" 
                  
-                     ItemsSource="{Binding  _RuleOrderLine._Dir.AuthorDirections, 
-                    UpdateSourceTrigger=PropertyChanged}"  
-                    SelectedIndex="{Binding _RuleOrderLine._Dir.Index}"
+                     ItemsSource="{Binding _Dir.AuthorDirections, 
+                     UpdateSourceTrigger=PropertyChanged}"  
+                     SelectedIndex="{Binding _Dir.Index}"
                      SelectionMode="Single" 
                      IsSynchronizedWithCurrentItem="False"
                      TabIndex="3"
@@ -551,14 +536,15 @@
 
             </ListBox>
             <Button Grid.Column="0" Grid.Row="3"  Content="+" Background="Red"
-                    Command="{Binding AddAuthorDirectionCommand}" 
+                    Command="{Binding _Dir.AddAuthorDirectionCommand}" 
+                  
                  IsEnabled="{Binding SelectedItem, Converter={StaticResource NullBoolConverter}, ElementName=Direction}"
                 TabIndex="4" >
                 <!--Command AddDirectionCommand can find in DirectionClass.cs-->
             </Button>
 
             <Button Grid.Column="2" Grid.Row="3" Content="-" 
-                Command="{Binding _RuleOrderLine._Dir.DelFromAuthorDirectionCommand}"                
+                Command="{Binding _Dir.DelFromAuthorDirectionCommand}"                
                 IsEnabled="{Binding SelectedItem, 
                      Converter={StaticResource NullBoolConverter}, ElementName=DirList}"
                 TabIndex="5" RenderTransformOrigin="0.5,0.681"/>
@@ -570,38 +556,38 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="0.5*"/>
                 <RowDefinition/>
                 <RowDefinition/>
-                <RowDefinition Height="38.4"/>
+                <RowDefinition Height="0.5*"/>
             </Grid.RowDefinitions>
             <WrapPanel  Grid.ColumnSpan="3"  Margin="3,3,0,3" HorizontalAlignment="Center"  VerticalAlignment="Center">
                 <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
                      VerticalAlignment="Stretch">
                     <TextBlock Text="Предмет: " FontWeight="Bold"  Foreground="Brown"/>
                 </Viewbox>
-                <ComboBox x:Name="Subject"  MinWidth="185" MaxWidth="200"  TabIndex="11"   SelectedIndex="0" 
-                      
+                <ComboBox x:Name="Subject"  MinWidth="185" MaxWidth="200"  TabIndex="11"   SelectedIndex="0"                       
                      ItemsSource="{Binding Source={StaticResource SortedSubjects}, 
-                      UpdateSourceTrigger=PropertyChanged}" 
+                     UpdateSourceTrigger=PropertyChanged}" 
                      SelectedItem="{Binding _Subj.Subj}"
                      DisplayMemberPath="SubName"
-                      ToolTip="{Binding _Subj.Subj.SubName}" 
+                     ToolTip="{Binding _Subj.Subj.SubName}" 
                      HorizontalContentAlignment="Center"
-                     Background="White" >
+                     Background="White"
+                     IsSynchronizedWithCurrentItem="False">
                     <!--SortedSubjects can find above in Window.Resources-->
                     <!--Subj can find in _Subject.cs-->
                 </ComboBox>
                 <Button x:Name="AddSubject" Width="40" Background="Gray" Content="..." TabIndex="12"
-                    Command="{Binding _RuleOrderLine._Subj.NewEditSubject}"
+                    Command="{Binding _Subj.NewEditSubject}"
                     CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}" />
                 <!--Command NewEditSubject in _Subject.cs-->
             </WrapPanel>
             <ListBox x:Name="DirList1" 
                      Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="2" Margin="5" 
-                    ItemsSource="{Binding _RuleOrderLine._Subject.AuthorSubjects}" 
-                 SelectedIndex="{Binding _RuleOrderLine._Subject.Index}"
+                    ItemsSource="{Binding _Subj.AuthorSubjects}" 
+                 SelectedIndex="{Binding _Subj.Index}"
                      SelectionMode="Single" 
                      IsSynchronizedWithCurrentItem="False"
                      TabIndex="3"
@@ -620,23 +606,23 @@
 
             </ListBox>
             <Button Grid.Column="0" Grid.Row="3"  Content="+" Background="Red"
-                    Command="{Binding AddAuthorSubjectCommand}" 
+                    Command="{Binding _Subj.AddAuthorSubjectCommand}" 
                  IsEnabled="{Binding SelectedItem, Converter={StaticResource NullBoolConverter}, ElementName=Subject}"
                 TabIndex="4" >
                 <!--Command AddAuthorSubjectCommand can find in _Subject.cs-->
             </Button>
 
             <Button Grid.Column="2" Grid.Row="3" Content="-"
-                Command="{Binding _RuleOrderLine._Subject.DelFromAuthorSubjectCommand}"                 
+                Command="{Binding _Subj.DelFromAuthorSubjectCommand}"                 
                 IsEnabled="{Binding SelectedItem, 
-                     Converter={StaticResource NullBoolConverter}, ElementName=DirList}"
+                     Converter={StaticResource NullBoolConverter}, ElementName=DirList1}"
                 TabIndex="5" />
         </Grid>
 
 
         <Grid Margin="3" Grid.Row="11" Grid.Column="5">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition  />
+                <ColumnDefinition  Width="4*"/>
                 <ColumnDefinition  />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
@@ -651,32 +637,32 @@
 
             <StackPanel  Orientation="Horizontal" MinHeight="25" HorizontalAlignment="Center" >
                 <TextBlock Text="Рейтинг: " Margin="3,0" VerticalAlignment="Center" Foreground="Brown" FontWeight="Bold"  />
-                <TextBlock Text="{Binding _RuleOrderLine.AuthorsRecord.Author.Rating,UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Center" Foreground="Red" FontWeight="Bold"  />
+                <TextBlock Text="{Binding Author.Rating,UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Center" Foreground="Red" FontWeight="Bold"  />
             </StackPanel>
             <TextBlock Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center"
                                Text="Пунктуальность:" FontWeight="Bold"  Foreground="Brown"   />
             <xctk:IntegerUpDown Grid.Row="1" Grid.Column="1"
                         MaxWidth="800" Maximum="10" Minimum="0"                                          
-                                Value="{Binding _RuleOrderLine.AuthorsRecord.Author.Punctually, Mode=TwoWay}"
+                                Value="{Binding Author.Punctually, Mode=TwoWay}"
                                 TabIndex="0" Margin="3" />
             <TextBlock Grid.Row="2" Grid.Column="0"  HorizontalAlignment="Left" VerticalAlignment="Center"
                                Text="Качество работы:" FontWeight="Bold"  Foreground="Brown"/>
             <xctk:IntegerUpDown  Grid.Row="2" Grid.Column="1"
                         MaxWidth="800" Maximum="10" Minimum="0"  Margin="3"
-                                    Value="{Binding _RuleOrderLine.AuthorsRecord.Author.WorkQuality, Mode=TwoWay}"
+                                    Value="{Binding Author.WorkQuality, Mode=TwoWay}"
                                     TabIndex="1"/>
             <TextBlock   Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center"
                         Text="Ответсвенность:" FontWeight="Bold"  Foreground="Brown"/>
             <xctk:IntegerUpDown  Grid.Row="3" Grid.Column="1"
                         MaxWidth="800" Maximum="10" Minimum="0"  Margin="3"
-                                Value="{Binding _RuleOrderLine.AuthorsRecord.Author.Responsibility, Mode=TwoWay}" 
+                                Value="{Binding Author.Responsibility, Mode=TwoWay}" 
                                 TabIndex="2"/>
             <TextBlock Grid.Row="4" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center"
                         Text="Сговорчивость по доработке:" 
                                FontWeight="Bold"  Foreground="Brown"/>
             <xctk:IntegerUpDown Grid.Row="4" Grid.Column="1"
                         MaxWidth="800" Maximum="10" Minimum="0"  Margin="3" 
-                                Value="{Binding _RuleOrderLine.AuthorsRecord.Author.CompletionCompliance, Mode=TwoWay}" 
+                                Value="{Binding Author.CompletionCompliance, Mode=TwoWay}" 
                                 TabIndex="3"/>
 
             <Button Grid.Row="5"   Content="Сформировать рейтинг" Background="Orange"

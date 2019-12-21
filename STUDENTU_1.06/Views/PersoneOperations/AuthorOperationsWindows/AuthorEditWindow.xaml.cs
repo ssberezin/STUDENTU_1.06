@@ -23,7 +23,7 @@ namespace STUDENTU_1._06.Views.PersoneOperations.AuthorOperationsWindows
         public AuthorEditWindow()
         {
             InitializeComponent();
-            this.DataContext = new AuthorsVMClass();
+            this.DataContext = new AuthorsVMClass("");
         }
     }
 }

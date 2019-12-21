@@ -48,7 +48,7 @@
             <RowDefinition Height="0.5*"/>
         </Grid.RowDefinitions>
         <TextBox x:Name="DirName" Grid.ColumnSpan="3" Margin="5" 
-                 Text="{Binding _Source.Source.SourceName , Mode=TwoWay,
+                 Text="{Binding _Source.Source.SourceName , Mode=OneWay,
             UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap"
                  SpellCheck.IsEnabled="True" Language="ru-ru" TextAlignment="Center"
                  TabIndex="0"/>        
