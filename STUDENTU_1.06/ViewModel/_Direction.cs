@@ -158,8 +158,7 @@ namespace STUDENTU_1._06.ViewModel
         private RelayCommand deleteDirectionCommand;
         public RelayCommand DeleteDirectionCommand => deleteDirectionCommand ??
             (deleteDirectionCommand = new RelayCommand((selectedItem) =>
-            {
-                //if (selectedItem == null) return;
+            {                
                 DeleteDir();
             }
            ));
@@ -167,8 +166,7 @@ namespace STUDENTU_1._06.ViewModel
         private RelayCommand editDirectionCommand;
         public RelayCommand EditDirectionCommand => editDirectionCommand ?? (editDirectionCommand = new RelayCommand(
                     (obj) =>
-                    {
-                       // if (selectedItem == null) return;
+                    {                       
                         EditDir(obj as string);
                     }
                     ));
@@ -395,11 +393,8 @@ namespace STUDENTU_1._06.ViewModel
         private RelayCommand addAuthorDirectionCommand;
         public RelayCommand AddAuthorDirectionCommand => addAuthorDirectionCommand ??
             (addAuthorDirectionCommand = new RelayCommand((obj) =>
-            {
-                //if (SelectedDir2.DirectionName!=null)
-                //    Dir = SelectedDir2;
+            {             
                     AddAuthorDirection();
-
             }
            ));
 
@@ -420,7 +415,7 @@ namespace STUDENTU_1._06.ViewModel
         {
            
             foreach (Direction item in AuthorDirections)
-                if (dir.DirectionId == item.DirectionId || dir.DirectionName == "---")
+                if (dir.DirectionId == item.DirectionId )
                     return true;
             return false;
         }

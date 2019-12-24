@@ -17,6 +17,7 @@ namespace STUDENTU_1._06.ViewModel
         {
             Subj = new Subject();
             SelectedSubj = new Subject();
+            SelectedSubj2 = new Subject();
             SubjRecords = new ObservableCollection<Subject>();
             AuthorSubjects = new ObservableCollection<Subject>();
             LoadSubjectsData();
@@ -104,6 +105,7 @@ namespace STUDENTU_1._06.ViewModel
                         });
                     }
                     Subj = SubjRecords[0];
+                    SelectedSubj2 = Subj;
                 }
                 catch (ArgumentNullException ex)
                 {
@@ -152,18 +154,16 @@ namespace STUDENTU_1._06.ViewModel
         private RelayCommand deleteSubjectCommand;
         public RelayCommand DeleteSubjectCommand => deleteSubjectCommand ??
             (deleteSubjectCommand = new RelayCommand((selectedItem) =>
-            {
-                if (selectedItem == null) return;
+            {                
                 DeleteSubj();
             }
             ));
 
         private RelayCommand editSubjectCommand;
         public RelayCommand EditSubjectCommand => editSubjectCommand ?? (editSubjectCommand = new RelayCommand(
-                    (selectedItem) =>
-                    {
-                        if (selectedItem == null) return;
-                        EditSubj();
+                    (obj) =>
+                    {                        
+                        EditSubj(obj as string);
                     }
                     ));
 
@@ -192,7 +192,7 @@ namespace STUDENTU_1._06.ViewModel
                             SubjRecords.Clear();
                             LoadSubjectsData();
                             Subj = new Subject();
-
+                            SelectedSubj2 = Subj;
                         }
                         else
                             return;
@@ -224,8 +224,15 @@ namespace STUDENTU_1._06.ViewModel
         }
 
        //===================THIS METHOD IS FOR EDIT RECORDS IN SUBJECTS TABLE==============
-        public void EditSubj()
+        public void EditSubj(string newSubName)
         {
+            if (Subj.SubName == "---")
+            {
+                dialogService.ShowMessage("Нельзя редактировать эту запись");
+                return;
+            }
+            Subj.SubName = newSubName;
+
             using (StudentuConteiner db = new StudentuConteiner())
             {
                 try
@@ -236,6 +243,8 @@ namespace STUDENTU_1._06.ViewModel
                         //changing DB
                         res2.SubName = Subj.SubName;
                         db.SaveChanges();
+                        SubjRecords.Clear();
+                        LoadSubjectsData();
                     }
                 }
                 catch (ArgumentNullException ex)
@@ -282,7 +291,11 @@ namespace STUDENTU_1._06.ViewModel
                             db.Subjects.Remove(db.Subjects.Find(Subj.SubjectId));
                             db.SaveChanges();
                             //changing collection
+                            AuthorSubjects.Remove(Subj);
                             SubjRecords.Remove(Subj);
+
+                            Subj = SubjRecords[0];
+                            SelectedSubj2 = Subj;
                         }
                     }
                     else
@@ -372,26 +385,22 @@ namespace STUDENTU_1._06.ViewModel
 
         private void AddAuthorSubject()
         {
-            if (Subj.SubName=="---")
-            {
-                dialogService.ShowMessage("Нельзя добавить эту запись");
-                return;
-            }
-            if (FindSubj())
+           
+            if (FindSubj(SelectedSubj2) || string.IsNullOrEmpty(SelectedSubj2.SubName) || SelectedSubj2.SubName == "---")
             {
                 dialogService.ShowMessage("Уже есть такая запись в списке");
             }
             else
-                AuthorSubjects.Add(Subj);
+                AuthorSubjects.Add(SelectedSubj2);
         }
 
         //here we check AuthorSubjects for the added item
-        private bool FindSubj()
+        private bool FindSubj(Subject subj)
         {
             
             foreach (Subject item in AuthorSubjects)
             {
-                if (Subj.SubjectId == item.SubjectId)                
+                if (subj.SubjectId == item.SubjectId)                
                     return true;
             }
             return false;

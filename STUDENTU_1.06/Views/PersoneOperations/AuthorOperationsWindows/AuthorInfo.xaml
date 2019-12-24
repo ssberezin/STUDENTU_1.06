@@ -337,22 +337,19 @@
         </StackPanel>
 
 
-        <StackPanel Grid.Column="4" HorizontalAlignment="Left"  Margin="10,11,0,0"
-                    Grid.RowSpan="5" VerticalAlignment="Top" 
-                    Orientation="Horizontal" >
-            <StackPanel.ContextMenu>
+        <Grid Grid.Column="4" Grid.RowSpan="5" Margin="4">
+            <Grid.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Добавить/изменить фото?" Command="{Binding OpenFileDialogCommand}" 
                               Height="17"/>
                 </ContextMenu>
-            </StackPanel.ContextMenu>
-            <StackPanel.Background>
+            </Grid.ContextMenu>
+            <Grid.Background>
                 <ImageBrush ImageSource="{Binding DefaultPhoto, UpdateSourceTrigger=PropertyChanged}"/>
-
-            </StackPanel.Background>
+            </Grid.Background>
             <!--<Image Source="{Binding Photo, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" />-->
             <Image Source="{Binding Path=Persone.Photo, Converter={StaticResource imagePathConverter}, Mode=OneWay}" VerticalAlignment="Center" />
-        </StackPanel>
+        </Grid>
         <Grid Grid.Row="11" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -372,11 +369,11 @@
                 </Viewbox>
                 <ComboBox x:Name="Direction"  MinWidth="185"  TabIndex="0" SelectedIndex="0" 
                       IsEditable="False"
-                     ItemsSource="{Binding Source={StaticResource SortedItems}, 
+                      ItemsSource="{Binding Source={StaticResource SortedItems}, 
                       UpdateSourceTrigger=PropertyChanged}" 
-                     SelectedItem="{Binding _Dir.Dir}"
-                     DisplayMemberPath="DirectionName"
-                     ToolTip="{Binding _Dir.Dir.DirectionName}" 
+                      SelectedItem="{Binding _Dir.SelectedDir2,  UpdateSourceTrigger=PropertyChanged}"
+                      DisplayMemberPath="DirectionName"
+                     ToolTip="{Binding _Dir.SelectedDir2.DirectionName}" 
                      HorizontalContentAlignment="Center"
                      Background="White" >
 
@@ -418,8 +415,8 @@
             </ListBox>
             <Button Grid.Column="0" Grid.Row="3"  Content="+" Background="Red"
                     Command="{Binding _Dir.AddAuthorDirectionCommand}" 
-                 IsEnabled="{Binding SelectedItem, Converter={StaticResource NullBoolConverter}, ElementName=Direction}"
-                TabIndex="4" >
+                    IsEnabled="{Binding SelectedItem, Converter={StaticResource NullBoolConverter}, ElementName=Direction}"
+                    TabIndex="4" >
                 <!--Command AddDirectionCommand can find in DirectionClass.cs-->
             </Button>
 
@@ -446,15 +443,14 @@
                      VerticalAlignment="Stretch">
                     <TextBlock Text="Предмет: " FontWeight="Bold"  Foreground="Brown"/>
                 </Viewbox>
-                <ComboBox x:Name="Subject"  MinWidth="185" MaxWidth="200"  TabIndex="11"   SelectedIndex="0" 
-                      
-                     ItemsSource="{Binding Source={StaticResource SortedSubjects}, 
+                <ComboBox x:Name="Subject"  MinWidth="185" MaxWidth="200"  TabIndex="11"   SelectedIndex="0"                       
+                      ItemsSource="{Binding Source={StaticResource SortedSubjects}, 
                       UpdateSourceTrigger=PropertyChanged}" 
-                     SelectedItem="{Binding _Subj.Subj}"
-                     DisplayMemberPath="SubName"
-                      ToolTip="{Binding _Subj.Subj.SubName}" 
-                     HorizontalContentAlignment="Center"
-                     Background="White" >
+                      SelectedItem="{Binding _Subj.SelectedSubj2, UpdateSourceTrigger=PropertyChanged}"
+                      DisplayMemberPath="SubName"
+                      ToolTip="{Binding _Subj.SelectedSubj2.SubName}"
+                      HorizontalContentAlignment="Center"
+                      Background="White" >
                     <!--SortedSubjects can find above in Window.Resources-->
                     <!--Subj can find in _Subject.cs-->
                 </ComboBox>
@@ -467,7 +463,7 @@
             <ListBox x:Name="DirList1" 
                      Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="2" Margin="5" 
                     ItemsSource="{Binding _Subj.AuthorSubjects}" 
-                 SelectedIndex="{Binding _Subj.Index}"
+                    SelectedIndex="{Binding _Subj.Index}"
                      SelectionMode="Single" 
                      IsSynchronizedWithCurrentItem="False"
                      TabIndex="3"

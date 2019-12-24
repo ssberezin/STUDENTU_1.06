@@ -351,23 +351,20 @@
             <!--PersoneDescription can find in AuthorsVMClass.cs-->
         </StackPanel>
 
-
-        <StackPanel Grid.Column="4" HorizontalAlignment="Left" Height="215" Margin="10,11,0,0"
-                    Grid.RowSpan="5" VerticalAlignment="Top" Width="190"
-                    Orientation="Horizontal" >
-            <StackPanel.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="Добавить/изменить фото?" Command="{Binding OpenFileDialogCommand}" 
+        <Grid Grid.Column="4" Grid.RowSpan="5" Margin="4">   
+                <Grid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Добавить/изменить фото?" Command="{Binding OpenFileDialogCommand}" 
                               Height="17"/>
-                </ContextMenu>
-            </StackPanel.ContextMenu>
-            <StackPanel.Background>
-                <ImageBrush ImageSource="{Binding DefaultPhoto, UpdateSourceTrigger=PropertyChanged}"/>
-
-            </StackPanel.Background>
-            <!--<Image Source="{Binding Photo, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" />-->
-            <Image Source="{Binding Path=Persone.Photo, Converter={StaticResource imagePathConverter}, Mode=OneWay}" VerticalAlignment="Center" />
-        </StackPanel>
+                    </ContextMenu>
+                </Grid.ContextMenu>
+                <Grid.Background>
+                    <ImageBrush ImageSource="{Binding DefaultPhoto, UpdateSourceTrigger=PropertyChanged}"/>
+                </Grid.Background>
+                <!--<Image Source="{Binding Photo, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" />-->
+                <Image Source="{Binding Path=Persone.Photo, Converter={StaticResource imagePathConverter}, Mode=OneWay}" VerticalAlignment="Center" />           
+        </Grid>
+        
         <StackPanel Grid.Column="4" Grid.Row="5"  Orientation="Horizontal"  >
             <TextBlock Text="Рейтинг: " Margin="3,0" VerticalAlignment="Center" Foreground="Brown" FontWeight="Bold"  />
             <TextBlock Text="{Binding Author.Rating,UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Center" Foreground="Red" FontWeight="Bold"  />
