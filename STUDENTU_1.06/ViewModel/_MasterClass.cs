@@ -15,8 +15,8 @@ namespace STUDENTU_1._06.ViewModel
 {
     class _MasterClass : Helpes.ObservableObject
     {
-        public ObservableCollection<Type> TypeRecords { get; set; }
-        public ObservableCollection<Type> AuthorTypes { get; set; }
+        public ObservableCollection <object> TypeRecords { get; set; }
+        public ObservableCollection<object> AuthorSomeProperties { get; set; }
 
         private Type param;
         public Type Param
@@ -78,15 +78,14 @@ namespace STUDENTU_1._06.ViewModel
 
         public  _MasterClass (Type TypeName)
 
-        {
-            
-            Type Param = TypeName.GetType();
-            Param = new Param.GetType();
-            SelectedDir = new Direction();
-            SelectedDir2 = new Direction();
-            DirRecords = new ObservableCollection<Direction>();
-            AuthorDirections = new ObservableCollection<Direction>();
-            LoadDirectionsData();
+        {            
+            object newObj = Activator.CreateInstance(TypeName.GetType());             
+            Param = newObj as Type;
+            SelectedParam = newObj as Type; 
+            SelectedParam2 = newObj as Type;
+            TypeRecords = new ObservableCollection<object> ();
+            AuthorSomeProperties = new ObservableCollection<object>();
+            LoadData();
             showWindow = new DefaultShowWindowService();
             dialogService = new DefaultDialogService();
 
@@ -96,7 +95,7 @@ namespace STUDENTU_1._06.ViewModel
         IShowWindowService showWindow;
 
         //load data array from "Directions" table
-        public void LoadDirectionsData()
+        public void LoadData()
         {
             using (StudentuConteiner db = new StudentuConteiner())
             {
