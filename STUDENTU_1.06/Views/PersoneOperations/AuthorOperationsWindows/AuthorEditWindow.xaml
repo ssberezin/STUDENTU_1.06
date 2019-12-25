@@ -42,8 +42,8 @@
 
 
         <!--for sorting in listbox without behind code-->
-              
-        
+
+
         <CollectionViewSource x:Key="SortedStatuses" Source="{Binding _AuthorStatus.AuthorStatusRecords}"
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
             <CollectionViewSource.SortDescriptions>
@@ -58,7 +58,7 @@
                 <scm1:SortDescription PropertyName="Persone.NickName"/>
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
-        
+
         <CollectionViewSource x:Key="SortedItems" Source="{Binding  _Dir.DirRecords}"
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
             <!--DirRecords can find in _Direction.cs-->
@@ -67,8 +67,8 @@
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
 
-        
-       
+
+
         <CollectionViewSource x:Key="SortedSubjects" Source="{Binding  _Subj.SubjRecords}"
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
             <!--SubjRecords can find in SubjectClass.cs-->
@@ -440,18 +440,30 @@
             <!--PersoneDescription can find in AuthorsVMClass.cs-->
         </StackPanel>
         <StackPanel Grid.Column="3" Grid.Row="8" Grid.ColumnSpan="3" Grid.RowSpan="3"  Margin="3">
-            <Viewbox MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Center" 
-                     VerticalAlignment="Bottom">
-                <TextBlock Text="Прекратили сотрудничать потому что..." FontWeight="Bold" 
-                           Foreground="Brown"/>
-            </Viewbox>
-            <TextBox  Margin="5,5,4.8,5" FontSize="12" TabIndex="21" MinHeight="85"
+
+            <TextBox x:Name="AuthorStop"  Margin="5,5,4.4,5" FontSize="12" TabIndex="21" MinHeight="115"
                       TextWrapping="Wrap"  AcceptsReturn="True"
                       VerticalScrollBarVisibility="Auto" Foreground="Red"
-                      Text="{Binding PersoneDescription.ReasonFortermCoop, Mode=TwoWay}" Height="98"
-                       IsEnabled="{Binding ElementName=EndWorkEnable,  Path=IsChecked}"/>
+                      Text="{Binding PersoneDescription.ReasonFortermCoop, Mode=TwoWay}" 
+                       IsEnabled="{Binding ElementName=EndWorkEnable,  Path=IsChecked}" />
             <!--PersoneDescription can find in AuthorsVMClass.cs-->
         </StackPanel>
+        <TextBlock Grid.Column="3" Grid.Row="8" Grid.ColumnSpan="3" Grid.RowSpan="3"
+            IsHitTestVisible="False" Text="Тут мы указываем причины прекращения сотрудничества с автором " FontSize="25"                     
+                    TextWrapping="Wrap" VerticalAlignment="Center"
+                    TextAlignment="Center" 
+                    HorizontalAlignment="Center"  Foreground="DarkGray">
+            <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Text, ElementName=AuthorStop}" Value="">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
         <Grid Grid.Column="5" Grid.RowSpan="5" Margin="4">
             <Grid.ContextMenu>
                 <ContextMenu>
@@ -466,7 +478,7 @@
             <Image Source="{Binding Path=Persone.Photo, Converter={StaticResource imagePathConverter}, Mode=OneWay}" VerticalAlignment="Center" />
         </Grid>
 
-       
+
         <Grid Grid.Row="11" Grid.Column="1" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>

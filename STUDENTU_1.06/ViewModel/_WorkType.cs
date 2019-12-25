@@ -101,25 +101,23 @@ namespace STUDENTU_1._06.ViewModel
         public RelayCommand AddWorkTypeCommand => addWorkTypeCommand ?? (addWorkTypeCommand = new RelayCommand(
                     (obj) =>
                     {
-                        AddWorkType();
-                                            }
+                        AddWorkType(obj as string);
+                    }
                     ));
 
         private RelayCommand deleteWorkTypeCommand;
         public RelayCommand DeleteWorkTypeCommand => deleteWorkTypeCommand ??
             (deleteWorkTypeCommand = new RelayCommand((selectedItem) =>
-            {
-                if (selectedItem == null) return;
+            {               
                 DeleteWorkType();
             }
             ));
 
         private RelayCommand editWorkTypeCommand;
         public RelayCommand EditWorkTypeCommand => editWorkTypeCommand ?? (editWorkTypeCommand = new RelayCommand(
-                    (selectedItem) =>
-                    {
-                        if (selectedItem == null) return;
-                        EditWorkType();
+                    (obj) =>
+                    {                        
+                        EditWorkType(obj as string);
                     }
                     ));
 
@@ -216,8 +214,9 @@ namespace STUDENTU_1._06.ViewModel
         }
 
         //===================THIS METHOD IS FOR ADD RECORDS IN WORKTYPE TABLES==============
-        public void AddWorkType()
+        public void AddWorkType(string newName)
         {
+            WorkType.TypeOfWork = newName;
             using (StudentuConteiner db = new StudentuConteiner())
             {
                 try
@@ -270,8 +269,14 @@ namespace STUDENTU_1._06.ViewModel
         }
 
         //===================THIS METHOD IS FOR EDIT RECORDS IN  WORKTYPES TABLES==============
-        public void EditWorkType()
+        public void EditWorkType(string newName)
         {
+            if (WorkType.TypeOfWork == "---")
+            {
+                dialogService.ShowMessage("Нельзя редактировать эту запись");
+                return;
+            }
+            WorkType.TypeOfWork = newName;
             using (StudentuConteiner db = new StudentuConteiner())
             {
                 try
@@ -282,6 +287,8 @@ namespace STUDENTU_1._06.ViewModel
                         //changing DB
                         res.TypeOfWork = WorkType.TypeOfWork.ToLower();
                         db.SaveChanges();
+                        WorkTypesRecords.Clear();
+                        LoadWorkTypesData();
                     }
                 }
                 catch (ArgumentNullException ex)

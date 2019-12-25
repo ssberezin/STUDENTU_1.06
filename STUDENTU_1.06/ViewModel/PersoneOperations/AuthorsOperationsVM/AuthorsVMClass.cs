@@ -237,8 +237,10 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
             {
                 try
                 {
+                   
                     if (AuthorsRecord != null)
                     {
+                        
                         db.Authors.Attach(AuthorsRecord.Author);
                         db.Dates.Attach(AuthorsRecord.Persone.Dates[0]);
                         db.PersoneDescriptions.Attach(AuthorsRecord.Persone.PersoneDescription);
@@ -364,17 +366,29 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                                             .Include("Persone")
                                            .Include("AuthorStatus").ToList();
                     AuthorsRecord record;
-                    foreach (Author item in result)
+                    int count = result.Count();
+                    for (int i = 1; i < count; i++)
                     {
-                      
                         record = new AuthorsRecord
                         {
-                            Author = item,
-                            Persone = item.Persone,
-                            Contacts = item.Persone.Contacts                                                       
-                        };                        
+                            Author = result[i],
+                            Persone = result[i].Persone,
+                            Contacts = result[i].Persone.Contacts
+                        };
                         AuthorsRecords.Add(record);
                     }
+
+                    //foreach (Author item in result)
+                    //{
+                      
+                    //    record = new AuthorsRecord
+                    //    {
+                    //        Author = item,
+                    //        Persone = item.Persone,
+                    //        Contacts = item.Persone.Contacts                                                       
+                    //    };                        
+                    //    AuthorsRecords.Add(record);
+                    //}
                 }
                 catch (ArgumentNullException ex)
                 {

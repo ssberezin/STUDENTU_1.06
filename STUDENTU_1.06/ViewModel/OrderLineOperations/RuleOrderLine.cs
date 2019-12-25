@@ -416,160 +416,7 @@ namespace STUDENTU_1._06.ViewModel
         }
 
 
-        //call for all authors. If param=="all" et last we'll see all authors with any asuthorstatus
-        //if  param=="all"  et last we'll see all authors with asuthorstatus "работает"
-      //  private void AuthorsCallByParams(string dir, string subj, string authorStatus)
-        //{
-        //    using (StudentuConteiner db = new StudentuConteiner())
-        //    {
-        //        try
-        //        {
-        //            var contacts = db.Contacts.Include("Persone").ToList();
-        //            var result = db.Authors.Include("Persone")
-        //                                   .Include("Subject")
-        //                                   .Include("AuthorStatus").ToList();
-        //            AuthorsRecord record;
-
-
-        //            //при фильтрации было принято решение не экономить память машины, но сэкономить ее вычислительные ресурсы
-        //            // when filtering, it was decided not to save machine memory, but to save its computing resources
-        //            List<Author> tmpres = new List<Author>();
-        //            //filtered authors by status
-        //            if (authorStatus != "---")
-        //                foreach (Author item in result)
-        //                {
-        //                    if (item.AuthorStatus.AuthorStatusName == authorStatus)
-        //                        tmpres.Add(item);
-        //                }
-        //            else
-        //                tmpres.AddRange(result);
-        //                //foreach (Author item in tmpres)
-        //                //        tmpres.Add(item);
-                        
-        //            List<Author> tmpres1 = new List<Author>();
-        //            //filtered authors by subject
-
-        //            if (subj!="---")
-        //                foreach (Author item in tmpres)
-        //                {
-        //                    foreach (var i in item.Subject)
-        //                        if (i.SubName == subj)
-        //                            tmpres1.Add(item);
-        //                }
-        //            else
-        //                tmpres1.AddRange(tmpres);
-        //            tmpres = null;
-        //            List<Author> tmpres2 = new List<Author>();
-        //            //filtered authors by subject
-        //            if (dir!="---")
-        //                foreach (Author item in tmpres1)
-        //                {
-        //                    foreach (var i in item.Direction)
-        //                        if (i.DirectionName == dir)
-        //                            tmpres2.Add(item);
-        //                }
-        //            else
-        //                tmpres2.AddRange(tmpres1);
-        //            tmpres1 = null;
-
-        //            //этот метод экономит память машины, но сильно расходует вычислительную мощность
-        //            // this method saves the memory of the machine, but consumes a lot of computing power
-
-        //            ////filtered authors by status
-        //            //foreach (Author item in result)
-        //            //{
-        //            //    if (item.AuthorStatus.AuthorStatusName != authorStatus)
-        //            //        result.Remove(item);
-        //            //}
-        //            ////filtered authors by subject
-        //            //foreach (Author item in result)
-        //            //{
-        //            //    foreach (var i in item.Subject)
-        //            //        if (i.SubName != subj)
-        //            //        {
-        //            //            result.Remove(item);
-        //            //            continue;
-        //            //        }
-        //            //}
-        //            ////filtered authors by direction
-        //            //foreach (Author item in result)
-        //            //{
-        //            //    foreach (var i in item.Direction)
-        //            //        if (i.DirectionName != dir)
-        //            //        {
-        //            //            result.Remove(item);
-        //            //            continue;
-        //            //        }
-        //            //}
-
-
-
-        //            foreach (Author item in tmpres2)
-        //            {                       
-                            
-        //                //Author author = new Author()
-        //                //{
-        //                //    AuthorId = item.AuthorId,
-        //                //    AuthorStatus = item.AuthorStatus,
-        //                //    Source = item.Source,
-        //                //    Rating = item.Rating,
-        //                //    Punctually = item.Punctually,
-        //                //    CompletionCompliance = item.CompletionCompliance,
-        //                //    WorkQuality = item.WorkQuality,
-        //                //    Responsibility = item.Responsibility
-        //                //};
-        //                //Persone persone = new Persone()
-        //                //{
-        //                //    PersoneId = item.Persone.PersoneId,
-        //                //    PersoneDescription = item.Persone.PersoneDescription,
-        //                //    Name = item.Persone.Name,
-        //                //    Surname = item.Persone.Surname,
-        //                //    Patronimic = item.Persone.Patronimic,
-        //                //    Sex = item.Persone.Sex,
-        //                //    NickName = item.Persone.NickName
-        //                //};
-        //                //Contacts _contacts = new Contacts()
-        //                //{
-        //                //    Phone1 = item.Persone.Contacts.Phone1,
-        //                //    Phone2 = item.Persone.Contacts.Phone2,
-        //                //    Phone3 = item.Persone.Contacts.Phone3,
-        //                //    Email1 = item.Persone.Contacts.Email1,
-        //                //    Email2 = item.Persone.Contacts.Email2,
-        //                //    VK = item.Persone.Contacts.VK,
-        //                //    FaceBook = item.Persone.Contacts.FaceBook
-        //                //};
-        //                record = new AuthorsRecord
-        //                {
-        //                    Author = item,
-        //                    Persone = item.Persone,
-        //                    Contacts = item.Persone.Contacts
-        //                };
-        //                AuthorsRecords.Add(record);
-        //            }
-        //        }
-        //        catch (ArgumentNullException ex)
-        //        {
-        //            dialogService.ShowMessage(ex.Message);
-        //        }
-        //        catch (OverflowException ex)
-        //        {
-        //            dialogService.ShowMessage(ex.Message);
-        //        }
-        //        catch (System.Data.SqlClient.SqlException ex)
-        //        {
-        //            dialogService.ShowMessage(ex.Message);
-        //        }
-        //        catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
-        //        {
-        //            dialogService.ShowMessage(ex.Message);
-        //        }
-        //        catch (System.Data.Entity.Core.EntityException ex)
-        //        {
-        //            dialogService.ShowMessage(ex.Message);
-        //        }
-        //    }
-
-        //}
+      
 
         public void AuthorsCallByParams(string dir, string subj, string authorStatus, ObservableCollection<AuthorsRecord> authorsRecords)
         {
@@ -588,7 +435,7 @@ namespace STUDENTU_1._06.ViewModel
                     // when filtering, it was decided not to save machine memory, but to save its computing resources
                     List<Author> tmpres = new List<Author>();
                     //filtered authors by status
-                    if (authorStatus != "---")
+                    if (authorStatus != "---"&& authorStatus!=null)
                         foreach (Author item in result)
                         {
                             if (item.AuthorStatus.AuthorStatusName == authorStatus)
@@ -602,7 +449,7 @@ namespace STUDENTU_1._06.ViewModel
                     List<Author> tmpres1 = new List<Author>();
                     //filtered authors by subject
 
-                    if (subj != "---")
+                    if (subj != "---" && subj!=null)
                         foreach (Author item in tmpres)
                         {
                             foreach (var i in item.Subject)
@@ -614,7 +461,7 @@ namespace STUDENTU_1._06.ViewModel
                     tmpres = null;
                     List<Author> tmpres2 = new List<Author>();
                     //filtered authors by subject
-                    if (dir != "---")
+                    if (dir != "---" && dir!=null)
                         foreach (Author item in tmpres1)
                         {
                             foreach (var i in item.Direction)

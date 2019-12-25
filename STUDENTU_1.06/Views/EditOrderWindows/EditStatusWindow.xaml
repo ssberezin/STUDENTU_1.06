@@ -76,7 +76,8 @@
 
         </ListBox>
         <Button Grid.Column="0" Grid.Row="3"  Content="Добавить" Background="Green"
-                 Command="{Binding _Status.AddStatusCommand}" CommandParameter="{Binding DirName.Text}"
+                 Command="{Binding _Status.AddStatusCommand}" 
+                 CommandParameter="{Binding ElementName=DirName, Path=Text}"
                  IsEnabled="{Binding ElementName=DirName,  Path=Text.Length}"
                 TabIndex="1">
             <!--Command AddStatusCommand can find in _Status.cs-->

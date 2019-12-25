@@ -57,8 +57,8 @@
 
         <ListBox x:Name="DirList"
                      Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="2" Margin="5" 
-                    ItemsSource="{Binding Source={StaticResource SortedItems}, 
-                    UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding _WorkType.WorkType}"                   
+                    ItemsSource="{Binding Source={StaticResource SortedItems}}"
+                    SelectedItem="{Binding _WorkType.WorkType}"                   
                      SelectionMode="Single" 
                      IsSynchronizedWithCurrentItem="False"
                      TabIndex="2"
@@ -77,7 +77,8 @@
 
         </ListBox>
         <Button Grid.Column="0" Grid.Row="3"  Content="Добавить" Background="Green"
-                    Command="{Binding _WorkType.AddWorkTypeCommand}" CommandParameter="{Binding DirName.Text}"
+                    Command="{Binding _WorkType.AddWorkTypeCommand}"
+                  CommandParameter="{Binding ElementName=DirName, Path=Text}"
                  IsEnabled="{Binding ElementName=DirName,  Path=Text.Length}"
                 TabIndex="1">
             <!--Command AddWorkTypeCommand can find in WorkTypeClass.cs-->

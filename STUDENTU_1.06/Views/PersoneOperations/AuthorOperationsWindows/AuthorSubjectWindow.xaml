@@ -56,11 +56,10 @@
             </Viewbox>
             <ComboBox x:Name="Subject"  MinWidth="200" MaxWidth="200"  TabIndex="11"   SelectedIndex="0" 
                       
-                     ItemsSource="{Binding Source={StaticResource SortedSubjects}, 
-                      UpdateSourceTrigger=PropertyChanged}" 
-                     SelectedItem="{Binding _Subj.Subj}"
+                     ItemsSource="{Binding Source={StaticResource SortedSubjects}}" 
+                     SelectedItem="{Binding _Subj.SelectedSubj2, UpdateSourceTrigger=PropertyChanged}"
                      DisplayMemberPath="SubName"
-                      ToolTip="{Binding _Subj.Subj.SubName}" 
+                      ToolTip="{Binding _Subj.SelectedSubj2.SubName}"
                      HorizontalContentAlignment="Center"
                      Background="White" >
                 <!--SortedSubjects can find above in Window.Resources-->
@@ -75,9 +74,7 @@
         <ListBox x:Name="DirList" 
                      Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="2" Margin="5" 
                     ItemsSource="{Binding _Subj.AuthorSubjects}" 
-                    SelectedIndex="{Binding _Subj.Index}"
-                    SelectedItem="{Binding _Subj.Subj}"
-                    ToolTip="{Binding _Subj.Subj.SubName}"                    
+                    SelectedIndex="{Binding _Subj.Index}"  
                      SelectionMode="Single"                      
                      IsSynchronizedWithCurrentItem="False"
                      TabIndex="3"

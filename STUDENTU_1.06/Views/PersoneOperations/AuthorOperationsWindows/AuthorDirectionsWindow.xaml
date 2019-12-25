@@ -54,11 +54,10 @@
             </Viewbox>
             <ComboBox x:Name="Direction"  MinWidth="165"  TabIndex="0" SelectedIndex="0" 
                       IsEditable="False"
-                     ItemsSource="{Binding Source={StaticResource SortedItems}, 
-                      UpdateSourceTrigger=PropertyChanged}" 
-                     SelectedItem="{Binding _Dir.Dir}"
+                     ItemsSource="{Binding Source={StaticResource SortedItems}}" 
+                     SelectedItem="{Binding _Dir.SelectedDir2,  UpdateSourceTrigger=PropertyChanged}"
                      DisplayMemberPath="DirectionName"
-                     ToolTip="{Binding _Dir.Dir.DirectionName}" 
+                     ToolTip="{Binding _Dir.SelectedDir2.DirectionName}" 
                      HorizontalContentAlignment="Center"
                      Background="White" >
                 
@@ -76,13 +75,9 @@
                 <!--Command NewEditDirection can find in _Direction.cs-->                
         </WrapPanel>
         <ListBox x:Name="DirList" 
-                     Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="2" Margin="5" 
-                 
-                     ItemsSource="{Binding _Dir.AuthorDirections, 
-                    UpdateSourceTrigger=PropertyChanged}"  
-                    SelectedIndex="{Binding _Dir.Index}"
-                    SelectedItem="{Binding _Dir.Dir}"
-                    ToolTip="{Binding _Dir.Dir.DirectionName}"
+                     Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="2" Margin="5"                  
+                     ItemsSource="{Binding _Dir.AuthorDirections}"  
+                     SelectedIndex="{Binding _Dir.Index}"
                      SelectionMode="Single" 
                      IsSynchronizedWithCurrentItem="True"
                      TabIndex="3"

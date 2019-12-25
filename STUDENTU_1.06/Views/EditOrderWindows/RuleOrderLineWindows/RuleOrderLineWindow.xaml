@@ -333,8 +333,7 @@
             </TextBox.ContextMenu>
         </TextBox>
         <TextBlock  Grid.Column="5" Grid.Row="4" Grid.RowSpan="5"
-            IsHitTestVisible="False" Text="комменты автора по оценке работы" FontSize="25" 
-                    
+            IsHitTestVisible="False" Text="комменты автора по оценке работы" FontSize="25"                     
                     TextWrapping="Wrap" VerticalAlignment="Center"
                     TextAlignment="Center" 
                     HorizontalAlignment="Center"  Foreground="DarkGray">

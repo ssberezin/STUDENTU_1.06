@@ -1042,7 +1042,6 @@ E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\bin\Debug\ro\Xce
 E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\bin\Debug\ru\Xceed.Wpf.AvalonDock.resources.dll
 E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\bin\Debug\sv\Xceed.Wpf.AvalonDock.resources.dll
 E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\bin\Debug\zh-Hans\Xceed.Wpf.AvalonDock.resources.dll
-E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\STUDENTU_1.06+.csprojAssemblyReference.cache
 E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\AddContactsWindow.g.cs
 E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\EditOrderLine\EditOrderFull.g.cs
 E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\Evaluation\AddEvaluateWindow.g.cs
@@ -1103,3 +1102,4 @@ E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\
 E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\PersoneOperations\AuthorOperationsWindows\AuthorInfo.baml
 E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\PersoneOperations\AuthorOperationsWindows\AuthorEditWindow.g.cs
 E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\PersoneOperations\AuthorOperationsWindows\AuthorEditWindow.baml
+E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\STUDENTU_1.06+.csprojAssemblyReference.cache

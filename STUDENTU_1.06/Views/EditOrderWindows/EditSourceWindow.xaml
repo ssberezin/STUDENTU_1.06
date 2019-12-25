@@ -56,8 +56,8 @@
 
         <ListBox x:Name="DirList"
                      Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="2" Margin="5" 
-                    ItemsSource="{Binding Source={StaticResource SortedItems}, 
-                    UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding _Source.Source}"                   
+                    ItemsSource="{Binding Source={StaticResource SortedItems}}" 
+                    SelectedItem="{Binding _Source.Source}"                   
                      SelectionMode="Single" 
                      IsSynchronizedWithCurrentItem="False"
                      TabIndex="2"
@@ -78,7 +78,8 @@
 
         </ListBox>
         <Button Grid.Column="0" Grid.Row="3"  Content="Добавить" Background="Green"
-                    Command="{Binding _Source.AddSourceCommand}" CommandParameter="{Binding DirName.Text}"
+                    Command="{Binding _Source.AddSourceCommand}" 
+                CommandParameter="{Binding ElementName=DirName, Path=Text}"
                  IsEnabled="{Binding ElementName=DirName,  Path=Text.Length}"
                 TabIndex="1">
             <!--Command AddSourceCommand can find in _Source.cs-->

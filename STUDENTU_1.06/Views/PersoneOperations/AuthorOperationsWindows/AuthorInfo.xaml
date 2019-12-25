@@ -180,7 +180,7 @@
             </Viewbox>
             <TextBox    Text="{Binding Persone.NickName, Mode=TwoWay}"  MinWidth="70" Width="110" TabIndex="3"/>
             <!--Persone can find in AuthorsVMClass.cs-->
-            <Button Content="Добавить контакты " Background="YellowGreen" Height="30" TabIndex="4" Margin="5"
+            <Button Content="Посмотреть контакты " Background="YellowGreen" Height="30" TabIndex="4" Margin="5"
                      Command="{Binding NewEditContactsCommand}" CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}" Width="177"/>
             <!--NewEditContactsCommand can find in ForEditOrderAddContacts.cs-->
@@ -322,20 +322,32 @@
                       Text="{Binding PersoneDescription.FeedBack, Mode=TwoWay}" Height="98"/>
             <!--PersoneDescription can find in AuthorsVMClass.cs-->
         </StackPanel>
+       
         <StackPanel Grid.Column="2" Grid.Row="8" Grid.ColumnSpan="3" Grid.RowSpan="3"  Margin="3">
-            <Viewbox MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Center" 
-                     VerticalAlignment="Bottom">
-                <TextBlock Text="Прекратили сотрудничать потому что..." FontWeight="Bold" 
-                           Foreground="Brown"/>
-            </Viewbox>
-            <TextBox  Margin="5,5,4.8,5" FontSize="12" TabIndex="21" MinHeight="85"
+           
+            <TextBox x:Name="AuthorStop"  Margin="5,5,4.8,5" FontSize="12" TabIndex="21" MinHeight="120"
                       TextWrapping="Wrap"  AcceptsReturn="True"
                       VerticalScrollBarVisibility="Auto" Foreground="Red"
-                      Text="{Binding PersoneDescription.ReasonFortermCoop, Mode=TwoWay}" Height="98"
+                      Text="{Binding PersoneDescription.ReasonFortermCoop, Mode=TwoWay}" 
                        IsEnabled="{Binding ElementName=EndWorkEnable,  Path=IsChecked}"/>
             <!--PersoneDescription can find in AuthorsVMClass.cs-->
         </StackPanel>
-
+        <TextBlock  Grid.Column="2" Grid.Row="8" Grid.ColumnSpan="3" Grid.RowSpan="3"
+            IsHitTestVisible="False" Text="Тут мы указываем причины прекращения сотрудничества с автором " FontSize="25"                     
+                    TextWrapping="Wrap" VerticalAlignment="Center"
+                    TextAlignment="Center" 
+                    HorizontalAlignment="Center"  Foreground="DarkGray">
+            <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Text, ElementName=AuthorStop}" Value="">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
 
         <Grid Grid.Column="4" Grid.RowSpan="5" Margin="4">
             <Grid.ContextMenu>
@@ -369,8 +381,7 @@
                 </Viewbox>
                 <ComboBox x:Name="Direction"  MinWidth="185"  TabIndex="0" SelectedIndex="0" 
                       IsEditable="False"
-                      ItemsSource="{Binding Source={StaticResource SortedItems}, 
-                      UpdateSourceTrigger=PropertyChanged}" 
+                      ItemsSource="{Binding Source={StaticResource SortedItems}}" 
                       SelectedItem="{Binding _Dir.SelectedDir2,  UpdateSourceTrigger=PropertyChanged}"
                       DisplayMemberPath="DirectionName"
                      ToolTip="{Binding _Dir.SelectedDir2.DirectionName}" 
@@ -391,11 +402,9 @@
                 <!--Command NewEditDirection can find in _Direction.cs-->
             </WrapPanel>
             <ListBox x:Name="DirList" 
-                     Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="2" Margin="5" 
-                 
-                     ItemsSource="{Binding _Dir.AuthorDirections, 
-                    UpdateSourceTrigger=PropertyChanged}"  
-                    SelectedIndex="{Binding _Dir.Index}"
+                     Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="2" Margin="5"                  
+                     ItemsSource="{Binding _Dir.AuthorDirections}"  
+                     SelectedIndex="{Binding _Dir.Index}"
                      SelectionMode="Single" 
                      IsSynchronizedWithCurrentItem="False"
                      TabIndex="3"

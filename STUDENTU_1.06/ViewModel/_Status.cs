@@ -101,25 +101,23 @@ namespace STUDENTU_1._06.ViewModel
         public RelayCommand AddStatusCommand => addStatusCommand ?? (addStatusCommand = new RelayCommand(
                     (obj) =>
                     {
-                        AddStatus();
+                        AddStatus(obj as string);
                     }
                     ));
 
         private RelayCommand deleteStatusCommand;
         public RelayCommand DeleteStatusCommand => deleteStatusCommand ??
-            (deleteStatusCommand = new RelayCommand((selectedItem) =>
-            {
-                if (selectedItem == null) return;
+            (deleteStatusCommand = new RelayCommand((obj) =>
+            {               
                 DeleteStatus();
             }
             ));
 
         private RelayCommand editStatusCommand;
         public RelayCommand EditStatusCommand => editStatusCommand ?? (editStatusCommand = new RelayCommand(
-                    (selectedItem) =>
-                    {
-                        if (selectedItem == null) return;
-                        EditStatus();//can find it in ForEditOrder.cs
+                    (obj) =>
+                    {                        
+                        EditStatus(obj as string);
                     }
                     ));
 
@@ -217,8 +215,9 @@ namespace STUDENTU_1._06.ViewModel
         }
 
         //===================THIS METHOD IS FOR ADD RECORDS IN STATUS TABLES==============
-        public void AddStatus()
+        public void AddStatus(string newName)
         {
+            Status.StatusName = newName;
             using (StudentuConteiner db = new StudentuConteiner())
             {
                 try
@@ -272,8 +271,14 @@ namespace STUDENTU_1._06.ViewModel
         }
 
         //===================THIS METHOD IS FOR EDIT RECORDS IN STATUS TABLES==============
-        public void EditStatus()
+        public void EditStatus(string newName)
         {
+            if (Status.StatusName == "---")
+            {
+                dialogService.ShowMessage("Нельзя редактировать эту запись");
+                return;
+            }
+            Status.StatusName = newName;
             using (StudentuConteiner db = new StudentuConteiner())
             {
                 try
@@ -284,6 +289,8 @@ namespace STUDENTU_1._06.ViewModel
                         //changing DB
                         res4.StatusName = Status.StatusName.ToLower();
                         db.SaveChanges();
+                        StatusRecords.Clear();
+                        LoadStatusData();
                     }
                 }
                 catch (ArgumentNullException ex)

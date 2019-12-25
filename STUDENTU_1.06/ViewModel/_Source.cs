@@ -104,25 +104,23 @@ namespace STUDENTU_1._06.ViewModel
         public RelayCommand AddSourceCommand => addSourceCommand ?? (addSourceCommand = new RelayCommand(
                     (obj) =>
                     {
-                        AddSource();
+                        AddSource(obj as string);
                     }
                     ));
 
         private RelayCommand deleteSourceCommand;
         public RelayCommand DeleteSourceCommand => deleteSourceCommand ??
-            (deleteSourceCommand = new RelayCommand((selectedItem) =>
+            (deleteSourceCommand = new RelayCommand((obj) =>
             {
-                if (selectedItem == null) return;
                 DeleteSource();
             }
             ));
 
         private RelayCommand editSourceCommand;
         public RelayCommand EditSourceCommand => editSourceCommand ?? (editSourceCommand = new RelayCommand(
-                    (selectedItem) =>
-                    {
-                        if (selectedItem == null) return;
-                        EditSource(); ;
+                    (obj) =>
+                    {                        
+                        EditSource(obj as string); ;
                     }
                     ));
       
@@ -218,8 +216,9 @@ namespace STUDENTU_1._06.ViewModel
         }
 
         //===================THIS METHOD IS FOR ADD RECORDS IN SOURCE TABLE==============
-        public void AddSource()
+        public void AddSource(string newName)
         {
+            Source.SourceName = newName;
             using (StudentuConteiner db = new StudentuConteiner())
             {
                 try
@@ -271,8 +270,15 @@ namespace STUDENTU_1._06.ViewModel
         }
 
         //===================THIS METHOD IS FOR EDIT RECORDS IN SOURCE TABLE==============
-        public void EditSource()
+        public void EditSource(string newName)
         {
+            if (Source.SourceName == "---")
+            {
+                dialogService.ShowMessage("Нельзя редактировать эту запись");
+                return;
+            }
+            Source.SourceName = newName;
+
             using (StudentuConteiner db = new StudentuConteiner())
             {
                 try
@@ -283,6 +289,8 @@ namespace STUDENTU_1._06.ViewModel
                         //changing DB
                         res3.SourceName = Source.SourceName;
                         db.SaveChanges();
+                        SourcesRecords.Clear();
+                        LoadSourcesData();
                     }
                 }
                 catch (ArgumentNullException ex)

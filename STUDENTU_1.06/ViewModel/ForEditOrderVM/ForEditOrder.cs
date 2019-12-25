@@ -17,16 +17,16 @@ using STUDENTU_1._06.Views.EditOrderWindows.RuleOrderLineWindows;
 
 namespace STUDENTU_1._06.ViewModel
 {
-  public partial class ForEditOrder : Helpes.ObservableObject
+    public partial class ForEditOrder : Helpes.ObservableObject
     {
-        public ObservableCollection<Contacts> ContactsRecords { get; set; }       
+        public ObservableCollection<Contacts> ContactsRecords { get; set; }
 
         private Window editWindow;
         private Window editDirection;
 
         bool saved = false;//флаг, для того, чтоб понимать, был ли сохранен заказ в первый раз или нет.
-       
-         IDialogService dialogService;
+
+        IDialogService dialogService;
         IShowWindowService showWindow;
 
         //==========================================PROPERTIES============================================
@@ -61,7 +61,7 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
-        
+
         private Dates date;
         public Dates Date
         {
@@ -90,7 +90,7 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
-       
+
 
 
         private Persone persone;
@@ -162,7 +162,7 @@ namespace STUDENTU_1._06.ViewModel
                 }
             }
         }
-             
+
 
         private _Source _source;
         public _Source _Source
@@ -192,8 +192,8 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
-       
-        
+
+
 
         private PersoneDescription personeDescription;
         public PersoneDescription PersoneDescription
@@ -215,17 +215,17 @@ namespace STUDENTU_1._06.ViewModel
         //public ForEditOrder(Window editWindow, DefaultShowWindowService showWindow,
         //   IDialogService dialogService)
         public ForEditOrder()
-        {            
+        {
             ContactsRecords = new ObservableCollection<Contacts>();
             BlackListRecords = new ObservableCollection<BlackListHelpModel>();
-            Author = new Author();            
+            Author = new Author();
             _Contacts = new _Contacts();
             Date = new Dates();
-            _Dir = new _Direction();           
+            _Dir = new _Direction();
             Order = new OrderLine { OrderNumber = GetOrderNumber() };
             Persone = new Persone();
             PersoneDescription = new PersoneDescription();
-            Price = new Money();        
+            Price = new Money();
             _Status = new _Status();
             _Subj = new _Subject();
             _Source = new _Source();
@@ -238,7 +238,7 @@ namespace STUDENTU_1._06.ViewModel
         }
 
 
-        
+
 
         //=================================METHODS FOR PREVIOS LOAD TO CONTROLS OF EditOrder.xaml =====
 
@@ -263,7 +263,7 @@ namespace STUDENTU_1._06.ViewModel
                         result = res.OrderNumber;
                         result += 1;
                     }
-                    
+
                 }
                 catch (ArgumentNullException ex)
                 {
@@ -290,7 +290,7 @@ namespace STUDENTU_1._06.ViewModel
 
         }
 
-        
+
         //==================================== COMMAND FOR SAVE NEW ORDER ====================================
 
         private RelayCommand createNewOrderLine;
@@ -317,23 +317,23 @@ namespace STUDENTU_1._06.ViewModel
             {
                 try
                 {
-                    Order = new OrderLine() { OrderNumber=TMPStaticClass.CurrentOrder.OrderNumber};
+                    Order = new OrderLine() { OrderNumber = TMPStaticClass.CurrentOrder.OrderNumber };
                     Order.Client = new Client() { Persone = Persone };
                     Order.Direction = db.Directions.Find(_Dir.Dir.DirectionId);
-                   
+
                     Order.WorkType = db.WorkTypes.Find(_WorkType.WorkType.WorkTypeId);
                     Order.Dates = Date;
                     Order.Subject = db.Subjects.Find(_Subj.Subj.SubjectId); ;
                     Order.Money = Price;
-                    _Status.Status =TMPStaticClass.CurrentOrder.Status;
+                    _Status.Status = TMPStaticClass.CurrentOrder.Status;
                     Order.Status = _Status.Status;
                     Order.Source = db.Sources.Find(_Source.Source.SourceId);
                     Order.Saved = true;
                     //db.Entry(Order).State = Order.OrderLineId == 0 ? EntityState.Added : EntityState.Modified;
-                    db.Orderlines.Add(Order);                    
+                    db.Orderlines.Add(Order);
                     db.SaveChanges();
                     dialogService.ShowMessage($"Заказ с номером {Order.OrderNumber} сохранен как новый");
-                    TMPStaticClass.CurrentOrder = Order;                   
+                    TMPStaticClass.CurrentOrder = Order;
                 }
                 catch (ArgumentNullException ex)
                 {
@@ -365,11 +365,11 @@ namespace STUDENTU_1._06.ViewModel
             {
                 try
                 {
-                   
-                    Persone.Contacts=_Contacts.Contacts;                   
-                    Order.Direction = db.Directions.Find(_Dir.Dir.DirectionId);                    
-                    Order.Client=new Client() { Persone=Persone};
-                    Order.WorkType = db.WorkTypes.Find(_WorkType.WorkType.WorkTypeId);                  
+
+                    Persone.Contacts = _Contacts.Contacts;
+                    Order.Direction = db.Directions.Find(_Dir.Dir.DirectionId);
+                    Order.Client = new Client() { Persone = Persone };
+                    Order.WorkType = db.WorkTypes.Find(_WorkType.WorkType.WorkTypeId);
                     Order.Dates = Date;
                     Order.Subject = db.Subjects.Find(_Subj.Subj.SubjectId); ;
                     Order.Money = Price;
@@ -431,7 +431,7 @@ namespace STUDENTU_1._06.ViewModel
                     db.Entry(Order).State = EntityState.Modified;
                     Persone.Contacts = _Contacts.Contacts;
                     Order.Client = new Client() { Persone = Persone };
-                    Order.Direction = db.Directions.Find(_Dir.Dir.DirectionId);                    
+                    Order.Direction = db.Directions.Find(_Dir.Dir.DirectionId);
                     Order.WorkType = db.WorkTypes.Find(_WorkType.WorkType.WorkTypeId);
                     Order.Dates = Date;
                     Order.Subject = db.Subjects.Find(_Subj.Subj.SubjectId); ;
@@ -440,7 +440,7 @@ namespace STUDENTU_1._06.ViewModel
                     Order.Status = _Status.Status;
                     Order.Source = db.Sources.Find(_Source.Source.SourceId);
                     Order.Saved = true;
-                  
+
                     db.SaveChanges();
                     dialogService.ShowMessage("Данные о заказе сохранены");
                     TMPStaticClass.CurrentOrder = Order;
@@ -489,7 +489,7 @@ namespace STUDENTU_1._06.ViewModel
         public RelayCommand CloseWindowCommand => closeWindowCommand ?? (closeWindowCommand = new RelayCommand(
                     (obj) =>
                     {
-                        CloseWindow(obj as Window);                       
+                        CloseWindow(obj as Window);
                     }
                     ));
         //========================================================================================================================
@@ -498,7 +498,7 @@ namespace STUDENTU_1._06.ViewModel
         {
             window.Close();
         }
-        
+
 
         //==================================COMMAND FOR CLOSE WINDOW ==========================
         private RelayCommand cancelSaveContactsCommand;
