@@ -297,30 +297,55 @@ namespace STUDENTU_1._06.ViewModel
         public RelayCommand CreateNewOrderLine => createNewOrderLine ?? (createNewOrderLine = new RelayCommand(
                     (obj) =>
                     {
-                        //   SaveNewOrder();
+                        //if (saved)
+                        //    dialogService.ShowMessage("Заказ уже был сохранен");
+                        //else
+                            //SaveNewOrder();
                         SaveOrderChanges();
                     }
                     ));
-
+        //эта хрень осталась не востребованной т.к. не удалась первичная задумка
         private void SaveOrderChanges()
         {
             if (saved)
-                SaveDoubleOrder();
+            {
+                if (dialogService.YesNoDialog("Заказ уже сохранен. Разбить заказ на подзаказы?") == true)
+                    SaveDoubleOrder();
+            }
             else
                 SaveNewOrder();
         }
 
-
+        //и эта хрень осталась не востребованной т.к. не удалась первичная задумка
         private void SaveDoubleOrder()
         {
             using (StudentuConteiner db = new StudentuConteiner())
             {
                 try
                 {
+                   // Money Money = new Money();
                     Order = new OrderLine() { OrderNumber = TMPStaticClass.CurrentOrder.OrderNumber };
+                   // db.Orderlines.Attach(Order);
+                    //db.Directions.Attach(_Dir.Dir);
+                    //db.WorkTypes.Attach(_WorkType.WorkType);
+                    //db.Dates.Attach(Date);
+                    //db.Subjects.Attach(_Subj.Subj);
+                    //db.Statuses.Attach(_Status.Status);
+                    
+                    
+                    //db.Entry(_Dir.Dir).State = EntityState.Unchanged;
+                    ////db.Entry(Order).State = EntityState.Modified;
+                    //db.Entry(_WorkType.WorkType).State = EntityState.Unchanged;
+                    //db.Entry(Date).State = EntityState.Unchanged;
+                    //db.Entry(_Subj.Subj).State = EntityState.Unchanged;
+                    //db.Entry(_Status.Status).State = EntityState.Unchanged;
+                    //db.Entry(_Source.Source).State = EntityState.Unchanged;
+                    //db.Entry(Price).State = EntityState.Unchanged;
+
+
+                    Persone.Contacts = _Contacts.Contacts;
                     Order.Client = new Client() { Persone = Persone };
                     Order.Direction = db.Directions.Find(_Dir.Dir.DirectionId);
-
                     Order.WorkType = db.WorkTypes.Find(_WorkType.WorkType.WorkTypeId);
                     Order.Dates = Date;
                     Order.Subject = db.Subjects.Find(_Subj.Subj.SubjectId); ;
@@ -329,7 +354,13 @@ namespace STUDENTU_1._06.ViewModel
                     Order.Status = _Status.Status;
                     Order.Source = db.Sources.Find(_Source.Source.SourceId);
                     Order.Saved = true;
-                    //db.Entry(Order).State = Order.OrderLineId == 0 ? EntityState.Added : EntityState.Modified;
+
+                    db.Directions.Attach(Order.Direction);
+                    db.WorkTypes.Attach(Order.WorkType);
+                    //db.Dates.Attach(Date);
+                    db.Subjects.Attach(Order.Subject);
+                    db.Statuses.Attach(Order.Status);
+                    // db.Entry(Order).State = Order.OrderLineId == 0 ? EntityState.Added : EntityState.Modified;
                     db.Orderlines.Add(Order);
                     db.SaveChanges();
                     dialogService.ShowMessage($"Заказ с номером {Order.OrderNumber} сохранен как новый");
@@ -365,19 +396,17 @@ namespace STUDENTU_1._06.ViewModel
             {
                 try
                 {
-
-                    Persone.Contacts = _Contacts.Contacts;
-                    Order.Direction = db.Directions.Find(_Dir.Dir.DirectionId);
+                    Persone.Contacts = _Contacts.Contacts;                    
+                    Order.Direction = _Dir.Dir;
                     Order.Client = new Client() { Persone = Persone };
-                    Order.WorkType = db.WorkTypes.Find(_WorkType.WorkType.WorkTypeId);
+                    Order.WorkType =_WorkType.WorkType;
                     Order.Dates = Date;
-                    Order.Subject = db.Subjects.Find(_Subj.Subj.SubjectId); ;
+                    Order.Subject = _Subj.Subj;
                     Order.Money = Price;
                     _Status.Status = db.Statuses.Find(new Status() { StatusId = 2 }.StatusId);
                     Order.Status = _Status.Status;
-                    Order.Source = db.Sources.Find(_Source.Source.SourceId);
-                    Order.Saved = true;
-                    //db.Entry(Order).State = Order.OrderLineId == 0 ? EntityState.Added : EntityState.Modified;                                   
+                    Order.Source = _Source.Source;
+                    Order.Saved = true;                    
                     db.Orderlines.Add(Order);
                     db.SaveChanges();
                     dialogService.ShowMessage("Данные о заказе сохранены");
