@@ -216,13 +216,23 @@ namespace STUDENTU_1._06.ViewModel
         //   IDialogService dialogService)
         public ForEditOrder()
         {
+
+            DefaultLoadData();
+            Order = new OrderLine { OrderNumber = GetOrderNumber() };
+            showWindow = new DefaultShowWindowService();
+            dialogService = new DefaultDialogService();
+            //this.showWindow = showWindow;
+            //this.dialogService = dialogService;
+        }
+
+        private void DefaultLoadData()
+        {
             ContactsRecords = new ObservableCollection<Contacts>();
             BlackListRecords = new ObservableCollection<BlackListHelpModel>();
             Author = new Author();
             _Contacts = new _Contacts();
             Date = new Dates();
             _Dir = new _Direction();
-            Order = new OrderLine { OrderNumber = GetOrderNumber() };
             Persone = new Persone();
             PersoneDescription = new PersoneDescription();
             Price = new Money();
@@ -230,14 +240,7 @@ namespace STUDENTU_1._06.ViewModel
             _Subj = new _Subject();
             _Source = new _Source();
             _WorkType = new _WorkType();
-
-            showWindow = new DefaultShowWindowService();
-            dialogService = new DefaultDialogService();
-            //this.showWindow = showWindow;
-            //this.dialogService = dialogService;
         }
-
-
 
 
         //=================================METHODS FOR PREVIOS LOAD TO CONTROLS OF EditOrder.xaml =====
@@ -297,97 +300,53 @@ namespace STUDENTU_1._06.ViewModel
         public RelayCommand CreateNewOrderLine => createNewOrderLine ?? (createNewOrderLine = new RelayCommand(
                     (obj) =>
                     {
-                        //if (saved)
-                        //    dialogService.ShowMessage("Заказ уже был сохранен");
-                        //else
-                            //SaveNewOrder();
+                      
                         SaveOrderChanges();
                     }
                     ));
         //эта хрень осталась не востребованной т.к. не удалась первичная задумка
         private void SaveOrderChanges()
-        {
-            if (saved)
-            {
-                if (dialogService.YesNoDialog("Заказ уже сохранен. Разбить заказ на подзаказы?") == true)
-                    SaveDoubleOrder();
-            }
-            else
+        {           
+          
                 SaveNewOrder();
         }
 
-        //и эта хрень осталась не востребованной т.к. не удалась первичная задумка
-        private void SaveDoubleOrder()
+        private RelayCommand createDobleNewOrderLine;
+        public RelayCommand CreateDobleNewOrderLine => createDobleNewOrderLine ?? (createDobleNewOrderLine = new RelayCommand(
+                    (obj) =>
+                    {
+
+                        if (saved)
+                        {
+                            if (dialogService.YesNoDialog("Заказ уже сохранен. Разбить заказ на подзаказы?") == true)
+                            {                           
+                                DoubleOrder();
+                            }
+                        }
+                    }
+                    ));
+
+
+        private void DoubleOrder()
         {
-            using (StudentuConteiner db = new StudentuConteiner())
-            {
-                try
-                {
-                   // Money Money = new Money();
-                    Order = new OrderLine() { OrderNumber = TMPStaticClass.CurrentOrder.OrderNumber };
-                   // db.Orderlines.Attach(Order);
-                    //db.Directions.Attach(_Dir.Dir);
-                    //db.WorkTypes.Attach(_WorkType.WorkType);
-                    //db.Dates.Attach(Date);
-                    //db.Subjects.Attach(_Subj.Subj);
-                    //db.Statuses.Attach(_Status.Status);
-                    
-                    
-                    //db.Entry(_Dir.Dir).State = EntityState.Unchanged;
-                    ////db.Entry(Order).State = EntityState.Modified;
-                    //db.Entry(_WorkType.WorkType).State = EntityState.Unchanged;
-                    //db.Entry(Date).State = EntityState.Unchanged;
-                    //db.Entry(_Subj.Subj).State = EntityState.Unchanged;
-                    //db.Entry(_Status.Status).State = EntityState.Unchanged;
-                    //db.Entry(_Source.Source).State = EntityState.Unchanged;
-                    //db.Entry(Price).State = EntityState.Unchanged;
-
-
-                    Persone.Contacts = _Contacts.Contacts;
-                    Order.Client = new Client() { Persone = Persone };
-                    Order.Direction = db.Directions.Find(_Dir.Dir.DirectionId);
-                    Order.WorkType = db.WorkTypes.Find(_WorkType.WorkType.WorkTypeId);
-                    Order.Dates = Date;
-                    Order.Subject = db.Subjects.Find(_Subj.Subj.SubjectId); ;
-                    Order.Money = Price;
-                    _Status.Status = TMPStaticClass.CurrentOrder.Status;
-                    Order.Status = _Status.Status;
-                    Order.Source = db.Sources.Find(_Source.Source.SourceId);
-                    Order.Saved = true;
-
-                    db.Directions.Attach(Order.Direction);
-                    db.WorkTypes.Attach(Order.WorkType);
-                    //db.Dates.Attach(Date);
-                    db.Subjects.Attach(Order.Subject);
-                    db.Statuses.Attach(Order.Status);
-                    // db.Entry(Order).State = Order.OrderLineId == 0 ? EntityState.Added : EntityState.Modified;
-                    db.Orderlines.Add(Order);
-                    db.SaveChanges();
-                    dialogService.ShowMessage($"Заказ с номером {Order.OrderNumber} сохранен как новый");
-                    TMPStaticClass.CurrentOrder = Order;
-                }
-                catch (ArgumentNullException ex)
-                {
-                    dialogService.ShowMessage(ex.Message);
-                }
-                catch (OverflowException ex)
-                {
-                    dialogService.ShowMessage(ex.Message);
-                }
-                catch (System.Data.SqlClient.SqlException ex)
-                {
-                    dialogService.ShowMessage(ex.Message);
-                }
-                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
-                {
-                    dialogService.ShowMessage(ex.Message);
-                }
-                catch (System.Data.Entity.Core.EntityException ex)
-                {
-                    dialogService.ShowMessage(ex.Message);
-                }
-            }
-
+            
+            Order = new OrderLine() { OrderNumber = TMPStaticClass.CurrentOrder.OrderNumber };
+            Order.Saved = false;
+            Order.DescriptionForClient = TMPStaticClass.CurrentOrder.DescriptionForClient;
+            Order.WorkDescription = TMPStaticClass.CurrentOrder.WorkDescription;
+            Order.Variant = TMPStaticClass.CurrentOrder.Variant;
+            _Contacts.Contacts = TMPStaticClass.CurrentOrder.Client.Persone.Contacts;
+            Order.Client = new Client() { Persone = Persone };
+            Persone = TMPStaticClass.CurrentOrder.Client.Persone;
+            _Dir.Dir = TMPStaticClass.CurrentOrder.Direction;
+            _WorkType.WorkType = TMPStaticClass.CurrentOrder.WorkType;
+            Date = TMPStaticClass.CurrentOrder.Dates;
+            _Subj.Subj = TMPStaticClass.CurrentOrder.Subject;
+            Price = TMPStaticClass.CurrentOrder.Money;
+            _Status.Status = TMPStaticClass.CurrentOrder.Status;
+            _Source.Source = TMPStaticClass.CurrentOrder.Source;            
+            saved = false;
+            dialogService.ShowMessage("Действие выполнено");
         }
 
         private void SaveNewOrder()
@@ -396,16 +355,16 @@ namespace STUDENTU_1._06.ViewModel
             {
                 try
                 {
-                    Persone.Contacts = _Contacts.Contacts;                    
-                    Order.Direction = _Dir.Dir;
+                    Persone.Contacts = _Contacts.Contacts;
+                    Order.Direction = db.Directions.Find(_Dir.Dir.DirectionId);
+                    Order.WorkType = db.WorkTypes.Find(_WorkType.WorkType.WorkTypeId);
                     Order.Client = new Client() { Persone = Persone };
-                    Order.WorkType =_WorkType.WorkType;
+                    Order.Subject = db.Subjects.Find(_Subj.Subj.SubjectId);                    
+                    Order.Source = db.Sources.Find(_Source.Source.SourceId);
                     Order.Dates = Date;
-                    Order.Subject = _Subj.Subj;
                     Order.Money = Price;
                     _Status.Status = db.Statuses.Find(new Status() { StatusId = 2 }.StatusId);
-                    Order.Status = _Status.Status;
-                    Order.Source = _Source.Source;
+                    Order.Status = _Status.Status;                    
                     Order.Saved = true;                    
                     db.Orderlines.Add(Order);
                     db.SaveChanges();
@@ -469,7 +428,6 @@ namespace STUDENTU_1._06.ViewModel
                     Order.Status = _Status.Status;
                     Order.Source = db.Sources.Find(_Source.Source.SourceId);
                     Order.Saved = true;
-
                     db.SaveChanges();
                     dialogService.ShowMessage("Данные о заказе сохранены");
                     TMPStaticClass.CurrentOrder = Order;
