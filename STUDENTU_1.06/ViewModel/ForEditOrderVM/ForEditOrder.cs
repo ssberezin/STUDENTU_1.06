@@ -306,8 +306,10 @@ namespace STUDENTU_1._06.ViewModel
                     ));
         //эта хрень осталась не востребованной т.к. не удалась первичная задумка
         private void SaveOrderChanges()
-        {           
-          
+        {
+            if (saved)
+                dialogService.ShowMessage("Заказ уже сохранен");
+            else
                 SaveNewOrder();
         }
 
@@ -318,15 +320,14 @@ namespace STUDENTU_1._06.ViewModel
 
                         if (saved)
                         {
-                            if (dialogService.YesNoDialog("Заказ уже сохранен. Разбить заказ на подзаказы?") == true)
-                            {                           
+                            if (dialogService.YesNoDialog("Разбить заказ на подзаказы?") == true)                       
                                 DoubleOrder();
-                            }
+                       
                         }
                     }
                     ));
 
-
+        bool doubleSave = false;
         private void DoubleOrder()
         {
             
@@ -340,12 +341,15 @@ namespace STUDENTU_1._06.ViewModel
             Persone = TMPStaticClass.CurrentOrder.Client.Persone;
             _Dir.Dir = TMPStaticClass.CurrentOrder.Direction;
             _WorkType.WorkType = TMPStaticClass.CurrentOrder.WorkType;
-            Date = TMPStaticClass.CurrentOrder.Dates;
+            Date = new Dates();
+            Date.DateOfReception = TMPStaticClass.CurrentOrder.Dates.DateOfReception;
+            Date.DeadLine = TMPStaticClass.CurrentOrder.Dates.DeadLine;
             _Subj.Subj = TMPStaticClass.CurrentOrder.Subject;
-            Price = TMPStaticClass.CurrentOrder.Money;
+            Price = new Money();
             _Status.Status = TMPStaticClass.CurrentOrder.Status;
             _Source.Source = TMPStaticClass.CurrentOrder.Source;            
             saved = false;
+            doubleSave = true;
             dialogService.ShowMessage("Действие выполнено");
         }
 
@@ -355,6 +359,18 @@ namespace STUDENTU_1._06.ViewModel
             {
                 try
                 {
+                    if (doubleSave)
+                    {
+                        
+                        db.Persones.Attach(Persone);
+                        db.Directions.Attach(_Dir.Dir);
+                        db.WorkTypes.Attach(_WorkType.WorkType);
+                        db.Dates.Add(Date);
+                        db.Subjects.Attach(_Subj.Subj);
+                        db.Moneys.Add(Price);
+                        db.Statuses.Attach(_Status.Status);
+                        db.Sources.Attach(_Source.Source);
+                    }
                     Persone.Contacts = _Contacts.Contacts;
                     Order.Direction = db.Directions.Find(_Dir.Dir.DirectionId);
                     Order.WorkType = db.WorkTypes.Find(_WorkType.WorkType.WorkTypeId);
@@ -363,14 +379,25 @@ namespace STUDENTU_1._06.ViewModel
                     Order.Source = db.Sources.Find(_Source.Source.SourceId);
                     Order.Dates = Date;
                     Order.Money = Price;
-                    _Status.Status = db.Statuses.Find(new Status() { StatusId = 2 }.StatusId);
-                    Order.Status = _Status.Status;                    
-                    Order.Saved = true;                    
+                    if (!doubleSave)                    
+                        _Status.Status = db.Statuses.Find(new Status() { StatusId = 2 }.StatusId);
+                    Order.Status = _Status.Status;
+                    
+                    Order.Saved = true;
+
+                    db.Configuration.AutoDetectChangesEnabled = false;
+                    db.Configuration.ValidateOnSaveEnabled = false;
+
+                    //db.Orderlines.Attach(Order);
                     db.Orderlines.Add(Order);
+                   
                     db.SaveChanges();
                     dialogService.ShowMessage("Данные о заказе сохранены");
                     TMPStaticClass.CurrentOrder = Order;
                     saved = true;
+                    doubleSave = false;
+                    
+                   
                 }
                 catch (ArgumentNullException ex)
                 {
