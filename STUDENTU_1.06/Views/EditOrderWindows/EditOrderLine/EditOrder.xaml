@@ -408,8 +408,8 @@
                      VerticalAlignment="Stretch">
                 <TextBlock Text="Работать в долг? " FontWeight="Bold" Foreground="Red"/>
             </Viewbox>
-            <CheckBox x:Name="DebtWork" TabIndex="21" IsChecked="{Binding Order.WorkInCredit, Mode=TwoWay,
-                Converter={StaticResource boolInverterConverter}}" />
+            <CheckBox x:Name="DebtWork" TabIndex="21" IsChecked="{Binding Order.WorkInCredit, Mode=TwoWay}"
+                />
             <!--Order can find in ForEditOrder.cs-->
         </WrapPanel>
 

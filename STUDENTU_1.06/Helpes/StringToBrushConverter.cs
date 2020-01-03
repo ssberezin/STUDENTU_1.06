@@ -18,7 +18,11 @@ namespace STUDENTU_1._06.Helpes
             int i;
             if (int.TryParse(value.ToString(), out  i))
             {
-                if (i > 1) return Brushes.Orchid;
+                //#FF00FFE8
+                if (i > 1) return Brushes.LightBlue;
+                else
+                    if (i<0)
+                        return Brushes.LightCoral;
                 else
                     return DependencyProperty.UnsetValue;
             }

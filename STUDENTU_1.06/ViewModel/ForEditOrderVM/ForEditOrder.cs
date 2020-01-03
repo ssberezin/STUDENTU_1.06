@@ -330,9 +330,10 @@ namespace STUDENTU_1._06.ViewModel
         bool doubleSave = false;
         private void DoubleOrder()
         {
-            
+
             Order = new OrderLine() { OrderNumber = TMPStaticClass.CurrentOrder.OrderNumber };
             Order.Saved = false;
+            Order.ParentOrder = false;
             Order.DescriptionForClient = TMPStaticClass.CurrentOrder.DescriptionForClient;
             Order.WorkDescription = TMPStaticClass.CurrentOrder.WorkDescription;
             Order.Variant = TMPStaticClass.CurrentOrder.Variant;
@@ -340,17 +341,24 @@ namespace STUDENTU_1._06.ViewModel
             Order.Client = new Client() { Persone = Persone };
             Persone = TMPStaticClass.CurrentOrder.Client.Persone;
             _Dir.Dir = TMPStaticClass.CurrentOrder.Direction;
+            // _Dir.Dir = db.Directions.Find(new Direction() { DirectionId=1}.DirectionId);
             _WorkType.WorkType = TMPStaticClass.CurrentOrder.WorkType;
+            // _WorkType.WorkType= db.WorkTypes.Find(new WorkType() { WorkTypeId = 1 }.WorkTypeId);
             Date = new Dates();
             Date.DateOfReception = TMPStaticClass.CurrentOrder.Dates.DateOfReception;
             Date.DeadLine = TMPStaticClass.CurrentOrder.Dates.DeadLine;
             _Subj.Subj = TMPStaticClass.CurrentOrder.Subject;
+            //_Subj.Subj = db.Subjects.Find(new Subject() {SubjectId=1 }.SubjectId);
             Price = new Money();
             _Status.Status = TMPStaticClass.CurrentOrder.Status;
-            _Source.Source = TMPStaticClass.CurrentOrder.Source;            
+            // _Status.Status = db.Statuses.Find(new Status() {StatusId=1 }.StatusId);
+            _Source.Source = TMPStaticClass.CurrentOrder.Source;
+            //_Source.Source = db.Sources.Find(new Source() {SourceId=1 }.SourceId);
             saved = false;
             doubleSave = true;
             dialogService.ShowMessage("Действие выполнено");
+
+            
         }
 
         private void SaveNewOrder()
@@ -369,7 +377,7 @@ namespace STUDENTU_1._06.ViewModel
                         db.Subjects.Attach(_Subj.Subj);
                         db.Moneys.Add(Price);
                         db.Statuses.Attach(_Status.Status);
-                        db.Sources.Attach(_Source.Source);
+                        db.Sources.Attach(_Source.Source);                        
                     }
                     Persone.Contacts = _Contacts.Contacts;
                     Order.Direction = db.Directions.Find(_Dir.Dir.DirectionId);
@@ -392,8 +400,11 @@ namespace STUDENTU_1._06.ViewModel
                     db.Orderlines.Add(Order);
                    
                     db.SaveChanges();
+                    if (doubleSave)
+                         EditOrderCount(TMPStaticClass.CurrentOrder.OrderLineId,TMPStaticClass.CurrentOrder.OrderNumber);
                     dialogService.ShowMessage("Данные о заказе сохранены");
-                    TMPStaticClass.CurrentOrder = Order;
+                    SaveOrderToTMPOrder();
+                    //TMPStaticClass.CurrentOrder = Order;
                     saved = true;
                     doubleSave = false;
                     
@@ -423,6 +434,113 @@ namespace STUDENTU_1._06.ViewModel
 
         }
 
+        //тут мы копируем все поля из окна EditOrder.xaml в буферную переменную 
+        //here we copy all the fields from the EditOrder.xaml window to the buffer variable
+        private void SaveOrderToTMPOrder()
+        {
+            TMPStaticClass.CurrentOrder = Order;
+            // TMPStaticClass.CurrentOrder = new OrderLine() { OrderNumber = Order.OrderNumber };
+            TMPStaticClass.CurrentOrder.WorkInCredit = Order.WorkInCredit;
+            TMPStaticClass.CurrentOrder.DescriptionForClient = Order.DescriptionForClient;
+            TMPStaticClass.CurrentOrder.WorkDescription = Order.WorkDescription;
+            TMPStaticClass.CurrentOrder.Variant = Order.Variant;
+            Persone.Contacts = _Contacts.Contacts;
+            //TMPStaticClass.CurrentOrder.Client = new Client() { Persone = Persone };
+            //TMPStaticClass.CurrentOrder.Client.Persone.Contacts = _Contacts.Contacts;
+            TMPStaticClass.CurrentOrder.Client.Persone = Persone;
+            TMPStaticClass.CurrentOrder.Direction = _Dir.Dir;
+            TMPStaticClass.CurrentOrder.WorkType = _WorkType.WorkType;
+            TMPStaticClass.CurrentOrder.Dates.DateOfReception = Date.DateOfReception;
+            TMPStaticClass.CurrentOrder.Dates.DeadLine = Date.DeadLine;
+            TMPStaticClass.CurrentOrder.Subject= _Subj.Subj;
+            TMPStaticClass.CurrentOrder.Money = Price;
+            TMPStaticClass.CurrentOrder.Status = _Status.Status;
+            TMPStaticClass.CurrentOrder.Source = _Source.Source;
+        }
+
+        //to edit OrderCount in Order
+        private void EditOrderCount(int orderId, int orderNumber)
+        {
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                try
+                {
+                    
+                    var res = db.Orderlines.Where(c => c.OrderNumber == orderNumber).ToList();
+                    int count = res.Count;
+                    
+                    if (!CheckPreviosOrder(orderId, orderNumber))
+                        foreach (var i in res)
+                            i.OrderCount = count;
+                    else
+                        foreach (var i in res)
+                            i.OrderCount = -count;
+
+
+
+                    db.SaveChanges();         
+                }
+                catch (ArgumentNullException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (OverflowException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+            }
+
+        }
+
+        //проверяем предыдущий заказ на наличие подзаказов. 
+        // check the previous order for sub-orders
+        private bool CheckPreviosOrder(int orderId, int oredrNumber)
+        {
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                try
+                {
+                    var res = db.Orderlines.Where(c => c.OrderLineId == orderId - 1);
+                    if (res != null && (res as OrderLine).OrderNumber == oredrNumber|| res != null && !(res as OrderLine).ParentOrder)
+                        return true;
+                }
+                catch (ArgumentNullException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (OverflowException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+            }
+
+            return false;
+
+        }
 
         //EditOrderLineCommand
 

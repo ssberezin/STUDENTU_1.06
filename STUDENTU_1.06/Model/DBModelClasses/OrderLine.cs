@@ -14,18 +14,19 @@ namespace STUDENTU_1._06.Model
         public OrderLine()
         {
            // this.AfterDoneDescriptions = new List<AfterDoneDescription>();
-            this.WorkInCredit = true;
+            this.WorkInCredit = false;
             this.OrderCount = 1;
             this.Author = new ObservableCollection<Author>();
             this.variant = null;
             this.Saved = false;
+            this.ParentOrder = true;
         }
         [Key]
         public int OrderLineId { get; set; }
         public int OrderNumber { get; set; }
 
-        //это свойство нужно для отслеживания кол-ва подзаказов, на котрое может разбиться один заказ
-        // this property is needed to track the number of sub-orders on which one order can be broken
+        //это свойство нужно для отслеживания кол-ва подзаказов, из которіх состоит один заказ
+        // this property is needed to track the number of sub-orders of which one order consists
         public int OrderCount { get; set; }
 
                
@@ -51,9 +52,21 @@ namespace STUDENTU_1._06.Model
 
         [Column("WorkDescription", TypeName = "nvarchar")]
         [MaxLength(2000)]
-        public string WorkDescription { get; set; }        
-       
-        public bool WorkInCredit { get; set; }
+
+        public string WorkDescription { get; set; }
+        private bool workInCredit ;
+        public bool WorkInCredit 
+        {
+            get { return workInCredit; }
+            set
+            {
+                if (workInCredit != value)
+                {
+                    workInCredit = value;
+                    OnPropertyChanged(nameof(WorkInCredit));
+                }
+            }
+        }
 
         //для того, чтоб отслеживать состояние заказа из ...ForEditOrder.cs например. Это нужно для редактирования 
         // in order to track the status of the order from ... ForEditOrder.cs for example. This is for editing.
@@ -71,7 +84,28 @@ namespace STUDENTU_1._06.Model
                 }
             }
         }
+        //для того, чтоб отслеживать , имеет ли текущий заказ подзаказы
+        //это нужно для вариантивной подсветки заказов разных клиентов в XAML
+        //отслеживание будет по  ParentOrder и OrderCount
 
+        // in order to track whether the current order has sub-orders
+        // this is necessary for the optional highlighting of orders of different customers in XAML
+        // tracking will be by ParentOrder and OrderCount
+
+        [NotMapped]
+        private bool parentOrder;
+        public bool ParentOrder
+        {
+            get { return parentOrder; }
+            set
+            {
+                if (parentOrder != value)
+                {
+                    parentOrder = value;
+                    OnPropertyChanged(nameof(ParentOrder));
+                }
+            }
+        }
 
 
         [Column("RedactionLog", TypeName = "nvarchar")]
