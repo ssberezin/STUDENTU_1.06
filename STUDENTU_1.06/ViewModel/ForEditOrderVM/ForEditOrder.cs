@@ -61,6 +61,20 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
+        private Client client;
+        public Client Client
+        {
+            get { return client; }
+            set
+            {
+                if (client != value)
+                {
+                    client = value;
+                    OnPropertyChanged(nameof(Client));
+                }
+            }
+        }
+
 
         private Dates date;
         public Dates Date
@@ -231,6 +245,7 @@ namespace STUDENTU_1._06.ViewModel
             BlackListRecords = new ObservableCollection<BlackListHelpModel>();
             Author = new Author();
             _Contacts = new _Contacts();
+            Client = new Client();
             Date = new Dates();
             _Dir = new _Direction();
             Persone = new Persone();
@@ -334,26 +349,26 @@ namespace STUDENTU_1._06.ViewModel
             Order = new OrderLine() { OrderNumber = TMPStaticClass.CurrentOrder.OrderNumber };
             Order.Saved = false;
             Order.ParentOrder = false;
-            Order.DescriptionForClient = TMPStaticClass.CurrentOrder.DescriptionForClient;
-            Order.WorkDescription = TMPStaticClass.CurrentOrder.WorkDescription;
-            Order.Variant = TMPStaticClass.CurrentOrder.Variant;
-            _Contacts.Contacts = TMPStaticClass.CurrentOrder.Client.Persone.Contacts;
-            Order.Client = new Client() { Persone = Persone };
-            Persone = TMPStaticClass.CurrentOrder.Client.Persone;
-            _Dir.Dir = TMPStaticClass.CurrentOrder.Direction;
-            // _Dir.Dir = db.Directions.Find(new Direction() { DirectionId=1}.DirectionId);
-            _WorkType.WorkType = TMPStaticClass.CurrentOrder.WorkType;
-            // _WorkType.WorkType= db.WorkTypes.Find(new WorkType() { WorkTypeId = 1 }.WorkTypeId);
-            Date = new Dates();
-            Date.DateOfReception = TMPStaticClass.CurrentOrder.Dates.DateOfReception;
-            Date.DeadLine = TMPStaticClass.CurrentOrder.Dates.DeadLine;
-            _Subj.Subj = TMPStaticClass.CurrentOrder.Subject;
-            //_Subj.Subj = db.Subjects.Find(new Subject() {SubjectId=1 }.SubjectId);
-            Price = new Money();
-            _Status.Status = TMPStaticClass.CurrentOrder.Status;
-            // _Status.Status = db.Statuses.Find(new Status() {StatusId=1 }.StatusId);
-            _Source.Source = TMPStaticClass.CurrentOrder.Source;
-            //_Source.Source = db.Sources.Find(new Source() {SourceId=1 }.SourceId);
+            //Order.DescriptionForClient = TMPStaticClass.CurrentOrder.DescriptionForClient;
+            //Order.WorkDescription = TMPStaticClass.CurrentOrder.WorkDescription;
+            //Order.Variant = TMPStaticClass.CurrentOrder.Variant;
+            //_Contacts.Contacts = TMPStaticClass.CurrentOrder.Client.Persone.Contacts;
+            //Order.Client = TMPStaticClass.CurrentOrder.Client;
+            //Persone = TMPStaticClass.CurrentOrder.Client.Persone;
+            //_Dir.Dir = TMPStaticClass.CurrentOrder.Direction;
+            //// _Dir.Dir = db.Directions.Find(new Direction() { DirectionId=1}.DirectionId);
+            //_WorkType.WorkType = TMPStaticClass.CurrentOrder.WorkType;
+            //// _WorkType.WorkType= db.WorkTypes.Find(new WorkType() { WorkTypeId = 1 }.WorkTypeId);
+            //Date = new Dates();
+            //Date.DateOfReception = TMPStaticClass.CurrentOrder.Dates.DateOfReception;
+            //Date.DeadLine = TMPStaticClass.CurrentOrder.Dates.DeadLine;
+            //_Subj.Subj = TMPStaticClass.CurrentOrder.Subject;
+            ////_Subj.Subj = db.Subjects.Find(new Subject() {SubjectId=1 }.SubjectId);
+            //Price = new Money();
+            //_Status.Status = TMPStaticClass.CurrentOrder.Status;
+            //// _Status.Status = db.Statuses.Find(new Status() {StatusId=1 }.StatusId);
+            //_Source.Source = TMPStaticClass.CurrentOrder.Source;
+            ////_Source.Source = db.Sources.Find(new Source() {SourceId=1 }.SourceId);
             saved = false;
             doubleSave = true;
             dialogService.ShowMessage("Действие выполнено");
@@ -372,6 +387,7 @@ namespace STUDENTU_1._06.ViewModel
                         
                         db.Persones.Attach(Persone);
                         db.Directions.Attach(_Dir.Dir);
+                        db.Clients.Attach(Client);
                         db.WorkTypes.Attach(_WorkType.WorkType);
                         db.Dates.Add(Date);
                         db.Subjects.Attach(_Subj.Subj);
@@ -379,18 +395,56 @@ namespace STUDENTU_1._06.ViewModel
                         db.Statuses.Attach(_Status.Status);
                         db.Sources.Attach(_Source.Source);                        
                     }
-                    Persone.Contacts = _Contacts.Contacts;
+                   
                     Order.Direction = db.Directions.Find(_Dir.Dir.DirectionId);
                     Order.WorkType = db.WorkTypes.Find(_WorkType.WorkType.WorkTypeId);
-                    Order.Client = new Client() { Persone = Persone };
+                    
                     Order.Subject = db.Subjects.Find(_Subj.Subj.SubjectId);                    
                     Order.Source = db.Sources.Find(_Source.Source.SourceId);
                     Order.Dates = Date;
                     Order.Money = Price;
-                    if (!doubleSave)                    
+                    Persone.Contacts = _Contacts.Contacts;
+
+                    //ищем совпададения по полям контактов Person в БД. Если "0", то совпадений не найдено
+                    //если совпадение есть, то получаем Id нужной записи в Contacts
+                    // look for matches on the fields of the Person contacts in the database. If "0", then no matches were found
+                    // if there is a match, then we get the Id of the desired entry in Contacts
+
+                    int i = _Contacts.Contacts.CheckContacts(Persone.Contacts);
+                    //if (Persone.PersoneId == 0 && i==0)
+                    if ( i == 0)
+                            Order.Client = new Client() { Persone = Persone };
+                    else
+                    {
+
+                        var persone = db.Persones.Where(c => c.Contacts.ContactsId == i).FirstOrDefault();
+                        
+                        int tmpId = persone.PersoneId;
+                        //и тут у нас дилема: в найденном объекте persone данные могут быть отличными от тех,
+                        //которые уже были введены при оформлении заказа. Пока единственным вариантом решения
+                        //видится вывод окна с уведомлением пользователя о том, что данные пользователя несколько 
+                        //отличны между собой. Старые и новые данные клиента будут показаны. И пусть пользователь 
+                        //сам принимает решение, вносить правку или нет.
+                        //а дилема в том , что в таком случае эта фича замедлит процесс приема заказа...
+                        //что не есть хорошо
+                        //пока считаем , что новые контактные данные заказчика более актуальны, чем старые и заменяем все 
+                        //новые на старые
+
+                        //тут надо впилить проверку по контактным данным
+
+                        //тут нужно впилить вызов окна с описанной выше целью
+                        if (dialogService.YesNoDialog("Прежние контактные данные заказчика не совпадают с текущими.\n" +
+                            "Заменить их на новые?") == true)
+                        persone = Persone;
+                        persone.PersoneId = tmpId;
+
+                         Order.Client = db.Clients.Find(Client.CheckClient(persone));
+                    }
+
+                    if (!doubleSave)
                         _Status.Status = db.Statuses.Find(new Status() { StatusId = 2 }.StatusId);
-                    Order.Status = _Status.Status;
-                    
+                        
+                    Order.Status = _Status.Status;                    
                     Order.Saved = true;
 
                     db.Configuration.AutoDetectChangesEnabled = false;
@@ -403,8 +457,8 @@ namespace STUDENTU_1._06.ViewModel
                     if (doubleSave)
                          EditOrderCount(TMPStaticClass.CurrentOrder.OrderLineId,TMPStaticClass.CurrentOrder.OrderNumber);
                     dialogService.ShowMessage("Данные о заказе сохранены");
-                    SaveOrderToTMPOrder();
-                    //TMPStaticClass.CurrentOrder = Order;
+                    //SaveOrderToTMPOrder();
+                    TMPStaticClass.CurrentOrder = Order;
                     saved = true;
                     doubleSave = false;
                     
@@ -433,7 +487,7 @@ namespace STUDENTU_1._06.ViewModel
             }
 
         }
-
+        //не востребовано
         //тут мы копируем все поля из окна EditOrder.xaml в буферную переменную 
         //here we copy all the fields from the EditOrder.xaml window to the buffer variable
         private void SaveOrderToTMPOrder()

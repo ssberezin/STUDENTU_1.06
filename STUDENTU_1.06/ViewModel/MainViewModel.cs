@@ -155,7 +155,12 @@ namespace STUDENTU_1._06.ViewModel
             {
                 try
                 {
-                    
+                    if (db.Universities.Count() == 0)
+                    {
+                        db.Universities.Add(new University() { UniversityName = "---", City="---" });                        
+                        db.SaveChanges();
+                    }
+
                     if (db.Statuses.Count() == 0)
                     {                       
                         db.Statuses.Add(new Status() { StatusName = "---" });
@@ -364,10 +369,10 @@ namespace STUDENTU_1._06.ViewModel
                         Persone.Contacts = Contacts;
                         Author = new Author();
                         Author.AuthorStatus = db.AuthorStatuses.Find(new AuthorStatus() {
-                            AuthorStatusId =authorstatus}.AuthorStatusId);
+                        AuthorStatusId =authorstatus}.AuthorStatusId);
                         Author.Subject.Add(db.Subjects.Find(new Subject() { SubjectId=subj1 }.SubjectId));
                         Author.Subject.Add(db.Subjects.Find(new Subject() { SubjectId = subj2 }.SubjectId));
-                    Author.Direction.Add(db.Directions.Find(new Direction() { DirectionId = dir1 }.DirectionId));
+                        Author.Direction.Add(db.Directions.Find(new Direction() { DirectionId = dir1 }.DirectionId));
                         Author.Direction.Add(db.Directions.Find(new Direction() { DirectionId = dir2 }.DirectionId));
                         Author.Rating = authorrating;
                         Persone.Author.Add(Author);                        

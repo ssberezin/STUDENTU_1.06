@@ -15,16 +15,16 @@ namespace STUDENTU_1._06.Model
 
             // this.Evaluations = new List<Evaluation>();
             this.OrderLine = new List<OrderLine>();
-            this.StartDateWork = DateTime.Now;
-            this.EndDateWork = DateTime.Now; 
+            this.StartDateWork = ZeroDefaultDate( DateTime.Now);
+            this.EndDateWork = new DateTime(1900, 1, 1);
             this.DayBirth = new DateTime(1900, 1, 1);
-            this.DeadLine = DateTime.Now.AddDays(1);
-            DeadLine=GetDefaultDate();
+            this.DeadLine = ZeroDefaultDate(DateTime.Now).AddDays(1).AddHours(9);            
             this.DateDone = new DateTime(1900, 1, 1);
             this.DateOfPaid = new DateTime(1900, 1, 1);
+            this.DateOfAuthorPaid = new DateTime(1900, 1, 1);
             this.AuthorDeadLine = DeadLine.AddMinutes(-30);           
             this.DateOfReception = DateTime.Now;
-            this.DateOfAuthorDataReception= DateTime.Now; 
+           
 
 
         }
@@ -35,7 +35,9 @@ namespace STUDENTU_1._06.Model
 
         [Column(TypeName = "datetime2")]
         public DateTime StartDateWork { get; set; }
-   
+
+        [Column(TypeName = "datetime2")]
+        public DateTime DateOfAuthorPaid { get; set; }
 
         [Column(TypeName = "datetime2")]
         public System.DateTime EndDateWork { get; set; }
@@ -63,21 +65,19 @@ namespace STUDENTU_1._06.Model
         public System.DateTime DateOfReception { get; set; }
 
         
-        [Column(TypeName = "datetime2")]
-        //date of author data record in DB
-        public System.DateTime DateOfAuthorDataReception { get; set; }
+       
 
 
         public virtual Evaluation Evaluation { get; set; }
         public virtual Persone Persone { get; set; }
         public virtual List<OrderLine> OrderLine { get; set; }
 
-        public DateTime GetDefaultDate()
-        {
-            //фактически задаем формат даты и времени в день выдачи заказа на время 9:00:00
-            // actually set the date and time format on the day the order is issued at 9:00:00
-            return DeadLine.AddHours(-DateTime.Now.Hour).AddMinutes(-DateTime.Now.Minute).AddHours(9).AddSeconds(-DateTime.Now.Second).AddMilliseconds(-DateTime.Now.Millisecond);
-        }
 
+        //тут мы получаем только год , месяц, число, с нулевыми остальными показателями
+        // here we get only the year, month, day, with zero other indicators
+        public DateTime ZeroDefaultDate(DateTime date)
+        {           
+            return date.AddHours(-DateTime.Now.Hour).AddMinutes(-DateTime.Now.Minute).AddSeconds(-DateTime.Now.Second).AddMilliseconds(-DateTime.Now.Millisecond);
+        }
     }
 }

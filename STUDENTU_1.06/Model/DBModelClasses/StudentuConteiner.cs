@@ -28,7 +28,8 @@ namespace STUDENTU_1._06.Model
         public virtual DbSet<PersoneDescription> PersoneDescriptions { get; set; }
         public virtual DbSet<Source> Sources { get; set; }
         public virtual DbSet<Status> Statuses { get; set; }
-        public virtual DbSet<Subject> Subjects { get; set; }        
+        public virtual DbSet<Subject> Subjects { get; set; }
+        public virtual DbSet<University> Universities { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<WorkType> WorkTypes { get; set; }
         
