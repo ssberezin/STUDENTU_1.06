@@ -142,6 +142,9 @@
     <Compile Include="ViewModel\_Subject.cs" />
     <Compile Include="ViewModel\_Direction.cs" />
     <Compile Include="ViewModel\_WorkType.cs" />
+    <Compile Include="Views\EditOrderWindows\ContactsWindows\CompareContatctsWindow.xaml.cs">
+      <DependentUpon>CompareContatctsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\EditOrderWindows\EditOrderLine\EditOrderFull.xaml.cs">
       <DependentUpon>EditOrderFull.xaml</DependentUpon>
     </Compile>
@@ -169,7 +172,11 @@
     <Compile Include="Views\PersoneOperations\AuthorOperationsWindows\EditAuthorStatusWindow.xaml.cs">
       <DependentUpon>EditAuthorStatusWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="Views\EditOrderWindows\AddContactsWindow.xaml">
+    <Page Include="Views\EditOrderWindows\ContactsWindows\AddContactsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EditOrderWindows\ContactsWindows\CompareContatctsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -269,7 +276,7 @@
     <Compile Include="ViewModel\ForEditOrderVM\ForEditOrder.cs" />
     <Compile Include="ViewModel\OrderLineOperations\RuleOrderLine.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
-    <Compile Include="Views\EditOrderWindows\AddContactsWindow.xaml.cs">
+    <Compile Include="Views\EditOrderWindows\ContactsWindows\AddContactsWindow.xaml.cs">
       <DependentUpon>AddContactsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\EditOrderWindows\Evaluation\AddEvaluateWindow.xaml.cs">
@@ -368,9 +375,14 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Resource Include="Images\default_avatar.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\LeftArrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\RightArrow.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
