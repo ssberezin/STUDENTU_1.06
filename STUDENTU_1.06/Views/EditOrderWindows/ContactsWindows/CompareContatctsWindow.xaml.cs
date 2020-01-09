@@ -19,9 +19,12 @@ namespace STUDENTU_1._06.Views.EditOrderWindows.ContactsWindows
     /// </summary>
     public partial class CompareContatctsWindow : Window
     {
-        public CompareContatctsWindow()
+        public CompareContatctsWindow(object DataContext)
         {
             InitializeComponent();
+            this.DataContext = DataContext;
         }
+
+       
     }
 }

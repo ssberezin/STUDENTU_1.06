@@ -46,13 +46,42 @@ namespace STUDENTU_1._06.ViewModel
                     OnPropertyChanged(nameof(TmpContacts));
                 }
             }
-        }       
+        }
+        
+        private Contacts tmpContactsCompare;
+        public Contacts TmpContactsCompare
+        {
+            get { return tmpContactsCompare; }
+            set
+            {
+                if (tmpContactsCompare != value)
+                {
+                    tmpContactsCompare = value;
+                    OnPropertyChanged(nameof(TmpContactsCompare));
+                }
+            }
+        }
 
+        private Contacts oldTmpContactsCompare;
+        public Contacts OldTmpContactsCompare
+        {
+            get { return oldTmpContactsCompare; }
+            set
+            {
+                if (oldTmpContactsCompare != value)
+                {
+                    oldTmpContactsCompare = value;
+                    OnPropertyChanged(nameof(OldTmpContactsCompare));
+                }
+            }
+        }
 
         public _Contacts()
         {
            Contacts = new Contacts();
-            TmpContacts = new Contacts();            
+            TmpContacts = new Contacts();
+            TmpContactsCompare = new Contacts();
+            OldTmpContactsCompare = new Contacts();
             showWindow = new DefaultShowWindowService();
             dialogService = new DefaultDialogService();
         }
@@ -83,9 +112,9 @@ namespace STUDENTU_1._06.ViewModel
                 Contacts = TmpContacts;
             }
         }
-       
-        //=========================================COMMAND FOR CANCEL SAVE CONTACTS=========================================== 
 
+        //=========================================COMMAND FOR CANCEL SAVE CONTACTS=========================================== 
+        public bool compareContacts = false;
         private RelayCommand cancelSaveContactsCommand;
         public RelayCommand CancelSaveContactsCommand => cancelSaveContactsCommand ??
             (cancelSaveContactsCommand = new RelayCommand(
@@ -98,7 +127,13 @@ namespace STUDENTU_1._06.ViewModel
                     ));
         private void CancelSaveContacts()
         {
-            TmpContacts = Contacts;
+            if (!compareContacts)
+                TmpContacts = Contacts;
+            else
+            {                
+                Contacts = TmpContacts;
+                compareContacts = false;
+            }
         }
 
         
@@ -137,39 +172,6 @@ namespace STUDENTU_1._06.ViewModel
 
                    
 
-
-                    //var list = db.Persones.Include("Author").Include("Client").ToList();
-                    //foreach (var item in list)
-                    //{
-                    //    if (item.Author.Count()>0)                        
-                    //    if (item.Contacts.Phone1 == Contacts.Phone1 ||
-                    //       item.Contacts.Phone1 == Contacts.Phone2 ||
-                    //       item.Contacts.Phone1 == Contacts.Phone3 ||
-                    //       item.Contacts.Phone2 == Contacts.Phone2 ||
-                    //       item.Contacts.Phone2 == Contacts.Phone3 ||
-                    //       item.Contacts.Phone3 == Contacts.Phone1 ||
-                    //       item.Contacts.Email1 == Contacts.Email1 ||
-                    //       item.Contacts.Email1 == Contacts.Email2 ||
-                    //       item.Contacts.Email2 == Contacts.Email2 ||
-                    //       item.Contacts.VK == Contacts.VK ||
-                    //       item.Contacts.Skype == Contacts.Skype)
-                    //    {
-                    //            if (dialogService.YesNoDialog("Контактные данные этого автора уже есть в БД авторов\n" +
-                    //                "Показать информацию по найденному совпадению?"))
-                    //            {
-                    //                //тут надо запилить вызов окна с инфой об авторе
-
-                    //                AuthorInfo AuthorInfoWindow = new AuthorInfo(item.);
-                    //                showWindow.ShowDialog(AuthorInfoWindow);
-
-                    //                return true;
-                    //            }
-                    //            else
-                    //                return false;
-                    //    }                        
-                    //}                   
-
-                    //return false;
                 }
                 catch (ArgumentNullException ex)
                 {
@@ -197,5 +199,198 @@ namespace STUDENTU_1._06.ViewModel
         }
 
 
+        private RelayCommand replaceOldToNewPhone1Command;
+        public RelayCommand ReplaceOldToNewPhone1Command => replaceOldToNewPhone1Command ?? 
+                            (replaceOldToNewPhone1Command = new RelayCommand(
+                    (obj) =>
+                    {
+                        //Contacts.Phone1=ReplaceContacts("Phone1","OldToNew", Contacts, TmpContacts );
+                        OldTmpContactsCompare.Phone1 = tmpContactsCompare.Phone1;
+                    }
+                    ));
+
+        private RelayCommand replaceNewToOldPhone1Command;
+        public RelayCommand ReplaceNewToOldPhone1Command => replaceNewToOldPhone1Command ??
+                            (replaceNewToOldPhone1Command = new RelayCommand(
+                    (obj) =>
+                    {                        
+                        tmpContactsCompare.Phone1 = OldTmpContactsCompare.Phone1;
+                    }
+                    ));
+
+        private RelayCommand replaceOldToNewPhone2Command;
+        public RelayCommand ReplaceOldToNewPhone2Command => replaceOldToNewPhone2Command ??
+                            (replaceOldToNewPhone2Command = new RelayCommand(
+                    (obj) =>
+                    {
+                        OldTmpContactsCompare.Phone2 = tmpContactsCompare.Phone2;
+                    }
+                    ));
+
+        private RelayCommand replaceNewToOldPhone2Command;
+        public RelayCommand ReplaceNewToOldPhone2Command => replaceNewToOldPhone2Command ??
+                            (replaceNewToOldPhone2Command = new RelayCommand(
+                    (obj) =>
+                    {
+                        tmpContactsCompare.Phone2 = OldTmpContactsCompare.Phone2;
+                    }
+                    ));
+
+        private RelayCommand replaceOldToNewPhone3Command;
+        public RelayCommand ReplaceOldToNewPhone3Command => replaceOldToNewPhone3Command ??
+                            (replaceOldToNewPhone3Command = new RelayCommand(
+                    (obj) =>
+                    {
+                        OldTmpContactsCompare.Phone3 = tmpContactsCompare.Phone3;
+                    }
+                    ));
+
+        private RelayCommand replaceNewToOldPhone3Command;
+        public RelayCommand ReplaceNewToOldPhone3Command => replaceNewToOldPhone3Command ??
+                            (replaceNewToOldPhone3Command = new RelayCommand(
+                    (obj) =>
+                    {
+                        tmpContactsCompare.Phone3 = OldTmpContactsCompare.Phone3;
+                    }
+                    ));
+
+        private RelayCommand replaceOldToNewEmail1Command;
+        public RelayCommand ReplaceOldToNewEmail1Command => replaceOldToNewEmail1Command ??
+                            (replaceOldToNewEmail1Command = new RelayCommand(
+                    (obj) =>
+                    {
+                        OldTmpContactsCompare.Email1 = tmpContactsCompare.Email1;
+                    }
+                    ));
+
+        private RelayCommand replaceNewToOldEmail1Command;
+        public RelayCommand ReplaceNewToOldEmail1Command => replaceNewToOldEmail1Command ??
+                            (replaceNewToOldEmail1Command = new RelayCommand(
+                    (obj) =>
+                    {
+                        tmpContactsCompare.Email1 = OldTmpContactsCompare.Email1;
+                    }
+                    ));
+
+        private RelayCommand replaceOldToNewEmail2Command;
+        public RelayCommand ReplaceOldToNewEmail2Command => replaceOldToNewEmail2Command ??
+                            (replaceOldToNewEmail2Command = new RelayCommand(
+                    (obj) =>
+                    {
+                        OldTmpContactsCompare.Email2 = tmpContactsCompare.Email2;
+                    }
+                    ));
+
+        private RelayCommand replaceNewToOldEmail2Command;
+        public RelayCommand ReplaceNewToOldEmail2Command => replaceNewToOldEmail2Command ??
+                            (replaceNewToOldEmail2Command = new RelayCommand(
+                    (obj) =>
+                    {
+                        tmpContactsCompare.Email2 = OldTmpContactsCompare.Email2;
+                    }
+                    ));
+
+        private RelayCommand replaceOldToNewVKCommand;
+        public RelayCommand ReplaceOldToNewVKCommand => replaceOldToNewVKCommand ??
+                            (replaceOldToNewVKCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        OldTmpContactsCompare.VK = tmpContactsCompare.VK;
+                    }
+                    ));
+
+        private RelayCommand replaceNewToOldVKCommand;
+        public RelayCommand ReplaceNewToOldVKCommand => replaceNewToOldVKCommand ??
+                            (replaceNewToOldVKCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        tmpContactsCompare.VK = OldTmpContactsCompare.VK;
+                    }
+                    ));
+
+        private RelayCommand replaceOldToNewFBCommand;
+        public RelayCommand ReplaceOldToNewFBCommand => replaceOldToNewFBCommand ??
+                            (replaceOldToNewFBCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        OldTmpContactsCompare.FaceBook = tmpContactsCompare.FaceBook;
+                    }
+                    ));
+
+        private RelayCommand replaceNewToOldFBCommand;
+        public RelayCommand ReplaceNewToOldFBCommand => replaceNewToOldFBCommand ??
+                            (replaceNewToOldFBCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        tmpContactsCompare.FaceBook = OldTmpContactsCompare.FaceBook;
+                    }
+                    ));
+
+        private RelayCommand replaceOldToNewSkypeCommand;
+        public RelayCommand ReplaceOldToNewSkypeCommand => replaceOldToNewSkypeCommand ??
+                            (replaceOldToNewSkypeCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        OldTmpContactsCompare.Skype = tmpContactsCompare.Skype;
+                    }
+                    ));
+
+        private RelayCommand replaceNewToOldSkypeCommand;
+        public RelayCommand ReplaceNewToOldSkypeCommand => replaceNewToOldSkypeCommand ??
+                            (replaceNewToOldSkypeCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        tmpContactsCompare.Skype = OldTmpContactsCompare.Skype;                    }
+                    ));
+
+        private RelayCommand setLeftContactsCommand;
+        public RelayCommand SetLeftContactsCommand => setLeftContactsCommand ??
+                            (setLeftContactsCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        Contacts = OldTmpContactsCompare;
+                    }
+                    ));
+
+
+        private RelayCommand setRightContactsCommand;
+        public RelayCommand SetRightContactsCommand => setRightContactsCommand ??
+                            (setRightContactsCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        Contacts = tmpContactsCompare;
+                    }
+                    ));
+
+        //not used
+        public string ReplaceContacts(string nameOfContact, string mode,
+            Contacts OldContacts, Contacts NewContacts)
+        {
+
+            switch (nameOfContact)
+            {
+                case "Phone1":
+                    return mode == "OldToNew" ? OldContacts.Phone1 = NewContacts.Phone1 : NewContacts.Phone1 = OldContacts.Phone1;               
+                case "Phone2":
+                    return mode == "OldToNew" ? OldContacts.Phone2 = NewContacts.Phone2 : NewContacts.Phone2 = OldContacts.Phone2;               
+                case "Phone3":
+                    return mode == "OldToNew" ? OldContacts.Phone3 = NewContacts.Phone3 : NewContacts.Phone3 = OldContacts.Phone3;
+                case "Email1":
+                    return mode == "OldToNew" ? OldContacts.Email1 = NewContacts.Email1 : NewContacts.Email1 = OldContacts.Email1;
+                case "Email2":
+                    return mode == "OldToNew" ? OldContacts.Email2 = NewContacts.Email2 : NewContacts.Email2 = OldContacts.Email2;
+                case "VK":
+                    return mode == "OldToNew" ? OldContacts.VK = NewContacts.VK : NewContacts.VK = OldContacts.VK;
+                case "FB":
+                    return mode == "OldToNew" ? OldContacts.FaceBook = NewContacts.FaceBook : NewContacts.FaceBook = OldContacts.FaceBook;
+                case "Skype":
+                    return mode == "OldToNew" ? OldContacts.Skype = NewContacts.Skype : NewContacts.Skype = OldContacts.Skype;
+                default:
+
+                    return null;
+
+            }
+
+        }
     }
 }

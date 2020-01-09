@@ -13,6 +13,7 @@ using STUDENTU_1._06.Model.HelpModelClasses;
 using STUDENTU_1._06.Model.HelpModelClasses.DialogWindows;
 using STUDENTU_1._06.Model.HelpModelClasses.ShowWindows;
 using STUDENTU_1._06.Views;
+using STUDENTU_1._06.Views.EditOrderWindows.ContactsWindows;
 using STUDENTU_1._06.Views.EditOrderWindows.RuleOrderLineWindows;
 
 namespace STUDENTU_1._06.ViewModel
@@ -420,21 +421,28 @@ namespace STUDENTU_1._06.ViewModel
                         var persone = db.Persones.Where(c => c.Contacts.ContactsId == i).FirstOrDefault();
                         
                         int tmpId = persone.PersoneId;
-                        //и тут у нас дилема: в найденном объекте persone данные могут быть отличными от тех,
-                        //которые уже были введены при оформлении заказа. Пока единственным вариантом решения
-                        //видится вывод окна с уведомлением пользователя о том, что данные пользователя несколько 
-                        //отличны между собой. Старые и новые данные клиента будут показаны. И пусть пользователь 
-                        //сам принимает решение, вносить правку или нет.
-                        //а дилема в том , что в таком случае эта фича замедлит процесс приема заказа...
-                        //что не есть хорошо
-                        //пока считаем , что новые контактные данные заказчика более актуальны, чем старые и заменяем все 
-                        //новые на старые
+
+
+
+
+
 
                         //тут надо впилить проверку по контактным данным
 
-                        //тут нужно впилить вызов окна с описанной выше целью
                         if (dialogService.YesNoDialog("Прежние контактные данные заказчика не совпадают с текущими.\n" +
                             "Заменить их на новые?") == true)
+                        {
+                            //тут мы вызываем окно сравнения разных контактных данных
+                            //есть надежда , что такой способ вызова сработает
+                            _Contacts.compareContacts = true;
+                            //тут _Contacts.TmpContacts нужно присвоить ранее выуженные старые контактные данные
+                            //ну и надо забацать промежуточную переменную для "новых контактных данных , наверное"
+                            //ну и надо забацать промежуточную переменную для "новых контактных данных , наверное
+                            //_Contacts.TmpContacts=
+                            CompareContatctsWindow compareContatctsWindow = new CompareContatctsWindow(this);
+                            showWindow.ShowDialog(compareContatctsWindow);
+                        }
+
                         persone = Persone;
                         persone.PersoneId = tmpId;
 
@@ -487,30 +495,7 @@ namespace STUDENTU_1._06.ViewModel
             }
 
         }
-        //не востребовано
-        //тут мы копируем все поля из окна EditOrder.xaml в буферную переменную 
-        //here we copy all the fields from the EditOrder.xaml window to the buffer variable
-        private void SaveOrderToTMPOrder()
-        {
-            TMPStaticClass.CurrentOrder = Order;
-            // TMPStaticClass.CurrentOrder = new OrderLine() { OrderNumber = Order.OrderNumber };
-            TMPStaticClass.CurrentOrder.WorkInCredit = Order.WorkInCredit;
-            TMPStaticClass.CurrentOrder.DescriptionForClient = Order.DescriptionForClient;
-            TMPStaticClass.CurrentOrder.WorkDescription = Order.WorkDescription;
-            TMPStaticClass.CurrentOrder.Variant = Order.Variant;
-            Persone.Contacts = _Contacts.Contacts;
-            //TMPStaticClass.CurrentOrder.Client = new Client() { Persone = Persone };
-            //TMPStaticClass.CurrentOrder.Client.Persone.Contacts = _Contacts.Contacts;
-            TMPStaticClass.CurrentOrder.Client.Persone = Persone;
-            TMPStaticClass.CurrentOrder.Direction = _Dir.Dir;
-            TMPStaticClass.CurrentOrder.WorkType = _WorkType.WorkType;
-            TMPStaticClass.CurrentOrder.Dates.DateOfReception = Date.DateOfReception;
-            TMPStaticClass.CurrentOrder.Dates.DeadLine = Date.DeadLine;
-            TMPStaticClass.CurrentOrder.Subject= _Subj.Subj;
-            TMPStaticClass.CurrentOrder.Money = Price;
-            TMPStaticClass.CurrentOrder.Status = _Status.Status;
-            TMPStaticClass.CurrentOrder.Source = _Source.Source;
-        }
+        
 
         //to edit OrderCount in Order
         private void EditOrderCount(int orderId, int orderNumber)

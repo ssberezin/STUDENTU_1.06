@@ -358,8 +358,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
             using (StudentuConteiner db = new StudentuConteiner())
             {
                 try
-                {
-                    //var contacts = db.Contacts.Include("Persone").ToList();
+                {                
                     var result = db.Authors.
                                             Include("Subject")
                                             .Include("Direction")
@@ -377,18 +376,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                         };
                         AuthorsRecords.Add(record);
                     }
-
-                    //foreach (Author item in result)
-                    //{
-                      
-                    //    record = new AuthorsRecord
-                    //    {
-                    //        Author = item,
-                    //        Persone = item.Persone,
-                    //        Contacts = item.Persone.Contacts                                                       
-                    //    };                        
-                    //    AuthorsRecords.Add(record);
-                    //}
+                    
                 }
                 catch (ArgumentNullException ex)
                 {

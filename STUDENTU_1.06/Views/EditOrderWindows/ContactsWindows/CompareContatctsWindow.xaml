@@ -19,7 +19,7 @@
     <Window.InputBindings>
         <KeyBinding Gesture="Esc" Command="{Binding _Contacts.CancelSaveContactsCommand}" 
                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
-        <KeyBinding Gesture="Ctrl+S" Command="{Binding _Contatcts.SaveContactCommand}"/>
+        
         <!--Command CloseWindowCommand  can find in ForEditOrder.cs-->
     </Window.InputBindings>
     <Grid Background="#FFEAC410" Height="420" Margin="0,0,0.2,0" VerticalAlignment="Top">
@@ -50,19 +50,114 @@
                 </LinearGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-        <StackPanel Grid.Column="1" Grid.Row="1">
-            <Button  MinHeight="18"    Margin="1,0.5"               
-                    Command="{Binding _Contacts.SaveContactCommand}"
-                    CommandParameter="{Binding Persone}" 
-                TabIndex="7">
+        <StackPanel Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Height="42" Margin="0.4,0.4,317.2,0" VerticalAlignment="Top">
+            <Button  MinHeight="18"    Margin="1,0.5"  TabIndex="0"              
+                    Command="{Binding _Contacts.ReplaceOldToNewPhone1Command}">
                 <Button.Background>
                     <ImageBrush ImageSource="pack://application:,,,/Images/LeftArrow.png"/>
                 </Button.Background>
             </Button>
-            <Button  MinHeight="18"                
-                    Command="{Binding _Contacts.SaveContactCommand}"
-                    CommandParameter="{Binding Persone}" 
-                TabIndex="7">
+            <Button  MinHeight="18" TabIndex="1"
+                    Command="{Binding _Contacts.ReplaceNewToOldPhone1Command}">
+                <Button.Background>
+                    <ImageBrush ImageSource="pack://application:,,,/Images/RightArrow.png"/>
+                </Button.Background>
+            </Button>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Height="42" Margin="0.4,0.4,317.2,0" VerticalAlignment="Top">
+            <Button  MinHeight="18"    Margin="1,0.5"  TabIndex="0"              
+                    Command="{Binding _Contacts.ReplaceOldToNewPhone2Command}">
+                <Button.Background>
+                    <ImageBrush ImageSource="pack://application:,,,/Images/LeftArrow.png"/>
+                </Button.Background>
+            </Button>
+            <Button  MinHeight="18" TabIndex="1"
+                    Command="{Binding _Contacts.ReplaceNewToOldPhone2Command}">
+                <Button.Background>
+                    <ImageBrush ImageSource="pack://application:,,,/Images/RightArrow.png"/>
+                </Button.Background>
+            </Button>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Height="42" Margin="0.4,0.4,317.2,0" VerticalAlignment="Top">
+            <Button  MinHeight="18"    Margin="1,0.5"  TabIndex="0"              
+                    Command="{Binding _Contacts.ReplaceOldToNewPhone3Command}">
+                <Button.Background>
+                    <ImageBrush ImageSource="pack://application:,,,/Images/LeftArrow.png"/>
+                </Button.Background>
+            </Button>
+            <Button  MinHeight="18" TabIndex="1"
+                    Command="{Binding _Contacts.ReplaceNewToOldPhone3Command}">
+                <Button.Background>
+                    <ImageBrush ImageSource="pack://application:,,,/Images/RightArrow.png"/>
+                </Button.Background>
+            </Button>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" Height="42" Margin="0.4,0.4,317.2,0" VerticalAlignment="Top">
+            <Button  MinHeight="18"    Margin="1,0.5"  TabIndex="0"              
+                    Command="{Binding _Contacts.ReplaceOldToNewEmail1Command}">
+                <Button.Background>
+                    <ImageBrush ImageSource="pack://application:,,,/Images/LeftArrow.png"/>
+                </Button.Background>
+            </Button>
+            <Button  MinHeight="18" TabIndex="1"
+                    Command="{Binding _Contacts.ReplaceNewToOldEmail1Command}">
+                <Button.Background>
+                    <ImageBrush ImageSource="pack://application:,,,/Images/RightArrow.png"/>
+                </Button.Background>
+            </Button>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="2" Height="42" Margin="0.4,0.4,317.2,0" VerticalAlignment="Top">
+            <Button  MinHeight="18"    Margin="1,0.5"  TabIndex="0"              
+                    Command="{Binding _Contacts.ReplaceOldToNewEmail2Command}">
+                <Button.Background>
+                    <ImageBrush ImageSource="pack://application:,,,/Images/LeftArrow.png"/>
+                </Button.Background>
+            </Button>
+            <Button  MinHeight="18" TabIndex="1"
+                    Command="{Binding _Contacts.ReplaceNewToOldEmail2Command}">
+                <Button.Background>
+                    <ImageBrush ImageSource="pack://application:,,,/Images/RightArrow.png"/>
+                </Button.Background>
+            </Button>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="2" Height="42" Margin="0.4,0.4,317.2,0" VerticalAlignment="Top">
+            <Button  MinHeight="18"    Margin="1,0.5"  TabIndex="0"              
+                    Command="{Binding _Contacts.ReplaceOldToNewVKCommand}">
+                <Button.Background>
+                    <ImageBrush ImageSource="pack://application:,,,/Images/LeftArrow.png"/>
+                </Button.Background>
+            </Button>
+            <Button  MinHeight="18" TabIndex="1"
+                    Command="{Binding _Contacts.ReplaceNewToOldVKCommand}">
+                <Button.Background>
+                    <ImageBrush ImageSource="pack://application:,,,/Images/RightArrow.png"/>
+                </Button.Background>
+            </Button>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Grid.Row="7" Grid.ColumnSpan="2" Height="42" Margin="0.4,0.4,317.2,0" VerticalAlignment="Top">
+            <Button  MinHeight="18"    Margin="1,0.5"  TabIndex="0"              
+                    Command="{Binding _Contacts.ReplaceOldToNewSkypeCommand}">
+                <Button.Background>
+                    <ImageBrush ImageSource="pack://application:,,,/Images/LeftArrow.png"/>
+                </Button.Background>
+            </Button>
+            <Button  MinHeight="18" TabIndex="1"
+                    Command="{Binding _Contacts.ReplaceNewToOldSkypeCommand}">
+                <Button.Background>
+                    <ImageBrush ImageSource="pack://application:,,,/Images/RightArrow.png"/>
+                </Button.Background>
+            </Button>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="8" Grid.ColumnSpan="2" Height="42" Margin="0.4,0.4,317.2,0" VerticalAlignment="Top">
+            <Button  MinHeight="18"    Margin="1,0.5"  TabIndex="0"              
+                    Command="{Binding _Contacts.ReplaceOldToNewFBCommand}">
+                <Button.Background>
+                    <ImageBrush ImageSource="pack://application:,,,/Images/LeftArrow.png"/>
+                </Button.Background>
+            </Button>
+            <Button  MinHeight="18" TabIndex="1"
+                    Command="{Binding _Contacts.ReplaceNewToOldFBCommand}">
                 <Button.Background>
                     <ImageBrush ImageSource="pack://application:,,,/Images/RightArrow.png"/>
                 </Button.Background>
@@ -81,7 +176,7 @@
                 <TextBlock Text="№ телефона 1: " FontWeight="Bold"  Foreground="Brown"/>
             </Viewbox>
             <TextBox x:Name="Phone1"  Margin="2" MinWidth="150" MaxWidth="180"
-                 Text="{Binding _Contacts.TmpContacts.Phone1 , Mode=TwoWay,
+                 Text="{Binding _Contacts.OldTmpContactsCompare.Phone1 , Mode=TwoWay,
             UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="0"
                   TextAlignment="Center" MaxLength="13"/>
             <!--Contatcts can find in ForEditOrder.cs-->
@@ -93,7 +188,7 @@
             </Viewbox>
             <TextBox x:Name="Phone2"  Margin="2" MinWidth="150" MaxWidth="180"
                      HorizontalAlignment="Stretch"
-                 Text="{Binding _Contacts.TmpContacts.Phone2 , Mode=TwoWay,
+                 Text="{Binding _Contacts.OldTmpContactsCompare.Phone2 , Mode=TwoWay,
             UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="1"
                   TextAlignment="Center"  MaxLength="13"/>
             <!--Contatcts can find in ForEditOrder.cs-->
@@ -104,7 +199,7 @@
                 <TextBlock Text="№ телефона 3: " FontWeight="Bold"  Foreground="Brown"/>
             </Viewbox>
             <TextBox x:Name="Phone3"  Margin="2" MinWidth="150" MaxWidth="180"
-                 Text="{Binding _Contacts.TmpContacts.Phone3 , Mode=TwoWay,
+                 Text="{Binding _Contacts.OldTmpContactsCompare.Phone3 , Mode=TwoWay,
             UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="2"
                   TextAlignment="Center"  MaxLength="13"/>
             <!--Contatcts can find in ForEditOrder.cs-->
@@ -115,7 +210,7 @@
                 <TextBlock Text="Email1: " FontWeight="Bold"  Foreground="Brown"/>
             </Viewbox>
             <TextBox x:Name="Email1"  Margin="2" MinWidth="150" MaxWidth="180"
-                 Text="{Binding _Contacts.TmpContacts.Email1 , Mode=TwoWay,
+                 Text="{Binding _Contacts.OldTmpContactsCompare.Email1 , Mode=TwoWay,
             UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="3"
                   TextAlignment="Center"/>
             <!--Contatcts can find in ForEditOrder.cs-->
@@ -126,7 +221,7 @@
                 <TextBlock Text="VK: " FontWeight="Bold"  Foreground="Brown"/>
             </Viewbox>
             <TextBox x:Name="VK"  Margin="2" MinWidth="150" MaxWidth="180"
-                 Text="{Binding _Contacts.TmpContacts.VK , Mode=TwoWay,
+                 Text="{Binding _Contacts.OldTmpContactsCompare.VK , Mode=TwoWay,
             UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="5"
                   TextAlignment="Center"/>
             <!--Contatcts can find in ForEditOrder.cs-->
@@ -137,7 +232,7 @@
                 <TextBlock Text="Email2: " FontWeight="Bold"  Foreground="Brown"/>
             </Viewbox>
             <TextBox x:Name="Email2"  Margin="2" MinWidth="150" MaxWidth="180"
-                 Text="{Binding _Contacts.TmpContacts.Email2 , Mode=TwoWay,
+                 Text="{Binding _Contacts.OldTmpContactsCompare.Email2 , Mode=TwoWay,
             UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="3"
                   TextAlignment="Center" />
             <!--Contatcts can find in ForEditOrder.cs-->
@@ -148,7 +243,7 @@
                 <TextBlock Text="Skype: " FontWeight="Bold"  Foreground="Brown"/>
             </Viewbox>
             <TextBox x:Name="Skype"  Margin="2" MinWidth="150" MaxWidth="180"
-                 Text="{Binding _Contacts.TmpContacts.Skype , Mode=TwoWay,
+                 Text="{Binding _Contacts.OldTmpContactsCompare.Skype , Mode=TwoWay,
             UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="5"
                   TextAlignment="Center"/>
             <!--Contatcts can find in ForEditOrder.cs-->
@@ -159,7 +254,7 @@
                 <TextBlock Text="FaceBook: " FontWeight="Bold"  Foreground="Brown"/>
             </Viewbox>
             <TextBox  Margin="2" MinWidth="150" MaxWidth="180"
-                 Text="{Binding _Contacts.TmpContacts.FaceBook, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="5"
+                 Text="{Binding _Contacts.OldTmpContactsCompare.FaceBook, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="5"
                   TextAlignment="Center" Height="27"/>
             <!--Contatcts can find in ForEditOrder.cs-->
         </WrapPanel>
@@ -172,7 +267,7 @@
             </Grid.ColumnDefinitions>
             <Button Grid.Column="1" Grid.ColumnSpan="2"  Content="Принять этот вариант" 
                     Background="#FF946809"
-                    Command="{Binding _Contacts.SaveContactCommand}"
+                    Command="{Binding _Contacts.SetLeftContactsCommand}"
                     CommandParameter="{Binding Persone}" 
                 TabIndex="7">
             </Button>
@@ -209,7 +304,7 @@
                     <TextBlock Text="№ телефона 1:" FontWeight="Bold"  Foreground="Brown"/>
                 </Viewbox>
                 <TextBox   Margin="2" MinWidth="150" MaxWidth="180"
-                 Text="{Binding _Contacts.TmpContacts.Phone1 , Mode=TwoWay,
+                 Text="{Binding _Contacts.tmpContactsCompare.Phone1 , Mode=TwoWay,
             UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="0"
                   TextAlignment="Center" MaxLength="13"/>
                 
@@ -222,7 +317,7 @@
                 </Viewbox>
                 <TextBox   Margin="2" MinWidth="150" MaxWidth="180"
                      HorizontalAlignment="Stretch"
-                 Text="{Binding _Contacts.TmpContacts.Phone2 , Mode=TwoWay,
+                 Text="{Binding _Contacts.tmpContactsCompare.Phone2 , Mode=TwoWay,
             UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="1"
                   TextAlignment="Center"  MaxLength="13"/>
                 <!--Contatcts can find in ForEditOrder.cs-->
@@ -233,7 +328,7 @@
                     <TextBlock Text="№ телефона 3: " FontWeight="Bold"  Foreground="Brown"/>
                 </Viewbox>
                 <TextBox   Margin="2" MinWidth="150" MaxWidth="180"
-                 Text="{Binding _Contacts.TmpContacts.Phone3 , Mode=TwoWay,
+                 Text="{Binding _Contacts.tmpContactsCompare.Phone3 , Mode=TwoWay,
             UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="2"
                   TextAlignment="Center"  MaxLength="13"/>
                 <!--Contatcts can find in ForEditOrder.cs-->
@@ -244,7 +339,7 @@
                     <TextBlock Text="Email1: " FontWeight="Bold"  Foreground="Brown"/>
                 </Viewbox>
                 <TextBox   Margin="2" MinWidth="150" MaxWidth="180"
-                 Text="{Binding _Contacts.TmpContacts.Email1 , Mode=TwoWay,
+                 Text="{Binding _Contacts.tmpContactsCompare.Email1 , Mode=TwoWay,
             UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="3"
                   TextAlignment="Center"/>
                 <!--Contatcts can find in ForEditOrder.cs-->
@@ -255,7 +350,7 @@
                     <TextBlock Text="VK: " FontWeight="Bold"  Foreground="Brown"/>
                 </Viewbox>
                 <TextBox   Margin="2" MinWidth="150" MaxWidth="180"
-                 Text="{Binding _Contacts.TmpContacts.VK , Mode=TwoWay,
+                 Text="{Binding _Contacts.tmpContactsCompare.VK , Mode=TwoWay,
             UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="5"
                   TextAlignment="Center"/>
                 <!--Contatcts can find in ForEditOrder.cs-->
@@ -266,7 +361,7 @@
                     <TextBlock Text="Email2: " FontWeight="Bold"  Foreground="Brown"/>
                 </Viewbox>
                 <TextBox   Margin="2" MinWidth="150" MaxWidth="180"
-                 Text="{Binding _Contacts.TmpContacts.Email2 , Mode=TwoWay,
+                 Text="{Binding _Contacts.tmpContactsCompare.Email2 , Mode=TwoWay,
             UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="3"
                   TextAlignment="Center" />
                 <!--Contatcts can find in ForEditOrder.cs-->
@@ -277,7 +372,7 @@
                     <TextBlock Text="Skype: " FontWeight="Bold"  Foreground="Brown"/>
                 </Viewbox>
                 <TextBox   Margin="2" MinWidth="150" MaxWidth="180"
-                 Text="{Binding _Contacts.TmpContacts.Skype , Mode=TwoWay,
+                 Text="{Binding _Contacts.tmpContactsCompare.Skype , Mode=TwoWay,
             UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="5"
                   TextAlignment="Center"/>
                 <!--Contatcts can find in ForEditOrder.cs-->
@@ -288,7 +383,7 @@
                     <TextBlock Text="FaceBook: " FontWeight="Bold"  Foreground="Brown"/>
                 </Viewbox>
                 <TextBox  Margin="2" MinWidth="150" MaxWidth="180"
-                 Text="{Binding _Contacts.TmpContacts.FaceBook, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="5"
+                 Text="{Binding _Contacts.tmpContactsCompare.FaceBook, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="5"
                   TextAlignment="Center" Height="27"/>
                 <!--Contatcts can find in ForEditOrder.cs-->
             </WrapPanel>
@@ -301,7 +396,7 @@
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="1" Grid.ColumnSpan="2"  Content="Принять этот вариант"
                         Background="#FF25AE84" Foreground="Black"
-                    Command="{Binding _Contacts.SaveContactCommand}"
+                    Command="{Binding _Contacts.SetRightContactsCommand}"
                     CommandParameter="{Binding Persone}" 
                 TabIndex="7">
                 </Button>
