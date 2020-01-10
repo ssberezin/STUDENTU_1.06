@@ -149,7 +149,7 @@
                 <TextBlock Text="Имя: " Foreground="Brown" FontWeight="Bold"/>
             </Viewbox>
             <TextBox x:Name="TBxName"  MinWidth="220" TabIndex="0"
-                   Width="274" Text="{Binding Persone.Name}"/>
+                   Width="274" Text="{Binding Persone.Name, Mode=TwoWay}"/>
             <!--Persone can find in AuthorsVMClass.cs-->
         </WrapPanel>
         <WrapPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="3">

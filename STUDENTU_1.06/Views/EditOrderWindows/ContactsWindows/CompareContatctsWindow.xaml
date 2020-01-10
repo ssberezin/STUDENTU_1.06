@@ -4,10 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:STUDENTU_1._06.Views"
-       
+        xmlns:helpes="clr-namespace:STUDENTU_1._06.Helpes"
         mc:Ignorable="d"
-        Title="Редактирование дополнительных контатов" Height="450" Width="690" MinHeight="450" MinWidth="690"
-        MaxHeight="450" MaxWidth="690"
+        Title="Редактирование дополнительных контатов" Height="630" Width="680" MinHeight="630" MinWidth="690"
+        MaxHeight="630" MaxWidth="690"
          TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
         TextOptions.TextFormattingMode="Ideal" 
@@ -16,18 +16,20 @@
         FontFamily="{DynamicResource MaterialDesignFont}" 
         WindowStartupLocation="CenterScreen" 
         >
+    <Window.Resources>
+        <helpes:BoolInverterConverter x:Key="boolInverterConverter"/>
+    </Window.Resources>
     <Window.InputBindings>
         <KeyBinding Gesture="Esc" Command="{Binding _Contacts.CancelSaveContactsCommand}" 
                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
-        
+
         <!--Command CloseWindowCommand  can find in ForEditOrder.cs-->
     </Window.InputBindings>
-    <Grid Background="#FFEAC410" Height="420" Margin="0,0,0.2,0" VerticalAlignment="Top">
+    <Grid Background="#FFEAC410"  Margin="0,0,0.2,0" VerticalAlignment="Top" MinHeight="600">
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition Width="0.15*"/>
             <ColumnDefinition/>
-
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition />
@@ -40,9 +42,13 @@
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
         </Grid.RowDefinitions>
-       
-        <Rectangle Grid.Column="1" Grid.Row="0" Grid.RowSpan="10" >
+
+        <Rectangle Grid.Column="1" Grid.Row="0" Grid.RowSpan="13" >
             <Rectangle.Fill>
                 <LinearGradientBrush StartPoint="0,1" EndPoint="1,1">
                     <GradientStop Color="#FFEAC410" Offset="0"></GradientStop>
@@ -50,7 +56,7 @@
                 </LinearGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-        <StackPanel Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Height="42" Margin="0.4,0.4,317.2,0" VerticalAlignment="Top">
+        <StackPanel Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2"  Margin="0.4,0.4,317.2,0" VerticalAlignment="Top">
             <Button  MinHeight="18"    Margin="1,0.5"  TabIndex="0"              
                     Command="{Binding _Contacts.ReplaceOldToNewPhone1Command}">
                 <Button.Background>
@@ -64,70 +70,113 @@
                 </Button.Background>
             </Button>
         </StackPanel>
-        <StackPanel Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Height="42" Margin="0.4,0.4,317.2,0" VerticalAlignment="Top">
+        <StackPanel Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2"  Margin="0.4,0.4,317.2,0" VerticalAlignment="Top">
             <Button  MinHeight="18"    Margin="1,0.5"  TabIndex="0"              
-                    Command="{Binding _Contacts.ReplaceOldToNewPhone2Command}">
+                    Command="{Binding _Contacts.ReplaceOldToNewPhone1Command}">
                 <Button.Background>
                     <ImageBrush ImageSource="pack://application:,,,/Images/LeftArrow.png"/>
                 </Button.Background>
             </Button>
             <Button  MinHeight="18" TabIndex="1"
+                    Command="{Binding _Contacts.ReplaceNewToOldPhone1Command}">
+                <Button.Background>
+                    <ImageBrush ImageSource="pack://application:,,,/Images/RightArrow.png"/>
+                </Button.Background>
+            </Button>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2"  Margin="0.4,0.4,317.2,0" VerticalAlignment="Top">
+            <Button  MinHeight="18"    Margin="1,0.5"  TabIndex="0"              
+                    Command="{Binding _Contacts.ReplaceOldToNewPhone1Command}">
+                <Button.Background>
+                    <ImageBrush ImageSource="pack://application:,,,/Images/LeftArrow.png"/>
+                </Button.Background>
+            </Button>
+            <Button  MinHeight="18" TabIndex="1"
+                    Command="{Binding _Contacts.ReplaceNewToOldPhone1Command}">
+                <Button.Background>
+                    <ImageBrush ImageSource="pack://application:,,,/Images/RightArrow.png"/>
+                </Button.Background>
+            </Button>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="2"  Margin="0.4,0.4,317.2,0" VerticalAlignment="Top">
+            <Button  MinHeight="18"    Margin="1,0.5"  TabIndex="0"              
+                    Command="{Binding _Contacts.ReplaceOldToNewPhone1Command}">
+                <Button.Background>
+                    <ImageBrush ImageSource="pack://application:,,,/Images/LeftArrow.png"/>
+                </Button.Background>
+            </Button>
+            <Button  MinHeight="18" TabIndex="1"
+                    Command="{Binding _Contacts.ReplaceNewToOldPhone1Command}">
+                <Button.Background>
+                    <ImageBrush ImageSource="pack://application:,,,/Images/RightArrow.png"/>
+                </Button.Background>
+            </Button>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="2" Margin="0.4,0.4,317.2,0" VerticalAlignment="Top">
+            <Button  MinHeight="18"    Margin="1,0.5"  TabIndex="2"              
+                    Command="{Binding _Contacts.ReplaceOldToNewPhone2Command}">
+                <Button.Background>
+                    <ImageBrush ImageSource="pack://application:,,,/Images/LeftArrow.png"/>
+                </Button.Background>
+            </Button>
+            <Button  MinHeight="18" TabIndex="3"
                     Command="{Binding _Contacts.ReplaceNewToOldPhone2Command}">
                 <Button.Background>
                     <ImageBrush ImageSource="pack://application:,,,/Images/RightArrow.png"/>
                 </Button.Background>
             </Button>
         </StackPanel>
-        <StackPanel Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Height="42" Margin="0.4,0.4,317.2,0" VerticalAlignment="Top">
-            <Button  MinHeight="18"    Margin="1,0.5"  TabIndex="0"              
+        <StackPanel Grid.Column="1" Grid.Row="7" Grid.ColumnSpan="2" 
+                    Margin="0.4,0.4,317.2,0" VerticalAlignment="Top">
+            <Button  MinHeight="18"    Margin="1,0.5"  TabIndex="4"              
                     Command="{Binding _Contacts.ReplaceOldToNewPhone3Command}">
                 <Button.Background>
                     <ImageBrush ImageSource="pack://application:,,,/Images/LeftArrow.png"/>
                 </Button.Background>
             </Button>
-            <Button  MinHeight="18" TabIndex="1"
+            <Button  MinHeight="18" TabIndex="5"
                     Command="{Binding _Contacts.ReplaceNewToOldPhone3Command}">
                 <Button.Background>
                     <ImageBrush ImageSource="pack://application:,,,/Images/RightArrow.png"/>
                 </Button.Background>
             </Button>
         </StackPanel>
-        <StackPanel Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" Height="42" Margin="0.4,0.4,317.2,0" VerticalAlignment="Top">
-            <Button  MinHeight="18"    Margin="1,0.5"  TabIndex="0"              
+        <StackPanel Grid.Column="1" Grid.Row="8" Grid.ColumnSpan="2"  Margin="0.4,0.4,317.2,0" VerticalAlignment="Top">
+            <Button  MinHeight="18"    Margin="1,0.5"  TabIndex="6"              
                     Command="{Binding _Contacts.ReplaceOldToNewEmail1Command}">
                 <Button.Background>
                     <ImageBrush ImageSource="pack://application:,,,/Images/LeftArrow.png"/>
                 </Button.Background>
             </Button>
-            <Button  MinHeight="18" TabIndex="1"
+            <Button  MinHeight="18" TabIndex="7"
                     Command="{Binding _Contacts.ReplaceNewToOldEmail1Command}">
                 <Button.Background>
                     <ImageBrush ImageSource="pack://application:,,,/Images/RightArrow.png"/>
                 </Button.Background>
             </Button>
         </StackPanel>
-        <StackPanel Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="2" Height="42" Margin="0.4,0.4,317.2,0" VerticalAlignment="Top">
-            <Button  MinHeight="18"    Margin="1,0.5"  TabIndex="0"              
+        <StackPanel Grid.Column="1" Grid.Row="9" Grid.ColumnSpan="2"  Margin="0.4,0.4,317.2,0" VerticalAlignment="Top">
+            <Button  MinHeight="18"    Margin="1,0.5"  TabIndex="8"              
                     Command="{Binding _Contacts.ReplaceOldToNewEmail2Command}">
                 <Button.Background>
                     <ImageBrush ImageSource="pack://application:,,,/Images/LeftArrow.png"/>
                 </Button.Background>
             </Button>
-            <Button  MinHeight="18" TabIndex="1"
+            <Button  MinHeight="18" TabIndex="9"
                     Command="{Binding _Contacts.ReplaceNewToOldEmail2Command}">
                 <Button.Background>
                     <ImageBrush ImageSource="pack://application:,,,/Images/RightArrow.png"/>
                 </Button.Background>
             </Button>
         </StackPanel>
-        <StackPanel Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="2" Height="42" Margin="0.4,0.4,317.2,0" VerticalAlignment="Top">
-            <Button  MinHeight="18"    Margin="1,0.5"  TabIndex="0"              
+        <StackPanel Grid.Column="1" Grid.Row="10" Grid.ColumnSpan="2" Margin="0.4,0.4,317.2,0" VerticalAlignment="Top">
+            <Button  MinHeight="18"    Margin="1,0.5"  TabIndex="10"              
                     Command="{Binding _Contacts.ReplaceOldToNewVKCommand}">
                 <Button.Background>
                     <ImageBrush ImageSource="pack://application:,,,/Images/LeftArrow.png"/>
                 </Button.Background>
             </Button>
-            <Button  MinHeight="18" TabIndex="1"
+            <Button  MinHeight="18" TabIndex="11"
                     Command="{Binding _Contacts.ReplaceNewToOldVKCommand}">
                 <Button.Background>
                     <ImageBrush ImageSource="pack://application:,,,/Images/RightArrow.png"/>
@@ -135,28 +184,28 @@
             </Button>
         </StackPanel>
 
-        <StackPanel Grid.Column="1" Grid.Row="7" Grid.ColumnSpan="2" Height="42" Margin="0.4,0.4,317.2,0" VerticalAlignment="Top">
-            <Button  MinHeight="18"    Margin="1,0.5"  TabIndex="0"              
+        <StackPanel Grid.Column="1" Grid.Row="11" Grid.ColumnSpan="2"  Margin="0.4,0.4,317.2,0" VerticalAlignment="Top">
+            <Button  MinHeight="18"    Margin="1,0.5"  TabIndex="12"              
                     Command="{Binding _Contacts.ReplaceOldToNewSkypeCommand}">
                 <Button.Background>
                     <ImageBrush ImageSource="pack://application:,,,/Images/LeftArrow.png"/>
                 </Button.Background>
             </Button>
-            <Button  MinHeight="18" TabIndex="1"
+            <Button  MinHeight="18" TabIndex="13"
                     Command="{Binding _Contacts.ReplaceNewToOldSkypeCommand}">
                 <Button.Background>
                     <ImageBrush ImageSource="pack://application:,,,/Images/RightArrow.png"/>
                 </Button.Background>
             </Button>
         </StackPanel>
-        <StackPanel Grid.Column="1" Grid.Row="8" Grid.ColumnSpan="2" Height="42" Margin="0.4,0.4,317.2,0" VerticalAlignment="Top">
-            <Button  MinHeight="18"    Margin="1,0.5"  TabIndex="0"              
+        <StackPanel Grid.Column="1" Grid.Row="12" Grid.ColumnSpan="2" Margin="0.4,0.4,317.2,0" VerticalAlignment="Top">
+            <Button  MinHeight="18"    Margin="1,0.5"  TabIndex="14"              
                     Command="{Binding _Contacts.ReplaceOldToNewFBCommand}">
                 <Button.Background>
                     <ImageBrush ImageSource="pack://application:,,,/Images/LeftArrow.png"/>
                 </Button.Background>
             </Button>
-            <Button  MinHeight="18" TabIndex="1"
+            <Button  MinHeight="18" TabIndex="15"
                     Command="{Binding _Contacts.ReplaceNewToOldFBCommand}">
                 <Button.Background>
                     <ImageBrush ImageSource="pack://application:,,,/Images/RightArrow.png"/>
@@ -170,95 +219,96 @@
                 <TextBlock Text="Прежние контактные данные" FontWeight="Bold"  Foreground="Brown"/>
             </Viewbox>
         </StackPanel>
-        <WrapPanel Grid.Row="1"  Margin="3" HorizontalAlignment="Stretch"   Background="Beige">
+        <WrapPanel Grid.Row="5"  Margin="3" HorizontalAlignment="Stretch"   Background="Beige">
             <Viewbox  MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
                      VerticalAlignment="Stretch">
                 <TextBlock Text="№ телефона 1: " FontWeight="Bold"  Foreground="Brown"/>
             </Viewbox>
-            <TextBox x:Name="Phone1"  Margin="2" MinWidth="150" MaxWidth="180"
+            <TextBox  Margin="2" MinWidth="150" MaxWidth="180"
                  Text="{Binding _Contacts.OldTmpContactsCompare.Phone1 , Mode=TwoWay,
-            UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="0"
+            UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" 
                   TextAlignment="Center" MaxLength="13"/>
             <!--Contatcts can find in ForEditOrder.cs-->
         </WrapPanel>
-        <WrapPanel Grid.Row="2"  Margin="3" HorizontalAlignment="Stretch"    Background="Beige">
+        <WrapPanel Grid.Row="6"  Margin="3" HorizontalAlignment="Stretch"    Background="Beige">
             <Viewbox  MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
                      VerticalAlignment="Stretch">
                 <TextBlock Text="№ телефона 2: " FontWeight="Bold"  Foreground="Brown"/>
             </Viewbox>
-            <TextBox x:Name="Phone2"  Margin="2" MinWidth="150" MaxWidth="180"
+            <TextBox   Margin="2" MinWidth="150" MaxWidth="180"
                      HorizontalAlignment="Stretch"
                  Text="{Binding _Contacts.OldTmpContactsCompare.Phone2 , Mode=TwoWay,
-            UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="1"
+            UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" 
                   TextAlignment="Center"  MaxLength="13"/>
             <!--Contatcts can find in ForEditOrder.cs-->
         </WrapPanel>
-        <WrapPanel Grid.Row="3"  Margin="3" HorizontalAlignment="Stretch"  Background="Beige">
+        <WrapPanel Grid.Row="7"  Margin="3" HorizontalAlignment="Stretch"  Background="Beige">
             <Viewbox  MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
                      VerticalAlignment="Stretch">
                 <TextBlock Text="№ телефона 3: " FontWeight="Bold"  Foreground="Brown"/>
             </Viewbox>
-            <TextBox x:Name="Phone3"  Margin="2" MinWidth="150" MaxWidth="180"
+            <TextBox  Margin="2" MinWidth="150" MaxWidth="180"
                  Text="{Binding _Contacts.OldTmpContactsCompare.Phone3 , Mode=TwoWay,
-            UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="2"
+            UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap"
                   TextAlignment="Center"  MaxLength="13"/>
             <!--Contatcts can find in ForEditOrder.cs-->
         </WrapPanel>
-        <WrapPanel Grid.Row="4"  Margin="3" HorizontalAlignment="Stretch"   Background="Gold">
+        <WrapPanel Grid.Row="8"  Margin="3" HorizontalAlignment="Stretch"   Background="Gold">
             <Viewbox  MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
                      VerticalAlignment="Stretch">
                 <TextBlock Text="Email1: " FontWeight="Bold"  Foreground="Brown"/>
             </Viewbox>
-            <TextBox x:Name="Email1"  Margin="2" MinWidth="150" MaxWidth="180"
+            <TextBox   Margin="2" MinWidth="150" MaxWidth="180"
                  Text="{Binding _Contacts.OldTmpContactsCompare.Email1 , Mode=TwoWay,
-            UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="3"
+            UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" 
                   TextAlignment="Center"/>
             <!--Contatcts can find in ForEditOrder.cs-->
         </WrapPanel>
-        <WrapPanel Grid.Row="6"  Margin="3" HorizontalAlignment="Stretch"   Background="AliceBlue" >
+        <WrapPanel Grid.Row="10"  Margin="3" HorizontalAlignment="Stretch"   Background="AliceBlue" >
             <Viewbox  MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
                      VerticalAlignment="Stretch">
                 <TextBlock Text="VK: " FontWeight="Bold"  Foreground="Brown"/>
             </Viewbox>
-            <TextBox x:Name="VK"  Margin="2" MinWidth="150" MaxWidth="180"
+            <TextBox   Margin="2" MinWidth="150" MaxWidth="180"
                  Text="{Binding _Contacts.OldTmpContactsCompare.VK , Mode=TwoWay,
-            UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="5"
+            UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" 
                   TextAlignment="Center"/>
             <!--Contatcts can find in ForEditOrder.cs-->
         </WrapPanel>
-        <WrapPanel Grid.Row="5"  Margin="3" HorizontalAlignment="Stretch"   Background="Gold">
+        <WrapPanel Grid.Row="9"  Margin="3" HorizontalAlignment="Stretch"   Background="Gold">
             <Viewbox  MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
                      VerticalAlignment="Stretch">
                 <TextBlock Text="Email2: " FontWeight="Bold"  Foreground="Brown"/>
             </Viewbox>
-            <TextBox x:Name="Email2"  Margin="2" MinWidth="150" MaxWidth="180"
+            <TextBox   Margin="2" MinWidth="150" MaxWidth="180"
                  Text="{Binding _Contacts.OldTmpContactsCompare.Email2 , Mode=TwoWay,
-            UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="3"
+            UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" 
                   TextAlignment="Center" />
             <!--Contatcts can find in ForEditOrder.cs-->
         </WrapPanel>
-        <WrapPanel Grid.Row="7"  Margin="3" HorizontalAlignment="Stretch"  Background="LightGreen" >
+        <WrapPanel Grid.Row="11"  Margin="3" HorizontalAlignment="Stretch"  Background="LightGreen" >
             <Viewbox  MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
                      VerticalAlignment="Stretch">
                 <TextBlock Text="Skype: " FontWeight="Bold"  Foreground="Brown"/>
             </Viewbox>
-            <TextBox x:Name="Skype"  Margin="2" MinWidth="150" MaxWidth="180"
+            <TextBox  Margin="2" MinWidth="150" MaxWidth="180"
                  Text="{Binding _Contacts.OldTmpContactsCompare.Skype , Mode=TwoWay,
-            UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="5"
+            UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" 
                   TextAlignment="Center"/>
             <!--Contatcts can find in ForEditOrder.cs-->
         </WrapPanel>
-        <WrapPanel Grid.Row="8"  Margin="3" HorizontalAlignment="Stretch"   Background="AliceBlue" >
+        <WrapPanel Grid.Row="12"  Margin="3" HorizontalAlignment="Stretch"   Background="AliceBlue" >
             <Viewbox  MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
                      VerticalAlignment="Stretch">
                 <TextBlock Text="FaceBook: " FontWeight="Bold"  Foreground="Brown"/>
             </Viewbox>
             <TextBox  Margin="2" MinWidth="150" MaxWidth="180"
-                 Text="{Binding _Contacts.OldTmpContactsCompare.FaceBook, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="5"
+                 Text="{Binding _Contacts.OldTmpContactsCompare.FaceBook, Mode=TwoWay,
+                UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap"
                   TextAlignment="Center" Height="27"/>
             <!--Contatcts can find in ForEditOrder.cs-->
         </WrapPanel>
-        <Grid Grid.Row="9">
+        <Grid Grid.Row="13">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition Width="1.5*"/>
@@ -268,19 +318,94 @@
             <Button Grid.Column="1" Grid.ColumnSpan="2"  Content="Принять этот вариант" 
                     Background="#FF946809"
                     Command="{Binding _Contacts.SetLeftContactsCommand}"
-                    CommandParameter="{Binding Persone}" 
-                TabIndex="7">
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+                TabIndex="16">
             </Button>
             <!--Command SaveContactCommand can find in ForEditOrderAddContacts.cs-->
         </Grid>
-        <StackPanel Grid.Column="2" Background="#FFC9E5E5">
+        <StackPanel Grid.Column="2" Background="#FFC9E5E5" Grid.RowSpan="4">
             <Viewbox Grid.Column="2" MaxHeight="18"  Stretch="Uniform" Margin="5" 
                      HorizontalAlignment="Center" 
                      VerticalAlignment="Center">
                 <TextBlock Text="Свежие контактные данные" FontWeight="Bold"  Foreground="Brown"/>
             </Viewbox>
         </StackPanel>
-        <Grid Grid.Column="2" Grid.Row="1" Grid.RowSpan="9" Background="#FFC9E5E5">
+        <WrapPanel Grid.Row="1" Grid.Column="0" Margin="3">
+            <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
+                     VerticalAlignment="Stretch">
+                <TextBlock Text="Имя: " Foreground="Brown" FontWeight="Bold"/>
+            </Viewbox>
+            <TextBox  MinWidth="170" TabIndex="0"
+                    Text="{Binding OldPersoneCompare.Name}"/>
+        </WrapPanel>
+        <WrapPanel Grid.Row="2" Grid.Column="0" Margin="3">
+            <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
+                     VerticalAlignment="Stretch">
+                <TextBlock Text="Фамилия: " Foreground="Brown" FontWeight="Bold"/>
+            </Viewbox>
+            <TextBox  MinWidth="170" TabIndex="0"
+                    Text="{Binding OldPersoneCompare.Surname, Mode=TwoWay}"/>
+        </WrapPanel>
+        <WrapPanel Grid.Row="3" Grid.Column="0" Margin="3">
+            <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
+                     VerticalAlignment="Stretch">
+                <TextBlock Text="Отчество: " Foreground="Brown" FontWeight="Bold"/>
+            </Viewbox>
+            <TextBox  MinWidth="170" TabIndex="0"
+                    Text="{Binding OldPersoneCompare.Patronimic, Mode=TwoWay}"/>
+        </WrapPanel>
+        <WrapPanel Grid.Row="4"  Margin="3">
+            <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
+                     VerticalAlignment="Stretch">
+                <TextBlock Text="Пол:" FontWeight="Bold" Foreground="Brown"/>
+            </Viewbox>
+            <RadioButton GroupName="A" Content="Мужской" VerticalAlignment="Center" TabIndex="5"
+                          IsChecked="{Binding  OldPersoneCompare.Sex, Mode=TwoWay}" />
+            <!--Persone can find in AuthorsVMClass.cs-->
+            <RadioButton GroupName="A" Content="Женский" VerticalAlignment="Center" TabIndex="6" 
+                          IsChecked="{Binding Persone.Sex, 
+                          Converter={StaticResource boolInverterConverter},
+                          Mode=TwoWay}"/>
+            
+        </WrapPanel>
+        <WrapPanel Grid.Row="1" Grid.Column="2" Margin="3">
+            <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
+                     VerticalAlignment="Stretch">
+                <TextBlock Text="Имя: " Foreground="Brown" FontWeight="Bold"/>
+            </Viewbox>
+            <TextBox  MinWidth="170" TabIndex="0"
+                    Text="{Binding  CurPersoneCompare.Name}"/>
+        </WrapPanel>
+        <WrapPanel Grid.Row="2" Grid.Column="2" Margin="3">
+            <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
+                     VerticalAlignment="Stretch">
+                <TextBlock Text="Фамилия: " Foreground="Brown" FontWeight="Bold"/>
+            </Viewbox>
+            <TextBox  MinWidth="170" TabIndex="0"
+                    Text="{Binding  CurPersoneCompare.Surname, Mode=TwoWay}"/>
+        </WrapPanel>
+        <WrapPanel Grid.Row="3" Grid.Column="2" Margin="3">
+            <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
+                     VerticalAlignment="Stretch">
+                <TextBlock Text="Отчество: " Foreground="Brown" FontWeight="Bold"/>
+            </Viewbox>
+            <TextBox  MinWidth="170" TabIndex="0"
+                    Text="{Binding  CurPersoneCompare.Patronimic, Mode=TwoWay}"/>
+        </WrapPanel>
+        <WrapPanel Grid.Row="4" Grid.Column="2" Margin="3" Background="#FFC9E5E5">
+            <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
+                     VerticalAlignment="Stretch">
+                <TextBlock Text="Пол:" FontWeight="Bold" Foreground="Brown"/>
+            </Viewbox>
+            <RadioButton GroupName="A" Content="Мужской" VerticalAlignment="Center" TabIndex="5"
+                          IsChecked="{Binding  CurPersoneCompare.Sex, Mode=TwoWay}" />
+            <!--Persone can find in AuthorsVMClass.cs-->
+            <RadioButton GroupName="A" Content="Женский" VerticalAlignment="Center" TabIndex="6" 
+                          IsChecked="{Binding  CurPersoneCompare.Sex, 
+                          Converter={StaticResource boolInverterConverter},
+                          Mode=TwoWay}"/>
+        </WrapPanel>
+        <Grid Grid.Column="2" Grid.Row="5" Grid.RowSpan="12" Background="#FFC9E5E5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
@@ -304,10 +429,10 @@
                     <TextBlock Text="№ телефона 1:" FontWeight="Bold"  Foreground="Brown"/>
                 </Viewbox>
                 <TextBox   Margin="2" MinWidth="150" MaxWidth="180"
-                 Text="{Binding _Contacts.tmpContactsCompare.Phone1 , Mode=TwoWay,
-            UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="0"
+                 Text="{Binding _Contacts.TmpContactsCompare.Phone1 , Mode=TwoWay,
+            UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" 
                   TextAlignment="Center" MaxLength="13"/>
-                
+
                 <!--Contatcts can find in ForEditOrder.cs-->
             </StackPanel>
             <WrapPanel Grid.Row="1"  Margin="3" HorizontalAlignment="Stretch"    Background="Beige">
@@ -317,8 +442,8 @@
                 </Viewbox>
                 <TextBox   Margin="2" MinWidth="150" MaxWidth="180"
                      HorizontalAlignment="Stretch"
-                 Text="{Binding _Contacts.tmpContactsCompare.Phone2 , Mode=TwoWay,
-            UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="1"
+                 Text="{Binding _Contacts.TmpContactsCompare.Phone2 , Mode=TwoWay,
+            UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" 
                   TextAlignment="Center"  MaxLength="13"/>
                 <!--Contatcts can find in ForEditOrder.cs-->
             </WrapPanel>
@@ -328,8 +453,8 @@
                     <TextBlock Text="№ телефона 3: " FontWeight="Bold"  Foreground="Brown"/>
                 </Viewbox>
                 <TextBox   Margin="2" MinWidth="150" MaxWidth="180"
-                 Text="{Binding _Contacts.tmpContactsCompare.Phone3 , Mode=TwoWay,
-            UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="2"
+                 Text="{Binding _Contacts.TmpContactsCompare.Phone3 , Mode=TwoWay,
+            UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" 
                   TextAlignment="Center"  MaxLength="13"/>
                 <!--Contatcts can find in ForEditOrder.cs-->
             </WrapPanel>
@@ -339,8 +464,8 @@
                     <TextBlock Text="Email1: " FontWeight="Bold"  Foreground="Brown"/>
                 </Viewbox>
                 <TextBox   Margin="2" MinWidth="150" MaxWidth="180"
-                 Text="{Binding _Contacts.tmpContactsCompare.Email1 , Mode=TwoWay,
-            UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="3"
+                 Text="{Binding _Contacts.TmpContactsCompare.Email1 , Mode=TwoWay,
+            UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" 
                   TextAlignment="Center"/>
                 <!--Contatcts can find in ForEditOrder.cs-->
             </WrapPanel>
@@ -350,8 +475,8 @@
                     <TextBlock Text="VK: " FontWeight="Bold"  Foreground="Brown"/>
                 </Viewbox>
                 <TextBox   Margin="2" MinWidth="150" MaxWidth="180"
-                 Text="{Binding _Contacts.tmpContactsCompare.VK , Mode=TwoWay,
-            UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="5"
+                 Text="{Binding _Contacts.TmpContactsCompare.VK , Mode=TwoWay,
+            UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" 
                   TextAlignment="Center"/>
                 <!--Contatcts can find in ForEditOrder.cs-->
             </WrapPanel>
@@ -361,8 +486,8 @@
                     <TextBlock Text="Email2: " FontWeight="Bold"  Foreground="Brown"/>
                 </Viewbox>
                 <TextBox   Margin="2" MinWidth="150" MaxWidth="180"
-                 Text="{Binding _Contacts.tmpContactsCompare.Email2 , Mode=TwoWay,
-            UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="3"
+                 Text="{Binding _Contacts.TmpContactsCompare.Email2 , Mode=TwoWay,
+            UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" 
                   TextAlignment="Center" />
                 <!--Contatcts can find in ForEditOrder.cs-->
             </WrapPanel>
@@ -372,8 +497,8 @@
                     <TextBlock Text="Skype: " FontWeight="Bold"  Foreground="Brown"/>
                 </Viewbox>
                 <TextBox   Margin="2" MinWidth="150" MaxWidth="180"
-                 Text="{Binding _Contacts.tmpContactsCompare.Skype , Mode=TwoWay,
-            UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="5"
+                 Text="{Binding _Contacts.TmpContactsCompare.Skype , Mode=TwoWay,
+            UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" 
                   TextAlignment="Center"/>
                 <!--Contatcts can find in ForEditOrder.cs-->
             </WrapPanel>
@@ -383,7 +508,8 @@
                     <TextBlock Text="FaceBook: " FontWeight="Bold"  Foreground="Brown"/>
                 </Viewbox>
                 <TextBox  Margin="2" MinWidth="150" MaxWidth="180"
-                 Text="{Binding _Contacts.tmpContactsCompare.FaceBook, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="5"
+                 Text="{Binding _Contacts.TmpContactsCompare.FaceBook, Mode=TwoWay,
+                    UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" 
                   TextAlignment="Center" Height="27"/>
                 <!--Contatcts can find in ForEditOrder.cs-->
             </WrapPanel>
@@ -397,8 +523,8 @@
                 <Button Grid.Column="1" Grid.ColumnSpan="2"  Content="Принять этот вариант"
                         Background="#FF25AE84" Foreground="Black"
                     Command="{Binding _Contacts.SetRightContactsCommand}"
-                    CommandParameter="{Binding Persone}" 
-                TabIndex="7">
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+                TabIndex="17">
                 </Button>
                 <!--Command SaveContactCommand can find in ForEditOrderAddContacts.cs-->
             </Grid>

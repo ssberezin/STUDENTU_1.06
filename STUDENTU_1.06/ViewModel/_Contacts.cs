@@ -76,12 +76,72 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
+        private Persone oldPersoneCompare;
+        public Persone OldPersoneCompare
+        {
+            get { return oldPersoneCompare; }
+            set
+            {
+                if (oldPersoneCompare != value)
+                {
+                    oldPersoneCompare = value;
+                    OnPropertyChanged(nameof(OldPersoneCompare));
+                }
+            }
+        }
+
+        private Persone curPersoneCompare;
+        public Persone CurPersoneCompare
+        {
+            get { return curPersoneCompare; }
+            set
+            {
+                if (curPersoneCompare != value)
+                {
+                    curPersoneCompare = value;
+                    OnPropertyChanged(nameof(CurPersoneCompare));
+                }
+            }
+        }
+
+        private Persone tmpPersoneCompare;
+        public Persone TMPPersoneCompare
+        {
+            get { return tmpPersoneCompare; }
+            set
+            {
+                if (tmpPersoneCompare != value)
+                {
+                    tmpPersoneCompare = value;
+                    OnPropertyChanged(nameof(TMPPersoneCompare));
+                }
+            }
+        }
+
+        private Persone persone;
+        public Persone Persone
+        {
+            get { return persone; }
+            set
+            {
+                if (persone != value)
+                {
+                    persone = value;
+                    OnPropertyChanged(nameof(Persone));
+                }
+            }
+        }
+
         public _Contacts()
         {
            Contacts = new Contacts();
+            CurPersoneCompare = new Persone();
             TmpContacts = new Contacts();
             TmpContactsCompare = new Contacts();
+            TMPPersoneCompare = new Persone();
             OldTmpContactsCompare = new Contacts();
+            OldPersoneCompare = new Persone();
+            Persone = new Persone();
             showWindow = new DefaultShowWindowService();
             dialogService = new DefaultDialogService();
         }
@@ -134,6 +194,11 @@ namespace STUDENTU_1._06.ViewModel
                 Contacts = TmpContacts;
                 compareContacts = false;
             }
+        }
+
+        private void CloseWindow(Window window)
+        {
+            window.Close();
         }
 
         
@@ -197,6 +262,60 @@ namespace STUDENTU_1._06.ViewModel
             return null;
 
         }
+//===============================================PERSONE DATA RAPLACE COMMANDS ===========================================
+
+        private RelayCommand replaceOldToNewNameCommand;
+        public RelayCommand ReplaceOldToNewNameCommand => replaceOldToNewNameCommand ??
+                            (replaceOldToNewNameCommand = new RelayCommand(
+                    (obj) =>
+                    {   
+                        OldPersoneCompare.Name = CurPersoneCompare.Name;
+                    }
+                    ));
+        private RelayCommand replaceNewToOldNameCommand;
+        public RelayCommand ReplaceNewToOldNameCommand => replaceNewToOldNameCommand ??
+                            (replaceNewToOldNameCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        CurPersoneCompare.Name = OldPersoneCompare.Name;
+                    }
+                    ));
+
+        private RelayCommand replaceOldToNewSurNameCommand;
+        public RelayCommand ReplaceOldToNewSurNameCommand => replaceOldToNewSurNameCommand ??
+                            (replaceOldToNewSurNameCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        OldPersoneCompare.Surname = CurPersoneCompare.Surname;
+                    }
+                    ));
+        private RelayCommand replaceNewToOldSurNameCommand;
+        public RelayCommand ReplaceNewToOldSurNameCommand => replaceNewToOldSurNameCommand ??
+                            (replaceNewToOldSurNameCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        CurPersoneCompare.Surname = OldPersoneCompare.Surname;
+                    }
+                    ));
+        private RelayCommand replaceOldToNewPatronimicCommand;
+        public RelayCommand ReplaceOldToNewPatronimicCommand => replaceOldToNewPatronimicCommand ??
+                            (replaceOldToNewPatronimicCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        OldPersoneCompare.Patronimic = CurPersoneCompare.Patronimic;
+                    }
+                    ));
+        private RelayCommand replaceNewToOldPatronimicCommand;
+        public RelayCommand ReplaceNewToOldPatronimicCommand => replaceNewToOldPatronimicCommand ??
+                            (replaceNewToOldPatronimicCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        CurPersoneCompare.Patronimic = OldPersoneCompare.Patronimic;
+                    }
+                    ));
+
+//===============================================CONTACTS RAPLACE COMMANDS ===========================================
+
 
 
         private RelayCommand replaceOldToNewPhone1Command;
@@ -349,6 +468,13 @@ namespace STUDENTU_1._06.ViewModel
                     (obj) =>
                     {
                         Contacts = OldTmpContactsCompare;
+                        
+                        Persone.Name = OldPersoneCompare.Name;
+                        Persone.Surname = OldPersoneCompare.Surname;
+                        Persone.Patronimic = OldPersoneCompare.Patronimic;
+                        Persone.Sex = OldPersoneCompare.Sex;
+
+                        CloseWindow(obj as Window);
                     }
                     ));
 
@@ -359,6 +485,13 @@ namespace STUDENTU_1._06.ViewModel
                     (obj) =>
                     {
                         Contacts = tmpContactsCompare;
+
+                        Persone.Name = CurPersoneCompare.Name;
+                        Persone.Surname = CurPersoneCompare.Surname;
+                        Persone.Patronimic = CurPersoneCompare.Patronimic;
+                        Persone.Sex = CurPersoneCompare.Sex;
+
+                        CloseWindow(obj as Window);
                     }
                     ));
 
@@ -392,5 +525,7 @@ namespace STUDENTU_1._06.ViewModel
             }
 
         }
+
+
     }
 }

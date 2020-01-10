@@ -56,6 +56,8 @@ namespace STUDENTU_1._06.Model
         IDialogService dialogService;
         IShowWindowService showWindow;
 
+
+        //не востребовано
         public Client CheckClient(Persone persone)
         {
             using (StudentuConteiner db = new StudentuConteiner())

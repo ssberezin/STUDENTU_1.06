@@ -349,31 +349,10 @@ namespace STUDENTU_1._06.ViewModel
 
             Order = new OrderLine() { OrderNumber = TMPStaticClass.CurrentOrder.OrderNumber };
             Order.Saved = false;
-            Order.ParentOrder = false;
-            //Order.DescriptionForClient = TMPStaticClass.CurrentOrder.DescriptionForClient;
-            //Order.WorkDescription = TMPStaticClass.CurrentOrder.WorkDescription;
-            //Order.Variant = TMPStaticClass.CurrentOrder.Variant;
-            //_Contacts.Contacts = TMPStaticClass.CurrentOrder.Client.Persone.Contacts;
-            //Order.Client = TMPStaticClass.CurrentOrder.Client;
-            //Persone = TMPStaticClass.CurrentOrder.Client.Persone;
-            //_Dir.Dir = TMPStaticClass.CurrentOrder.Direction;
-            //// _Dir.Dir = db.Directions.Find(new Direction() { DirectionId=1}.DirectionId);
-            //_WorkType.WorkType = TMPStaticClass.CurrentOrder.WorkType;
-            //// _WorkType.WorkType= db.WorkTypes.Find(new WorkType() { WorkTypeId = 1 }.WorkTypeId);
-            //Date = new Dates();
-            //Date.DateOfReception = TMPStaticClass.CurrentOrder.Dates.DateOfReception;
-            //Date.DeadLine = TMPStaticClass.CurrentOrder.Dates.DeadLine;
-            //_Subj.Subj = TMPStaticClass.CurrentOrder.Subject;
-            ////_Subj.Subj = db.Subjects.Find(new Subject() {SubjectId=1 }.SubjectId);
-            //Price = new Money();
-            //_Status.Status = TMPStaticClass.CurrentOrder.Status;
-            //// _Status.Status = db.Statuses.Find(new Status() {StatusId=1 }.StatusId);
-            //_Source.Source = TMPStaticClass.CurrentOrder.Source;
-            ////_Source.Source = db.Sources.Find(new Source() {SourceId=1 }.SourceId);
+            Order.ParentOrder = false;            
             saved = false;
             doubleSave = true;
             dialogService.ShowMessage("Действие выполнено");
-
             
         }
 
@@ -387,6 +366,7 @@ namespace STUDENTU_1._06.ViewModel
                     {
                         
                         db.Persones.Attach(Persone);
+                        db.Contacts.Attach(_Contacts.Contacts);
                         db.Directions.Attach(_Dir.Dir);
                         db.Clients.Attach(Client);
                         db.WorkTypes.Attach(_WorkType.WorkType);
@@ -404,49 +384,65 @@ namespace STUDENTU_1._06.ViewModel
                     Order.Source = db.Sources.Find(_Source.Source.SourceId);
                     Order.Dates = Date;
                     Order.Money = Price;
-                    Persone.Contacts = _Contacts.Contacts;
+
 
                     //ищем совпададения по полям контактов Person в БД. Если "0", то совпадений не найдено
                     //если совпадение есть, то получаем Id нужной записи в Contacts
                     // look for matches on the fields of the Person contacts in the database. If "0", then no matches were found
-                    // if there is a match, then we get the Id of the desired entry in Contacts
+                    // if there is a match, then we get the Id of the desired entry in Contacts
 
-                    int i = _Contacts.Contacts.CheckContacts(Persone.Contacts);
-                    //if (Persone.PersoneId == 0 && i==0)
-                    if ( i == 0)
-                            Order.Client = new Client() { Persone = Persone };
+                    int contactId = _Contacts.Contacts.CheckContacts(_Contacts.Contacts);
+                    if (contactId == 0)
+                    {
+                        Persone.Contacts = _Contacts.Contacts;
+                        Order.Client = new Client() { Persone = Persone };
+                    }
                     else
                     {
 
-                        var persone = db.Persones.Where(c => c.Contacts.ContactsId == i).FirstOrDefault();
-                        
+                        var persone = db.Persones.Where(c => c.Contacts.ContactsId == contactId).FirstOrDefault();
                         int tmpId = persone.PersoneId;
-
-
-
-
-
-
-                        //тут надо впилить проверку по контактным данным
-
-                        if (dialogService.YesNoDialog("Прежние контактные данные заказчика не совпадают с текущими.\n" +
-                            "Заменить их на новые?") == true)
+                        if (contactId != 0)
                         {
-                            //тут мы вызываем окно сравнения разных контактных данных
-                            //есть надежда , что такой способ вызова сработает
-                            _Contacts.compareContacts = true;
-                            //тут _Contacts.TmpContacts нужно присвоить ранее выуженные старые контактные данные
-                            //ну и надо забацать промежуточную переменную для "новых контактных данных , наверное"
-                            //ну и надо забацать промежуточную переменную для "новых контактных данных , наверное
-                            //_Contacts.TmpContacts=
-                            CompareContatctsWindow compareContatctsWindow = new CompareContatctsWindow(this);
-                            showWindow.ShowDialog(compareContatctsWindow);
-                        }
+                            var OldContacts = db.Contacts.Where(c => c.ContactsId == contactId).FirstOrDefault();
+                            if (persone.Name!=Persone.Name||persone.Surname!=Persone.Surname||persone.Patronimic!=Persone.Patronimic||
+                                (OldContacts.Phone1 != _Contacts.Contacts.Phone1) || (OldContacts.Phone2 != _Contacts.Contacts.Phone2) ||
+                                  (OldContacts.Phone3 != _Contacts.Contacts.Phone3) || (OldContacts.Email1 != _Contacts.Contacts.Email1) ||
+                                  (OldContacts.Email2 != _Contacts.Contacts.Email2) || (OldContacts.VK != _Contacts.Contacts.VK) ||
+                                  (OldContacts.FaceBook != _Contacts.Contacts.FaceBook) || (OldContacts.Skype != _Contacts.Contacts.Skype))  
+                            //if (OldContacts != _Contacts.Contacts)
+                            {
+                                if (dialogService.YesNoDialog("Прежние контактные данные заказчика не совпадают с текущими.\n" +
+                            "Нужно вносить правку?") == true)
+                                {
+                                    //тут мы вызываем окно сравнения разных контактных данных
+                                    //есть надежда , что такой способ вызова сработает
+                                    _Contacts.compareContacts = true;
 
+                                    //тут _Contacts.TmpContacts нужно присвоить ранее выуженные старые контактные данные
+                                    //ну и надо забацать промежуточную переменную для "новых контактных данных" , наверное                                    
+                                    _Contacts.OldPersoneCompare = persone;
+                                    _Contacts.CurPersoneCompare = Persone;
+                                    _Contacts.TmpContacts = OldContacts;
+                                    _Contacts.OldTmpContactsCompare = OldContacts;
+                                    _Contacts.TmpContactsCompare = _Contacts.Contacts;
+                                    CompareContatctsWindow compareContatctsWindow = new CompareContatctsWindow(this);
+                                    showWindow.ShowDialog(compareContatctsWindow);
+                                }
+                            }
+
+
+                        }
+                        Persone.Name = _Contacts.Persone.Name;
+                        Persone.Surname = _Contacts.Persone.Surname;
+                        Persone.Patronimic = _Contacts.Persone.Patronimic;
+                        Persone.Sex = _Contacts.Persone.Sex;
+
+                        Persone.Contacts = _Contacts.Contacts;
                         persone = Persone;
                         persone.PersoneId = tmpId;
-
-                         Order.Client = db.Clients.Find(Client.CheckClient(persone));
+                        Client = db.Clients.Where(c => c.Persone.PersoneId == tmpId).FirstOrDefault();
+                        Order.Client = Client;
                     }
 
                     if (!doubleSave)
