@@ -391,6 +391,7 @@ namespace STUDENTU_1._06.ViewModel
                     // look for matches on the fields of the Person contacts in the database. If "0", then no matches were found
                     // if there is a match, then we get the Id of the desired entry in Contacts
 
+                    //нашли Id прежнего Contscts
                     int contactId = _Contacts.Contacts.CheckContacts(_Contacts.Contacts);
                     if (contactId == 0)
                     {
@@ -399,50 +400,58 @@ namespace STUDENTU_1._06.ViewModel
                     }
                     else
                     {
-
-                        var persone = db.Persones.Where(c => c.Contacts.ContactsId == contactId).FirstOrDefault();
-                        int tmpId = persone.PersoneId;
-                        if (contactId != 0)
+                        if (dialogService.YesNoDialog("Уже есть клиент с такими контактными данными.\n" +
+                        "Нужно вносить правку?") == true)
                         {
+                            //нашли Persone , у которого есть совпадение по прежним контактам
+                            // found Persone, which has a match on the previous contacts
+                            var persone = db.Persones.Where(c => c.Contacts.ContactsId == contactId).FirstOrDefault();
+                            int tmpId = persone.PersoneId;
+
                             var OldContacts = db.Contacts.Where(c => c.ContactsId == contactId).FirstOrDefault();
-                            if (persone.Name!=Persone.Name||persone.Surname!=Persone.Surname||persone.Patronimic!=Persone.Patronimic||
-                                (OldContacts.Phone1 != _Contacts.Contacts.Phone1) || (OldContacts.Phone2 != _Contacts.Contacts.Phone2) ||
-                                  (OldContacts.Phone3 != _Contacts.Contacts.Phone3) || (OldContacts.Email1 != _Contacts.Contacts.Email1) ||
-                                  (OldContacts.Email2 != _Contacts.Contacts.Email2) || (OldContacts.VK != _Contacts.Contacts.VK) ||
-                                  (OldContacts.FaceBook != _Contacts.Contacts.FaceBook) || (OldContacts.Skype != _Contacts.Contacts.Skype))  
-                            //if (OldContacts != _Contacts.Contacts)
+
+                            //тут мы вызываем окно сравнения разных контактных данных
+                            //есть надежда , что такой способ вызова сработает
+
+                            _Contacts.compareContacts = true;//этот маркер не востребован
+
+                            //тут _Contacts.TmpContacts нужно присвоить ранее выуженные старые контактные данные
+                            //ну и надо забацать промежуточную переменную для "новых контактных данных" , наверное                                    
+                            _Contacts.OldPersoneCompare = persone;
+                            _Contacts.CurPersoneCompare = Persone;
+                            _Contacts.TmpContacts = OldContacts;
+                            _Contacts.OldTmpContactsCompare = OldContacts;
+                            _Contacts.TmpContactsCompare = _Contacts.Contacts;
+                            CompareContatctsWindow compareContatctsWindow = new CompareContatctsWindow(this);
+                            showWindow.ShowDialog(compareContatctsWindow);
+                            if (_Contacts.saveCompareResults)
                             {
-                                if (dialogService.YesNoDialog("Прежние контактные данные заказчика не совпадают с текущими.\n" +
-                            "Нужно вносить правку?") == true)
-                                {
-                                    //тут мы вызываем окно сравнения разных контактных данных
-                                    //есть надежда , что такой способ вызова сработает
-                                    _Contacts.compareContacts = true;
-
-                                    //тут _Contacts.TmpContacts нужно присвоить ранее выуженные старые контактные данные
-                                    //ну и надо забацать промежуточную переменную для "новых контактных данных" , наверное                                    
-                                    _Contacts.OldPersoneCompare = persone;
-                                    _Contacts.CurPersoneCompare = Persone;
-                                    _Contacts.TmpContacts = OldContacts;
-                                    _Contacts.OldTmpContactsCompare = OldContacts;
-                                    _Contacts.TmpContactsCompare = _Contacts.Contacts;
-                                    CompareContatctsWindow compareContatctsWindow = new CompareContatctsWindow(this);
-                                    showWindow.ShowDialog(compareContatctsWindow);
-                                }
+                                db.Entry(persone).State = EntityState.Modified;
+                                db.Entry(Client).State = EntityState.Modified;
+                                db.Entry(_Contacts.Contacts).State = EntityState.Modified;
+                                persone.Name = _Contacts.Persone.Name;
+                                persone.Surname = _Contacts.Persone.Surname;
+                                persone.Patronimic = _Contacts.Persone.Patronimic;
+                                persone.Sex = _Contacts.Persone.Sex;
+                                persone.Contacts = _Contacts.Contacts;
+                                Client = db.Clients.Where(c => c.Persone.PersoneId == persone.PersoneId).FirstOrDefault();
+                                Order.Client.Persone = persone;
                             }
-
-
+                            else
+                            {
+                                dialogService.ShowMessage("Т.к. никаких изменений внесено не было, то заказ добавиться в базу данных" +
+                                    "как заказ от нового клиента ");
+                                Persone.Contacts = _Contacts.Contacts;
+                                Order.Client = new Client() { Persone = Persone };
+                            }
                         }
-                        Persone.Name = _Contacts.Persone.Name;
-                        Persone.Surname = _Contacts.Persone.Surname;
-                        Persone.Patronimic = _Contacts.Persone.Patronimic;
-                        Persone.Sex = _Contacts.Persone.Sex;
-
-                        Persone.Contacts = _Contacts.Contacts;
-                        persone = Persone;
-                        persone.PersoneId = tmpId;
-                        Client = db.Clients.Where(c => c.Persone.PersoneId == tmpId).FirstOrDefault();
-                        Order.Client = Client;
+                        else
+                        {
+                            dialogService.ShowMessage("Т.к. никаких изменений внесено не было, то заказ добавиться в базу данных" +
+                                   "как заказ от нового клиента ");
+                            Persone.Contacts = _Contacts.Contacts;
+                            Order.Client = new Client() { Persone = Persone };
+                        }
                     }
 
                     if (!doubleSave)
@@ -452,25 +461,24 @@ namespace STUDENTU_1._06.ViewModel
                     Order.Saved = true;
 
                     db.Configuration.AutoDetectChangesEnabled = false;
-                    db.Configuration.ValidateOnSaveEnabled = false;
-
-                    //db.Orderlines.Attach(Order);
-                    db.Orderlines.Add(Order);
-                   
+                    db.Configuration.ValidateOnSaveEnabled = false;                
+                    db.Orderlines.Add(Order);                   
                     db.SaveChanges();
                     if (doubleSave)
                          EditOrderCount(TMPStaticClass.CurrentOrder.OrderLineId,TMPStaticClass.CurrentOrder.OrderNumber);
-                    dialogService.ShowMessage("Данные о заказе сохранены");
-                    //SaveOrderToTMPOrder();
                     TMPStaticClass.CurrentOrder = Order;
                     saved = true;
                     doubleSave = false;
+
+                    dialogService.ShowMessage("Данные о заказе сохранены");
+                    
+                    
                     
                    
                 }
                 catch (ArgumentNullException ex)
                 {
-                    dialogService.ShowMessage(ex.Message);
+                    //////dialogService.ShowMessage(ex.Message);
                 }
                 catch (OverflowException ex)
                 {

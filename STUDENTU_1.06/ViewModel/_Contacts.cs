@@ -20,6 +20,10 @@ namespace STUDENTU_1._06.ViewModel
         IDialogService dialogService;
         IShowWindowService showWindow;
 
+        //флаг для отслеживания сохранения результатов сравнения двух объектов Contscts (при приеме заказа, например)
+        // flag for tracking the saving of the results of comparing two Contscts objects (when receiving an order, for example)
+        public bool saveCompareResults = false;//не востребован
+
         private Contacts contacts;
         public Contacts Contacts
         {
@@ -180,7 +184,7 @@ namespace STUDENTU_1._06.ViewModel
             (cancelSaveContactsCommand = new RelayCommand(
                     (obj) =>
                     {
-                        CancelSaveContacts();
+                        //CancelSaveContacts();
                         Window window = obj as Window;
                         window.Close();
                     }
@@ -473,7 +477,7 @@ namespace STUDENTU_1._06.ViewModel
                         Persone.Surname = OldPersoneCompare.Surname;
                         Persone.Patronimic = OldPersoneCompare.Patronimic;
                         Persone.Sex = OldPersoneCompare.Sex;
-
+                        saveCompareResults = true;//этот маркер пока не востребован
                         CloseWindow(obj as Window);
                     }
                     ));
@@ -490,7 +494,7 @@ namespace STUDENTU_1._06.ViewModel
                         Persone.Surname = CurPersoneCompare.Surname;
                         Persone.Patronimic = CurPersoneCompare.Patronimic;
                         Persone.Sex = CurPersoneCompare.Sex;
-
+                        saveCompareResults = true;//этот маркер пока не востребован
                         CloseWindow(obj as Window);
                     }
                     ));
