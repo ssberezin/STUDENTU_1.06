@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace STUDENTU_1._06.Model
         public PersoneDescription()
         {
             this.BlackList = false;
-            this.Persone = new List<Persone>();
+            this.Persone = new ObservableCollection<Persone>();
         }
 
 
@@ -35,7 +36,7 @@ namespace STUDENTU_1._06.Model
         public string Source { get; set; }
         public bool BlackList { get; set; }
 
-        public virtual List<Persone> Persone { get; set; }        
+        public virtual ObservableCollection<Persone> Persone { get; set; }        
 
     }
 

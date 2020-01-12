@@ -266,13 +266,16 @@ namespace STUDENTU_1._06.ViewModel
             return null;
 
         }
-//===============================================PERSONE DATA RAPLACE COMMANDS ===========================================
+
+        //===============================================PERSONE DATA RAPLACE COMMANDS ===========================================
+
+
 
         private RelayCommand replaceOldToNewNameCommand;
         public RelayCommand ReplaceOldToNewNameCommand => replaceOldToNewNameCommand ??
                             (replaceOldToNewNameCommand = new RelayCommand(
                     (obj) =>
-                    {   
+                    {
                         OldPersoneCompare.Name = CurPersoneCompare.Name;
                     }
                     ));
@@ -318,17 +321,17 @@ namespace STUDENTU_1._06.ViewModel
                     }
                     ));
 
-//===============================================CONTACTS RAPLACE COMMANDS ===========================================
+        //===============================================CONTACTS RAPLACE COMMANDS ===========================================
 
 
 
         private RelayCommand replaceOldToNewPhone1Command;
-        public RelayCommand ReplaceOldToNewPhone1Command => replaceOldToNewPhone1Command ?? 
+        public RelayCommand ReplaceOldToNewPhone1Command => replaceOldToNewPhone1Command ??
                             (replaceOldToNewPhone1Command = new RelayCommand(
                     (obj) =>
                     {
                         //Contacts.Phone1=ReplaceContacts("Phone1","OldToNew", Contacts, TmpContacts );
-                        OldTmpContactsCompare.Phone1 = tmpContactsCompare.Phone1;
+                        OldTmpContactsCompare.Phone1 = TmpContactsCompare.Phone1;
                     }
                     ));
 
@@ -336,8 +339,8 @@ namespace STUDENTU_1._06.ViewModel
         public RelayCommand ReplaceNewToOldPhone1Command => replaceNewToOldPhone1Command ??
                             (replaceNewToOldPhone1Command = new RelayCommand(
                     (obj) =>
-                    {                        
-                        tmpContactsCompare.Phone1 = OldTmpContactsCompare.Phone1;
+                    {
+                        TmpContactsCompare.Phone1 = OldTmpContactsCompare.Phone1;
                     }
                     ));
 
@@ -346,7 +349,7 @@ namespace STUDENTU_1._06.ViewModel
                             (replaceOldToNewPhone2Command = new RelayCommand(
                     (obj) =>
                     {
-                        OldTmpContactsCompare.Phone2 = tmpContactsCompare.Phone2;
+                        OldTmpContactsCompare.Phone2 = TmpContactsCompare.Phone2;
                     }
                     ));
 
@@ -355,7 +358,7 @@ namespace STUDENTU_1._06.ViewModel
                             (replaceNewToOldPhone2Command = new RelayCommand(
                     (obj) =>
                     {
-                        tmpContactsCompare.Phone2 = OldTmpContactsCompare.Phone2;
+                        TmpContactsCompare.Phone2 = OldTmpContactsCompare.Phone2;
                     }
                     ));
 
@@ -364,7 +367,7 @@ namespace STUDENTU_1._06.ViewModel
                             (replaceOldToNewPhone3Command = new RelayCommand(
                     (obj) =>
                     {
-                        OldTmpContactsCompare.Phone3 = tmpContactsCompare.Phone3;
+                        OldTmpContactsCompare.Phone3 = TmpContactsCompare.Phone3;
                     }
                     ));
 
@@ -373,7 +376,7 @@ namespace STUDENTU_1._06.ViewModel
                             (replaceNewToOldPhone3Command = new RelayCommand(
                     (obj) =>
                     {
-                        tmpContactsCompare.Phone3 = OldTmpContactsCompare.Phone3;
+                        TmpContactsCompare.Phone3 = OldTmpContactsCompare.Phone3;
                     }
                     ));
 
@@ -382,7 +385,7 @@ namespace STUDENTU_1._06.ViewModel
                             (replaceOldToNewEmail1Command = new RelayCommand(
                     (obj) =>
                     {
-                        OldTmpContactsCompare.Email1 = tmpContactsCompare.Email1;
+                        OldTmpContactsCompare.Email1 = TmpContactsCompare.Email1;
                     }
                     ));
 
@@ -391,7 +394,7 @@ namespace STUDENTU_1._06.ViewModel
                             (replaceNewToOldEmail1Command = new RelayCommand(
                     (obj) =>
                     {
-                        tmpContactsCompare.Email1 = OldTmpContactsCompare.Email1;
+                        TmpContactsCompare.Email1 = OldTmpContactsCompare.Email1;
                     }
                     ));
 
@@ -400,7 +403,7 @@ namespace STUDENTU_1._06.ViewModel
                             (replaceOldToNewEmail2Command = new RelayCommand(
                     (obj) =>
                     {
-                        OldTmpContactsCompare.Email2 = tmpContactsCompare.Email2;
+                        OldTmpContactsCompare.Email2 = TmpContactsCompare.Email2;
                     }
                     ));
 
@@ -409,7 +412,7 @@ namespace STUDENTU_1._06.ViewModel
                             (replaceNewToOldEmail2Command = new RelayCommand(
                     (obj) =>
                     {
-                        tmpContactsCompare.Email2 = OldTmpContactsCompare.Email2;
+                        TmpContactsCompare.Email2 = OldTmpContactsCompare.Email2;
                     }
                     ));
 
@@ -418,7 +421,7 @@ namespace STUDENTU_1._06.ViewModel
                             (replaceOldToNewVKCommand = new RelayCommand(
                     (obj) =>
                     {
-                        OldTmpContactsCompare.VK = tmpContactsCompare.VK;
+                        OldTmpContactsCompare.VK = TmpContactsCompare.VK;
                     }
                     ));
 
@@ -427,7 +430,7 @@ namespace STUDENTU_1._06.ViewModel
                             (replaceNewToOldVKCommand = new RelayCommand(
                     (obj) =>
                     {
-                        tmpContactsCompare.VK = OldTmpContactsCompare.VK;
+                        TmpContactsCompare.VK = OldTmpContactsCompare.VK;
                     }
                     ));
 
@@ -436,7 +439,7 @@ namespace STUDENTU_1._06.ViewModel
                             (replaceOldToNewFBCommand = new RelayCommand(
                     (obj) =>
                     {
-                        OldTmpContactsCompare.FaceBook = tmpContactsCompare.FaceBook;
+                        OldTmpContactsCompare.FaceBook = TmpContactsCompare.FaceBook;
                     }
                     ));
 
@@ -445,7 +448,7 @@ namespace STUDENTU_1._06.ViewModel
                             (replaceNewToOldFBCommand = new RelayCommand(
                     (obj) =>
                     {
-                        tmpContactsCompare.FaceBook = OldTmpContactsCompare.FaceBook;
+                        TmpContactsCompare.FaceBook = OldTmpContactsCompare.FaceBook;
                     }
                     ));
 
@@ -454,7 +457,7 @@ namespace STUDENTU_1._06.ViewModel
                             (replaceOldToNewSkypeCommand = new RelayCommand(
                     (obj) =>
                     {
-                        OldTmpContactsCompare.Skype = tmpContactsCompare.Skype;
+                        OldTmpContactsCompare.Skype = TmpContactsCompare.Skype;
                     }
                     ));
 
@@ -463,7 +466,8 @@ namespace STUDENTU_1._06.ViewModel
                             (replaceNewToOldSkypeCommand = new RelayCommand(
                     (obj) =>
                     {
-                        tmpContactsCompare.Skype = OldTmpContactsCompare.Skype;                    }
+                        TmpContactsCompare.Skype = OldTmpContactsCompare.Skype;
+                    }
                     ));
 
         private RelayCommand setLeftContactsCommand;
@@ -472,7 +476,7 @@ namespace STUDENTU_1._06.ViewModel
                     (obj) =>
                     {
                         Contacts = OldTmpContactsCompare;
-                        
+
                         Persone.Name = OldPersoneCompare.Name;
                         Persone.Surname = OldPersoneCompare.Surname;
                         Persone.Patronimic = OldPersoneCompare.Patronimic;
@@ -488,7 +492,7 @@ namespace STUDENTU_1._06.ViewModel
                             (setRightContactsCommand = new RelayCommand(
                     (obj) =>
                     {
-                        Contacts = tmpContactsCompare;
+                        Contacts = TmpContactsCompare;
 
                         Persone.Name = CurPersoneCompare.Name;
                         Persone.Surname = CurPersoneCompare.Surname;

@@ -122,6 +122,9 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
+        
+
+
         private Money price;
         public Money Price
         {
@@ -364,15 +367,16 @@ namespace STUDENTU_1._06.ViewModel
                 {
                     if (doubleSave)
                     {
-                        
-                        db.Persones.Attach(Persone);
-                        db.Contacts.Attach(_Contacts.Contacts);
-                        db.Directions.Attach(_Dir.Dir);
-                        db.Clients.Attach(Client);
-                        db.WorkTypes.Attach(_WorkType.WorkType);
+
                         db.Dates.Add(Date);
+                        db.Directions.Attach(_Dir.Dir);
+                        db.Contacts.Attach(_Contacts.Contacts);                        
+                        db.Clients.Attach(Client);
+                        db.WorkTypes.Attach(_WorkType.WorkType);                        
+                        db.Moneys.Add(Price);                        
+                        db.PersoneDescriptions.Attach(PersoneDescription);
+                        db.Persones.Attach(Persone);
                         db.Subjects.Attach(_Subj.Subj);
-                        db.Moneys.Add(Price);
                         db.Statuses.Attach(_Status.Status);
                         db.Sources.Attach(_Source.Source);                        
                     }
@@ -396,6 +400,7 @@ namespace STUDENTU_1._06.ViewModel
                     if (contactId == 0)
                     {
                         Persone.Contacts = _Contacts.Contacts;
+                        Persone.PersoneDescription = PersoneDescription;
                         Order.Client = new Client() { Persone = Persone };
                     }
                     else
@@ -435,14 +440,19 @@ namespace STUDENTU_1._06.ViewModel
                                 persone.Sex = _Contacts.Persone.Sex;
                                 persone.Contacts = _Contacts.Contacts;
                                 Client = db.Clients.Where(c => c.Persone.PersoneId == persone.PersoneId).FirstOrDefault();
-                                Order.Client.Persone = persone;
+                                Order.Client.Persone = persone;//тут нулевое исключение
                             }
                             else
                             {
                                 dialogService.ShowMessage("Т.к. никаких изменений внесено не было, то заказ добавиться в базу данных" +
                                     "как заказ от нового клиента ");
                                 Persone.Contacts = _Contacts.Contacts;
+                                Persone.PersoneDescription = PersoneDescription;
                                 Order.Client = new Client() { Persone = Persone };
+                                //Persone.Contacts = _Contacts.Contacts;
+                                //Client = db.Clients.Where(c => c.Persone.PersoneId == persone.PersoneId).FirstOrDefault();
+                                //db.Persones.Add(Persone);
+                                //Order.Client.Persone = Persone;
                             }
                         }
                         else
@@ -450,6 +460,7 @@ namespace STUDENTU_1._06.ViewModel
                             dialogService.ShowMessage("Т.к. никаких изменений внесено не было, то заказ добавиться в базу данных" +
                                    "как заказ от нового клиента ");
                             Persone.Contacts = _Contacts.Contacts;
+                            Persone.PersoneDescription = PersoneDescription;
                             Order.Client = new Client() { Persone = Persone };
                         }
                     }
@@ -708,6 +719,9 @@ namespace STUDENTU_1._06.ViewModel
                         _Contacts.NewEditContacts(new AddContactsWindow(obj));
                     }
                     ));
+
+
+   
 
     }
 }

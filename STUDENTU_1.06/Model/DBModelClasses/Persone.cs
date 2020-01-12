@@ -22,7 +22,7 @@ namespace STUDENTU_1._06.Model
             this.Sex = true;
             this.Name = "";
             this.NickName = null;
-            this.PhotoFileName = "/Images/";
+            
         }
 
         public int PersoneId { get; set; }
@@ -40,10 +40,7 @@ namespace STUDENTU_1._06.Model
         [MaxLength(50)]
         public string Patronimic { get; set; }
 
-        //убрать нахер это поле
-        [Column("PhotoFileName", TypeName = "nvarchar")]
-        [MaxLength(500)]
-        public string PhotoFileName { get; set; }
+       
 
         [Column("Photo",TypeName = "image")]
         //for storing image of persone
@@ -78,39 +75,6 @@ namespace STUDENTU_1._06.Model
         }
 
 
-        //public string this[string columnName]
-        //{
-        //    get
-        //    {
-        //        string error = String.Empty;
-        //        switch (columnName)
-        //        {
-
-        //            case "Name":
-        //                //Обработка ошибок для свойства Name
-        //                if (Name.Length ==0)
-        //                {
-        //                    error = "Поле имени не должно быть пустым";
-        //                }
-        //                break;
-        //            case "Sex":
-        //                //Обработка ошибок для свойства Name
-        //                if (Sex == null)
-        //                {
-        //                    error = "Это поле не должно быть пустым";
-        //                }
-        //                break;
-
-
-        //        }
-        //        return error;
-        //    }
-        //}
-
-        //public string Error
-        //{
-        //    get { throw new NotImplementedException(); }
-        //}
 
     }
 }

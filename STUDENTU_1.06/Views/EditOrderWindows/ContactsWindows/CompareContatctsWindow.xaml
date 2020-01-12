@@ -61,13 +61,13 @@
         </Rectangle>
         <StackPanel Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2"  Margin="0.4,0.4,317.2,0" VerticalAlignment="Top">
             <Button  MinHeight="18"    Margin="1,0.5"  TabIndex="0"              
-                    Command="{Binding _Contacts.ReplaceOldToNewPhone1Command}">
+                    Command="{Binding _Contacts.ReplaceOldToNewNameCommand}">
                 <Button.Background>
                     <ImageBrush ImageSource="pack://application:,,,/Images/LeftArrow.png"/>
                 </Button.Background>
             </Button>
             <Button  MinHeight="18" TabIndex="1"
-                    Command="{Binding _Contacts.ReplaceNewToOldPhone1Command}">
+                    Command="{Binding _Contacts.ReplaceNewToOldNameCommand}">
                 <Button.Background>
                     <ImageBrush ImageSource="pack://application:,,,/Images/RightArrow.png"/>
                 </Button.Background>
@@ -75,13 +75,13 @@
         </StackPanel>
         <StackPanel Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2"  Margin="0.4,0.4,317.2,0" VerticalAlignment="Top">
             <Button  MinHeight="18"    Margin="1,0.5"  TabIndex="0"              
-                    Command="{Binding _Contacts.ReplaceOldToNewPhone1Command}">
+                    Command="{Binding _Contacts.ReplaceOldToNewSurNameCommand}">
                 <Button.Background>
                     <ImageBrush ImageSource="pack://application:,,,/Images/LeftArrow.png"/>
                 </Button.Background>
             </Button>
             <Button  MinHeight="18" TabIndex="1"
-                    Command="{Binding _Contacts.ReplaceNewToOldPhone1Command}">
+                    Command="{Binding _Contacts.ReplaceNewToOldSurNameCommand}">
                 <Button.Background>
                     <ImageBrush ImageSource="pack://application:,,,/Images/RightArrow.png"/>
                 </Button.Background>
@@ -89,13 +89,13 @@
         </StackPanel>
         <StackPanel Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2"  Margin="0.4,0.4,317.2,0" VerticalAlignment="Top">
             <Button  MinHeight="18"    Margin="1,0.5"  TabIndex="0"              
-                    Command="{Binding _Contacts.ReplaceOldToNewPhone1Command}">
+                    Command="{Binding _Contacts.ReplaceOldToNewPatronimicCommand}">
                 <Button.Background>
                     <ImageBrush ImageSource="pack://application:,,,/Images/LeftArrow.png"/>
                 </Button.Background>
             </Button>
             <Button  MinHeight="18" TabIndex="1"
-                    Command="{Binding _Contacts.ReplaceNewToOldPhone1Command}">
+                    Command="{Binding _Contacts.ReplaceNewToOldPatronimicCommand}">
                 <Button.Background>
                     <ImageBrush ImageSource="pack://application:,,,/Images/RightArrow.png"/>
                 </Button.Background>
@@ -339,7 +339,7 @@
                 <TextBlock Text="Имя: " Foreground="Brown" FontWeight="Bold"/>
             </Viewbox>
             <TextBox  MinWidth="170" TabIndex="0"
-                    Text="{Binding OldPersoneCompare.Name}"/>
+                    Text="{Binding _Contacts.OldPersoneCompare.Name, UpdateSourceTrigger=PropertyChanged}"/>
             
         </WrapPanel>
         <WrapPanel Grid.Row="2" Grid.Column="0" Margin="3">
@@ -348,7 +348,7 @@
                 <TextBlock Text="Фамилия: " Foreground="Brown" FontWeight="Bold"/>
             </Viewbox>
             <TextBox  MinWidth="170" TabIndex="0"
-                    Text="{Binding OldPersoneCompare.Surname, Mode=TwoWay}"/>
+                    Text="{Binding _Contacts.OldPersoneCompare.Surname,  UpdateSourceTrigger=PropertyChanged}"/>
         </WrapPanel>
         <WrapPanel Grid.Row="3" Grid.Column="0" Margin="3">
             <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
@@ -356,18 +356,18 @@
                 <TextBlock Text="Отчество: " Foreground="Brown" FontWeight="Bold"/>
             </Viewbox>
             <TextBox  MinWidth="170" TabIndex="0"
-                    Text="{Binding OldPersoneCompare.Patronimic, Mode=TwoWay}"/>
+                    Text="{Binding _Contacts.OldPersoneCompare.Patronimic, UpdateSourceTrigger=PropertyChanged}"/>
         </WrapPanel>
         <WrapPanel Grid.Row="4"  Margin="3">
             <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
                      VerticalAlignment="Stretch">
                 <TextBlock Text="Пол:" FontWeight="Bold" Foreground="Brown"/>
             </Viewbox>
-            <RadioButton GroupName="A" Content="Мужской" VerticalAlignment="Center" TabIndex="5"
-                          IsChecked="{Binding  OldPersoneCompare.Sex, Mode=TwoWay}" />
+            <RadioButton GroupName="B" Content="Мужской" VerticalAlignment="Center" TabIndex="5"
+                          IsChecked="{Binding _Contacts.OldPersoneCompare.Sex, Mode=TwoWay,  UpdateSourceTrigger=PropertyChanged}" />
             <!--Persone can find in AuthorsVMClass.cs-->
-            <RadioButton GroupName="A" Content="Женский" VerticalAlignment="Center" TabIndex="6" 
-                          IsChecked="{Binding OldPersoneCompare.Sex, 
+            <RadioButton GroupName="B" Content="Женский" VerticalAlignment="Center" TabIndex="6" 
+                          IsChecked="{Binding _Contacts.OldPersoneCompare.Sex, UpdateSourceTrigger=PropertyChanged, 
                           Converter={StaticResource boolInverterConverter},
                           Mode=TwoWay}"/>
             
@@ -378,7 +378,7 @@
                 <TextBlock Text="Имя: " Foreground="Brown" FontWeight="Bold"/>
             </Viewbox>
             <TextBox  MinWidth="170" TabIndex="0"
-                    Text="{Binding  CurPersoneCompare.Name}"/>
+                    Text="{Binding  _Contacts.CurPersoneCompare.Name,  UpdateSourceTrigger=PropertyChanged}"/>
         </WrapPanel>
         <WrapPanel Grid.Row="2" Grid.Column="2" Margin="3">
             <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
@@ -386,7 +386,7 @@
                 <TextBlock Text="Фамилия: " Foreground="Brown" FontWeight="Bold"/>
             </Viewbox>
             <TextBox  MinWidth="170" TabIndex="0"
-                    Text="{Binding  CurPersoneCompare.Surname, Mode=TwoWay}"/>
+                    Text="{Binding  _Contacts.CurPersoneCompare.Surname, UpdateSourceTrigger=PropertyChanged}"/>
         </WrapPanel>
         <WrapPanel Grid.Row="3" Grid.Column="2" Margin="3">
             <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
@@ -394,7 +394,7 @@
                 <TextBlock Text="Отчество: " Foreground="Brown" FontWeight="Bold"/>
             </Viewbox>
             <TextBox  MinWidth="170" TabIndex="0"
-                    Text="{Binding  CurPersoneCompare.Patronimic, Mode=TwoWay}"/>
+                    Text="{Binding  _Contacts.CurPersoneCompare.Patronimic, UpdateSourceTrigger=PropertyChanged}"/>
         </WrapPanel>
         <WrapPanel Grid.Row="4" Grid.Column="2" Margin="3" Background="#FFC9E5E5">
             <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
@@ -402,10 +402,10 @@
                 <TextBlock Text="Пол:" FontWeight="Bold" Foreground="Brown"/>
             </Viewbox>
             <RadioButton GroupName="A" Content="Мужской" VerticalAlignment="Center" TabIndex="5"
-                          IsChecked="{Binding  CurPersoneCompare.Sex, Mode=TwoWay}" />
+                          IsChecked="{Binding  _Contacts.CurPersoneCompare.Sex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
             <!--Persone can find in AuthorsVMClass.cs-->
             <RadioButton GroupName="A" Content="Женский" VerticalAlignment="Center" TabIndex="6" 
-                          IsChecked="{Binding  CurPersoneCompare.Sex, 
+                          IsChecked="{Binding  _Contacts.CurPersoneCompare.Sex,  UpdateSourceTrigger=PropertyChanged,
                           Converter={StaticResource boolInverterConverter},
                           Mode=TwoWay}"/>
         </WrapPanel>
@@ -526,8 +526,7 @@
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="1" Grid.ColumnSpan="2"  Content="Принять этот вариант"
                         Background="#FF25AE84" Foreground="Black"
-                    Command="{Binding _Contacts.SetRightContactsCommand}"
-                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+                    Command="{Binding _Contacts.SetRightContactsCommand}"                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
                 TabIndex="17">
                 </Button>
                 <!--Command SaveContactCommand can find in ForEditOrderAddContacts.cs-->
