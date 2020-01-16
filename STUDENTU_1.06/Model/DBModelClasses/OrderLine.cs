@@ -28,8 +28,10 @@ namespace STUDENTU_1._06.Model
         //это свойство нужно для отслеживания кол-ва подзаказов, из которіх состоит один заказ
         // this property is needed to track the number of sub-orders of which one order consists
         public int OrderCount { get; set; }
+        //используется как один из признаков того, что заказ разбит на подзаказы
+        // used as one of the signs that the order is broken into sub-orders
+        public int ParentId { get; set; }
 
-               
         [Column("Variant", TypeName = "nvarchar")]
         [MaxLength(255)]
         private string  variant;

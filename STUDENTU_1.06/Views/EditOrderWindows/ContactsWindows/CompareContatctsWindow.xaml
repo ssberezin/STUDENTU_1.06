@@ -8,7 +8,7 @@
          
         mc:Ignorable="d"
         
-        
+        WindowStyle="None"
         Title="Редактирование дополнительных контатов" Height="630" Width="680" MinHeight="630" MinWidth="690"
         MaxHeight="630" MaxWidth="690"
          TextElement.FontWeight="Regular"
@@ -23,12 +23,12 @@
         <helpes:BoolInverterConverter x:Key="boolInverterConverter"/>
     </Window.Resources>
     <Window.InputBindings>
-        <KeyBinding Gesture="Esc" Command="{Binding _Contacts.CancelSaveContactsCommand}" 
-                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
+        <!--<KeyBinding Gesture="Esc" Command="{Binding _Contacts.CancelSaveContactsCommand}" 
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>-->
 
         <!--Command CloseWindowCommand  can find in ForEditOrder.cs-->
     </Window.InputBindings>
-    <Grid Background="#FFEAC410"  Margin="0,0,0.2,0" VerticalAlignment="Top" MinHeight="600">
+    <Grid Background="#FFEAC410"  Margin="0,0,0.2,0" VerticalAlignment="Top" MinHeight="625">
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition Width="0.15*"/>

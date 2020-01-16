@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace STUDENTU_1._06.Model
 {
-    public class Contacts
+    public class Contacts : Helpes.ObservableObject
     {
         public Contacts()
         {
@@ -28,34 +28,149 @@ namespace STUDENTU_1._06.Model
 
         }
         [Column("Phone1", TypeName = "ntext")]
-        [MaxLength(13)]
-        public string Phone1 { get; set; }
+        [MaxLength(13)]        
+        private string phone1;
+        public string Phone1
+        {
+            get { return phone1; }
+            set
+            {
+                if (value != phone1)
+                {
+                    phone1 = value;
+                    OnPropertyChanged(nameof(Phone1));
+                }
+            }
+        }
+
         [Column("Phone2", TypeName = "ntext")]
         [MaxLength(13)]
-        public string Phone2 { get; set; }
+        private string phone2;
+        public string Phone2
+        {
+            get { return phone2; }
+            set
+            {
+                if (value != phone2)
+                {
+                    phone2 = value;
+                    OnPropertyChanged(nameof(Phone2));
+                }
+            }
+        }
+
         [Column("Phone3", TypeName = "ntext")]
         [MaxLength(13)]
-        public string Phone3 { get; set; }
+        private string phone3;
+        public string Phone3
+        {
+            get { return phone3; }
+            set
+            {
+                if (value != phone3)
+                {
+                    phone3 = value;
+                    OnPropertyChanged(nameof(Phone3));
+                }
+            }
+        }
 
         [Column("Email1", TypeName = "ntext")]
         [MaxLength(100)]
-        public string Email1 { get; set; }
+        private string email1;
+        public string Email1
+        {
+            get { return email1; }
+            set
+            {
+                if (value != email1)
+                {
+                    email1 = value;
+                    OnPropertyChanged(nameof(Email1));
+                }
+            }
+        }
+
+
         [Column("Email2", TypeName = "ntext")]
         [MaxLength(100)]
-        public string Email2 { get; set; }
+        private string email2;
+        public string Email2
+        {
+            get { return email2; }
+            set
+            {
+                if (value != email2)
+                {
+                    email2 = value;
+                    OnPropertyChanged(nameof(Email2));
+                }
+            }
+        }
 
         [Column("Adress", TypeName = "ntext")]
-        [MaxLength(255)]
-        public string Adress { get; set; }
+        [MaxLength(255)]        
+        private string adress;
+        public string Adress
+        {
+            get { return adress; }
+            set
+            {
+                if (value != adress)
+                {
+                    adress = value;
+                    OnPropertyChanged(nameof(Adress));
+                }
+            }
+        }
+
         [Column("Skype", TypeName = "ntext")]
         [MaxLength(100)]
-        public string Skype { get; set; }
+        private string skype;
+        public string Skype
+        {
+            get { return skype; }
+            set
+            {
+                if (value != skype)
+                {
+                    skype = value;
+                    OnPropertyChanged(nameof(Skype));
+                }
+            }
+        }
+
         [Column("VK", TypeName = "ntext")]
         [MaxLength(100)]
-        public string VK { get; set; }
+        private string vk;
+        public string VK
+        {
+            get { return vk; }
+            set
+            {
+                if (value != vk)
+                {
+                    vk = value;
+                    OnPropertyChanged(nameof(VK));
+                }
+            }
+        }
+
         [Column("FaceBook", TypeName = "ntext")]
-        [MaxLength(100)]
-        public string FaceBook { get; set; }
+        [MaxLength(100)]        
+        private string faceBook;
+        public string FaceBook
+        {
+            get { return faceBook; }
+            set
+            {
+                if (value != faceBook)
+                {
+                    faceBook = value;
+                    OnPropertyChanged(nameof(FaceBook));
+                }
+            }
+        }
 
         public int ContactsId { get; set; }
 
@@ -129,27 +244,6 @@ namespace STUDENTU_1._06.Model
             return 0;
         }
 
-        //public static bool operator ==(Contacts obj1, Contacts obj2)
-        //{
-
-
-        //    if ((obj1.Phone1 == obj2.Phone1) && (obj1.Phone2 == obj2.Phone2) &&
-        //        (obj1.Phone3 == obj2.Phone3) && (obj1.Email1 == obj2.Email1) &&
-        //        (obj1.Email2 == obj2.Email2) && (obj1.VK == obj2.VK) &&
-        //        (obj1.FaceBook == obj2.FaceBook) && (obj1.Skype == obj2.Skype))
-        //        return true;
-        //    return false;
-        //}
-
-        //public static bool operator !=(Contacts obj1, Contacts obj2)
-        //{
-
-        //    if ((obj1.Phone1 != obj2.Phone1) || (obj1.Phone2 != obj2.Phone2) ||
-        //        (obj1.Phone3 != obj2.Phone3) || (obj1.Email1 != obj2.Email1) ||
-        //        (obj1.Email2 != obj2.Email2) || (obj1.VK != obj2.VK) ||
-        //        (obj1.FaceBook != obj2.FaceBook) || (obj1.Skype != obj2.Skype))
-        //        return true;
-        //    return false;
-        //}
+       
     }
 }

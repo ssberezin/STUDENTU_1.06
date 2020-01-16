@@ -373,110 +373,88 @@ namespace STUDENTU_1._06.ViewModel
                         db.Contacts.Attach(_Contacts.Contacts);                        
                         db.Clients.Attach(Client);
                         db.WorkTypes.Attach(_WorkType.WorkType);                        
-                        db.Moneys.Add(Price);                        
+                        db.Moneys.Add(Price);
+                      
                         db.PersoneDescriptions.Attach(PersoneDescription);
                         db.Persones.Attach(Persone);
                         db.Subjects.Attach(_Subj.Subj);
                         db.Statuses.Attach(_Status.Status);
-                        db.Sources.Attach(_Source.Source);                        
+                        db.Sources.Attach(_Source.Source);
+                        
                     }
                    
-                    Order.Direction = db.Directions.Find(_Dir.Dir.DirectionId);
-                    Order.WorkType = db.WorkTypes.Find(_WorkType.WorkType.WorkTypeId);
+                    Order.Direction = db.Directions.Find(_Dir.Dir.DirectionId);                
+                    Order.WorkType = db.WorkTypes.Find(_WorkType.WorkType.WorkTypeId);                
+                    Order.Subject = db.Subjects.Find(_Subj.Subj.SubjectId);                
+                    Order.Source = db.Sources.Find(_Source.Source.SourceId);                
+                    Order.Dates = Date;                
+                    Order.Money = Price;    
                     
-                    Order.Subject = db.Subjects.Find(_Subj.Subj.SubjectId);                    
-                    Order.Source = db.Sources.Find(_Source.Source.SourceId);
-                    Order.Dates = Date;
-                    Order.Money = Price;
+                    Persone.Contacts = _Contacts.Contacts;                
+                    Persone.PersoneDescription = PersoneDescription;
 
-
+                    
                     //ищем совпададения по полям контактов Person в БД. Если "0", то совпадений не найдено
                     //если совпадение есть, то получаем Id нужной записи в Contacts
                     // look for matches on the fields of the Person contacts in the database. If "0", then no matches were found
                     // if there is a match, then we get the Id of the desired entry in Contacts
 
                     //нашли Id прежнего Contscts
-                    int contactId = _Contacts.Contacts.CheckContacts(_Contacts.Contacts);
-                    if (contactId == 0)
+                    // found Id of former Contscts
+                    int contactId =0;
+                    if (!doubleSave)
+                        contactId = _Contacts.Contacts.CheckContacts(_Contacts.Contacts);
+                    else
                     {
-                        Persone.Contacts = _Contacts.Contacts;
-                        Persone.PersoneDescription = PersoneDescription;
+                       
+                        //тут нужно проверяем текущие контакты с контатными данными родительского заказа
+                        //вдруг пользователь изменил чего?...(
+                        // here we need to check the current contacts with the contact data of the parent order
+                        // suddenly the user changed something? ... (
+                        var order =db.Orderlines.Where(o=>o.ParentId==TMPStaticClass.CurrentOrder.ParentId).FirstOrDefault();
+                        if (!_Contacts.CompareContacts(_Contacts.Contacts, order.Client.Persone.Contacts)||
+                            !Persone.ComparePersons(Persone, order.Client.Persone))                       
+                            SaveOrderPartAfterCheckContacts(0, order.ParentId);
+                       
+                        
+                    }
+                    if (contactId == 0&&!doubleSave)
+                    {
+                        //Persone.Contacts = _Contacts.Contacts;
+                        //Persone.PersoneDescription = PersoneDescription;
                         Order.Client = new Client() { Persone = Persone };
                     }
                     else
-                    {
-                        if (dialogService.YesNoDialog("Уже есть клиент с такими контактными данными.\n" +
-                        "Нужно вносить правку?") == true)
-                        {
-                            //нашли Persone , у которого есть совпадение по прежним контактам
-                            // found Persone, which has a match on the previous contacts
-                            var persone = db.Persones.Where(c => c.Contacts.ContactsId == contactId).FirstOrDefault();
-                            int tmpId = persone.PersoneId;
-
-                            var OldContacts = db.Contacts.Where(c => c.ContactsId == contactId).FirstOrDefault();
-
-                            //тут мы вызываем окно сравнения разных контактных данных
-                            //есть надежда , что такой способ вызова сработает
-
-                            _Contacts.compareContacts = true;//этот маркер не востребован
-
-                            //тут _Contacts.TmpContacts нужно присвоить ранее выуженные старые контактные данные
-                            //ну и надо забацать промежуточную переменную для "новых контактных данных" , наверное                                    
-                            _Contacts.OldPersoneCompare = persone;
-                            _Contacts.CurPersoneCompare = Persone;
-                            _Contacts.TmpContacts = OldContacts;
-                            _Contacts.OldTmpContactsCompare = OldContacts;
-                            _Contacts.TmpContactsCompare = _Contacts.Contacts;
-                            CompareContatctsWindow compareContatctsWindow = new CompareContatctsWindow(this);
-                            showWindow.ShowDialog(compareContatctsWindow);
-                            if (_Contacts.saveCompareResults)
-                            {
-                                db.Entry(persone).State = EntityState.Modified;
-                                db.Entry(Client).State = EntityState.Modified;
-                                db.Entry(_Contacts.Contacts).State = EntityState.Modified;
-                                persone.Name = _Contacts.Persone.Name;
-                                persone.Surname = _Contacts.Persone.Surname;
-                                persone.Patronimic = _Contacts.Persone.Patronimic;
-                                persone.Sex = _Contacts.Persone.Sex;
-                                persone.Contacts = _Contacts.Contacts;
-                                Client = db.Clients.Where(c => c.Persone.PersoneId == persone.PersoneId).FirstOrDefault();
-                                Order.Client.Persone = persone;//тут нулевое исключение
-                            }
-                            else
-                            {
-                                dialogService.ShowMessage("Т.к. никаких изменений внесено не было, то заказ добавиться в базу данных" +
-                                    "как заказ от нового клиента ");
-                                Persone.Contacts = _Contacts.Contacts;
-                                Persone.PersoneDescription = PersoneDescription;
-                                Order.Client = new Client() { Persone = Persone };
-                                //Persone.Contacts = _Contacts.Contacts;
-                                //Client = db.Clients.Where(c => c.Persone.PersoneId == persone.PersoneId).FirstOrDefault();
-                                //db.Persones.Add(Persone);
-                                //Order.Client.Persone = Persone;
-                            }
-                        }
-                        else
-                        {
-                            dialogService.ShowMessage("Т.к. никаких изменений внесено не было, то заказ добавиться в базу данных" +
-                                   "как заказ от нового клиента ");
-                            Persone.Contacts = _Contacts.Contacts;
-                            Persone.PersoneDescription = PersoneDescription;
-                            Order.Client = new Client() { Persone = Persone };
-                        }
-                    }
+                    if(!doubleSave)    
+                        SaveOrderPartAfterCheckContacts(contactId, 0);                                         
+                    
 
                     if (!doubleSave)
                         _Status.Status = db.Statuses.Find(new Status() { StatusId = 2 }.StatusId);
                         
                     Order.Status = _Status.Status;                    
                     Order.Saved = true;
+                    if (doubleSave)
+                    {
+                        Order.Client = TMPStaticClass.CurrentOrder.Client;
+                        Order.Client.Persone = Persone;
+                    }
 
                     db.Configuration.AutoDetectChangesEnabled = false;
                     db.Configuration.ValidateOnSaveEnabled = false;                
-                    db.Orderlines.Add(Order);                   
+                    db.Orderlines.Add(Order);
+
+                    //Order.ParentId = !doubleSave ? Order.OrderLineId : TMPStaticClass.CurrentOrder.ParentId;
+
                     db.SaveChanges();
+
+                    db.Entry(Order).State = EntityState.Modified;
+                    Order.ParentId = !doubleSave ? Order.OrderLineId : TMPStaticClass.CurrentOrder.ParentId;
+                    db.SaveChanges();
+
                     if (doubleSave)
-                         EditOrderCount(TMPStaticClass.CurrentOrder.OrderLineId,TMPStaticClass.CurrentOrder.OrderNumber);
+                        EditOrderCount(TMPStaticClass.CurrentOrder.OrderLineId, TMPStaticClass.CurrentOrder.OrderNumber);
+                 
                     TMPStaticClass.CurrentOrder = Order;
                     saved = true;
                     doubleSave = false;
@@ -489,7 +467,7 @@ namespace STUDENTU_1._06.ViewModel
                 }
                 catch (ArgumentNullException ex)
                 {
-                    //////dialogService.ShowMessage(ex.Message);
+                    dialogService.ShowMessage(ex.Message);
                 }
                 catch (OverflowException ex)
                 {
@@ -510,7 +488,91 @@ namespace STUDENTU_1._06.ViewModel
             }
 
         }
-        
+
+
+        private void SaveOrderPartAfterCheckContacts(int contactsId, int doubleId)
+        {
+            
+
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                dialogService.ShowMessage("Уже есть клиент с такими контактными данными.\n" +
+                                                    "Вносим правку в базу данных");
+                try
+                {
+                    var persone =Persone;
+                    var OldContacts = _Contacts.Contacts;
+                    if (doubleId == 0)
+                    {
+                        persone = db.Persones.Where(c => c.Contacts.ContactsId == contactsId).FirstOrDefault();
+                        OldContacts = db.Contacts.Where(c => c.ContactsId == contactsId).FirstOrDefault();
+                    }
+                    else
+                    {
+                        //возможна замена 537 строки на конструкцию, в которой person присваивается
+                        //на прямую из базы данных (с помощью doubleId, он Order.ParentId)
+                        // it is possible to replace 537 lines with a construct in which person is assigned
+                        // direct from the database (using doubleId, it is Order.ParentId)
+                        persone = TMPStaticClass.CurrentOrder.Client.Persone;
+                        OldContacts = persone.Contacts;
+                    }
+                    //int tmpId = persone.PersoneId;
+
+                    
+
+                    _Contacts.OldPersoneCompare = persone;
+                    _Contacts.CurPersoneCompare = Persone;
+                    _Contacts.TmpContacts = OldContacts;
+                    _Contacts.OldTmpContactsCompare = OldContacts;
+                    _Contacts.TmpContactsCompare = _Contacts.Contacts;
+
+                    CompareContatctsWindow compareContatctsWindow = new CompareContatctsWindow(this);
+                    showWindow.ShowDialog(compareContatctsWindow);
+
+
+                    db.Entry(persone).State = EntityState.Modified;
+                    db.Entry(_Contacts.Contacts).State = EntityState.Modified;
+
+                    persone.Name = _Contacts.Persone.Name;
+
+                    persone.Surname = _Contacts.Persone.Surname;
+                    persone.Patronimic = _Contacts.Persone.Patronimic;
+                    persone.Sex = _Contacts.Persone.Sex;
+
+                    persone.Contacts = _Contacts.Contacts;
+
+                    Client = db.Clients.Where(c => c.Persone.PersoneId == persone.PersoneId).FirstOrDefault();
+
+                    Client.Persone = persone;
+                    db.Entry(Client).State = EntityState.Modified;
+
+                    Order.Client = Client;
+                    db.SaveChanges();
+
+                }
+                catch (ArgumentNullException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (OverflowException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+            }
+        }
+
 
         //to edit OrderCount in Order
         private void EditOrderCount(int orderId, int orderNumber)

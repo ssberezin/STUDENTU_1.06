@@ -28,19 +28,70 @@ namespace STUDENTU_1._06.Model
         public int PersoneId { get; set; }
 
         [Column("Name", TypeName = "nvarchar")]
-        [MaxLength(50)]
-        public string Name { get; set; }
+        [MaxLength(50)]        
+        private string name;
+        public string Name
+        {
+            get { return name; }
+            set
+            {
+                if (value != name)
+                {
+                    name = value;
+                    OnPropertyChanged(nameof(Name));
+                }
+            }
+        }
+
         [Column("NickName", TypeName = "nvarchar")]
-        [MaxLength(50)]
-        public string NickName { get; set; }
+        [MaxLength(50)]        
+        private string nickName;
+        public string NickName
+        {
+            get { return nickName; }
+            set
+            {
+                if (value != nickName)
+                {
+                    nickName = value;
+                    OnPropertyChanged(nameof(NickName));
+                }
+            }
+        }
+
         [Column("Surname", TypeName = "nvarchar")]
         [MaxLength(50)]
-        public string Surname { get; set; }
+        private string surname;
+        public string Surname
+        {
+            get { return surname; }
+            set
+            {
+                if (value != surname)
+                {
+                    surname = value;
+                    OnPropertyChanged(nameof(Surname));
+                }
+            }
+        }
+
         [Column("Patronimic", TypeName = "nvarchar")]
         [MaxLength(50)]
-        public string Patronimic { get; set; }
+        //public string Patronimic { get; set; }
+        private string patronimic;
+        public string Patronimic
+        {
+            get { return patronimic; }
+            set
+            {
+                if (value != patronimic)
+                {
+                    patronimic = value;
+                    OnPropertyChanged(nameof(Patronimic));
+                }
+            }
+        }
 
-       
 
         [Column("Photo",TypeName = "image")]
         //for storing image of persone
@@ -58,9 +109,22 @@ namespace STUDENTU_1._06.Model
             }
         }
 
-        public bool Sex { get; set; }
+        
+        private bool sex;
+        public bool Sex 
+        {
+            get { return sex; }
+            set
+            {
+                if (value != sex)
+                {
+                    sex = value;
+                    OnPropertyChanged(nameof(Sex));
+                }
+            }
+        }
 
-       
+
         public virtual Contacts Contacts { get; set; }
         public virtual PersoneDescription PersoneDescription { get; set; }
      
@@ -73,8 +137,15 @@ namespace STUDENTU_1._06.Model
         {
             return $"{Name} " + $" {Surname} " + $"{Patronimic}" ;
         }
-
-
+        
+        //тут у нас проверка только по полям Name, Surname, Patronimic, Sex
+        public bool ComparePersons(Persone obj1, Persone obj2)
+        {
+            if (obj1.Name==obj2.Name&&obj1.Surname==obj2.Surname&&
+                obj1.Patronimic==obj2.Patronimic&&obj1.Sex==obj2.Sex)
+                return true;
+            return false;
+        }
 
     }
 }

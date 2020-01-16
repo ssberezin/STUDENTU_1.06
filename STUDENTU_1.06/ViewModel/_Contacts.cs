@@ -276,9 +276,11 @@ namespace STUDENTU_1._06.ViewModel
                             (replaceOldToNewNameCommand = new RelayCommand(
                     (obj) =>
                     {
-                        OldPersoneCompare.Name = CurPersoneCompare.Name;
+                        OldPersoneCompare.Name = CurPersoneCompare.Name;                       
                     }
                     ));
+        
+
         private RelayCommand replaceNewToOldNameCommand;
         public RelayCommand ReplaceNewToOldNameCommand => replaceNewToOldNameCommand ??
                             (replaceNewToOldNameCommand = new RelayCommand(
@@ -492,16 +494,53 @@ namespace STUDENTU_1._06.ViewModel
                             (setRightContactsCommand = new RelayCommand(
                     (obj) =>
                     {
-                        Contacts = TmpContactsCompare;
-
-                        Persone.Name = CurPersoneCompare.Name;
-                        Persone.Surname = CurPersoneCompare.Surname;
-                        Persone.Patronimic = CurPersoneCompare.Patronimic;
-                        Persone.Sex = CurPersoneCompare.Sex;
-                        saveCompareResults = true;//этот маркер пока не востребован
-                        CloseWindow(obj as Window);
+                        SetRightContacts(obj as Window);
                     }
                     ));
+        private void SetRightContacts(Window window)
+        {
+            Contacts = TmpContactsCompare;
+
+            Persone.Name = CurPersoneCompare.Name;
+            Persone.Surname = CurPersoneCompare.Surname;
+            Persone.Patronimic = CurPersoneCompare.Patronimic;
+            Persone.Sex = CurPersoneCompare.Sex;
+            saveCompareResults = true;//этот маркер пока не востребован
+            CloseWindow(window);
+        }
+
+        public bool CompareContacts (Contacts obj1, Contacts obj2)
+        {
+            if ((obj1.Phone1 == obj2.Phone1) && (obj1.Phone2 == obj2.Phone2) &&
+                (obj1.Phone3 == obj2.Phone3) && (obj1.Email1 == obj2.Email1) &&
+                (obj1.Email2 == obj2.Email2) && (obj1.VK == obj2.VK) &&
+                (obj1.FaceBook == obj2.FaceBook) && (obj1.Skype == obj2.Skype))
+                return true;
+            return false;
+        }
+
+        //public static bool operator ==(Contacts obj1, Contacts obj2)
+        //{
+
+
+        //    if ((obj1.Phone1 == obj2.Phone1) && (obj1.Phone2 == obj2.Phone2) &&
+        //        (obj1.Phone3 == obj2.Phone3) && (obj1.Email1 == obj2.Email1) &&
+        //        (obj1.Email2 == obj2.Email2) && (obj1.VK == obj2.VK) &&
+        //        (obj1.FaceBook == obj2.FaceBook) && (obj1.Skype == obj2.Skype))
+        //        return true;
+        //    return false;
+        //}
+
+        //public static bool operator !=(Contacts obj1, Contacts obj2)
+        //{
+
+        //    if ((obj1.Phone1 != obj2.Phone1) || (obj1.Phone2 != obj2.Phone2) ||
+        //        (obj1.Phone3 != obj2.Phone3) || (obj1.Email1 != obj2.Email1) ||
+        //        (obj1.Email2 != obj2.Email2) || (obj1.VK != obj2.VK) ||
+        //        (obj1.FaceBook != obj2.FaceBook) || (obj1.Skype != obj2.Skype))
+        //        return true;
+        //    return false;
+        //}
 
         //not used
         public string ReplaceContacts(string nameOfContact, string mode,
