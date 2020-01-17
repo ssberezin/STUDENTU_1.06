@@ -25,7 +25,8 @@ namespace STUDENTU_1._06.Model
             this.VK = "---";
             this.FaceBook = "---";
             this.Persone = new ObservableCollection<Persone>();
-
+            showWindow = new DefaultShowWindowService();
+            dialogService = new DefaultDialogService();
         }
         [Column("Phone1", TypeName = "ntext")]
         [MaxLength(13)]        

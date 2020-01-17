@@ -371,7 +371,7 @@ namespace STUDENTU_1._06.ViewModel
                         db.Dates.Add(Date);
                         db.Directions.Attach(_Dir.Dir);
                         db.Contacts.Attach(_Contacts.Contacts);                        
-                        db.Clients.Attach(Client);
+                       // db.Clients.Attach(Client);
                         db.WorkTypes.Attach(_WorkType.WorkType);                        
                         db.Moneys.Add(Price);
                       
@@ -390,8 +390,7 @@ namespace STUDENTU_1._06.ViewModel
                     Order.Dates = Date;                
                     Order.Money = Price;    
                     
-                    Persone.Contacts = _Contacts.Contacts;                
-                    Persone.PersoneDescription = PersoneDescription;
+                  
 
                     
                     //ищем совпададения по полям контактов Person в БД. Если "0", то совпадений не найдено
@@ -412,36 +411,49 @@ namespace STUDENTU_1._06.ViewModel
                         // here we need to check the current contacts with the contact data of the parent order
                         // suddenly the user changed something? ... (
                         var order =db.Orderlines.Where(o=>o.ParentId==TMPStaticClass.CurrentOrder.ParentId).FirstOrDefault();
-                        if (!_Contacts.CompareContacts(_Contacts.Contacts, order.Client.Persone.Contacts)||
-                            !Persone.ComparePersons(Persone, order.Client.Persone))                       
+                        if (!_Contacts.CompareContacts(_Contacts.Contacts, order.Client.Persone.Contacts) ||
+                            !Persone.ComparePersons(Persone, order.Client.Persone))
+                        {
                             SaveOrderPartAfterCheckContacts(0, order.ParentId);
-                       
-                        
+                            db.Entry(Order).State = EntityState.Modified;
+                        }
+                        else
+                        {
+                            
+                            //db.Entry(Client).State = EntityState.Modified;
+                            //db.Entry(Persone).State = EntityState.Modified;
+
+                            Persone.Contacts= _Contacts.Contacts;
+                            Persone.PersoneDescription = PersoneDescription;
+                            Client = TMPStaticClass.CurrentOrder.Client;
+                            Client.Persone = Persone;                            
+                            Order.Client = Client;     
+                            
+                        }
                     }
-                    if (contactId == 0&&!doubleSave)
+                    
+                        
+                    
+                    if (contactId == 0 && !doubleSave)
                     {
-                        //Persone.Contacts = _Contacts.Contacts;
-                        //Persone.PersoneDescription = PersoneDescription;
+                        Persone.Contacts = _Contacts.Contacts;
+                        Persone.PersoneDescription = PersoneDescription;
                         Order.Client = new Client() { Persone = Persone };
                     }
                     else
-                    if(!doubleSave)    
-                        SaveOrderPartAfterCheckContacts(contactId, 0);                                         
+                    if (!doubleSave)
+                    {
+                        SaveOrderPartAfterCheckContacts(contactId, 0);
+                        _Status.Status = db.Statuses.Find(new Status() { StatusId = 2 }.StatusId);
+                    }
                     
 
-                    if (!doubleSave)
-                        _Status.Status = db.Statuses.Find(new Status() { StatusId = 2 }.StatusId);
-                        
                     Order.Status = _Status.Status;                    
                     Order.Saved = true;
-                    if (doubleSave)
-                    {
-                        Order.Client = TMPStaticClass.CurrentOrder.Client;
-                        Order.Client.Persone = Persone;
-                    }
+
 
                     db.Configuration.AutoDetectChangesEnabled = false;
-                    db.Configuration.ValidateOnSaveEnabled = false;                
+                    db.Configuration.ValidateOnSaveEnabled = false;
                     db.Orderlines.Add(Order);
 
                     //Order.ParentId = !doubleSave ? Order.OrderLineId : TMPStaticClass.CurrentOrder.ParentId;
