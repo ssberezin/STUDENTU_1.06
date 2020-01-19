@@ -1,10 +1,11 @@
 ﻿
+using System;
 using System.Collections.Generic;
-
+using System.Collections.ObjectModel;
 
 namespace STUDENTU_1._06.Model
 {
-    public class Money
+    public class Money : ICloneable
     {
         public Money()
         {
@@ -14,7 +15,7 @@ namespace STUDENTU_1._06.Model
             this.PaidByClient = false;
             this.AuthorPrice = 0;
             this.AuthorEvalPrice = 0;            
-            this.OrderLine = new List<OrderLine>();
+            this.OrderLine = new ObservableCollection<OrderLine>();
         }
 
 
@@ -28,7 +29,22 @@ namespace STUDENTU_1._06.Model
         public decimal AuthorEvalPrice { get; set; }
 
 
-        public virtual List<OrderLine> OrderLine { get; set; }       
+        public virtual ObservableCollection<OrderLine> OrderLine { get; set; }       
         public virtual Evaluation Evaluation { get; set; }
+
+        public object Clone()
+        {
+            return new Money()
+            {
+            //Price= this.Price,
+            //Prepayment= this.Prepayment,
+            //PaidToAuthor= this.PaidToAuthor,
+            //PaidByClient= this.PaidByClient,
+            //AuthorPrice= this.AuthorPrice,
+            //AuthorEvalPrice= this.AuthorEvalPrice,
+            //OrderLine = new List<OrderLine>(this.OrderLine),
+            //Evaluation=(Evaluation)this.Evaluation.Clone()
+            };
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
@@ -6,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace STUDENTU_1._06.Model
 {
-   public class Status
+   public class Status:ICloneable
     {
         public Status()
         {
@@ -25,5 +26,16 @@ namespace STUDENTU_1._06.Model
         public string StatusName { get; set; }
 
        public virtual ObservableCollection<OrderLine> OrderLine { get; set; }
+
+        public object Clone()
+        {
+           return new Status()
+           {
+               StatusId = this.StatusId,
+               Description = this.Description,
+               StatusName = this.StatusName,
+               OrderLine = new ObservableCollection<OrderLine>(this.OrderLine)
+           };
+        }
     }
 }

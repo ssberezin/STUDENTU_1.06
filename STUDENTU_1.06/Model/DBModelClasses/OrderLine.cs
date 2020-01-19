@@ -6,10 +6,14 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 
+
 namespace STUDENTU_1._06.Model
 {
-    public class OrderLine : Helpes.ObservableObject 
+   
+
+    public class OrderLine : Helpes.ObservableObject , ICloneable
     {
+
         
         public OrderLine()
         {
@@ -20,16 +24,22 @@ namespace STUDENTU_1._06.Model
             this.variant = null;
             this.Saved = false;
             this.ParentOrder = true;
+
         }
         [Key]
         public int OrderLineId { get; set; }
         public int OrderNumber { get; set; }
 
-        //это свойство нужно для отслеживания кол-ва подзаказов, из которіх состоит один заказ
+        //это свойство нужно для отслеживания кол-ва подзаказов, из которых состоит один заказ
+        //в xaml от их колическва и знака применяется свой цвет заливки таких заказов
         // this property is needed to track the number of sub-orders of which one order consists
+        // in xaml their color and sign apply their fill color for such orders
+        
         public int OrderCount { get; set; }
+
         //используется как один из признаков того, что заказ разбит на подзаказы
         // used as one of the signs that the order is broken into sub-orders
+       
         public int ParentId { get; set; }
 
         [Column("Variant", TypeName = "nvarchar")]
@@ -127,6 +137,102 @@ namespace STUDENTU_1._06.Model
         public virtual AfterDoneDescription AfterDoneDescriptions { get; set; }
 
         public virtual ObservableCollection<Author> Author { get; set; }
+
+        public object Clone()
+        {
+            //тут пока будет глухомань, т.к. ветка User вообще не начата
+            User user = new User()
+            {
+                //UserId = this.User.UserId,
+                //Login = this.User.Login,
+                //PassWord = this.User.PassWord,
+                //Persone = persone,
+                //OrderLine = new ObservableCollection<OrderLine>(this.User.OrderLine)
+            };
+
+
+            //тут тоже пока голяк
+            Evaluation evaluation = new Evaluation()
+            {
+                //EvaluationId = this.Dates.Evaluation.EvaluationId,
+                //Winner = this.Dates.Evaluation.Winner,
+                //Description = this.Dates.Evaluation.Description,
+                //Dates = new ObservableCollection<Dates>(this.Dates.Evaluation.Dates),
+                //Moneys = new ObservableCollection<Money>(this.Dates.Evaluation.Moneys),
+                //Authors = new ObservableCollection<Author>(this.Dates.Evaluation.Authors)
+            };
+
+            Dates dates = new Dates()
+            {
+                DatesId = this.Dates.DatesId,
+                StartDateWork = this.Dates.StartDateWork,
+                DateOfAuthorPaid = this.Dates.DateOfAuthorPaid,
+                EndDateWork = this.Dates.EndDateWork,
+                DayBirth = this.Dates.DayBirth,
+                DeadLine = this.Dates.DeadLine,
+                DateDone = this.Dates.DateDone,
+                DateOfPaid = this.Dates.DateOfPaid,
+                AuthorDeadLine = this.Dates.AuthorDeadLine,
+                DateOfReception = this.Dates.DateOfReception,
+                Evaluation = evaluation,
+                Persone = (Persone)this.Client.Persone.Clone(),
+                OrderLine = new ObservableCollection<OrderLine>(this.Dates.OrderLine)
+            };
+            //dates = (Dates)this.Dates.Clone();
+            Money money= new Money()
+            {
+                Price = this.Money.Price,
+                Prepayment = this.Money.Prepayment,
+                PaidToAuthor = this.Money.PaidToAuthor,
+                PaidByClient = this.Money.PaidByClient,
+                AuthorPrice = this.Money.AuthorPrice,
+                AuthorEvalPrice = this.Money.AuthorEvalPrice,
+                OrderLine = new ObservableCollection<OrderLine>(this.Money.OrderLine),
+                Evaluation = evaluation
+            };
+           
+            
+            
+            //и тут пока голяк
+            AfterDoneDescription afterDoneDescription = new AfterDoneDescription()
+            {
+                //AfterDoneDescriptionId = this.AfterDoneDescriptions.AfterDoneDescriptionId,
+                //InputToBase = this.AfterDoneDescriptions.InputToBase,
+                //PrintOreNot = this.AfterDoneDescriptions.PrintOreNot,
+                //Binding = this.AfterDoneDescriptions.Binding,
+                //BindingDiscription = this.AfterDoneDescriptions.BindingDiscription,
+                //OrderLine = new ObservableCollection<OrderLine>(this.AfterDoneDescriptions.OrderLine)
+            };
+            
+            return new OrderLine()
+            {
+                OrderLineId = this.OrderLineId,
+                OrderNumber = this.OrderNumber,
+                OrderCount = this.OrderCount,
+                ParentId = this.ParentId,
+                Variant = this.Variant,
+                DescriptionForClient = this.DescriptionForClient,
+                WorkDescription = this.WorkDescription,
+                workInCredit = this.workInCredit,
+                Saved = this.Saved,
+                ParentOrder = this.ParentOrder,
+                RedactionLog = this.RedactionLog,
+                User = user,
+                Client = (Client)this.Client.Clone(),
+                Dates=dates,
+                Money= money,
+                Status=(Status)this.Status.Clone(),
+                Subject=(Subject)this.Subject.Clone(),
+                WorkType=(WorkType)this.WorkType.Clone(),
+                Direction=(Direction)this.Direction.Clone(),
+                Source=(Source)this.Source.Clone(),
+                
+                AfterDoneDescriptions=afterDoneDescription,
+                Author= new ObservableCollection <Author> (this.Author)
+            };
+        }
+
+
 
         public Author GetExecuteAuthor(ObservableCollection<Author> authors)
         {

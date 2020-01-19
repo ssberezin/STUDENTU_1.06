@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace STUDENTU_1._06.Model
 {
-    public class Evaluation
+    public class Evaluation: ICloneable
     {
         public Evaluation()
         {
@@ -34,7 +34,19 @@ namespace STUDENTU_1._06.Model
 
         public virtual ObservableCollection<Author> Authors { get; set; }
 
-        
-
+        public object Clone()
+        {
+            return new Evaluation()
+            {
+                //EvaluationId = this.EvaluationId,
+                //Winner=this.Winner,
+                //Description=this.Description,
+                //Dates=new ObservableCollection<Dates>(this.Dates),
+                //Moneys=new ObservableCollection<Money>(this.Moneys),
+                //Authors=new ObservableCollection<Author>(this.Authors)
+            };
+            
+            
+        }
     }
 }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace STUDENTU_1._06.Model.DBModelClasses
 {
-    public class University
+    public class University:ICloneable
     {
         public University()
         {
@@ -28,5 +28,15 @@ namespace STUDENTU_1._06.Model.DBModelClasses
 
         public virtual ObservableCollection<Client> Clients { get; set; }
 
+        public object Clone()
+        {
+            return new University()
+            {
+                //UniversityId = this.UniversityId,
+                //UniversityName=this.UniversityName,
+                //City=this.City,
+                //Clients=new ObservableCollection<Client>(this.Clients)
+            };
+        }
     }
 }

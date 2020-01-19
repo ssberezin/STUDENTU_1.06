@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace STUDENTU_1._06.Model
 {
-    public class AfterDoneDescription
+    public class AfterDoneDescription :ICloneable
     {
        
         public AfterDoneDescription()
@@ -24,16 +24,27 @@ namespace STUDENTU_1._06.Model
         
         public bool InputToBase { get; set; }
         public bool PrintOreNot { get; set; }
+        //переплет обложкой
         public bool Binding { get; set; }
 
         [Column("BindingDiscription", TypeName = "ntext")]
-        [MaxLength(2000)]
+        [MaxLength(500)]
         public string BindingDiscription { get; set; }
 
 
         public virtual ObservableCollection<OrderLine> OrderLine { get; set; }
-        
 
-
+        public object Clone()
+        {
+            return new AfterDoneDescription()
+            {
+                //AfterDoneDescriptionId= obj.AfterDoneDescriptionId,
+                //InputToBase= obj.InputToBase,
+                //PrintOreNot= obj.PrintOreNot,
+                //Binding= obj.Binding,
+                //BindingDiscription= obj.BindingDiscription,
+                //OrderLine = new ObservableCollection<OrderLine>(obj.OrderLine)
+            };
+        }
     }
 }

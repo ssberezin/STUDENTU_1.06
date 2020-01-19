@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
+using System.Collections.ObjectModel;
 
 namespace STUDENTU_1._06.Model
 {
-    public class Dates
+    public class Dates:ICloneable
     {
 
         public Dates ()
             {
 
             // this.Evaluations = new List<Evaluation>();
-            this.OrderLine = new List<OrderLine>();
+            this.OrderLine = new ObservableCollection<OrderLine>();
             this.StartDateWork = ZeroDefaultDate( DateTime.Now);
             this.EndDateWork = new DateTime(1900, 1, 1);
             this.DayBirth = new DateTime(1900, 1, 1);
@@ -70,7 +70,30 @@ namespace STUDENTU_1._06.Model
 
         public virtual Evaluation Evaluation { get; set; }
         public virtual Persone Persone { get; set; }
-        public virtual List<OrderLine> OrderLine { get; set; }
+        public virtual ObservableCollection<OrderLine> OrderLine { get; set; }
+
+
+        //пока норм не работает, т.к. нужно решить проблему с инициацией Evaluation
+        public object Clone()
+        {
+            return new Dates()
+            {
+                DatesId = this.DatesId,
+                StartDateWork = this.StartDateWork,
+                DateOfAuthorPaid = this.DateOfAuthorPaid,
+                EndDateWork = this.EndDateWork,
+                DayBirth = this.DayBirth,
+                DeadLine = this.DeadLine,
+                DateDone = this.DateDone,
+                DateOfPaid = this.DateOfPaid,
+                AuthorDeadLine = this.AuthorDeadLine,
+                DateOfReception = this.DateOfReception,
+
+                Evaluation = (Evaluation)this.Evaluation.Clone(),
+                Persone = (Persone)this.Persone.Clone(),
+                OrderLine = new ObservableCollection<OrderLine>(OrderLine)
+            };
+        }
 
 
         //тут мы получаем только год , месяц, число, с нулевыми остальными показателями

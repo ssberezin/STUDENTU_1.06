@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace STUDENTU_1._06.Model
 {
-    public class PersoneDescription
+    public class PersoneDescription:ICloneable
     {
         public PersoneDescription()
         {
@@ -36,8 +36,23 @@ namespace STUDENTU_1._06.Model
         public string Source { get; set; }
         public bool BlackList { get; set; }
 
-        public virtual ObservableCollection<Persone> Persone { get; set; }        
+        public virtual ObservableCollection<Persone> Persone { get; set; }
 
+        public object Clone()
+        {
+            return new PersoneDescription()
+            {
+                PersoneDescriptionId = this.PersoneDescriptionId,
+                Description = this.Description,
+                FeedBack = this.FeedBack,
+                ReasonFortermCoop = this.ReasonFortermCoop,
+                Source = this.Source,
+                BlackList = this.BlackList,
+                Persone = new ObservableCollection<Persone>(this.Persone)
+            };
+            
+
+        }
     }
 
 }

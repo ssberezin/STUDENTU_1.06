@@ -1,6 +1,7 @@
 ﻿
 using STUDENTU_1._06.Model;
 using STUDENTU_1._06.Model.DBModelClasses;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
@@ -9,7 +10,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace STUDENTU_1._06.Model
 {
-    public class Author : Helpes.ObservableObject
+    public class Author : Helpes.ObservableObject, ICloneable
     {
 
       
@@ -60,8 +61,6 @@ namespace STUDENTU_1._06.Model
         public virtual ObservableCollection<Subject> Subject { get; set; }
         public virtual ObservableCollection<Direction> Direction { get; set; }
         public virtual ObservableCollection<Evaluation> Evaluation { get; set; }
-
-
         public virtual AuthorStatus AuthorStatus { get; set; }
 
 
@@ -70,6 +69,25 @@ namespace STUDENTU_1._06.Model
             return (Punctually + WorkQuality + Responsibility + CompletionCompliance) / 4.0;
         }
 
-        
+        public object Clone()
+        {
+            return new Author()
+            {
+                //AuthorId= this.AuthorId,
+                //Source= this.Source,
+                //Punctually= this.Punctually,
+                //WorkQuality= this.WorkQuality,
+                //Responsibility= this.Responsibility,
+                //CompletionCompliance= this.CompletionCompliance,
+                //Rating= this.Rating,
+                //Persone=(Persone)this.Persone.Clone(this.Persone),
+                //OrderLine=new ObservableCollection<OrderLine>(this.OrderLine),
+                //Subject=new ObservableCollection<Subject>(this.Subject),
+                //Direction=new ObservableCollection<Direction>(this.Direction),
+                //Evaluation=new ObservableCollection<Evaluation>(this.Evaluation),
+                //AuthorStatus=(AuthorStatus)this.AuthorStatus.Clone()
+            };
+          
+        }
     }
 }

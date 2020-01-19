@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace STUDENTU_1._06.Model.DBModelClasses
 {
-    public class AuthorStatus
+    public class AuthorStatus:ICloneable
     {
         public AuthorStatus()
         {
@@ -27,5 +27,17 @@ namespace STUDENTU_1._06.Model.DBModelClasses
         public string AuthorStatusName { get; set; }
 
         public virtual ObservableCollection<Author> Author { get; set; }
+
+        public object Clone()
+        {
+            return new AuthorStatus()
+            {
+                //AuthorStatusId=this.AuthorStatusId,
+                //Description=this.Description,
+                //AuthorStatusName=this.AuthorStatusName,
+                //Author=new ObservableCollection<Author>(this.Author)
+            };
+
+        }
     }
 }

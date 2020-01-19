@@ -20,7 +20,7 @@ using STUDENTU_1._06.Views.EditOrderWindows.RuleOrderLineWindows;
 
 namespace STUDENTU_1._06.Model
 {
-    public class Client: Helpes.ObservableObject
+    public class Client: Helpes.ObservableObject, ICloneable
     {
             
         public Client()
@@ -91,6 +91,20 @@ namespace STUDENTU_1._06.Model
                 return null;
             }
 
+        }
+
+        public object Clone()
+        {
+            return new Client()
+            {
+                ClientId = this.ClientId,
+                Course = this.Course,
+                GroupName = this.GroupName,
+                Persone = (Persone)this.Persone.Clone(),
+                Universities = new ObservableCollection<University>(this.Universities),
+                OrderLine = new ObservableCollection<OrderLine>(this.OrderLine)
+
+            };
         }
     }
 }

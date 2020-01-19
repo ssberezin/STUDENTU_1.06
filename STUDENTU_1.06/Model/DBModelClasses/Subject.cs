@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace STUDENTU_1._06.Model
 {
-    public class Subject
+    public class Subject:ICloneable
     {
         public Subject()
         {
-            this.OrderLine = new List<OrderLine>();
+            this.OrderLine = new ObservableCollection<OrderLine>();
             this.Authors = new ObservableCollection<Author>();
         }
 
@@ -26,8 +26,19 @@ namespace STUDENTU_1._06.Model
         //public virtual Author Author { get; set; }
         public virtual ObservableCollection<Author> Authors { get; set; }
 
-        public virtual List<OrderLine> OrderLine { get; set; }
-        
+        public virtual ObservableCollection<OrderLine> OrderLine { get; set; }
 
+        public object Clone()
+        {
+            return new Subject()
+            {
+                SubjectId = this.SubjectId,
+                SubName = this.SubName,
+                Authors = new ObservableCollection<Author>(this.Authors),
+                OrderLine = new ObservableCollection<OrderLine>(this.OrderLine)
+            };
+            
+
+        }
     }
 }

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace STUDENTU_1._06.Model
 {
-    public class Contacts : Helpes.ObservableObject
+    public class Contacts : Helpes.ObservableObject, ICloneable
     {
         public Contacts()
         {
@@ -245,6 +245,21 @@ namespace STUDENTU_1._06.Model
             return 0;
         }
 
-       
+       public  object Clone()
+        {
+            return new Contacts()
+            {
+                Phone1 = this.Phone1,
+                Phone2 = this.Phone2,
+                Phone3 = this.Phone3,
+                Email1 = this.Email1,
+                Email2 = this.Email2,
+                Adress = this.Adress,
+                Skype = this.Skype,
+                VK = this.VK,
+                FaceBook = this.FaceBook,
+                Persone = new ObservableCollection<Persone>(this.Persone)
+            };
+        }
     }
 }

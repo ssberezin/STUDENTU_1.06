@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace STUDENTU_1._06.Model 
 {
-    public class Persone : Helpes.ObservableObject
+    public class Persone : Helpes.ObservableObject, ICloneable
     {
         public Persone()
         {
@@ -132,6 +132,37 @@ namespace STUDENTU_1._06.Model
         public virtual ObservableCollection<Client> Client { get; set; }        
         public virtual ObservableCollection<Author> Author { get; set; }        
         public virtual ObservableCollection<Dates> Dates { get; set; }
+
+        public object Clone()
+        {
+            return new Persone()
+            {
+                PersoneId = this.PersoneId,
+                Name = this.Name,
+                NickName = this.NickName,
+                Surname = this.Surname,
+                Patronimic = this.Patronimic,
+                Photo = PhotoCopy(this.Photo),
+                Sex = this.Sex,
+                Contacts = (Contacts)this.Contacts.Clone(),
+                PersoneDescription = (PersoneDescription)this.PersoneDescription.Clone(),
+                User = new ObservableCollection<User>(this.User),
+                Client = new ObservableCollection<Client>(this.Client),
+                Author = new ObservableCollection<Author>(this.Author),
+                Dates = new ObservableCollection<Dates>(this.Dates)
+            };
+        }
+
+        public byte[] PhotoCopy(byte[] obj)
+        {
+            if (obj == null)
+                return null;
+            int len = obj.Length;
+            byte[] ar = new byte[len];
+            for (int i = 0; i < len; i++)
+                ar[i] = obj[i];
+            return ar;
+        }
 
         public string ToString()
         {
