@@ -310,7 +310,7 @@ namespace STUDENTU_1._06.ViewModel
                         SaveOrderChanges();
                     }
                     ));
-        //эта хрень осталась не востребованной т.к. не удалась первичная задумка
+       
         private void SaveOrderChanges()
         {
             if (saved)
@@ -382,11 +382,17 @@ namespace STUDENTU_1._06.ViewModel
                         Persone.PersoneDescription = PersoneDescription;
                         Order.Client = new Client() { Persone = Persone };
                     }
-                    else                    
+                    else
                     {
-                        SaveOrderPartAfterCheckContacts(contactId, 0);                        
+                        var persone = db.Persones.Where(o => o.Contacts.ContactsId == contactId).FirstOrDefault();
+                        bool ContactsCompare = _Contacts.CompareContacts(_Contacts.Contacts,persone.Contacts);
+                        bool PersonFirsDataCompare = Persone.ComparePersons(Persone, persone);
+                        
+                        SaveOrderPartAfterCheckContacts(contactId, 0, ContactsCompare, PersonFirsDataCompare);
+                        if (CancelSaveOrder)
+                            return;
                     }
-
+                    
                     db.Configuration.AutoDetectChangesEnabled = false;
                     db.Configuration.ValidateOnSaveEnabled = false;
                     db.Orderlines.Add(Order);                   
@@ -459,16 +465,19 @@ namespace STUDENTU_1._06.ViewModel
                     Order.Saved = true;
 
                     //тут нужно проверяем текущие контакты с контатными данными родительского заказа
-                    //вдруг пользователь изменил чего?...(
+                    //вдруг пользователь изменил чего?...
                     // here we need to check the current contacts with the contact data of the parent order
                     // suddenly the user changed something? ... (
                     var order = db.Orderlines.Where(o => o.ParentId == TMPStaticClass.CurrentOrder.ParentId).FirstOrDefault();
-                    if (!_Contacts.CompareContacts(_Contacts.Contacts, order.Client.Persone.Contacts) ||
-                        !Persone.ComparePersons(Persone, order.Client.Persone))
-                    {
-                        SaveOrderPartAfterCheckContacts(0, order.ParentId);
-                        // db.Entry(Order).State = EntityState.Modified;
-                    }
+                    bool ContactsCompare = _Contacts.CompareContacts(_Contacts.Contacts, order.Client.Persone.Contacts);
+                    bool PersonFirsDataCompare = Persone.ComparePersons(Persone, order.Client.Persone);
+                    if (!ContactsCompare || !PersonFirsDataCompare)
+                        {
+                            SaveOrderPartAfterCheckContacts(0, order.ParentId, ContactsCompare, PersonFirsDataCompare);
+                            if (CancelSaveOrder)
+                                return;
+                        }
+
                     else
                     {
                         Client = db.Clients.Find(TMPStaticClass.CurrentOrder.Client.ClientId);
@@ -519,87 +528,101 @@ namespace STUDENTU_1._06.ViewModel
 
         }
 
-        
-        private void SaveOrderPartAfterCheckContacts(int contactsId, int doubleId)
+        bool CancelSaveOrder = false;
+        private void SaveOrderPartAfterCheckContacts(int contactsId, int doubleId, 
+                                                    bool contactsCompare, bool personeCompare)
         {
             
 
             using (StudentuConteiner db = new StudentuConteiner())
             {
-                dialogService.ShowMessage("Уже есть клиент с такими контактными данными.\n" +
-                                                    "Вносим правку в базу данных");
+               
                 try
                 {
-                    var persone =Persone;
-                    var OldContacts = _Contacts.Contacts;
-                    if (doubleId == 0)
+                    Persone persone = new Persone();
+                    Contacts OldContacts = new Contacts();
+
+                    if (contactsCompare && personeCompare)
                     {
-                        persone = db.Persones.Where(c => c.Contacts.ContactsId == contactsId).FirstOrDefault();
-                        OldContacts = db.Contacts.Where(c => c.ContactsId == contactsId).FirstOrDefault();
+                        Persone= db.Persones.Where(c => c.Contacts.ContactsId == contactsId).FirstOrDefault();
+                        Client = db.Clients.Where(c => c.Persone.PersoneId == Persone.PersoneId).FirstOrDefault();                        
+                        Client.OrderLine.Add(Order);
+                        Order.Client = db.Clients.Find(Client.ClientId);
+                        return;
+                       
                     }
                     else
                     {
-                        //возможна замена 537 строки на конструкцию, в которой person присваивается
-                        //на прямую из базы данных (с помощью doubleId, он Order.ParentId)
-                        // it is possible to replace 537 lines with a construct in which person is assigned
-                        // direct from the database (using doubleId, it is Order.ParentId)
-                        persone = TMPStaticClass.CurrentOrder.Client.Persone;
-                        OldContacts = persone.Contacts;
-                    }
-                    //int tmpId = persone.PersoneId;
-
-                    
-
-                    _Contacts.OldPersoneCompare = persone;
-                    _Contacts.CurPersoneCompare = Persone;
-                    _Contacts.TmpContacts = OldContacts;
-                    _Contacts.OldTmpContactsCompare = OldContacts;
-                    _Contacts.TmpContactsCompare = _Contacts.Contacts;
-
-                    CompareContatctsWindow compareContatctsWindow = new CompareContatctsWindow(this);
-                    showWindow.ShowDialog(compareContatctsWindow);
-
-                    if (!_Contacts.saveCompareResults)
-                    {
-                        //тут лучше придумать диалоговое окно с радиокнопками , для выбора вариантов действия
-                        // - отменить прием заказа и отправить пользователя закрыть окно приема заказа
-                        //т.к. не понятно как реализовать закрытие окна из вьюмодел не вмешиваяся в сраный мввм
-                        //но в идеале закрыть окно приема заказа. Думаю, что это потянет за собой перепил по всему проекту
-                        //процедуры закрытия окна.
-                        // - 
-                        if (dialogService.YesNoDialog("Не сохранен ни один из вариантов...\n" +
-                                "Отменить прием заказа?"))
+                       
+                        if (doubleId == 0)
                         {
-                            dialogService.ShowMessage("Ок. Тогда просто закройте окно приема заказа.");
-                            _Contacts.Contacts = OldContacts;
-                            return;
+                            //ветка первичного сохранения
+                            dialogService.ShowMessage("Уже есть клиент с такими контактными данными.\n" +
+                                                 "Вносим правку в базу данных");                           
+                            persone = db.Persones.Where(c => c.Contacts.ContactsId == contactsId).FirstOrDefault();
+                            OldContacts = db.Contacts.Where(c => c.ContactsId == contactsId).FirstOrDefault();
                         }
                         else
-                            if (dialogService.YesNoDialog("В базе данных не могут дублироваться контакты у разных клиентов.\n" +
-                                "Можно принять заказ как"))
                         {
+                            //ветка doublesave
+                            dialogService.ShowMessage("Контактные данные в подзаказе не совпадают с теми,.\n" +
+                                                 "которые были в исходном заказе. ");                            
+                            persone = TMPStaticClass.CurrentOrder.Client.Persone;
+                            OldContacts = persone.Contacts;
                         }
+                        _Contacts.OldPersoneCompare = persone;
+                        _Contacts.CurPersoneCompare = Persone;
+                        _Contacts.TmpContacts = OldContacts;
+                        _Contacts.OldTmpContactsCompare = OldContacts;
+                        _Contacts.TmpContactsCompare = _Contacts.Contacts;
 
+                        db.Entry(_Contacts.Contacts).State = EntityState.Modified;
 
+                        CompareContatctsWindow compareContatctsWindow = new CompareContatctsWindow(this);
+                        showWindow.ShowDialog(compareContatctsWindow);
+
+                        if (!_Contacts.saveCompareResults)
+                        {
+                            //тут лучше придумать диалоговое окно с радиокнопками , для выбора вариантов действия
+                            // - отменить прием заказа и отправить пользователя закрыть окно приема заказа
+                            //т.к. не понятно как реализовать закрытие окна из вьюмодел не вмешиваяся в сраный мввм
+                            //но в идеале закрыть окно приема заказа. Думаю, что это потянет за собой перепил по всему проекту
+                            //процедуры закрытия окна.
+                            // - 
+                            if (dialogService.YesNoDialog("Не сохранен ни один из вариантов...\n" +
+                                    "Отменить прием заказа?"))
+                            {
+                                dialogService.ShowMessage("Ок. Тогда просто закройте окно приема заказа.");
+                                _Contacts.Contacts = OldContacts;
+                                CancelSaveOrder = true;
+                                return;
+                            }
+                            else
+                            {
+                                dialogService.ShowMessage("В базе данных не могут дублироваться контакты у разных клиентов.\n" +
+                                      "Задайте другие контактные данные заказчика в окне приема заказа.");
+                                _Contacts.Contacts = OldContacts;
+                                CancelSaveOrder = true;
+                                return;
+                            };
+                        }
+                        db.Entry(persone).State = EntityState.Modified;
+
+                        persone.Name = _Contacts.Persone.Name;
+                        persone.Surname = _Contacts.Persone.Surname;
+                        persone.Patronimic = _Contacts.Persone.Patronimic;
+                        persone.Sex = _Contacts.Persone.Sex;
+                        persone.Contacts = db.Contacts.Find(_Contacts.Contacts.ContactsId);
+
+                        Client = db.Clients.Where(c => c.Persone.PersoneId == persone.PersoneId).FirstOrDefault();
+                        db.Entry(Client).State = EntityState.Modified;
+
+                        Client.Persone = db.Persones.Find(persone.PersoneId);
+                        Client.OrderLine.Add(Order);
+                        Order.Client = db.Clients.Find(Client.ClientId);
                     }
-                    db.Entry(persone).State = EntityState.Modified;
-                    db.Entry(_Contacts.Contacts).State = EntityState.Modified;
 
-                    persone.Name = _Contacts.Persone.Name;
 
-                    persone.Surname = _Contacts.Persone.Surname;
-                    persone.Patronimic = _Contacts.Persone.Patronimic;
-                    persone.Sex = _Contacts.Persone.Sex;
-
-                    persone.Contacts = _Contacts.Contacts;
-
-                    Client = db.Clients.Where(c => c.Persone.PersoneId == persone.PersoneId).FirstOrDefault();
-
-                    Client.Persone = persone;
-                    db.Entry(Client).State = EntityState.Modified;
-
-                    Order.Client = Client;
-                    //db.SaveChanges();
 
                 }
                 catch (ArgumentNullException ex)

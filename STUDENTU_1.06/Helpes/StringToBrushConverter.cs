@@ -16,13 +16,14 @@ namespace STUDENTU_1._06.Helpes
             //назначаем цвет заливки строк в случае если имеем заказ разбитый на несколько подзаказов
             // assign line fill color if we have an order divided into several suborders
             int i;
+            
             if (int.TryParse(value.ToString(), out  i))
             {
                 //#FF00FFE8
                 if (i > 1) return Brushes.LightBlue;
                 else
                     if (i<0)
-                        return Brushes.LightCoral;
+                        return Brushes.LightSkyBlue;
                 else
                     return DependencyProperty.UnsetValue;
             }
