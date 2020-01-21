@@ -6,10 +6,9 @@
         xmlns:local="clr-namespace:STUDENTU_1._06.Views"
         xmlns:helpes="clr-namespace:STUDENTU_1._06.Helpes"
          
-        mc:Ignorable="d"
-        
-        WindowStyle="None"
-        Title="Редактирование дополнительных контатов" Height="630" Width="680" MinHeight="630" MinWidth="690"
+        mc:Ignorable="d"        
+       
+        Title="Сравнение прежних и текущих контактов" Height="630" Width="680" MinHeight="630" MinWidth="690"
         MaxHeight="630" MaxWidth="690"
          TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
@@ -28,7 +27,7 @@
 
         <!--Command CloseWindowCommand  can find in ForEditOrder.cs-->
     </Window.InputBindings>
-    <Grid Background="#FFEAC410"  Margin="0,0,0.2,0" VerticalAlignment="Top" MinHeight="625">
+    <Grid Background="#FFEAC410"  Margin="0,0,0.2,0" VerticalAlignment="Top" MinHeight="600">
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition Width="0.15*"/>

@@ -542,36 +542,7 @@ namespace STUDENTU_1._06.ViewModel
         //    return false;
         //}
 
-        //not used
-        public string ReplaceContacts(string nameOfContact, string mode,
-            Contacts OldContacts, Contacts NewContacts)
-        {
-
-            switch (nameOfContact)
-            {
-                case "Phone1":
-                    return mode == "OldToNew" ? OldContacts.Phone1 = NewContacts.Phone1 : NewContacts.Phone1 = OldContacts.Phone1;               
-                case "Phone2":
-                    return mode == "OldToNew" ? OldContacts.Phone2 = NewContacts.Phone2 : NewContacts.Phone2 = OldContacts.Phone2;               
-                case "Phone3":
-                    return mode == "OldToNew" ? OldContacts.Phone3 = NewContacts.Phone3 : NewContacts.Phone3 = OldContacts.Phone3;
-                case "Email1":
-                    return mode == "OldToNew" ? OldContacts.Email1 = NewContacts.Email1 : NewContacts.Email1 = OldContacts.Email1;
-                case "Email2":
-                    return mode == "OldToNew" ? OldContacts.Email2 = NewContacts.Email2 : NewContacts.Email2 = OldContacts.Email2;
-                case "VK":
-                    return mode == "OldToNew" ? OldContacts.VK = NewContacts.VK : NewContacts.VK = OldContacts.VK;
-                case "FB":
-                    return mode == "OldToNew" ? OldContacts.FaceBook = NewContacts.FaceBook : NewContacts.FaceBook = OldContacts.FaceBook;
-                case "Skype":
-                    return mode == "OldToNew" ? OldContacts.Skype = NewContacts.Skype : NewContacts.Skype = OldContacts.Skype;
-                default:
-
-                    return null;
-
-            }
-
-        }
+        
 
 
     }
