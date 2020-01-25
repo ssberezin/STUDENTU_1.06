@@ -578,6 +578,13 @@ namespace STUDENTU_1._06.ViewModel
 
                         db.Entry(_Contacts.Contacts).State = EntityState.Modified;
 
+                        
+                        _Contacts.OldPersoneCompare = (Persone)persone.CloneExceptVirtual();
+                        _Contacts.CurPersoneCompare = (Persone)Persone.CloneExceptVirtual();
+                        _Contacts.TmpContacts = OldContacts;
+                        _Contacts.OldTmpContactsCompare = OldContacts;
+
+
                         CompareContatctsWindow compareContatctsWindow = new CompareContatctsWindow(this);
                         showWindow.ShowDialog(compareContatctsWindow);
 
