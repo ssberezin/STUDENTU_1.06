@@ -528,7 +528,6 @@ namespace STUDENTU_1._06.ViewModel
 
         }
 
-        //тут у нас действия в случае налитчия совпадений с контактами в БД
         bool CancelSaveOrder = false;
         private void SaveOrderPartAfterCheckContacts(int contactsId, int doubleId, 
                                                     bool contactsCompare, bool personeCompare)
@@ -545,14 +544,10 @@ namespace STUDENTU_1._06.ViewModel
 
                     if (contactsCompare && personeCompare)
                     {
-                        
-                        Client = db.Clients.Where(c => c.Persone.Contacts.ContactsId == contactsId).FirstOrDefault();
-                        int tmpId = this.Client.ClientId;
+                        Persone= db.Persones.Where(c => c.Contacts.ContactsId == contactsId).FirstOrDefault();
+                        Client = db.Clients.Where(c => c.Persone.PersoneId == Persone.PersoneId).FirstOrDefault();                        
                         Client.OrderLine.Add(Order);
-
-                        //Order.Client = db.Clients.Find(Client.ClientId);
-                        Order.Client = db.Clients.Where(c => c.ClientId == tmpId).FirstOrDefault();
-                       
+                        Order.Client = db.Clients.Find(Client.ClientId);
                         return;
                        
                     }
