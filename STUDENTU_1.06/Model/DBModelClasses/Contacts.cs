@@ -261,5 +261,21 @@ namespace STUDENTU_1._06.Model
                 Persone = new ObservableCollection<Persone>(this.Persone)
             };
         }
+
+        public object CloneExceptVirtual()
+        {
+            return new Contacts()
+            {
+                Phone1 = this.Phone1,
+                Phone2 = this.Phone2,
+                Phone3 = this.Phone3,
+                Email1 = this.Email1,
+                Email2 = this.Email2,
+                Adress = this.Adress,
+                Skype = this.Skype,
+                VK = this.VK,
+                FaceBook = this.FaceBook                
+            };
+        }
     }
 }

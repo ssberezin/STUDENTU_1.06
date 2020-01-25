@@ -323,12 +323,10 @@ namespace STUDENTU_1._06.ViewModel
         public RelayCommand CreateDobleNewOrderLine => createDobleNewOrderLine ?? (createDobleNewOrderLine = new RelayCommand(
                     (obj) =>
                     {
-
                         if (saved)
                         {
                             if (dialogService.YesNoDialog("Разбить заказ на подзаказы?") == true)                       
-                                DoubleOrder();
-                       
+                                DoubleOrder();                       
                         }
                     }
                     ));
@@ -389,6 +387,7 @@ namespace STUDENTU_1._06.ViewModel
                         bool PersonFirsDataCompare = Persone.ComparePersons(Persone, persone);
                         
                         SaveOrderPartAfterCheckContacts(contactId, 0, ContactsCompare, PersonFirsDataCompare);
+                        Order.Client = db.Clients.Find(Client.ClientId);
                         if (CancelSaveOrder)
                             return;
                     }
@@ -447,8 +446,10 @@ namespace STUDENTU_1._06.ViewModel
                     db.Contacts.Attach(_Contacts.Contacts);
                     db.Orderlines.Attach(Order);
                     db.WorkTypes.Attach(_WorkType.WorkType);
-                    db.Moneys.Add(Price);
-                    db.Clients.Add(Client);
+                    //db.Moneys.Add(Price);
+                    //db.Clients.Add(Client);
+                    db.Moneys.Attach(Price);
+                    db.Clients.Attach(Client);
                     db.PersoneDescriptions.Attach(PersoneDescription);
                     db.Persones.Attach(Persone);
                     db.Subjects.Attach(_Subj.Subj);
@@ -544,12 +545,20 @@ namespace STUDENTU_1._06.ViewModel
 
                     if (contactsCompare && personeCompare)
                     {
-                        Persone= db.Persones.Where(c => c.Contacts.ContactsId == contactsId).FirstOrDefault();
-                        Client = db.Clients.Where(c => c.Persone.PersoneId == Persone.PersoneId).FirstOrDefault();                        
+                        Client = db.Clients.Where(c => c.Persone.Contacts.ContactsId == contactsId).FirstOrDefault();                       
+                        Client = db.Clients.Find(Client.ClientId);
                         Client.OrderLine.Add(Order);
-                        Order.Client = db.Clients.Find(Client.ClientId);
-                        return;
-                       
+
+                        // к  Order.Client мы добавляем полученного Client уже в основном методе SaveNewOrder
+                        //так как еще не хватает навыков работы с каонтекстом , чтоб сделать это  красиво
+                        //ниже приведенна конструкция тут не работает. 
+                        // to Order.Client we add the received Client already in the main SaveNewOrder method
+                        // since there are still not enough skills to work with kaontext, to make it beautiful
+                        // the construction below does not work here.
+
+                        // Order.Client = db.Clients.Find(Client.ClientId);
+
+                        return;                       
                     }
                     else
                     {
@@ -570,19 +579,11 @@ namespace STUDENTU_1._06.ViewModel
                             persone = TMPStaticClass.CurrentOrder.Client.Persone;
                             OldContacts = persone.Contacts;
                         }
-                        _Contacts.OldPersoneCompare = persone;
-                        _Contacts.CurPersoneCompare = Persone;
-                        _Contacts.TmpContacts = OldContacts;
-                        _Contacts.OldTmpContactsCompare = OldContacts;
-                        _Contacts.TmpContactsCompare = _Contacts.Contacts;
-
-                        db.Entry(_Contacts.Contacts).State = EntityState.Modified;
-
-                        
-                        _Contacts.OldPersoneCompare = (Persone)persone.CloneExceptVirtual();
-                        _Contacts.CurPersoneCompare = (Persone)Persone.CloneExceptVirtual();
-                        _Contacts.TmpContacts = OldContacts;
-                        _Contacts.OldTmpContactsCompare = OldContacts;
+                        _Contacts.OldPersoneCompare =(Persone)this.persone.CloneExceptVirtual();
+                        _Contacts.CurPersoneCompare = (Persone)this.Persone.CloneExceptVirtual();
+                        _Contacts.TmpContacts = (Contacts)OldContacts.CloneExceptVirtual(); 
+                        _Contacts.OldTmpContactsCompare = (Contacts)OldContacts.CloneExceptVirtual();
+                        _Contacts.TmpContactsCompare = (Contacts)this._Contacts.Contacts.CloneExceptVirtual();
 
 
                         CompareContatctsWindow compareContatctsWindow = new CompareContatctsWindow(this);
@@ -612,21 +613,53 @@ namespace STUDENTU_1._06.ViewModel
                                 CancelSaveOrder = true;
                                 return;
                             };
-                        }
-                        db.Entry(persone).State = EntityState.Modified;
+                        }                       
+                      
 
-                        persone.Name = _Contacts.Persone.Name;
-                        persone.Surname = _Contacts.Persone.Surname;
-                        persone.Patronimic = _Contacts.Persone.Patronimic;
-                        persone.Sex = _Contacts.Persone.Sex;
-                        persone.Contacts = db.Contacts.Find(_Contacts.Contacts.ContactsId);
+                        db.Entry(persone).State = EntityState.Modified;
+                        personeCompare = persone.ComparePersons(persone, _Contacts.Persone);
+                        if (!personeCompare)
+                        {                           
+                            persone.Name = _Contacts.Persone.Name;
+                            persone.Surname = _Contacts.Persone.Surname;
+                            persone.Patronimic = _Contacts.Persone.Patronimic;
+                            persone.Sex = _Contacts.Persone.Sex;
+                        }
+
+                        contactsCompare = _Contacts.CompareContacts(persone.Contacts, _Contacts.Contacts);
+                        if (!contactsCompare)
+                        {
+                            Contacts tmpContacts = (Contacts)this._Contacts.Contacts.Clone();                                
+                            int tmpId = OldContacts.ContactsId;
+                            db.Entry(OldContacts).State = EntityState.Modified;
+                            OldContacts = tmpContacts;
+                            OldContacts.ContactsId = tmpId;                            
+                            persone.Contacts = db.Contacts.Find(OldContacts.ContactsId);
+                            OldContacts.Persone.Add(persone);
+                        }
+
+                        if (contactsCompare && personeCompare)
+                        {
+                            Client = db.Clients.Where(c => c.Persone.Contacts.ContactsId == contactsId).FirstOrDefault();
+                            Client = db.Clients.Find(Client.ClientId);
+                            Client.OrderLine.Add(Order);
+                            return;
+                        }
 
                         Client = db.Clients.Where(c => c.Persone.PersoneId == persone.PersoneId).FirstOrDefault();
                         db.Entry(Client).State = EntityState.Modified;
 
                         Client.Persone = db.Persones.Find(persone.PersoneId);
+                        //Client.OrderLine.Add(Order);
+                        //Order.Client = db.Clients.Find(Client.ClientId);
+
+
+
+                        // Client = db.Clients.Where(c => c.Persone.Contacts.ContactsId == contactsId).FirstOrDefault();
+
+                        //Client = db.Clients.Find(Client.ClientId);
                         Client.OrderLine.Add(Order);
-                        Order.Client = db.Clients.Find(Client.ClientId);
+
                     }
 
 

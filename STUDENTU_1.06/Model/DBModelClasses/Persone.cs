@@ -152,6 +152,20 @@ namespace STUDENTU_1._06.Model
                 Dates = new ObservableCollection<Dates>(this.Dates)
             };
         }
+        public object CloneExceptVirtual()
+        {
+            return new Persone()
+            {
+                PersoneId = this.PersoneId,
+                Name = this.Name,
+                NickName = this.NickName,
+                Surname = this.Surname,
+                Patronimic = this.Patronimic,
+                Photo = PhotoCopy(this.Photo),
+                Sex = this.Sex,                
+            };
+        }
+
 
         public byte[] PhotoCopy(byte[] obj)
         {

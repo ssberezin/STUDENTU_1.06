@@ -477,12 +477,12 @@ namespace STUDENTU_1._06.ViewModel
                             (setLeftContactsCommand = new RelayCommand(
                     (obj) =>
                     {
-                        Contacts = (Contacts)this.OldTmpContactsCompare.CloneExceptVirtual();
+                        Contacts = OldTmpContactsCompare;
 
-                        Persone.Name = this.OldPersoneCompare.Name;
-                        Persone.Surname = this.OldPersoneCompare.Surname;
-                        Persone.Patronimic = this.OldPersoneCompare.Patronimic;
-                        Persone.Sex = this.OldPersoneCompare.Sex;
+                        Persone.Name = OldPersoneCompare.Name;
+                        Persone.Surname = OldPersoneCompare.Surname;
+                        Persone.Patronimic = OldPersoneCompare.Patronimic;
+                        Persone.Sex = OldPersoneCompare.Sex;
                         saveCompareResults = true;//этот маркер пока не востребован
                         CloseWindow(obj as Window);
                     }
@@ -499,12 +499,12 @@ namespace STUDENTU_1._06.ViewModel
                     ));
         private void SetRightContacts(Window window)
         {
-            Contacts = (Contacts)this.TmpContactsCompare.CloneExceptVirtual();
+            Contacts = TmpContactsCompare;
 
-            Persone.Name = this.CurPersoneCompare.Name;
-            Persone.Surname = this.CurPersoneCompare.Surname;
-            Persone.Patronimic = this.CurPersoneCompare.Patronimic;
-            Persone.Sex = this.CurPersoneCompare.Sex;
+            Persone.Name = CurPersoneCompare.Name;
+            Persone.Surname = CurPersoneCompare.Surname;
+            Persone.Patronimic = CurPersoneCompare.Patronimic;
+            Persone.Sex = CurPersoneCompare.Sex;
             saveCompareResults = true;//этот маркер пока не востребован
             CloseWindow(window);
         }
