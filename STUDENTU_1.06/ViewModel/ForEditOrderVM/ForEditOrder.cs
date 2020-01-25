@@ -579,12 +579,12 @@ namespace STUDENTU_1._06.ViewModel
                             persone = TMPStaticClass.CurrentOrder.Client.Persone;
                             OldContacts = persone.Contacts;
                         }
-                        _Contacts.OldPersoneCompare =(Persone)this.persone.CloneExceptVirtual();
-                        _Contacts.CurPersoneCompare = (Persone)this.Persone.CloneExceptVirtual();
-                        _Contacts.TmpContacts = (Contacts)OldContacts.CloneExceptVirtual(); 
-                        _Contacts.OldTmpContactsCompare = (Contacts)OldContacts.CloneExceptVirtual();
-                        _Contacts.TmpContactsCompare = (Contacts)this._Contacts.Contacts.CloneExceptVirtual();
-
+                        
+                        _Contacts.OldPersoneCompare = (Persone)persone.CloneExceptVirtual();
+                        _Contacts.CurPersoneCompare = (Persone)Persone.CloneExceptVirtual();
+                        _Contacts.TmpContacts = OldContacts;
+                        _Contacts.OldTmpContactsCompare = OldContacts;
+                        _Contacts.TmpContactsCompare = _Contacts.Contacts;
 
                         CompareContatctsWindow compareContatctsWindow = new CompareContatctsWindow(this);
                         showWindow.ShowDialog(compareContatctsWindow);
