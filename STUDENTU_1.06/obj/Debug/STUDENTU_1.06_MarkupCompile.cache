@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\
+E:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\
 STUDENTU_1._06
 none
 false
 DEBUG;TRACE
-E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\App.xaml
+E:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\App.xaml
 25-713465788
 
 80-2024195847
-89184536426
+891652980710
 Views\EditOrderWindows\ContactsWindows\AddContactsWindow.xaml;Views\EditOrderWindows\ContactsWindows\CompareContatctsWindow.xaml;Views\EditOrderWindows\EditOrderLine\EditOrderFull.xaml;Views\EditOrderWindows\Evaluation\AddEvaluateWindow.xaml;Views\EditOrderWindows\BlackListWindow.xaml;Views\Dictionaries\Buttons.xaml;Views\EditOrderWindows\Evaluation\EditAvaluationWindow.xaml;Views\EditOrderWindows\EditSourceWindow.xaml;Views\EditOrderWindows\EditStatusWindow.xaml;Views\EditOrderWindows\EditSubject.xaml;Views\EditOrderWindows\EditDirection.xaml;Views\EditOrderWindows\EditOrderLine\EditOrder.xaml;Views\EditOrderWindows\EditWorkTypeWindow.xaml;Views\EditOrderWindows\Evaluation\EditEvaluateWindow.xaml.xaml;Views\EditOrderWindows\Evaluation\SetFinalAvaluationWindow.xaml;Views\EditOrderWindows\RuleOrderLineWindows\ComplicatedFilterAuthorsparamWondow.xaml;Views\EditOrderWindows\RuleOrderLineWindows\RuleOrderLineWindow.xaml;Views\MainWindow.xaml;Views\PersoneOperations\AuthorOperationsWindows\AuthorDirectionsWindow.xaml;Views\PersoneOperations\AuthorOperationsWindows\AuthorEditWindow.xaml;Views\PersoneOperations\AuthorOperationsWindows\AuthorInfo.xaml;Views\PersoneOperations\AuthorOperationsWindows\AuthorRatingEditWindow.xaml;Views\PersoneOperations\AuthorOperationsWindows\AuthorSubjectWindow.xaml;Views\PersoneOperations\AuthorOperationsWindows\AuthorWindow.xaml;Views\PersoneOperations\AuthorOperationsWindows\EditAuthorStatusWindow.xaml;
 
 False

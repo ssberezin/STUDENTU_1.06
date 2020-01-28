@@ -209,7 +209,7 @@ namespace STUDENTU_1._06.Model
                     {
                         if (item.Phone1!="---"&&(item.Phone1 == contacts.Phone1 || item.Phone1 == contacts.Phone2 || item.Phone1 == contacts.Phone3)||
                             item.Phone2 != "---" && (item.Phone2 == contacts.Phone2 || item.Phone2 == contacts.Phone3)||
-                            item.Phone2 != "---" && item.Phone3 == contacts.Phone3 ||
+                            item.Phone3 != "---" && item.Phone3 == contacts.Phone3 ||
                             item.Email1!="---"&&(item.Email1==contacts.Email1|| item.Email1 == contacts.Email2 )||
                             item.Email2 != "---" && (item.Email2 == contacts.Email2) ||
                             item.VK !="---"&&item.VK == contacts.VK ||
