@@ -436,79 +436,91 @@ namespace STUDENTU_1._06.ViewModel
       
         private void DoubleSaveNewOrder()
         {
-            using (StudentuConteiner db = new StudentuConteiner())
+            using (StudentuConteiner db2 = new StudentuConteiner())
             {
                 try
                 {
-                    db.Orderlines.Attach(Order);
-                    //db.Dates.Add(Date);
-                    db.Dates.Attach(Date);
-                    db.Directions.Attach(_Dir.Dir);
-                    db.Contacts.Attach(_Contacts.Contacts);
-                    db.Orderlines.Attach(Order);
-                    db.WorkTypes.Attach(_WorkType.WorkType);
-                    //db.Moneys.Add(Price);
-                    //db.Clients.Add(Client);
-                    db.Moneys.Attach(Price);
-                    db.Clients.Attach(Client);
-                    db.PersoneDescriptions.Attach(PersoneDescription);
-                    db.Persones.Attach(Persone);
-                    db.Subjects.Attach(_Subj.Subj);
-                    db.Statuses.Attach(_Status.Status);
-                    db.Sources.Attach(_Source.Source);
+                    db2.Orderlines.Attach(Order);
+                    //db2.Dates.Add(Date);
+                    db2.Dates.Attach(Date);
+                    db2.Directions.Attach(_Dir.Dir);
+                    db2.Contacts.Attach(_Contacts.Contacts);
+                    db2.Orderlines.Attach(Order);
+                    db2.WorkTypes.Attach(_WorkType.WorkType);
+                    //db2.Moneys.Add(Price);
+                    //db2.Clients.Add(Client);
+                    db2.Moneys.Attach(Price);
+                   // db2.Clients.Attach(Client);
+                    db2.PersoneDescriptions.Attach(PersoneDescription);
+                    db2.Persones.Attach(Persone);
+                    db2.Subjects.Attach(_Subj.Subj);
+                    db2.Statuses.Attach(_Status.Status);
+                    db2.Sources.Attach(_Source.Source);
 
-                    Order.Direction = db.Directions.Find(_Dir.Dir.DirectionId);
-                    Order.WorkType = db.WorkTypes.Find(_WorkType.WorkType.WorkTypeId);
-                    Order.Subject = db.Subjects.Find(_Subj.Subj.SubjectId);
-                    Order.Source = db.Sources.Find(_Source.Source.SourceId);
+                    Order.Direction = db2.Directions.Find(_Dir.Dir.DirectionId);
+                    Order.WorkType = db2.WorkTypes.Find(_WorkType.WorkType.WorkTypeId);
+                    Order.Subject = db2.Subjects.Find(_Subj.Subj.SubjectId);
+                    Order.Source = db2.Sources.Find(_Source.Source.SourceId);
                     Order.Dates = Date;
                     Order.Money = Price;
-                    Order.Status = db.Statuses.Find(_Status.Status.StatusId);
+                    Order.Status = db2.Statuses.Find(_Status.Status.StatusId);
                     Order.Saved = true;
 
                     //тут нужно проверяем текущие контакты с контатными данными родительского заказа
                     //вдруг пользователь изменил чего?...
                     // here we need to check the current contacts with the contact data of the parent order
                     // suddenly the user changed something? ... (
-                    //var order = db.Orderlines.Where(o => o.ParentId == TMPStaticClass.CurrentOrder.ParentId).FirstOrDefault();
-                    //var order = db.Orderlines.Find(TMPStaticClass.CurrentOrder.ParentId);
+                    //var order = db2.Orderlines.Where(o => o.ParentId == TMPStaticClass.CurrentOrder.ParentId).FirstOrDefault();
+                    //var order = db2.Orderlines.Find(TMPStaticClass.CurrentOrder.ParentId);
                     bool ContactsCompare = _Contacts.CompareContacts(_Contacts.Contacts, TMPStaticClass.CurrentOrder.Client.Persone.Contacts);
                     bool PersonFirsDataCompare = Persone.ComparePersons(Persone, TMPStaticClass.CurrentOrder.Client.Persone);
                     if (!ContactsCompare || !PersonFirsDataCompare)
                     {
-                        db.Entry(Order).State = EntityState.Detached;
+                        
+                       // db2.Entry(Client).State = EntityState.Detached;
                         SaveOrderPartAfterCheckContacts(0, TMPStaticClass.CurrentOrder.ParentId, ContactsCompare, PersonFirsDataCompare);
-                        db.Orderlines.Attach(Order);
-                       
-                        Order.Client = db.Clients.Find(Client.ClientId);
+                        if (doubleSaveCheck)
+                        {
+                            Client = db2.Clients.Find(TMPStaticClass.CurrentOrder.Client.ClientId);
+                            Client.OrderLine.Add(Order);
+                            Order.Client = db2.Clients.Find(Client.ClientId);
+                            doubleSaveCheck = false;
+                        }
+                        if (doubleSaveCheckDif)
+                        {  
+                            
+                            doubleSaveCheckDif = true;
+                        }
+                      
+                        Order.Client = db2.Clients.Find(Client.ClientId);
                         if (CancelSaveOrder)
                             return;
                     }
 
                     else
                     {
-                        Client = db.Clients.Find(TMPStaticClass.CurrentOrder.Client.ClientId);
+                        Client = db2.Clients.Find(TMPStaticClass.CurrentOrder.Client.ClientId);
                         Client.OrderLine.Add(Order);
-                        Order.Client = db.Clients.Find(Client.ClientId);
+                        Order.Client = db2.Clients.Find(Client.ClientId);
 
                     }
 
                  
-                    db.Configuration.AutoDetectChangesEnabled = false;
-                    db.Configuration.ValidateOnSaveEnabled = false;
-                    db.Orderlines.Add(Order);                    
+                    db2.Configuration.AutoDetectChangesEnabled = false;
+                    db2.Configuration.ValidateOnSaveEnabled = false;
+                    db2.Orderlines.Add(Order);                    
 
-                    db.SaveChanges();
+                    db2.SaveChanges();
 
-                    db.Entry(Order).State = EntityState.Modified;
+                    db2.Entry(Order).State = EntityState.Modified;
                     Order.ParentId = TMPStaticClass.CurrentOrder.ParentId;
-                    db.SaveChanges();
+                    db2.SaveChanges();
 
                     EditOrderCount(TMPStaticClass.CurrentOrder.OrderLineId, TMPStaticClass.CurrentOrder.OrderNumber);
                     TMPStaticClass.CurrentOrder = (OrderLine)Order.Clone();
                     saved = true;
                     doubleSave = false;                    
-                    db.Entry(Order).State = EntityState.Detached;
+                    db2.Entry(Order).State = EntityState.Detached;
                     dialogService.ShowMessage("Данные о заказе сохранены");
 
                 }
@@ -537,12 +549,18 @@ namespace STUDENTU_1._06.ViewModel
         }
 
         bool CancelSaveOrder = false;
+        //флаг для возврата в основной контекст , если пользователь
+        //осnвил все контактные данные прежними
+        bool doubleSaveCheck = false;
+        //флаг для возврата в основной контекст , если пользователь
+        //заменил прежние контактные данные на другие
+        bool doubleSaveCheckDif = false;
         private void SaveOrderPartAfterCheckContacts(int contactsId, int doubleId, 
                                                     bool contactsCompare, bool personeCompare)
         {
             
 
-            using (StudentuConteiner db = new StudentuConteiner())
+            using (StudentuConteiner db3 = new StudentuConteiner())
             {
                
                 try
@@ -552,8 +570,8 @@ namespace STUDENTU_1._06.ViewModel
 
                     if (contactsCompare && personeCompare)
                     {
-                        Client = db.Clients.Where(c => c.Persone.Contacts.ContactsId == contactsId).FirstOrDefault();                       
-                        Client = db.Clients.Find(Client.ClientId);
+                        Client = db3.Clients.Where(c => c.Persone.Contacts.ContactsId == contactsId).FirstOrDefault();                       
+                        Client = db3.Clients.Find(Client.ClientId);
                         Client.OrderLine.Add(Order);
 
                         // к  Order.Client мы добавляем полученного Client уже в основном методе SaveNewOrder
@@ -563,8 +581,7 @@ namespace STUDENTU_1._06.ViewModel
                         // since there are still not enough skills to work with kaontext, to make it beautiful
                         // the construction below does not work here.
 
-                        // Order.Client = db.Clients.Find(Client.ClientId);
-
+                        // Order.Client = db3.Clients.Find(Client.ClientId);
                         return;                       
                     }
                     else
@@ -576,19 +593,23 @@ namespace STUDENTU_1._06.ViewModel
                             //first save branch
                             dialogService.ShowMessage("Уже есть клиент с такими контактными данными.\n" +
                                                  "Вносим правку в базу данных");                           
-                            persone = db.Persones.Where(c => c.Contacts.ContactsId == contactsId).FirstOrDefault();
-                            OldContacts = db.Contacts.Where(c => c.ContactsId == contactsId).FirstOrDefault();
+                            //persone = db3.Persones.Where(c => c.Contacts.ContactsId == contactsId).FirstOrDefault();
+                            //OldContacts = db3.Contacts.Where(c => c.ContactsId == contactsId).FirstOrDefault();
                         }
                         else
                         {
                             //ветка doublesave
                             //doublesave branch
                             dialogService.ShowMessage("Контактные данные в подзаказе не совпадают с теми,.\n" +
-                                                 "которые были в исходном заказе. ");                            
-                            persone = TMPStaticClass.CurrentOrder.Client.Persone;
-                            OldContacts = persone.Contacts;
+                                                 "которые были в исходном заказе. ");
+                            //persone = TMPStaticClass.CurrentOrder.Client.Persone;
+                            contactsId = TMPStaticClass.CurrentOrder.Client.Persone.Contacts.ContactsId;
+                            //persone = db3.Persones.Where(c => c.Contacts.ContactsId == contactsId).FirstOrDefault();
+                            ////OldContacts = persone.Contacts;
+                            //OldContacts = db3.Contacts.Where(c => c.ContactsId == contactsId).FirstOrDefault();
                         }
-                       
+                        persone = db3.Persones.Where(c => c.Contacts.ContactsId == contactsId).FirstOrDefault();
+                        OldContacts = db3.Contacts.Where(c => c.ContactsId == contactsId).FirstOrDefault();
 
                         _Contacts.OldPersoneCompare = (Persone)persone.CloneExceptVirtual();
                         _Contacts.CurPersoneCompare = (Persone)this.Persone.CloneExceptVirtual();
@@ -629,18 +650,21 @@ namespace STUDENTU_1._06.ViewModel
                         contactsCompare = _Contacts.CompareContacts(persone.Contacts, _Contacts.Contacts);
                         if (contactsCompare && personeCompare)
                         {
-                            db.Orderlines.Attach(Order);
-                            
-                            Client = db.Clients.Where(c => c.ClientId == TMPStaticClass.CurrentOrder.Client.ClientId).FirstOrDefault();
-                            Client = db.Clients.Find(Client.ClientId);
-                            Client.OrderLine.Add(Order);                           
-                            
+                            //возвращаемся в исходный контекст, иначе получаем море проблем
+                            doubleSaveCheck = true;
                             return;
-                        }                        
+                        }
+                        //else
+                        //if (doubleSave)
+                        //{
+                        //    db3.Entry(persone).State = EntityState.Detached;
+                        //    doubleSaveCheckDif = true;
+                        //    return;
+                        //}
                         
                         if (!personeCompare)
                         {                            
-                            db.Entry(persone).State = EntityState.Modified;
+                            db3.Entry(persone).State = EntityState.Modified;
                             persone.Name = _Contacts.Persone.Name;
                             persone.Surname = _Contacts.Persone.Surname;
                             persone.Patronimic = _Contacts.Persone.Patronimic;
@@ -650,7 +674,7 @@ namespace STUDENTU_1._06.ViewModel
                         
                         if (!contactsCompare)
                         {
-                            db.Entry(OldContacts).State = EntityState.Modified;
+                            db3.Entry(OldContacts).State = EntityState.Modified;
                             OldContacts.Phone1 = _Contacts.Contacts.Phone1;
                             OldContacts.Phone2 = _Contacts.Contacts.Phone2;
                             OldContacts.Phone3 = _Contacts.Contacts.Phone3;
@@ -661,10 +685,10 @@ namespace STUDENTU_1._06.ViewModel
                             OldContacts.Skype = _Contacts.Contacts.Skype;
                         }
 
-                        db.SaveChanges();  
-                        Client = db.Clients.Where(c => c.Persone.PersoneId == persone.PersoneId).FirstOrDefault();
+                        db3.SaveChanges();
+                        Client = db3.Clients.Where(c => c.Persone.PersoneId == persone.PersoneId).FirstOrDefault();
                         Client.OrderLine.Add(Order);
-
+                        
                     }
 
 

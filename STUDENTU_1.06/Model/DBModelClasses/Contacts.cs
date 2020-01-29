@@ -249,6 +249,7 @@ namespace STUDENTU_1._06.Model
         {
             return new Contacts()
             {
+                ContactsId=this.ContactsId,
                 Phone1 = this.Phone1,
                 Phone2 = this.Phone2,
                 Phone3 = this.Phone3,
@@ -266,6 +267,7 @@ namespace STUDENTU_1._06.Model
         {
             return new Contacts()
             {
+                ContactsId = this.ContactsId,
                 Phone1 = this.Phone1,
                 Phone2 = this.Phone2,
                 Phone3 = this.Phone3,
