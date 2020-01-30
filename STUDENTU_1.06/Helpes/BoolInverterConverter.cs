@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace STUDENTU_1._06.Helpes
 {
+    //not used anyware
     public class BoolInverterConverter : System.Windows.Data.IValueConverter
     {
         #region IValueConverter Members

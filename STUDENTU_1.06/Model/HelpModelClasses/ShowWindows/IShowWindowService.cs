@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace STUDENTU_1._06.Model.HelpModelClasses.ShowWindows
 {
-    interface IShowWindowService
+    public interface IShowWindowService
     {
         void ShowWindow(Window window);
         void CloseWindow(Window window);

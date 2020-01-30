@@ -18,7 +18,7 @@ using STUDENTU_1._06.Views.EditOrderWindows.RuleOrderLineWindows;
 
 namespace STUDENTU_1._06.ViewModel
 {
-    public partial class ForEditOrder : Helpes.ObservableObject
+    public partial class ForEditOrder : ObservableObject
     {
         public ObservableCollection<Contacts> ContactsRecords { get; set; }
 
@@ -220,15 +220,18 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
-      
+  
+
+        
+
         public ForEditOrder()
         {
-
             DefaultLoadData();
             Order = new OrderLine { OrderNumber = GetOrderNumber() };
             showWindow = new DefaultShowWindowService();
             dialogService = new DefaultDialogService();            
         }
+        
 
         private void DefaultLoadData()
         {
@@ -947,11 +950,22 @@ namespace STUDENTU_1._06.ViewModel
             window.Close();
         }
 
-//========================================================================================================================
+        public void _CloseWindow()
+        {
+            throw new NotImplementedException();
+        }
 
 
 
-//==================================COMMAND FOR CLOSE WINDOW =============================================================
+
+
+        //========================================================================================================================
+
+
+
+        //==================================COMMAND FOR CLOSE WINDOW =============================================================
+
+
         private RelayCommand cancelSaveContactsCommand;
 
         public RelayCommand CancelSaveContactsCommand => cancelSaveContactsCommand ?? (cancelSaveContactsCommand = new RelayCommand(
