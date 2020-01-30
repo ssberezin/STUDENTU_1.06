@@ -206,13 +206,11 @@
             </Viewbox>
             <!--для валидации https://www.codeproject.com/Articles/97564/Attributes-based-Validation-in-a-WPF-MVVM-Applicat-->
             <RadioButton GroupName="A" Content="Мужской" VerticalAlignment="Center" TabIndex="4"
-                          IsChecked="{Binding Persone.Sex, Mode=TwoWay}" />
+                          IsChecked="{Binding Persone.Male, Mode=TwoWay}" />
             <!--Persone can find in ForEditOrder.cs-->
-
+            <!--Converter={StaticResource boolInverterConverter},-->
             <RadioButton GroupName="A" Content="Женский" VerticalAlignment="Center" TabIndex="3" 
-                          IsChecked="{Binding Persone.Sex, 
-                          Converter={StaticResource boolInverterConverter},
-                          Mode=TwoWay}"/>
+                          IsChecked="{Binding Persone.Female, Mode=TwoWay}"/>
             <!--Persone can find in ForEditOrder.cs-->
         </WrapPanel>
         <WrapPanel Grid.Row="5" Grid.ColumnSpan="2" Grid.RowSpan="2" Margin="3" >
@@ -323,11 +321,12 @@
                 <ColumnDefinition Width="158*"/>
             </Grid.ColumnDefinitions>
             <Button  Content="Сохранить" Background="Green" TabIndex="25"
-                IsEnabled="{Binding ElementName=TBxName,  Path=Text.Length}"
+                IsEnabled="{Binding Order.Saved, Converter={StaticResource boolInverterConverter}}"
                 Command="{Binding CreateNewOrderLine}"  Margin="3,3,2.8,2.6" />
-            <Button  Content="Разбить" Grid.Column="1" Background="Yellow" TabIndex="25"                
-                Command="{Binding CreateDobleNewOrderLine}"  Margin="3,3,2.8,2.6" 
-                     Foreground="Black"
+            <Button  Content="Разбить" Grid.Column="1" Background="Yellow" TabIndex="25"
+                      IsEnabled="{Binding Order.Saved}"
+                      Command="{Binding CreateDobleNewOrderLine}"  Margin="3,3,2.8,2.6" 
+                      Foreground="Black"
                     
                      ToolTip="Разбить на несколько подзаказов"/>
             <Button Grid.Column="2"  Content="Редактировать" Background="#FF433BDC" TabIndex="26"

@@ -307,12 +307,11 @@
                 <TextBlock Text="Пол:" FontWeight="Bold" Foreground="Brown"/>
             </Viewbox>
             <RadioButton GroupName="A" Content="Мужской" VerticalAlignment="Center" TabIndex="5"
-                          IsChecked="{Binding Persone.Sex, Mode=TwoWay}" />
+                          IsChecked="{Binding Persone.Male, Mode=TwoWay}" />
             <!--Persone can find in AuthorsVMClass.cs-->
+            <!--Converter={StaticResource boolInverterConverter}-->
             <RadioButton GroupName="A" Content="Женский" VerticalAlignment="Center" TabIndex="6" 
-                          IsChecked="{Binding Persone.Sex, 
-                          Converter={StaticResource boolInverterConverter},
-                          Mode=TwoWay}"/>
+                          IsChecked="{Binding Persone.Female, Mode=TwoWay}"/>
             <!--Persone can find in AuthorsVMClass.cs-->
             <Button Content="В ч.списке?" Background="Black" Height="30" Width="149" TabIndex="7" Margin="5"
                     Command="{Binding CheckBlackListCommand}"/>

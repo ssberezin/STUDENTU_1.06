@@ -381,7 +381,8 @@ namespace STUDENTU_1._06.ViewModel
                                         Name = item.Persone.Name,
                                         Surname = item.Persone.Surname,
                                         Patronimic = item.Persone.Patronimic,
-                                        Sex = item.Persone.Sex,
+                                        Male = item.Persone.Male,
+                                        Female=item.Persone.Female,
                                         NickName = item.Persone.NickName
 
                                     },

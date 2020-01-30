@@ -482,7 +482,9 @@ namespace STUDENTU_1._06.ViewModel
                         Persone.Name = OldPersoneCompare.Name;
                         Persone.Surname = OldPersoneCompare.Surname;
                         Persone.Patronimic = OldPersoneCompare.Patronimic;
-                        Persone.Sex = OldPersoneCompare.Sex;
+                        Persone.Male = OldPersoneCompare.Male;
+                        Persone.Female = OldPersoneCompare.Female;
+
                         saveCompareResults = true;//этот маркер пока не востребован
                         CloseWindow(obj as Window);
                     }
@@ -504,7 +506,8 @@ namespace STUDENTU_1._06.ViewModel
             Persone.Name = CurPersoneCompare.Name;
             Persone.Surname = CurPersoneCompare.Surname;
             Persone.Patronimic = CurPersoneCompare.Patronimic;
-            Persone.Sex = CurPersoneCompare.Sex;
+            Persone.Male = CurPersoneCompare.Male;
+            Persone.Female = CurPersoneCompare.Female;
             saveCompareResults = true;//этот маркер пока не востребован
             CloseWindow(window);
         }

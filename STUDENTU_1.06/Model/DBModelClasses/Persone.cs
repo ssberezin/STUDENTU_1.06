@@ -15,11 +15,10 @@ namespace STUDENTU_1._06.Model
         {
             this.User = new ObservableCollection<User>();
             this.Client = new ObservableCollection<Client>();
-            this.Author = new ObservableCollection<Author>();
-            // this.Contacts = new List<Contacts>();
-
-            this.Dates = new ObservableCollection<Dates>();
-            this.Sex = true;
+            this.Author = new ObservableCollection<Author>();            
+            this.Dates = new ObservableCollection<Dates>();            
+            this.Male = true;
+            this.Female = false;
             this.Name = "";
             this.NickName = null;
             
@@ -110,20 +109,35 @@ namespace STUDENTU_1._06.Model
         }
 
         
-        private bool sex;
-        public bool Sex 
+
+
+        private bool male;//жуской пол
+        public bool Male
         {
-            get { return sex; }
+            get { return male; }
             set
             {
-                if (value != sex)
+                if (value != male)
                 {
-                    sex = value;
-                    OnPropertyChanged(nameof(Sex));
+                    male = value;
+                    OnPropertyChanged(nameof(Male));
                 }
             }
         }
 
+        private bool female;//жуской пол
+        public bool Female
+        {
+            get { return female; }
+            set
+            {
+                if (value != female)
+                {
+                    female = value;
+                    OnPropertyChanged(nameof(Female));
+                }
+            }
+        }
 
         public virtual Contacts Contacts { get; set; }
         public virtual PersoneDescription PersoneDescription { get; set; }
@@ -143,7 +157,8 @@ namespace STUDENTU_1._06.Model
                 Surname = this.Surname,
                 Patronimic = this.Patronimic,
                 Photo = PhotoCopy(this.Photo),
-                Sex = this.Sex,
+                Male = this.Male,
+                Female = this.Female,
                 Contacts = (Contacts)this.Contacts.Clone(),
                 PersoneDescription = (PersoneDescription)this.PersoneDescription.Clone(),
                 User = new ObservableCollection<User>(this.User),
@@ -161,8 +176,9 @@ namespace STUDENTU_1._06.Model
                 NickName = this.NickName,
                 Surname = this.Surname,
                 Patronimic = this.Patronimic,
-                Photo = PhotoCopy(this.Photo),
-                Sex = this.Sex,                
+                Photo = PhotoCopy(this.Photo),                
+                Male=this.Male,
+                Female=this.Female
             };
         }
 
@@ -187,7 +203,7 @@ namespace STUDENTU_1._06.Model
         public bool ComparePersons(Persone obj1, Persone obj2)
         {
             if (obj1.Name==obj2.Name&&obj1.Surname==obj2.Surname&&
-                obj1.Patronimic==obj2.Patronimic&&obj1.Sex==obj2.Sex)
+                obj1.Patronimic==obj2.Patronimic&&obj1.Male==obj2.Male&& obj1.Female == obj2.Female)
                 return true;
             return false;
         }
