@@ -21,9 +21,12 @@ namespace STUDENTU_1._06.ViewModel
     public partial class ForEditOrder : ObservableObject
     {
         public ObservableCollection<Contacts> ContactsRecords { get; set; }
+        public ObservableCollection<Records> Records { get; set; }
 
         private Window editWindow;
         private Window editDirection;
+
+        
 
         bool saved = false;//флаг, для того, чтоб понимать, был ли сохранен заказ в первый раз или нет.
 
@@ -104,6 +107,22 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
+        //для выода сообщение об общей потраченной ранее заказчиком сумме, в спарке 
+        // for output, a message about the total amount previously spent by the customer
+        private string msg;
+        public string Msg
+        {
+            get { return msg; }
+            set
+            {
+                if (msg != value)
+                {
+                    msg = value;
+                    OnPropertyChanged(nameof(msg));
+                }
+            }
+        }
+
         private Persone persone;
         public Persone Persone
         {
@@ -116,7 +135,9 @@ namespace STUDENTU_1._06.ViewModel
                     OnPropertyChanged(nameof(Persone));
                 }
             }
-        }        
+        }
+
+        
 
         private Money price;
         public Money Price
@@ -236,6 +257,7 @@ namespace STUDENTU_1._06.ViewModel
         private void DefaultLoadData()
         {
             ContactsRecords = new ObservableCollection<Contacts>();
+            Records = new ObservableCollection<Records>();
             BlackListRecords = new ObservableCollection<BlackListHelpModel>();
             Author = new Author();
             _Contacts = new _Contacts();
@@ -410,7 +432,12 @@ namespace STUDENTU_1._06.ViewModel
                     saved = true;
                     doubleSave = false;
                     db.Entry(Order).State = EntityState.Detached;
+                    //обновляем информацию о прежних заказах заказчика в окне оформления заказа EditOrder.xaml
+                    // update information about previous customer orders in EditOrder.xaml
+                    if (contactId != 0)
+                        LoadRecords(client.ClientId);
                     dialogService.ShowMessage("Данные о заказе сохранены");
+                    
                 }
                 catch (ArgumentNullException ex)
                 {
@@ -520,6 +547,9 @@ namespace STUDENTU_1._06.ViewModel
                     saved = true;
                     doubleSave = false;                    
                     db2.Entry(Order).State = EntityState.Detached;
+                    //обновляем информацию о прежних заказах заказчика в окне оформления заказа EditOrder.xaml
+                    // update information about previous customer orders in EditOrder.xaml
+                    LoadRecords(client.ClientId);
                     dialogService.ShowMessage("Данные о заказе сохранены");
 
                 }
@@ -775,9 +805,128 @@ namespace STUDENTU_1._06.ViewModel
             }
             return 0;
         }
-//=========================================================================================================================    
+        //=========================================================================================================================    
 
-//============================================Edit OrderCount field in Order ==============================================
+        //========================================COMMAND FOR GET PREVIOS CLIENT ORDERS ==========================================
+        private RelayCommand loadPreviosOrdersCommand;
+        public RelayCommand LoadPreviosOrdersCommand => loadPreviosOrdersCommand ?? 
+            (loadPreviosOrdersCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        LoadPrreviosClientOrdersData(_Contacts.Contacts, Persone);
+                    }
+                    ));
+
+
+        private void LoadPrreviosClientOrdersData(Contacts contacts, Persone persone)
+        {
+            
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                try
+                {
+                    int contactsId = contacts.CheckContacts(contacts);
+                    if (contactsId == 0)
+                    {
+                        Msg = $"По этим контактным данным ни одного совпадения в базе данных нет. ";
+                        return;
+                    }
+                    var client = db.Clients.Where(c => c.Persone.Contacts.ContactsId == contactsId).FirstOrDefault();
+                    if (!persone.ComparePersons(persone, client.Persone))                    
+                        dialogService.ShowMessage("Ранее этот клиент оформлял заказы под другими контактными данными\n" +
+                            "При сохранении заказа будут предложены варианты дальнейших действий");
+                    LoadRecords(client.ClientId);
+                }
+                catch (ArgumentNullException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (OverflowException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+            }
+        }
+
+        private void LoadRecords(int clientId)
+        {
+            Records.Clear();
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                try
+                {                 
+                    var COrders = db.Orderlines.Where(c => c.Client.ClientId == clientId).ToList();
+                    decimal TotalSumOrders = 0;
+                    string authorNickName;
+                    foreach (var item in COrders)
+                    {
+                        if (item.GetExecuteAuthor(item.Author) == null)
+                            authorNickName = "---";
+                        else
+                            authorNickName = item.GetExecuteAuthor(item.Author).Persone.NickName;
+                        Records record = new Records
+                        {
+                            RecordId = item.OrderLineId,
+                            OrderNumber = item.OrderNumber,
+                            DateOfReception = item.Dates.DateOfReception,
+                            DeadLine = item.Dates.DeadLine,
+                            DateDone = item.Dates.DateDone,
+                            Price = item.Money.Price,
+                            OrderCount = item.OrderCount,
+                            Prepayment = item.Money.Prepayment,
+                            Status = item.Status.StatusName,
+                            TypeOfWork = item.WorkType.TypeOfWork,
+                            AuthorNickName = authorNickName,
+                            SubName = item.Direction.DirectionName
+                        };
+                        TotalSumOrders += item.Money.Price;
+                        Records.Add(record);
+                    }
+                    if (TotalSumOrders != 0)
+                        Msg = $"Прежние заказы клиента.           Общая сумма всех заказов составляет  {TotalSumOrders} грн";
+                    else
+                        Msg = $"Информация по прежним заказам пока не определена ";
+                }
+                catch (ArgumentNullException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (OverflowException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+            }
+        }
+
+
+        //========================================================================================================================
+
+
+        //============================================Edit OrderCount field in Order ==============================================
         //to edit OrderCount in Order
         private void EditOrderCount(int orderId, int orderNumber)
         {

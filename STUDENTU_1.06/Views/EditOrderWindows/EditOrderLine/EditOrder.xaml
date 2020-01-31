@@ -12,7 +12,7 @@
         xmlns:scm1="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-         Title="EditOrder" Height="550" Width="1000" MinHeight="500" MinWidth="1000" x:Name="UI"
+         Title="EditOrder" Height="750" Width="1000" MinHeight="750" MinWidth="1000" 
         TextElement.Foreground="{DynamicResource MaterialDesignBody}" 
              
         TextElement.FontWeight="Regular"
@@ -35,6 +35,8 @@
         <helpes:HeightToFontSizeConverter x:Key="heightToFontSizeConverter"/>
         <helpes:BoolInverterConverter x:Key="boolInverterConverter"/>
         <helpes:StringToBoollConverter x:Key="stringToBoollConverter"/>
+        <helpes:NullToBooleanConverter x:Key="NullBoolConverter" />
+        <helpes:StringToBrushConverter x:Key="StringToBrushConverter" />
 
 
         <!--for sorting in listbox without behind code-->
@@ -110,15 +112,8 @@
                     <Setter Property="Foreground" Value="Red" />
                 </Trigger>
             </Style.Triggers>
-
         </Style>
-
-
-
-
     </Window.Resources>
-
-
 
     <Grid  FocusManager.FocusedElement="{Binding ElementName=TBxName}">
         <Grid.ColumnDefinitions>
@@ -140,6 +135,8 @@
             <RowDefinition Height="41*"/>
             <RowDefinition Height="61*"/>
             <RowDefinition Height="41*"/>
+            <RowDefinition Height="150*"/>
+            
         </Grid.RowDefinitions>
         <Grid HorizontalAlignment="Right" Width="157"  >
             <Grid.ColumnDefinitions>
@@ -178,6 +175,7 @@
             <!--тут хз пока шо прилепить, забацал кнопку и забыл накой она нужна была-->
             <Button Content="+ ?" Background="Yellow" Foreground="Black" Width="40" 
                     HorizontalAlignment="Right" TabIndex="6"
+                    Command="{Binding LoadPreviosOrdersCommand}"
                     ToolTip="Дополнительная проверка по базе"/>
 
         </WrapPanel>
@@ -336,6 +334,7 @@
                 Command="{Binding CloseWindowCommand}" 
                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" Margin="3.4,3,3.4,2.6"/>
             <Button Content="Печать квитанции" Grid.Column="4"
+                    IsEnabled="{Binding Order.Saved, Converter={StaticResource boolInverterConverter}}"
                     Name="PrintCheck"   TabIndex="25" 
                     Background="Brown" Foreground="Black" Margin="2.6,3,3,2.6"/>
             <!-- Command CloseWindowCommand  can find  ForEditOrder.cs-->
@@ -481,6 +480,66 @@
 
             <!-- Command NewEditWorkType  can find  WorkTypeClass.cs-->
 
+        </StackPanel>
+        <StackPanel Grid.Row="11" Grid.ColumnSpan="5">
+            <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5"  
+                     VerticalAlignment="Stretch">
+                <TextBlock Text="{Binding Msg, UpdateSourceTrigger=PropertyChanged}" Foreground="Red" FontWeight="Bold"/>
+            </Viewbox>
+            <DataGrid x:Name="GridOrders" Grid.Row="1" ItemsSource="{Binding Records, UpdateSourceTrigger=PropertyChanged}" 
+                  SelectedItem="{Binding SelectedOrderLine}"                  
+                  AutoGenerateColumns="False" SelectionMode="Single"
+                  IsReadOnly="True" Grid.ColumnSpan="2"  >
+
+                <!--"Records" , "SelectedOrderLine" we can find in  "MainViewModel.cs"-->
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <!--задаем фон заказам, которые разбиты на несколько подзаказов-->
+                        <!--set the background for orders that are divided into several suborders-->
+                        <Setter Property="Foreground"
+                           Value="{Binding Status, Converter={StaticResource StringToBrushConverter}}" />
+                        <Setter Property="Background" 
+                            Value="{Binding OrderCount ,Converter={StaticResource StringToBrushConverter}}"/>
+                        <!--"Status" , "OrderCount" we can find in  "MainViewModel.cs"-->
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <!--задачаем фон и цвет шрифта записиси заказа со статусом "-отказ от выполнения-"-->
+                                <!--set the background and font color of the order record with the status "rejection"-->
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding Status}" Value="-отказ от выполнения-" />
+                                </MultiDataTrigger.Conditions>
+                                <MultiDataTrigger.Setters>
+                                    <Setter Property="Background" Value="#FFE4C58E" />
+                                </MultiDataTrigger.Setters>
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        
+                        <!--"UpdateOrederList" we can find in  "MainViewModel.cs"-->
+                        <MenuItem Header="Редактировать" />
+                        <MenuItem Header="Подробности" />
+                        <MenuItem Header="Удалить" />
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
+                <!--all the binding elements of the DataGrid element can be found in the class "MainViewModel.cs"-->
+                <DataGrid.Columns>
+                    <DataGridTextColumn Width="0.355*" Binding="{Binding OrderNumber}"  Header="№заказа"/>
+                    
+                    <DataGridTextColumn Width="0.5*" Binding="{Binding SubName}" Header="Направление"/>
+                    <DataGridTextColumn Width="0.35*"  Binding="{Binding  DateOfReception, Converter={StaticResource dateFormatConverter}}" Header="Принят"/>
+                    <DataGridTextColumn Width="0.35*"  Binding="{Binding  DeadLine, Converter={StaticResource dateFormatConverter}}" Header="Deadline"/>
+                    <DataGridTextColumn Width="0.39*" Binding="{Binding DateDone, Converter={StaticResource dateFormatConverter}}" Header="Выполнен"/>
+                    <DataGridTextColumn Width="0.35*" Binding="{Binding Status}" Header="Статус">
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Width="0.5*" Binding="{Binding TypeOfWork}" Header="Тип работы"/>
+                    <DataGridTextColumn Width="0.3*" Binding="{Binding AuthorNickName}" Header="Автор"/>
+                    <DataGridTextColumn Width="0.3*" Binding="{Binding Price}" Header="Цена"/>
+                    <DataGridTextColumn Width="0.45*" Binding="{Binding Prepayment}" Header="Предоплата"/>
+                </DataGrid.Columns>
+            </DataGrid>
         </StackPanel>
 
 
