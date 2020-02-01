@@ -23,14 +23,9 @@ namespace STUDENTU_1._06.ViewModel
       
         private Persone selectedPersone;
         private Window mainWindow;
-
         
         IDialogService dialogService;//for show messages in mvvm pattern order
         IShowWindowService showWindow;//for show messages in mvvm pattern order
-
-
-        
-        
 
         public MainViewModel(Window mainWindow, DefaultShowWindowService showWindow)
         {
@@ -151,7 +146,13 @@ namespace STUDENTU_1._06.ViewModel
                 {
                     if (db.Universities.Count() == 0)
                     {
-                        db.Universities.Add(new University() { UniversityName = "---", City="---" });                        
+                        db.Universities.Add(new University() { UniversityName = "---", City="---" });
+                        db.Universities.Add(new University() { UniversityName = "(КНУ) Криворожский национальный университет", City = "Кривой Рог" });
+                        db.Universities.Add(new University() { UniversityName = "(КГПУ) Криворожский государственный педагогический университет", City = "Кривой Рог" });
+                        db.Universities.Add(new University() { UniversityName = "(КЭИ) Киевский экономический", City = "Кривой Рог" });
+                        db.Universities.Add(new University() { UniversityName = "Одесская юридическая академия", City = "Кривой Рог" });
+                        db.Universities.Add(new University() { UniversityName = "(НМетАУ) Национальная Металлургическая академия Украины", City = "Кривой Рог" });
+                        db.Universities.Add(new University() { UniversityName = "(ДонНТУ) Донецкий национальный технический университет", City = "Кривой Рог" });
                         db.SaveChanges();
                     }
 

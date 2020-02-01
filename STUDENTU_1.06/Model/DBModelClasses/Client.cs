@@ -38,10 +38,35 @@ namespace STUDENTU_1._06.Model
         public int ClientId { get; set; }
 
         [Column(TypeName = "datetime2")]
-        public DateTime YearUniversityStart { get; set; }
+        private DateTime yearUniversityStart;
+        public DateTime YearUniversityStart
+        {
+            get { return yearUniversityStart; }
+            set
+            {
+                if (yearUniversityStart != value)
+                {
+                    yearUniversityStart = value;
+                    OnPropertyChanged(nameof(YearUniversityStart));
+                }
+            }
+        }
 
 
-        public int Course { get; set; }
+        private int course;
+        public int Course
+        {
+            get { return course; }
+            set
+            {
+                if (course != value)
+                {
+                    course = value;
+                    OnPropertyChanged(nameof(Course));
+                }
+            }
+        }
+
 
         [Column("GroupName", TypeName = "ntext")]
         [MaxLength(255)]
@@ -91,6 +116,17 @@ namespace STUDENTU_1._06.Model
                 return null;
             }
 
+        }
+
+        public DateTime GetYearUniversityStart(int val)
+        {
+            return DateTime.Now.AddMonths(-DateTime.Now.Month)
+                                                .AddDays(-DateTime.Now.Day)
+                                                .AddHours(-DateTime.Now.Hour)
+                                                .AddMinutes(DateTime.Now.Minute)
+                                                .AddSeconds(DateTime.Now.Second)
+                                                .AddSeconds(DateTime.Now.Millisecond)
+                                                .AddYears(-val+1);
         }
 
         public object Clone()

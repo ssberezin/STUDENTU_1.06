@@ -13,7 +13,7 @@ namespace STUDENTU_1._06.Model
         {
         
             this.OrderLine = new ObservableCollection<OrderLine>();            
-            this.StatusName = "принимается";
+            
         }
         [ForeignKey("OrderLine")]
         public int StatusId { get; set; }
