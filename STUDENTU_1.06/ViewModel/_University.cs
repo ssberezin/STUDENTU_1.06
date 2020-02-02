@@ -12,9 +12,9 @@ using STUDENTU_1._06.Model.DBModelClasses;
 
 namespace STUDENTU_1._06.ViewModel
 {
-   public class _Universities: Helpes.ObservableObject
+   public class _University: Helpes.ObservableObject
     {
-        public _Universities()
+        public _University()
         {
             University = new University();
             UniversityRecords = new ObservableCollection<University>();
@@ -106,45 +106,44 @@ namespace STUDENTU_1._06.ViewModel
                     }
                     ));
 
-        private RelayCommand deleteStatusCommand;
-        public RelayCommand DeleteStatusCommand => deleteStatusCommand ??
-            (deleteStatusCommand = new RelayCommand((obj) =>
+        private RelayCommand deleteUniversityCommand;
+        public RelayCommand DeleteUniversityCommand => deleteUniversityCommand ??
+            (deleteUniversityCommand = new RelayCommand((obj) =>
             {
-                DeleteStatus();
+                DeleteUniversity();
             }
             ));
 
-        private RelayCommand editStatusCommand;
-        public RelayCommand EditStatusCommand => editStatusCommand ?? (editStatusCommand = new RelayCommand(
+        private RelayCommand editUniversityCommand;
+        public RelayCommand EditUniversityCommand => editUniversityCommand ?? (editUniversityCommand = new RelayCommand(
                     (obj) =>
                     {
-                        EditStatus(obj as string);
+                        EditUniversity(obj as string);
                     }
                     ));
 
         //===================THIS METHOD IS FOR DELETE RECORDS FROM STATUS TABLES==============
-        public void DeleteStatus()
+        public void DeleteUniversity()
         {
             using (StudentuConteiner db = new StudentuConteiner())
             {
                 try
                 {
-                    var res = db.Orderlines;
-                    if (Status.StatusId != 1 && !CheckRecordBeforDelete(Status))
+                    var res = db.Universities.ToList();
+                    int len = res.Count();
+                    if (University.UniversityId != 1 && !CheckRecordBeforDelete(University))
                     {
                         if (dialogService.YesNoDialog("Точно нужно удалить эту запись?") == true)
                         {
                             //changing DB
                             //we find all the records in which we have the desired Id and make a replacement
-                            foreach (OrderLine order in res)
-                            {
-                                if (order.Status.StatusId == Status.StatusId)
-                                    order.Status = db.Statuses.Find(new Status() { StatusId = 1 }.StatusId);
-                            }
-                            db.Statuses.Remove(db.Statuses.Find(Status.StatusId));
+                            for (int i = 0; i < len; i++)
+                                if (res[i].UniversityId == University.UniversityId)
+                                    res[i] = db.Universities.Find(1);
+                            db.Universities.Remove(db.Universities.Find(University.UniversityId));
                             db.SaveChanges();
                             //changing collection
-                            StatusRecords.Remove(Status);
+                            UniversityRecords.Remove(University);
                         }
                     }
                     else
@@ -175,20 +174,19 @@ namespace STUDENTU_1._06.ViewModel
         }
 
         //check if the record has links with other tables before deleting
-        private bool CheckRecordBeforDelete(Status status)
+        private bool CheckRecordBeforDelete(University university)
         {
             using (StudentuConteiner db = new StudentuConteiner())
             {
                 try
                 {
-                    //check in Orderlines table
-                    var res = db.Orderlines;
-                    foreach (OrderLine item in res)
-                        if (item.Status.StatusId == status.StatusId ||
-                           item.Status.StatusName == status.StatusName)
-                            return true;
+                    var res1 = db.Clients;
+                    foreach (var item in res1)
+                        foreach(var i in item.Universities)
+                            if(i.UniversityId== university.UniversityId||
+                                i.UniversityName==university.UniversityName)
+                                return true;
                     return false;
-
                 }
                 catch (ArgumentNullException ex)
                 {
@@ -223,23 +221,30 @@ namespace STUDENTU_1._06.ViewModel
             {
                 try
                 {
-                    var res4 = db.Universities.Any(o => o.UniversityName == University.UniversityName);
-                    if (!res4)
-                    {
-                        if (!string.IsNullOrEmpty(Status.StatusName))
+                    bool flag = false;
+                    var res4 = db.Universities.ToList();
+                    foreach (var item in res4)
+                        if (item.City == University.City && item.UniversityName == University.UniversityName)
                         {
-                            Status.StatusName = Status.StatusName.ToLower();
-                            Status.StatusName.Trim();
-                            if (Status.StatusName[0] == ' ')
+                            flag = true;
+                            break;
+                        }
+                    if (!flag)
+                    {
+                        if (!string.IsNullOrEmpty(University.UniversityName))
+                        {                            
+                            University.UniversityName.Trim();
+                            University.City.Trim();
+                            if (University.UniversityName[0] == ' '||University.City[0]==' ')
                             {
                                 dialogService.ShowMessage("Нельзя добавить пустую строку");
                                 return;
                             }
-                            db.Statuses.Add(Status);
+                            db.Universities.Add(University);
                             db.SaveChanges();
-                            StatusRecords.Clear();
-                            LoadStatusData();
-                            Status = new Status();
+                            UniversityRecords.Clear();
+                            LoadUniversityData();
+                            University = new University();
 
                         }
                         else
@@ -272,26 +277,34 @@ namespace STUDENTU_1._06.ViewModel
         }
 
         //===================THIS METHOD IS FOR EDIT RECORDS IN STATUS TABLES==============
-        public void EditStatus(string newName)
+        public void EditUniversity(string newName)
         {
-            if (Status.StatusName == "---")
+            if (University.UniversityName == "---")
             {
                 dialogService.ShowMessage("Нельзя редактировать эту запись");
                 return;
             }
-            Status.StatusName = newName;
+            University.UniversityName = newName;
             using (StudentuConteiner db = new StudentuConteiner())
             {
                 try
                 {
-                    var res4 = db.Statuses.Find(Status.StatusId);
+                    var res4 = db.Universities.Find(University.UniversityId);
                     if (res4 != null)
                     {
                         //changing DB
-                        res4.StatusName = Status.StatusName.ToLower();
+                        University.UniversityName.Trim();
+                        University.City.Trim();
+                        if (University.UniversityName[0] == ' ' || University.City[0] == ' ')
+                        {
+                            dialogService.ShowMessage("Нельзя добавить пустую строку");
+                            return;
+                        }
+                        res4.UniversityName = University.UniversityName;
+                        res4.City = University.City;
                         db.SaveChanges();
-                        StatusRecords.Clear();
-                        LoadStatusData();
+                        UniversityRecords.Clear();
+                        LoadUniversityData();
                     }
                 }
                 catch (ArgumentNullException ex)

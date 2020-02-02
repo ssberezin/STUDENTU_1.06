@@ -21,11 +21,11 @@
             <helpes:NullToBooleanConverter x:Key="NullBoolConverter" />
 
             <!--for sorting in listbox without behind code-->
-            <CollectionViewSource x:Key="SortedItems" Source="{Binding _Dir.DirRecords}"
+            <CollectionViewSource x:Key="SortedItems" Source="{Binding _University.UniversityRecords}"
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
                 <!--DirRecords can find in DirectionClass.cs-->
                 <CollectionViewSource.SortDescriptions>
-                    <scm1:SortDescription PropertyName="DirectionName"/>
+                    <scm1:SortDescription PropertyName="UniversityName"/>
                 </CollectionViewSource.SortDescriptions>
             </CollectionViewSource>
 
@@ -45,11 +45,11 @@
             <RowDefinition Height="0.5*"/>
         </Grid.RowDefinitions>
         <TextBox x:Name="DirName" Grid.ColumnSpan="3" Margin="5" 
-                 Text="{Binding _Dir.Dir.DirectionName , Mode=OneWay,
+                 Text="{Binding _University.University.UniversityName , Mode=OneWay,
             UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="0"
                  SpellCheck.IsEnabled="True" Language="ru-ru" TextAlignment="Center"/>
         <TextBox x:Name="UniverCity" Grid.ColumnSpan="3" Margin="5" Grid.Row="1"
-                 Text="{Binding _Dir.Dir.DirectionName , Mode=OneWay,
+                 Text="{Binding _University.University.City , Mode=TwoWay,
             UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="0"
                  SpellCheck.IsEnabled="True" Language="ru-ru" TextAlignment="Center"/>
 
@@ -57,7 +57,7 @@
                      Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" Grid.RowSpan="2" Margin="5" 
                     ItemsSource="{Binding Source={StaticResource SortedItems}, 
                     UpdateSourceTrigger=PropertyChanged}" 
-                     SelectedItem="{Binding _Dir.Dir}"                   
+                     SelectedItem="{Binding _University.University}"                   
                      SelectionMode="Single" 
                      IsSynchronizedWithCurrentItem="False"
                      TabIndex="3"
@@ -67,7 +67,7 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <DockPanel >
-                        <TextBlock Text="{Binding DirectionName}" Margin="2"
+                        <TextBlock Text="{Binding UniversityName}" Margin="2"
                                    TextWrapping="WrapWithOverflow" 
                                    TextAlignment="Center"/>
                     </DockPanel>
@@ -77,20 +77,20 @@
 
         </ListBox>
         <Button Grid.Column="0" Grid.Row="4"  Content="Добавить" Background="Green"
-                    Command="{Binding _Dir.AddDirectionCommand}"
+                    Command="{Binding _University.AddUniversityCommand}"
                 CommandParameter="{Binding ElementName=DirName, Path=Text}"
                  IsEnabled="{Binding ElementName=DirName,  Path=Text.Length}"
                 TabIndex="1">
             <!--Command AddDirectionCommand can find in DirectionClass.cs-->
         </Button>
         <Button  x:Name="EditButton" Grid.Column="1" Grid.Row="4" Content="Редактировать" Background="BlueViolet"
-                Command="{Binding _Dir.EditDirectionCommand}" IsEnabled="{Binding SelectedItem,
-                     Converter={StaticResource NullBoolConverter}, ElementName=DirList}"
+                Command="{Binding _University.EditUniversityCommand}" 
+                 IsEnabled="{Binding SelectedItem, Converter={StaticResource NullBoolConverter}, ElementName=DirList}"
                  CommandParameter="{Binding ElementName=DirName, Path=Text}"                 
                  TabIndex="4"/>
         <!--Command EditDirectionCommand can find in DirectionClass.cs-->
-        <Button Grid.Column="2" Grid.Row="4" Content="Удалить" Command="{Binding _Dir.DeleteDirectionCommand}"
-                
+        <Button Grid.Column="2" Grid.Row="4" Content="Удалить" 
+                Command="{Binding _University.DeleteUniversityCommand}"                
                 IsEnabled="{Binding SelectedItem, 
                      Converter={StaticResource NullBoolConverter}, ElementName=DirList}"
                 TabIndex="5"/>

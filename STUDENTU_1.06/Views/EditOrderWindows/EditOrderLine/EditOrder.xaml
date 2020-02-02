@@ -61,6 +61,12 @@
                 <scm1:SortDescription PropertyName="StatusName"/>
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
+        <CollectionViewSource x:Key="SortedUniversities" Source="{Binding  _University.UniversityRecords}"
+                xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
+            <CollectionViewSource.SortDescriptions>
+                <scm1:SortDescription PropertyName="UniversityName"/>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
         <CollectionViewSource x:Key="SortedWorkTypes" Source="{Binding  _WorkType.WorkTypesRecords}"
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
             <!--WorkTypesRecords can find in _WorkType.cs-->
@@ -391,11 +397,11 @@
                 </Viewbox>
                 <ComboBox x:Name="UniverList"  MinWidth="250"  TabIndex="8" SelectedIndex="0" 
                       IsEditable="False"
-                     ItemsSource="{Binding Source={StaticResource SortedStatuses}, 
+                     ItemsSource="{Binding Source={StaticResource SortedUniversities}, 
                       UpdateSourceTrigger=PropertyChanged}" 
-                     SelectedItem="{Binding _Status.Status,  UpdateSourceTrigger=PropertyChanged}"
-                     DisplayMemberPath="StatusName"
-                     ToolTip="{Binding _Status.Status.StatusName}" 
+                     SelectedItem="{Binding _University.University,  UpdateSourceTrigger=PropertyChanged}"
+                     DisplayMemberPath="UniversityName"
+                     ToolTip="{Binding _University.University.UniversityName}" 
                      HorizontalContentAlignment="Center"
                      Background="White" >
                     <!--SortedItems can find above in Window.Resources-->
@@ -403,7 +409,7 @@
                 </ComboBox>
             </StackPanel>
             <Button  Width="40" Background="Gray" Content="..." TabIndex="9"
-                    Command="{Binding _Status.NewEditStatusCommand}"
+                    Command="{Binding _University.NewEditUniversityCommand}"
                          CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}"/>
             <StackPanel Orientation="Horizontal">
@@ -413,6 +419,7 @@
                 </Viewbox>
                 <xctk:IntegerUpDown MaxWidth="40" MaxHeight="50" MaxLength="3" Margin="8" TabIndex="26" 
                                     Maximum="6" Minimum="1" 
+                                    Value="{Binding Client.Course, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     ToolTip="Курс"/>
             </StackPanel>
         </StackPanel>

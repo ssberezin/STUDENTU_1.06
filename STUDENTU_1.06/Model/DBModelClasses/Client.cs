@@ -27,12 +27,14 @@ namespace STUDENTU_1._06.Model
         {
             this.OrderLine = new ObservableCollection<OrderLine>();
             this.Universities = new ObservableCollection<University>();
-            this.YearUniversityStart = DateTime.Now.AddMonths(-DateTime.Now.Month)
-                                        .AddDays(-DateTime.Now.Day)
-                                        .AddHours(-DateTime.Now.Hour)
-                                        .AddMinutes(DateTime.Now.Minute)
-                                        .AddSeconds(DateTime.Now.Second)
-                                        .AddSeconds(DateTime.Now.Millisecond);
+            this.Course = 1;
+            //this.YearUniversityStart = DateTime.Now.AddMonths(-DateTime.Now.Month)
+            //                            .AddDays(-DateTime.Now.Day)
+            //                            .AddHours(-DateTime.Now.Hour)
+            //                            .AddMinutes(DateTime.Now.Minute)
+            //                            .AddSeconds(DateTime.Now.Second)
+            //                            .AddSeconds(DateTime.Now.Millisecond);
+            this.YearUniversityStart = GetYearUniversityStart(Course);
         }
         //[ForeignKey("OrderLine")]
         public int ClientId { get; set; }
@@ -120,13 +122,22 @@ namespace STUDENTU_1._06.Model
 
         public DateTime GetYearUniversityStart(int val)
         {
-            return DateTime.Now.AddMonths(-DateTime.Now.Month)
+            if (DateTime.Now.Month>7)
+             return DateTime.Now.AddMonths(-DateTime.Now.Month)
                                                 .AddDays(-DateTime.Now.Day)
                                                 .AddHours(-DateTime.Now.Hour)
                                                 .AddMinutes(DateTime.Now.Minute)
                                                 .AddSeconds(DateTime.Now.Second)
                                                 .AddSeconds(DateTime.Now.Millisecond)
                                                 .AddYears(-val+1);
+            else
+                return DateTime.Now.AddMonths(-DateTime.Now.Month)
+                                                .AddDays(-DateTime.Now.Day)
+                                                .AddHours(-DateTime.Now.Hour)
+                                                .AddMinutes(DateTime.Now.Minute)
+                                                .AddSeconds(DateTime.Now.Second)
+                                                .AddSeconds(DateTime.Now.Millisecond)
+                                                .AddYears(-(val+1) + 1);
         }
 
         public object Clone()

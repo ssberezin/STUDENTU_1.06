@@ -141,7 +141,7 @@
     <Compile Include="ViewModel\_Status.cs" />
     <Compile Include="ViewModel\_Subject.cs" />
     <Compile Include="ViewModel\_Direction.cs" />
-    <Compile Include="ViewModel\_Universities.cs" />
+    <Compile Include="ViewModel\_University.cs" />
     <Compile Include="ViewModel\_WorkType.cs" />
     <Compile Include="Views\EditOrderWindows\ContactsWindows\CompareContatctsWindow.xaml.cs">
       <DependentUpon>CompareContatctsWindow.xaml</DependentUpon>

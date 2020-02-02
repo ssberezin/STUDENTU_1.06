@@ -210,23 +210,6 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
-        private _WorkType _workType;
-        public _WorkType _WorkType
-        {
-            get { return _workType; }
-            set
-            {
-                if (_workType != value)
-                {
-                    _workType = value;
-                    OnPropertyChanged(nameof(_WorkType));
-                }
-            }
-        }
-
-
-
-
         private PersoneDescription personeDescription;
         public PersoneDescription PersoneDescription
         {
@@ -241,9 +224,34 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
-  
+        private _University _university;
+        public _University _University
+        {
+            get { return _university; }
+            set
+            {
+                if (_university != value)
+                {
+                    _university = value;
+                    OnPropertyChanged(nameof(_University));
+                }
+            }
+        }
 
-        
+        private _WorkType _workType;
+        public _WorkType _WorkType
+        {
+            get { return _workType; }
+            set
+            {
+                if (_workType != value)
+                {
+                    _workType = value;
+                    OnPropertyChanged(nameof(_WorkType));
+                }
+            }
+        }
+
 
         public ForEditOrder()
         {
@@ -270,6 +278,7 @@ namespace STUDENTU_1._06.ViewModel
             _Status = new _Status();
             _Subj = new _Subject();
             _Source = new _Source();
+            _University = new _University();
             _WorkType = new _WorkType();
         }
 
@@ -403,7 +412,9 @@ namespace STUDENTU_1._06.ViewModel
                     {
                         Persone.Contacts = _Contacts.Contacts;
                         Persone.PersoneDescription = PersoneDescription;
-                        Order.Client = new Client() { Persone = Persone };
+                        Order.Client = new Client() { Persone = Persone, Course=Client.Course };
+                        Order.Client.Universities.Add(_University.University);
+
                     }
                     else
                     {
