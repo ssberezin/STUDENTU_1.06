@@ -13,6 +13,7 @@ using STUDENTU_1._06.Model.HelpModelClasses;
 using STUDENTU_1._06.Model.DBModelClasses;
 using STUDENTU_1._06.Model.HelpModelClasses.DialogWindows;
 using STUDENTU_1._06.Views.PersoneOperations.AuthorOperationsWindows;
+using STUDENTU_1._06.Views.EditOrderWindows.EditOrderLine;
 
 namespace STUDENTU_1._06.ViewModel
 {
@@ -291,11 +292,20 @@ namespace STUDENTU_1._06.ViewModel
         public RelayCommand NewOrder => newOrder ?? (newOrder = new RelayCommand(
                     (obj) =>
                     {
-                        EditOrder editOrder = new EditOrder();
-                        editOrder.Owner = Application.Current.MainWindow;                        
-                        showWindow.ShowWindow(editOrder);
+                        //EditOrder editOrder = new EditOrder();
+                        //editOrder.Owner = Application.Current.MainWindow;                        
+                        //showWindow.ShowWindow(editOrder);
+                        EditOrderRedactionCall();
                     }
                     ));
+
+
+        private void EditOrderRedactionCall()
+        {
+            EditOrderRedaction editOrderRedaction = new EditOrderRedaction();
+            editOrderRedaction.Owner = Application.Current.MainWindow;
+            showWindow.ShowWindow(editOrderRedaction);
+        }
 
         private RelayCommand closeMainWindow;
 

@@ -67,6 +67,12 @@
                 <scm1:SortDescription PropertyName="UniversityName"/>
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
+        <CollectionViewSource x:Key="SortedAuthors" Source="{Binding  AuthorsRecords}"
+                xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
+            <CollectionViewSource.SortDescriptions>
+                <scm1:SortDescription PropertyName="Persone.NickName"/>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
         <CollectionViewSource x:Key="SortedWorkTypes" Source="{Binding  _WorkType.WorkTypesRecords}"
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
             <!--WorkTypesRecords can find in _WorkType.cs-->
@@ -618,7 +624,7 @@
         </StackPanel>
         <StackPanel Grid.Column="5" Grid.RowSpan="10">
             <Viewbox Margin="5" MaxHeight="20">
-                <TextBlock Text="Заказ выполняет"   Grid.Column="4" FontWeight="Bold" Foreground="#FF2D9C42"/>
+                <TextBlock Text="{Binding RooLMSG}"   Grid.Column="4" FontWeight="Bold" Foreground="#FF2D9C42"/>
             </Viewbox>
 
             <StackPanel Grid.Column="4" Grid.Row="1" HorizontalAlignment="Center" 
@@ -628,13 +634,13 @@
                     Text="{Binding ExecuteAuthor.Persone.NickName}"  />
                 <WrapPanel>
                     <TextBlock  Text="Цена:" Margin="5" Foreground="Blue"/>
-                    <TextBlock  Text="{Binding _Evaluation.FinalEvaluationRecord.Price}" Foreground="Red" />
+                    <TextBlock  Text="{Binding FinalEvaluationRecord.Price}" Foreground="Red" />
                 </WrapPanel>
             </StackPanel>
 
             <StackPanel  HorizontalAlignment="Center" VerticalAlignment="Center" >
                 <TextBlock  Text="Срок выполнения:" Margin="5" Foreground="Blue"/>
-                <TextBlock  Text="{ Binding _Evaluation.FinalEvaluationRecord.Deadline,
+                <TextBlock  Text="{ Binding FinalEvaluationRecord.Deadline,
                 Converter={StaticResource dateFormatConverter}}" Foreground="Red" />
             </StackPanel>
             <Grid>
@@ -644,7 +650,7 @@
                 </Grid.RowDefinitions>
                 <TextBox x:Name="AuthorEvalComment" 
                  Text="{Binding _Evaluation.FinalEvaluationRecord.EvaluateDescription}"
-                  TextAlignment="Justify" MinHeight="180"
+                  TextAlignment="Justify" MinHeight="150"
                       VerticalContentAlignment="Center" Foreground="Red" Background="White"
                        TextWrapping="Wrap" Grid.ColumnSpan="3" FontSize="12"  >
                     <TextBox.ContextMenu>
@@ -659,19 +665,38 @@
             <Viewbox Margin="5" MaxHeight="20">
                 <TextBlock Text="Быстрое распределение"   Grid.Column="4" FontWeight="Bold" Foreground="#FF2D9C42"/>
             </Viewbox>
-            <ComboBox x:Name="AuthorList"  MinWidth="120"   TabIndex="8" SelectedIndex="0" Margin="4"
+            <ComboBox x:Name="AuthorList"  MinWidth="120"  MinHeight="60" TabIndex="8" SelectedIndex="0" Margin="4"
                       IsEditable="False" IsSynchronizedWithCurrentItem="True"
-                     ItemsSource="{Binding Source={StaticResource SortedUniversities}, 
+                     ItemsSource="{Binding Source={StaticResource SortedAuthors}, 
                       UpdateSourceTrigger=PropertyChanged}" 
-                      SelectedValue="{Binding _University.University.UniversityId, Mode=TwoWay}"
-                      SelectedValuePath="UniversityId"
-                     SelectedItem="{Binding _University.University,  UpdateSourceTrigger=PropertyChanged}"
-                     DisplayMemberPath="UniversityName"
-                     ToolTip="{Binding _University.University.UniversityName}" 
+                      SelectedValue="{Binding AuthorsRecord.Author.AuthorId, Mode=TwoWay}"
+                      SelectedValuePath="AuthorId"
+                     SelectedItem="{Binding AuthorsRecord,  UpdateSourceTrigger=PropertyChanged}"
                      HorizontalContentAlignment="Center"
                      Background="White" >
-                <!--SortedItems can find above in Window.Resources-->
-                <!--Dir can find in _Direction.cs-->
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel >
+                            <TextBlock Text="---------------" Margin="2"
+                                   TextWrapping="WrapWithOverflow" 
+                                   TextAlignment="Center" Background="AliceBlue"/>
+                            <TextBlock Text="{Binding Persone.NickName}" Margin="2"
+                                   TextWrapping="WrapWithOverflow" 
+                                   TextAlignment="Center"  />
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Persone.Surname}" Margin="2"
+                                   TextWrapping="WrapWithOverflow" 
+                                   TextAlignment="Center" Foreground="Red"/>
+                                <TextBlock Text="{Binding Persone.Name}" Margin="2"
+                                   TextWrapping="WrapWithOverflow" 
+                                   TextAlignment="Center" Foreground="Red"/>
+                                <TextBlock Text="{Binding Persone.Patronimic}" Margin="2"
+                                   TextWrapping="WrapWithOverflow" 
+                                   TextAlignment="Center" Foreground="Red"/>                                
+                            </StackPanel>
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
             </ComboBox>
             <WrapPanel  Margin="3">
                 <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
@@ -679,7 +704,7 @@
                     <TextBlock Text="Цена автора: " FontWeight="Bold" Foreground="OrangeRed"/>
                 </Viewbox>
                 <TextBox x:Name="AuthorPrice"    Foreground="OrangeRed" TabIndex="19" MinWidth="70" 
-                     Text="{Binding Price.Price, Mode=TwoWay}"/>
+                     Text="{Binding _Evaluation.FinalEvaluationRecord.Price, Mode=TwoWay}"/>
                 <!--Price can find in ForEditOrder.cs-->
             </WrapPanel>
             <StackPanel Grid.Column="1" Grid.Row="9"   Margin="3" Grid.ColumnSpan="2" HorizontalAlignment="Left">
@@ -689,15 +714,14 @@
                 </Viewbox>
                 <DatePicker Name="AuthorDeadLine" IsDropDownOpen="False" SelectedDateFormat="Short" 
                         MaxWidth="150" TabIndex="13" HorizontalAlignment="Center"
-                         SelectedDate="{Binding Date.DeadLine,Mode=TwoWay}"/>
+                         SelectedDate="{Binding _Evaluation.FinalEvaluationRecord.Deadline,Mode=TwoWay}"/>
                 <!--Date can find in ForEditOrder.cs-->
             </StackPanel>
             <Button  Content="Установить исполнителя" Grid.Column="1" Background="Yellow" TabIndex="25"
-                      IsEnabled="{Binding Order.Saved}"
-                      Command="{Binding CreateDobleNewOrderLine}"  Margin="3,3,2.8,2.6" 
-                      Foreground="Black"
-                    
-                     ToolTip="Разбить на несколько подзаказов"/>
+                   
+                      Command="{Binding SetFastRoolOrderCommand}" MinHeight="30" Margin="3,3,2.8,2.6" 
+                      Foreground="Black"                    
+                     ToolTip="Экспресс распределение заказа"/>
         </StackPanel>
 
         <TextBlock  Grid.Column="5" Grid.Row="2" Grid.RowSpan="3"

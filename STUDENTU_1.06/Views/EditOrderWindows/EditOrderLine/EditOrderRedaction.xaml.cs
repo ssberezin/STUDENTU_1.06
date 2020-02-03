@@ -1,4 +1,5 @@
-﻿using System;
+﻿using STUDENTU_1._06.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,7 @@ namespace STUDENTU_1._06.Views.EditOrderWindows.EditOrderLine
         public EditOrderRedaction()
         {
             InitializeComponent();
+            this.DataContext = new ForEditOrder();
         }
     }
 }

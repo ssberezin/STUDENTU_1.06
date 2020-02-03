@@ -42,19 +42,7 @@ namespace STUDENTU_1._06.ViewModel
 
         }
 
-        //private Evaluation evaluation;
-        //public Evaluation Evaluation
-        //{
-        //    get { return evaluation; }
-        //    set
-        //    {
-        //        if (evaluation != value)
-        //        {
-        //            evaluation = value;
-        //            OnPropertyChanged(nameof(Evaluation));
-        //        }
-        //    }
-        //}
+      
 
         private EvaluationRecord evaluationRecord;
         public EvaluationRecord EvaluationRecord
@@ -86,19 +74,7 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
-        //private OrderLine order;
-        //public OrderLine Order
-        //{
-        //    get { return order; }
-        //    set
-        //    {
-        //        if (order != value)
-        //        {
-        //            order = value;
-        //            OnPropertyChanged(nameof(Order));
-        //        }
-        //    }
-        //}
+        
 
 
 

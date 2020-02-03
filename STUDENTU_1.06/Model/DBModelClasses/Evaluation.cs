@@ -16,6 +16,7 @@ namespace STUDENTU_1._06.Model
             this.Dates = new ObservableCollection<Dates>();
             this.Moneys = new ObservableCollection<Money>();
             this.Authors = new ObservableCollection<Author>();
+           
             this.Winner = false;
         }
 
@@ -27,8 +28,8 @@ namespace STUDENTU_1._06.Model
         [Column("Description", TypeName = "nvarchar")]
         [MaxLength(1000)]
         public string Description { get; set; }
-        
 
+      
         public virtual ObservableCollection<Dates> Dates { get; set; }
         public virtual ObservableCollection<Money> Moneys { get; set; }
 

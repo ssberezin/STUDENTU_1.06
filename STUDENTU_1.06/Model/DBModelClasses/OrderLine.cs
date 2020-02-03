@@ -21,6 +21,7 @@ namespace STUDENTU_1._06.Model
             this.WorkInCredit = false;
             this.OrderCount = 1;
             this.Author = new ObservableCollection<Author>();
+           
             this.variant = null;
             this.Saved = false;
             this.ParentOrder = true;
@@ -135,8 +136,8 @@ namespace STUDENTU_1._06.Model
         public virtual Direction Direction { get; set; }
         public virtual Source Source { get; set; }
         public virtual AfterDoneDescription AfterDoneDescriptions { get; set; }
-
         public virtual ObservableCollection<Author> Author { get; set; }
+        
 
         public object Clone()
         {
