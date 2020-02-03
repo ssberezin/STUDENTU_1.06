@@ -276,6 +276,7 @@ namespace STUDENTU_1._06.ViewModel
             PersoneDescription = new PersoneDescription();
             Price = new Money();
             _Status = new _Status();
+                 
             _Subj = new _Subject();
             _Source = new _Source();
             _University = new _University();
@@ -396,6 +397,7 @@ namespace STUDENTU_1._06.ViewModel
                     Order.Source = db.Sources.Find(_Source.Source.SourceId);
                     Order.Dates = Date;
                     Order.Money = Price;
+                    //if (_Status.Status.StatusName == "---")                        
                     Order.Status = db.Statuses.Find(_Status.Status.StatusId);
                     Order.Saved = true;
 
@@ -413,7 +415,7 @@ namespace STUDENTU_1._06.ViewModel
                         Persone.Contacts = _Contacts.Contacts;
                         Persone.PersoneDescription = PersoneDescription;
                         Order.Client = new Client() { Persone = Persone, Course=Client.Course };
-                        Order.Client.Universities.Add(_University.University);
+                        Order.Client.Universities.Add(db.Universities.Find(_University.University.UniversityId));
 
                     }
                     else
@@ -836,16 +838,21 @@ namespace STUDENTU_1._06.ViewModel
             {
                 try
                 {
-                    int contactsId = contacts.CheckContacts(contacts);
+                    int contactsId = contacts.CheckContacts(contacts);                   
                     if (contactsId == 0)
                     {
                         Msg = $"По этим контактным данным ни одного совпадения в базе данных нет. ";
                         return;
                     }
+                    
                     var client = db.Clients.Where(c => c.Persone.Contacts.ContactsId == contactsId).FirstOrDefault();
+                    Persone = client.Persone;
+                    _Contacts.Contacts = client.Persone.Contacts;
+                    Client = client;
+                    _University.University = client.Universities[0];
                     if (!persone.ComparePersons(persone, client.Persone))                    
-                        dialogService.ShowMessage("Ранее этот клиент оформлял заказы под другими контактными данными\n" +
-                            "При сохранении заказа будут предложены варианты дальнейших действий");
+                        //dialogService.ShowMessage("Ранее этот клиент оформлял заказы под другими контактными данными\n" +
+                        //    "При сохранении заказа будут предложены варианты дальнейших действий");
                     LoadRecords(client.ClientId);
                 }
                 catch (ArgumentNullException ex)
@@ -905,10 +912,10 @@ namespace STUDENTU_1._06.ViewModel
                         TotalSumOrders += item.Money.Price;
                         Records.Add(record);
                     }
-                    if (TotalSumOrders != 0)
+                    //if (TotalSumOrders != 0)
                         Msg = $"Прежние заказы клиента.           Общая сумма всех заказов составляет  {TotalSumOrders} грн";
-                    else
-                        Msg = $"Информация по прежним заказам пока не определена ";
+                    //else
+                    //    Msg = $"Информация по прежним заказам пока не определена ";
                 }
                 catch (ArgumentNullException ex)
                 {

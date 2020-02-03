@@ -395,10 +395,12 @@
                      VerticalAlignment="Stretch">
                     <TextBlock Text="Учебное заведение" FontWeight="Bold" Foreground="red"/>
                 </Viewbox>
-                <ComboBox x:Name="UniverList"  MinWidth="250"  TabIndex="8" SelectedIndex="0" 
-                      IsEditable="False"
+                <ComboBox x:Name="UniverList"  MinWidth="250" MaxWidth="300"  TabIndex="8" SelectedIndex="0" 
+                      IsEditable="False" IsSynchronizedWithCurrentItem="True"
                      ItemsSource="{Binding Source={StaticResource SortedUniversities}, 
                       UpdateSourceTrigger=PropertyChanged}" 
+                      SelectedValue="{Binding _University.University.UniversityId, Mode=TwoWay}"
+                      SelectedValuePath="UniversityId"
                      SelectedItem="{Binding _University.University,  UpdateSourceTrigger=PropertyChanged}"
                      DisplayMemberPath="UniversityName"
                      ToolTip="{Binding _University.University.UniversityName}" 

@@ -1,0 +1,724 @@
+﻿<Window x:Class="STUDENTU_1._06.Views.EditOrderWindows.EditOrderLine.EditOrderRedaction"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:local="clr-namespace:STUDENTU_1._06.Views"       
+        xmlns:model="clr-namespace:STUDENTU_1._06.Model"         
+        xmlns:helpes="clr-namespace:STUDENTU_1._06.Helpes" 
+       xmlns:wpfTool="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:scm1="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+         Title="EditOrderRedaction" Height="750" Width="1200" MinHeight="750" MinWidth="1200" 
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}" 
+             
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal" 
+        TextOptions.TextRenderingMode="Auto"
+        FontFamily="{DynamicResource MaterialDesignFont}" 
+        WindowStartupLocation="CenterScreen" 
+        Background="{DynamicResource MaterialDesignPaper}" >
+
+    <Window.InputBindings>
+        <KeyBinding Gesture="Esc" Command="{Binding CloseWindowCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
+        <KeyBinding Gesture="Ctrl+S" Command="{Binding CreateNewOrderLine}"/>
+        <!--CloseWindowCommand can find in ForEditOrder.cs-->
+    </Window.InputBindings>
+
+    <Window.Resources>
+        <helpes:DateFormatConverter x:Key="dateFormatConverter"/>
+        <helpes:HeightToFontSizeConverter x:Key="heightToFontSizeConverter"/>
+        <helpes:BoolInverterConverter x:Key="boolInverterConverter"/>
+        <helpes:StringToBoollConverter x:Key="stringToBoollConverter"/>
+        <helpes:NullToBooleanConverter x:Key="NullBoolConverter" />
+        <helpes:StringToBrushConverter x:Key="StringToBrushConverter" />
+
+
+        <!--for sorting in listbox without behind code-->
+        <CollectionViewSource x:Key="SortedSources"
+                              Source="{Binding  _Source.SourcesRecords}"
+                xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
+            <!--SourcesRecords can find in _Source.cs-->
+            <CollectionViewSource.SortDescriptions>
+                <scm1:SortDescription PropertyName="SourceName"/>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+        <CollectionViewSource x:Key="SortedItems" Source="{Binding  _Dir.DirRecords}"
+                xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
+            <!--DirRecords can find in _Direction.cs-->
+            <CollectionViewSource.SortDescriptions>
+                <scm1:SortDescription PropertyName="DirectionName"/>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+        <CollectionViewSource x:Key="SortedStatuses" Source="{Binding  _Status.StatusRecords}"
+                xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
+            <CollectionViewSource.SortDescriptions>
+                <scm1:SortDescription PropertyName="StatusName"/>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+        <CollectionViewSource x:Key="SortedUniversities" Source="{Binding  _University.UniversityRecords}"
+                xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
+            <CollectionViewSource.SortDescriptions>
+                <scm1:SortDescription PropertyName="UniversityName"/>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+        <CollectionViewSource x:Key="SortedWorkTypes" Source="{Binding  _WorkType.WorkTypesRecords}"
+                xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
+            <!--WorkTypesRecords can find in _WorkType.cs-->
+            <CollectionViewSource.SortDescriptions>
+                <scm1:SortDescription PropertyName="TypeOfWork"/>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+        <CollectionViewSource x:Key="SortedSubjects" Source="{Binding  _Subj.SubjRecords}"
+                xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
+            <!--SubjRecords can find in _Subject.cs-->
+            <CollectionViewSource.SortDescriptions>
+                <scm1:SortDescription PropertyName="SubName"/>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+
+
+
+        <ControlTemplate x:Key="validationFailed">
+            <StackPanel Orientation="Horizontal">
+                <Border BorderBrush="Red" BorderThickness="2">
+                    <AdornedElementPlaceholder />
+                </Border>
+                <TextBlock Foreground="Red" FontSize="26" FontWeight="Bold">!</TextBlock>
+            </StackPanel>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="TextBoxTemplate" TargetType="{x:Type TextBoxBase}">
+            <Grid >
+                <Border Background="{TemplateBinding Background}" 
+                x:Name="Bd" BorderBrush="White"
+                BorderThickness="2" CornerRadius="0"  >
+                    <ScrollViewer x:Name="PART_ContentHost"/>
+                </Border>
+            </Grid>
+        </ControlTemplate>
+
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="Template" Value="{StaticResource TextBoxTemplate}"/>
+            <Setter Property="FontFamily" Value="Verdana"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="TextAlignment" Value="Left"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="SpellCheck.IsEnabled" Value="True"/>
+
+            <Setter Property="Language" Value="ru-ru"/>
+            <Setter Property="FontSize" Value="{Binding Path=ActualHeight, RelativeSource={RelativeSource Self}, Converter={StaticResource heightToFontSizeConverter}}"/>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip"
+                Value="{Binding RelativeSource={RelativeSource Self},
+                    Path=(Validation.Errors)[0].ErrorContent}" />
+                    <Setter Property="Foreground" Value="Red" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid  FocusManager.FocusedElement="{Binding ElementName=TBxName}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.75*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="76*"/>
+            <RowDefinition Height="41*"/>
+            <RowDefinition Height="41"/>
+            <RowDefinition Height="41*"/>
+            <RowDefinition Height="41*"/>
+            <RowDefinition Height="41*"/>
+            <RowDefinition Height="45*"/>
+            <RowDefinition Height="40*"/>
+            <RowDefinition Height="41*"/>
+            <RowDefinition Height="61*"/>
+            <RowDefinition Height="41*"/>
+            <RowDefinition Height="150*"/>
+
+        </Grid.RowDefinitions>
+        <Grid HorizontalAlignment="Right" Width="157"  >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.75*"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Viewbox  MaxHeight="25"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
+                     VerticalAlignment="Stretch" >
+                <TextBlock  Text="Заказ №" FontWeight="Bold"/>
+            </Viewbox>
+            <Viewbox Grid.Column="1" MaxHeight="25"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
+                     VerticalAlignment="Stretch">
+                <TextBlock  Text="{Binding  Order.OrderNumber, Mode=TwoWay,StringFormat=0# ##0 }"
+                           FontWeight="Bold" Foreground="Coral" />
+                <!--Order can find in ForEditOrder.cs-->
+            </Viewbox>
+        </Grid>
+
+
+
+        <WrapPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="3">
+            <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
+                     VerticalAlignment="Stretch">
+                <TextBlock Text="Имя*: " Foreground="Red"/>
+            </Viewbox>
+
+
+            <TextBox x:Name="TBxName"  MinWidth="220" TabIndex="0"
+                   Validation.ErrorTemplate="{StaticResource validationFailed}"
+                     MaxLength="34">
+                <TextBox.Text>
+                    <Binding  Path="Persone.Name" NotifyOnValidationError="True">
+                        <Binding.ValidationRules>
+                            <DataErrorValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <!--тут хз пока шо прилепить, забацал кнопку и забыл накой она нужна была-->
+            <Button Content="+ ?" Background="Yellow" Foreground="Black" Width="40" 
+                    HorizontalAlignment="Right" TabIndex="6"
+                    Command="{Binding LoadPreviosOrdersCommand}"
+                    ToolTip="Дополнительная проверка по базе"/>
+
+        </WrapPanel>
+        <WrapPanel Grid.Row="2" Grid.ColumnSpan="2" Margin="3">
+            <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
+                     VerticalAlignment="Stretch">
+                <TextBlock Text="Фамилия: " />
+            </Viewbox>
+            <TextBox x:Name="Surname"   Text="{Binding Persone.Surname, Mode=TwoWay}"
+                     TabIndex="1"  MinWidth="250" MaxLength="34"/>
+        </WrapPanel>
+        <!--Persone can find in ForEditOrder.cs-->
+        <WrapPanel Grid.Row="3" Grid.ColumnSpan="2" Margin="3">
+            <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
+                     VerticalAlignment="Stretch">
+                <TextBlock Text="Отчество: " />
+            </Viewbox>
+            <TextBox x:Name="Patronimic"   Text="{Binding Persone.Patronimic, Mode=TwoWay}"
+                     MaxLength="34" TabIndex="2"  MinWidth="250"/>
+            <!--Persone can find in ForEditOrder.cs-->
+        </WrapPanel>
+        <WrapPanel Grid.Row="4" Grid.ColumnSpan="2" Margin="3">
+            <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
+                     VerticalAlignment="Stretch">
+                <TextBlock Text="Пол:" FontWeight="Bold" />
+            </Viewbox>
+            <!--для валидации https://www.codeproject.com/Articles/97564/Attributes-based-Validation-in-a-WPF-MVVM-Applicat-->
+            <RadioButton GroupName="A" Content="Мужской" VerticalAlignment="Center" TabIndex="4"
+                          IsChecked="{Binding Persone.Male, Mode=TwoWay}" />
+            <!--Persone can find in ForEditOrder.cs-->
+            <!--Converter={StaticResource boolInverterConverter},-->
+            <RadioButton GroupName="A" Content="Женский" VerticalAlignment="Center" TabIndex="3" 
+                          IsChecked="{Binding Persone.Female, Mode=TwoWay}"/>
+            <!--Persone can find in ForEditOrder.cs-->
+            <StackPanel Orientation="Horizontal"  >
+                <Label Content="    Вариант" VerticalAlignment="Center" FontWeight="Bold" Foreground="Red"/>
+                <TextBox   Text="{Binding Order.Variant, Mode=TwoWay}"
+                           MinHeight="20" TextWrapping="Wrap"
+                            TabIndex="24"  MinWidth="80" 
+                           ToolTip="{Binding Order.Variant}"/>
+            </StackPanel>
+        </WrapPanel>
+        <WrapPanel Grid.Row="5" Grid.ColumnSpan="2" Grid.RowSpan="2" Margin="3" >
+            <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
+                     VerticalAlignment="Stretch">
+                <TextBlock Text="№ телефона: " />
+            </Viewbox>
+            <TextBox x:Name="PhoneNumber" MinWidth="240" Text="{Binding _Contacts.Contacts.Phone1 , Mode=TwoWay,
+            UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap"
+                 SpellCheck.IsEnabled="True" Language="ru-ru" TextAlignment="Center" MaxLength="13" TabIndex="5"/>
+            <!--Contacts can find in ForEditOrder.cs-->
+            <Button Content="Дополнительные контакты" Background="YellowGreen" Height="30" TabIndex="7" Margin="5"
+                     Command="{Binding NewEditContactCommand}" CommandParameter="{Binding DataContext, RelativeSource=
+                    {RelativeSource AncestorType={x:Type Window}}}"/>
+            <!--NewEditContactsCommand can find in ForEditOrderAddContacts.cs-->
+            <Button Content="В ч.списке?" Background="Black" Height="30" Width="100" TabIndex="7" Margin="5"
+                    Command="{Binding CheckBlackListCommand}"/>
+            <!--CheckBlackListCommand can find in BlackListClass.cs-->
+        </WrapPanel>
+        <WrapPanel Grid.Row="7" Grid.ColumnSpan="2"  Margin="3,3,0,3" HorizontalAlignment="Left" >
+            <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
+                     VerticalAlignment="Stretch">
+                <TextBlock Text="Направление: " FontWeight="Bold"  Foreground="Brown"/>
+            </Viewbox>
+            <ComboBox x:Name="DirList"  MinWidth="165"  TabIndex="8" SelectedIndex="0" 
+                      IsEditable="False"
+                     ItemsSource="{Binding Source={StaticResource SortedItems}, 
+                      UpdateSourceTrigger=PropertyChanged}" 
+                     SelectedItem="{Binding _Dir.Dir,  UpdateSourceTrigger=PropertyChanged}"
+                     DisplayMemberPath="DirectionName"
+                     ToolTip="{Binding _Dir.Dir.DirectionName}" 
+                     HorizontalContentAlignment="Center"
+                     Background="White" >
+                <!--SortedItems can find above in Window.Resources-->
+                <!--Dir can find in _Direction.cs-->
+            </ComboBox>
+            <Button x:Name="AddDirection" Width="40" Background="Gray" Content="..." TabIndex="9"
+                    Command="{Binding _Dir.NewEditDirection}" CommandParameter="{Binding DataContext, RelativeSource=
+                    {RelativeSource AncestorType={x:Type Window}}}"/>
+            <!--Command NewEditDirection can find in _Direction.cs-->
+        </WrapPanel>
+        <WrapPanel Grid.Row="8" Grid.ColumnSpan="2" Margin="3">
+            <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
+                     VerticalAlignment="Stretch">
+                <TextBlock Text="Предмет:" FontWeight="Bold" />
+            </Viewbox>
+            <ComboBox x:Name="Subject"  MinWidth="200" MaxWidth="200"  TabIndex="10"   SelectedIndex="0" 
+                      
+                     ItemsSource="{Binding Source={StaticResource SortedSubjects}, 
+                      UpdateSourceTrigger=PropertyChanged}" 
+                     SelectedItem="{Binding _Subj.Subj,  UpdateSourceTrigger=PropertyChanged}"
+                     DisplayMemberPath="SubName"
+                      ToolTip="{Binding _Subj.Subj.SubName}" 
+                     HorizontalContentAlignment="Center"
+                     Background="White" >
+                <!--SortedSubjects can find above in Window.Resources-->
+                <!--Subj can find in _Subject.cs-->
+            </ComboBox>
+            <Button x:Name="AddSubject" Width="40" Background="Gray" Content="..." TabIndex="11"
+                    Command="{Binding _Subj.NewEditSubject}" CommandParameter="{Binding DataContext, RelativeSource=
+                    {RelativeSource AncestorType={x:Type Window}}}"/>
+            <!--Command NewEditSubject in _Subject.cs-->
+        </WrapPanel>
+        <StackPanel Grid.Row="9"   Margin="3" VerticalAlignment="Center">
+            <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
+                     VerticalAlignment="Stretch">
+                <TextBlock Text="Дата приема заказа" Foreground="Blue" FontWeight="Bold"/>
+            </Viewbox>
+            <DatePicker Name="DateOfReception" IsDropDownOpen="False" SelectedDateFormat="Short" 
+                        MaxWidth="150" TabIndex="12" HorizontalAlignment="Center"
+                        SelectedDate="{Binding Date.DateOfReception,Mode=TwoWay}"/>
+            <!--Date can find in ForEditOrder.cs-->
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Grid.Row="9"   Margin="3" Grid.ColumnSpan="2" HorizontalAlignment="Left">
+            <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5"  
+                     VerticalAlignment="Stretch">
+                <TextBlock Text="Дата выдачи заказа" Foreground="Red" FontWeight="Bold"/>
+            </Viewbox>
+            <DatePicker Name="DeadLine" IsDropDownOpen="False" SelectedDateFormat="Short" 
+                        MaxWidth="150" TabIndex="13" HorizontalAlignment="Center"
+                         SelectedDate="{Binding Date.DeadLine,Mode=TwoWay}"/>
+            <!--Date can find in ForEditOrder.cs-->
+        </StackPanel>
+        <StackPanel Orientation="Horizontal"
+                    Grid.Column="0" Grid.Row="10"   Margin="3,2.8,0,2.8" Grid.ColumnSpan="5" HorizontalAlignment="Stretch"
+                    VerticalAlignment="Center"
+                   >
+            <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5"  
+                     VerticalAlignment="Stretch">
+                <TextBlock Text="Не позже, чем на (время) :" Foreground="Red" FontWeight="Bold"/>
+            </Viewbox>
+            <wpfTool:TimePicker Value="{Binding Date.DeadLine, Mode=TwoWay}"
+                 TabIndex="14" Margin="3" MaxWidth="100" MaxHeight="30"
+                 Height="30" Width="110"
+                 ToolTip="Крайнее время"/>
+
+
+            <!-- Command CreateNewOrderLine  can find  ForEditOrder.cs-->
+            <!--Date can find in ForEditOrder.cs-->
+        </StackPanel>
+        <Grid  Grid.Row="10" Grid.Column="2" Grid.ColumnSpan="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="140*"/>
+                <ColumnDefinition Width="142*"/>
+                <ColumnDefinition Width="190*"/>
+                <ColumnDefinition Width="110*"/>
+                <ColumnDefinition Width="158*"/>
+            </Grid.ColumnDefinitions>
+            <Button  Content="Сохранить" Background="Green" TabIndex="25"
+                IsEnabled="{Binding Order.Saved, Converter={StaticResource boolInverterConverter}}"
+                Command="{Binding CreateNewOrderLine}"  Margin="3,3,2.8,2.6" />
+            <Button  Content="Разбить" Grid.Column="1" Background="Yellow" TabIndex="25"
+                      IsEnabled="{Binding Order.Saved}"
+                      Command="{Binding CreateDobleNewOrderLine}"  Margin="3,3,2.8,2.6" 
+                      Foreground="Black"
+                    
+                     ToolTip="Разбить на несколько подзаказов"/>
+            <Button Grid.Column="2"  Content="Редактировать" Background="#FF433BDC" TabIndex="26"
+                IsEnabled="{Binding Order.Saved}"
+                Command="{Binding EditOrderLineCommand}" MinWidth="150" Foreground="White" Margin="3"/>
+            <Button Grid.Column="3"  Content="Отменить" Background="OrangeRed" TabIndex="28" 
+                Command="{Binding CloseWindowCommand}" 
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" Margin="3.4,3,3.4,2.6"/>
+            <Button Content="Печать квитанции" Grid.Column="4"
+                    IsEnabled="{Binding Order.Saved, Converter={StaticResource boolInverterConverter}}"
+                    Name="PrintCheck"   TabIndex="25" 
+                    Background="Brown" Foreground="Black" Margin="2.6,3,3,2.6"/>
+            <!-- Command CloseWindowCommand  can find  ForEditOrder.cs-->
+        </Grid>
+
+        <StackPanel Grid.Column="2" Grid.ColumnSpan="3" Grid.RowSpan="3">
+            <Viewbox Grid.Column="3" Grid.ColumnSpan="2" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Center" 
+                     VerticalAlignment="Bottom">
+                <TextBlock Text="Комментарии по заказу (видны на квитанции)" FontWeight="Bold" />
+            </Viewbox>
+            <Grid Margin="4">
+                <TextBox Grid.ColumnSpan="3" Grid.RowSpan="3" Margin="5,10" 
+                     FontSize="14" TabIndex="15" TextWrapping="Wrap"  AcceptsReturn="True" MinHeight="103"
+                    VerticalScrollBarVisibility="Visible"
+                    Text="{Binding Order.DescriptionForClient,  UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
+        </StackPanel>
+        <!--Order can find in ForEditOrder.cs-->
+        <StackPanel Grid.Column="2" Grid.Row="3" Grid.ColumnSpan="3" Grid.RowSpan="3"  Margin="3">
+            <Viewbox MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Center" 
+                     VerticalAlignment="Bottom">
+                <TextBlock Text="Комментарии для себя (НЕ видны на квитанции)" FontWeight="Bold" 
+                           Foreground="Blue"/>
+            </Viewbox>
+            <Grid Margin="4">
+                <TextBox  Margin="5" FontSize="14" TabIndex="16" MinHeight="85"
+                      TextWrapping="Wrap"  AcceptsReturn="True"
+                      VerticalScrollBarVisibility="Auto"
+                      Text="{Binding Order.WorkDescription,  UpdateSourceTrigger=PropertyChanged}" Height="85"/>
+            </Grid>
+            <!--Order can find in ForEditOrder.cs-->
+        </StackPanel>
+        <StackPanel Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="6" Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal">
+                <Viewbox  MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Center" 
+                     VerticalAlignment="Stretch">
+                    <TextBlock Text="Учебное заведение" FontWeight="Bold" Foreground="red"/>
+                </Viewbox>
+                <ComboBox x:Name="UniverList"  MinWidth="250" MaxWidth="300"  TabIndex="8" SelectedIndex="0" 
+                      IsEditable="False" IsSynchronizedWithCurrentItem="True"
+                     ItemsSource="{Binding Source={StaticResource SortedUniversities}, 
+                      UpdateSourceTrigger=PropertyChanged}" 
+                      SelectedValue="{Binding _University.University.UniversityId, Mode=TwoWay}"
+                      SelectedValuePath="UniversityId"
+                     SelectedItem="{Binding _University.University,  UpdateSourceTrigger=PropertyChanged}"
+                     DisplayMemberPath="UniversityName"
+                     ToolTip="{Binding _University.University.UniversityName}" 
+                     HorizontalContentAlignment="Center"
+                     Background="White" >
+                    <!--SortedItems can find above in Window.Resources-->
+                    <!--Dir can find in _Direction.cs-->
+                </ComboBox>
+            </StackPanel>
+            <Button  Width="40" Background="Gray" Content="..." TabIndex="9"
+                    Command="{Binding _University.NewEditUniversityCommand}"
+                         CommandParameter="{Binding DataContext, RelativeSource=
+                    {RelativeSource AncestorType={x:Type Window}}}"/>
+            <StackPanel Orientation="Horizontal">
+                <Viewbox  MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Center" 
+                     VerticalAlignment="Stretch">
+                    <TextBlock Text="Курс" FontWeight="Bold" Foreground="red"/>
+                </Viewbox>
+                <xctk:IntegerUpDown MaxWidth="40" MaxHeight="50" MaxLength="3" Margin="8" TabIndex="26" 
+                                    Maximum="6" Minimum="1" 
+                                    Value="{Binding Client.Course, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    ToolTip="Курс"/>
+            </StackPanel>
+        </StackPanel>
+
+        <WrapPanel Grid.Row="9"  Grid.Column="4"  Margin="3" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel >
+
+
+            </StackPanel>
+
+
+        </WrapPanel>
+        <WrapPanel Grid.Row="8" Grid.Column="2" Margin="3">
+            <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
+                     VerticalAlignment="Stretch">
+                <TextBlock Text="Цена: " FontWeight="Bold" Foreground="OrangeRed"/>
+            </Viewbox>
+            <TextBox x:Name="Price"    Foreground="OrangeRed" TabIndex="19" MinWidth="70" 
+                     Text="{Binding Price.Price, Mode=TwoWay}"/>
+            <!--Price can find in ForEditOrder.cs-->
+        </WrapPanel>
+        <WrapPanel Grid.Row="8" Grid.Column="3" Margin="3">
+            <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
+                     VerticalAlignment="Stretch">
+                <TextBlock Text="Предоплата: " FontWeight="Bold" Foreground="Green"/>
+            </Viewbox>
+            <TextBox x:Name="Prepaiment"  Text="{Binding Price.Prepayment, Mode=TwoWay}"
+                     Foreground="Green" TabIndex="20" MinWidth="70"/>
+            <!--Price can find in ForEditOrder.cs-->
+        </WrapPanel>
+        <WrapPanel Grid.Row="8" Grid.Column="4" Margin="3">
+            <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
+                     VerticalAlignment="Stretch">
+                <TextBlock Text="Работать в долг? " FontWeight="Bold" Foreground="Red"/>
+            </Viewbox>
+            <CheckBox x:Name="DebtWork" TabIndex="21" IsChecked="{Binding Order.WorkInCredit, Mode=TwoWay}"
+                />
+            <!--Order can find in ForEditOrder.cs-->
+        </WrapPanel>
+
+        <Grid Grid.Row="7" Grid.Column="2" Grid.ColumnSpan="3" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="107*"/>
+                <ColumnDefinition Width="208*"/>
+                <ColumnDefinition Width="121*"/>
+
+                <ColumnDefinition Width="158*"/>
+            </Grid.ColumnDefinitions>
+            <WrapPanel Grid.Column="0" Margin="3" Grid.ColumnSpan="2" >
+                <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
+                     VerticalAlignment="Stretch">
+                    <TextBlock Text="Источник:" FontWeight="Bold" />
+                </Viewbox>
+                <ComboBox x:Name="Sourse"  MinWidth="180"  TabIndex="17" MinHeight="32" Margin="3"   SelectedIndex="0" 
+                      
+                     ItemsSource="{Binding Source={StaticResource SortedSources}, 
+                      UpdateSourceTrigger=PropertyChanged}" 
+                     SelectedItem="{Binding _Source.Source,  UpdateSourceTrigger=PropertyChanged}"
+                     DisplayMemberPath="SourceName"
+                     HorizontalContentAlignment="Center"
+                     Background="White" >
+                    <!--SortedSources can find above in Window.Resources-->
+                    <!--Source can find in _Source.cs-->
+                </ComboBox>
+
+                <Button x:Name="AddSourse" Width="40" Background="Gray" Content="..." TabIndex="18"
+                    Command="{Binding _Source.NewEditSource}" CommandParameter="{Binding DataContext, RelativeSource=
+                    {RelativeSource AncestorType={x:Type Window}}}"/>
+                <!--NewEditSource can find in SourceClass.cs-->
+            </WrapPanel>
+            <Button Grid.Column="2" Content="Постготовность" Background="LightBlue" Foreground="Black" 
+                TabIndex="29" Margin="3"/>
+            <!--StatusName-->
+
+            <Button Grid.Column="3" Content="Распределить заказ" 
+                    Background="DarkOliveGreen" TabIndex="30"
+                        Margin="3,3,3,0" Command="{Binding NewRuleOrderLineWindowCommand}"                    
+            IsEnabled="{Binding _Status.Status.StatusName,   Converter={StaticResource stringToBoollConverter}}"            
+                        CommandParameter="{Binding DataContext, 
+                                            RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Height="35" VerticalAlignment="Top"
+                     ToolTip="Кнопка станет активной только после сохранения заказа" />
+
+            <!-- Command NewRuleOrderLineWindowCommand  can find  _RuleOrderLineClass.cs-->
+        </Grid>
+
+        <StackPanel Grid.Row="9" Grid.Column="2" Grid.ColumnSpan="3" Margin="3" Orientation="Horizontal">
+            <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
+                     VerticalAlignment="Stretch">
+                <TextBlock Text="Тип работы:" FontWeight="Bold" />
+            </Viewbox>
+            <ComboBox x:Name="WorkTypeList"  MinWidth="150" TabIndex="22"
+                        SelectedIndex="0" Margin="3"                        
+                     ItemsSource="{Binding Source={StaticResource SortedWorkTypes}, 
+                      UpdateSourceTrigger=PropertyChanged}" 
+                     SelectedItem="{Binding _WorkType.WorkType,  UpdateSourceTrigger=PropertyChanged}"
+                     DisplayMemberPath="TypeOfWork"
+                     HorizontalContentAlignment="Center"
+                     Background="White" >
+                <!--SortedWorkTypes can find above in Window.Resources-->
+                <!--WorkType can find in _WorkType.cs-->
+            </ComboBox>
+
+            <Button x:Name="AddWorkType" Width="40" Background="Gray" 
+                    Content="..." TabIndex="23"
+                    Command="{Binding _WorkType.NewEditWorkType}" CommandParameter="{Binding DataContext, RelativeSource=
+                    {RelativeSource AncestorType={x:Type Window}}}"/>
+
+            <!-- Command NewEditWorkType  can find  WorkTypeClass.cs-->
+            <StackPanel Orientation="Horizontal">
+                <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
+                     VerticalAlignment="Stretch">
+                    <TextBlock Text="Статус заказа:" FontWeight="Bold" Foreground="red"/>
+                </Viewbox>
+                <ComboBox x:Name="StatusList"  MinWidth="150"  TabIndex="8" SelectedIndex="0" 
+                      IsEditable="False"
+                     ItemsSource="{Binding Source={StaticResource SortedStatuses}, 
+                      UpdateSourceTrigger=PropertyChanged}" 
+                     SelectedItem="{Binding _Status.Status,  UpdateSourceTrigger=PropertyChanged}"
+                     DisplayMemberPath="StatusName"
+                     ToolTip="{Binding _Status.Status.StatusName}" 
+                     HorizontalContentAlignment="Center"
+                     Background="White" >
+                    <!--SortedItems can find above in Window.Resources-->
+                    <!--Dir can find in _Direction.cs-->
+                </ComboBox>
+                <Button  Width="40" Background="Gray" Content="..." TabIndex="9"
+                    Command="{Binding _Status.NewEditStatusCommand}"
+                         CommandParameter="{Binding DataContext, RelativeSource=
+                    {RelativeSource AncestorType={x:Type Window}}}"/>
+            </StackPanel>
+        </StackPanel>
+
+
+        <StackPanel Grid.Row="11" Grid.ColumnSpan="6">
+            <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5"  
+                     VerticalAlignment="Stretch">
+                <TextBlock Text="{Binding Msg, UpdateSourceTrigger=PropertyChanged}" Foreground="Red" FontWeight="Bold"/>
+            </Viewbox>
+            <DataGrid x:Name="GridOrders" Grid.Row="1" ItemsSource="{Binding Records, UpdateSourceTrigger=PropertyChanged}" 
+                  SelectedItem="{Binding SelectedOrderLine}"                  
+                  AutoGenerateColumns="False" SelectionMode="Single"
+                  IsReadOnly="True" Grid.ColumnSpan="2"  >
+
+                <!--"Records" , "SelectedOrderLine" we can find in  "MainViewModel.cs"-->
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <!--задаем фон заказам, которые разбиты на несколько подзаказов-->
+                        <!--set the background for orders that are divided into several suborders-->
+                        <Setter Property="Foreground"
+                           Value="{Binding Status, Converter={StaticResource StringToBrushConverter}}" />
+                        <Setter Property="Background" 
+                            Value="{Binding OrderCount ,Converter={StaticResource StringToBrushConverter}}"/>
+                        <!--"Status" , "OrderCount" we can find in  "MainViewModel.cs"-->
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <!--задачаем фон и цвет шрифта записиси заказа со статусом "-отказ от выполнения-"-->
+                                <!--set the background and font color of the order record with the status "rejection"-->
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding Status}" Value="-отказ от выполнения-" />
+                                </MultiDataTrigger.Conditions>
+                                <MultiDataTrigger.Setters>
+                                    <Setter Property="Background" Value="#FFE4C58E" />
+                                </MultiDataTrigger.Setters>
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+
+                        <!--"UpdateOrederList" we can find in  "MainViewModel.cs"-->
+                        <MenuItem Header="Редактировать" />
+                        <MenuItem Header="Подробности" />
+                        <MenuItem Header="Удалить" />
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
+                <!--all the binding elements of the DataGrid element can be found in the class "MainViewModel.cs"-->
+                <DataGrid.Columns>
+                    <DataGridTextColumn Width="0.355*" Binding="{Binding OrderNumber}"  Header="№заказа"/>
+
+                    <DataGridTextColumn Width="0.5*" Binding="{Binding SubName}" Header="Направление"/>
+                    <DataGridTextColumn Width="0.35*"  Binding="{Binding  DateOfReception, Converter={StaticResource dateFormatConverter}}" Header="Принят"/>
+                    <DataGridTextColumn Width="0.35*"  Binding="{Binding  DeadLine, Converter={StaticResource dateFormatConverter}}" Header="Deadline"/>
+                    <DataGridTextColumn Width="0.39*" Binding="{Binding DateDone, Converter={StaticResource dateFormatConverter}}" Header="Выполнен"/>
+                    <DataGridTextColumn Width="0.35*" Binding="{Binding Status}" Header="Статус">
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Width="0.5*" Binding="{Binding TypeOfWork}" Header="Тип работы"/>
+                    <DataGridTextColumn Width="0.3*" Binding="{Binding AuthorNickName}" Header="Автор"/>
+                    <DataGridTextColumn Width="0.3*" Binding="{Binding Price}" Header="Цена"/>
+                    <DataGridTextColumn Width="0.45*" Binding="{Binding Prepayment}" Header="Предоплата"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
+        <StackPanel Grid.Column="5" Grid.RowSpan="10">
+            <Viewbox Margin="5" MaxHeight="20">
+                <TextBlock Text="Заказ выполняет"   Grid.Column="4" FontWeight="Bold" Foreground="#FF2D9C42"/>
+            </Viewbox>
+
+            <StackPanel Grid.Column="4" Grid.Row="1" HorizontalAlignment="Center" 
+                        VerticalAlignment="Center" >
+                <TextBlock x:Name="AothorWinner"  
+                    Foreground="#FFEB6934" Margin="5"                   
+                    Text="{Binding ExecuteAuthor.Persone.NickName}"  />
+                <WrapPanel>
+                    <TextBlock  Text="Цена:" Margin="5" Foreground="Blue"/>
+                    <TextBlock  Text="{Binding _Evaluation.FinalEvaluationRecord.Price}" Foreground="Red" />
+                </WrapPanel>
+            </StackPanel>
+
+            <StackPanel  HorizontalAlignment="Center" VerticalAlignment="Center" >
+                <TextBlock  Text="Срок выполнения:" Margin="5" Foreground="Blue"/>
+                <TextBlock  Text="{ Binding _Evaluation.FinalEvaluationRecord.Deadline,
+                Converter={StaticResource dateFormatConverter}}" Foreground="Red" />
+            </StackPanel>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="100*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBox x:Name="AuthorEvalComment" 
+                 Text="{Binding _Evaluation.FinalEvaluationRecord.EvaluateDescription}"
+                  TextAlignment="Justify" MinHeight="180"
+                      VerticalContentAlignment="Center" Foreground="Red" Background="White"
+                       TextWrapping="Wrap" Grid.ColumnSpan="3" FontSize="12"  >
+                    <TextBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Скопировать в буфер обмена" Command="{Binding CopyToClipBoardCommand}" 
+                              Height="20"
+                              CommandParameter="{Binding Path=Text, ElementName=AuthorEvalComment}"/>
+                        </ContextMenu>
+                    </TextBox.ContextMenu>
+                </TextBox>
+            </Grid>
+            <Viewbox Margin="5" MaxHeight="20">
+                <TextBlock Text="Быстрое распределение"   Grid.Column="4" FontWeight="Bold" Foreground="#FF2D9C42"/>
+            </Viewbox>
+            <ComboBox x:Name="AuthorList"  MinWidth="120"   TabIndex="8" SelectedIndex="0" Margin="4"
+                      IsEditable="False" IsSynchronizedWithCurrentItem="True"
+                     ItemsSource="{Binding Source={StaticResource SortedUniversities}, 
+                      UpdateSourceTrigger=PropertyChanged}" 
+                      SelectedValue="{Binding _University.University.UniversityId, Mode=TwoWay}"
+                      SelectedValuePath="UniversityId"
+                     SelectedItem="{Binding _University.University,  UpdateSourceTrigger=PropertyChanged}"
+                     DisplayMemberPath="UniversityName"
+                     ToolTip="{Binding _University.University.UniversityName}" 
+                     HorizontalContentAlignment="Center"
+                     Background="White" >
+                <!--SortedItems can find above in Window.Resources-->
+                <!--Dir can find in _Direction.cs-->
+            </ComboBox>
+            <WrapPanel  Margin="3">
+                <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
+                     VerticalAlignment="Stretch">
+                    <TextBlock Text="Цена автора: " FontWeight="Bold" Foreground="OrangeRed"/>
+                </Viewbox>
+                <TextBox x:Name="AuthorPrice"    Foreground="OrangeRed" TabIndex="19" MinWidth="70" 
+                     Text="{Binding Price.Price, Mode=TwoWay}"/>
+                <!--Price can find in ForEditOrder.cs-->
+            </WrapPanel>
+            <StackPanel Grid.Column="1" Grid.Row="9"   Margin="3" Grid.ColumnSpan="2" HorizontalAlignment="Left">
+                <Viewbox Grid.Column="1" MaxHeight="18"  Stretch="Uniform" Margin="5"  
+                     VerticalAlignment="Stretch">
+                    <TextBlock Text="Дата выдачи заказа автором" Foreground="Red" FontWeight="Bold"/>
+                </Viewbox>
+                <DatePicker Name="AuthorDeadLine" IsDropDownOpen="False" SelectedDateFormat="Short" 
+                        MaxWidth="150" TabIndex="13" HorizontalAlignment="Center"
+                         SelectedDate="{Binding Date.DeadLine,Mode=TwoWay}"/>
+                <!--Date can find in ForEditOrder.cs-->
+            </StackPanel>
+            <Button  Content="Установить исполнителя" Grid.Column="1" Background="Yellow" TabIndex="25"
+                      IsEnabled="{Binding Order.Saved}"
+                      Command="{Binding CreateDobleNewOrderLine}"  Margin="3,3,2.8,2.6" 
+                      Foreground="Black"
+                    
+                     ToolTip="Разбить на несколько подзаказов"/>
+        </StackPanel>
+
+        <TextBlock  Grid.Column="5" Grid.Row="2" Grid.RowSpan="3"
+            IsHitTestVisible="False" Text="комменты автора по оценке работы" FontSize="25"                     
+                    TextWrapping="Wrap" VerticalAlignment="Center"
+                    TextAlignment="Center" 
+                    HorizontalAlignment="Center"  Foreground="DarkGray">
+            <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Text, ElementName=AuthorEvalComment}" Value="">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+
+
+
+
+    </Grid>
+</Window>

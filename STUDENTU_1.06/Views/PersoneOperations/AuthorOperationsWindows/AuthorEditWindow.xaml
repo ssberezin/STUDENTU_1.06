@@ -407,12 +407,12 @@
                 <TextBlock Text="Прекратили работать с:" Foreground="Brown" FontWeight="Bold"/>
             </Viewbox>
             <StackPanel Orientation="Horizontal">
-                <CheckBox x:Name="EndWorkEnable" TabIndex="18"  />
                 <DatePicker  IsDropDownOpen="False" SelectedDateFormat="Short" 
-                             IsEnabled="{Binding ElementName=EndWorkEnable,  Path=IsChecked}"
+                             IsEnabled="{Binding IsChecked, ElementName=EndWorkEnable}"
                         MaxWidth="150" TabIndex="13" HorizontalAlignment="Center"
                         SelectedDate="{Binding Date.EndDateWork, Mode=TwoWay}"  Width="111" Height="21" Margin="10,0,29.4,0"
                         HorizontalContentAlignment="Center"/>
+                <CheckBox x:Name="EndWorkEnable" TabIndex="18"  />
             </StackPanel>
 
             <!--Date can find in ForEditOrder.cs-->

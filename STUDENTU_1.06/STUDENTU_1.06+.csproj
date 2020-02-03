@@ -146,6 +146,9 @@
     <Compile Include="Views\EditOrderWindows\ContactsWindows\CompareContatctsWindow.xaml.cs">
       <DependentUpon>CompareContatctsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\EditOrderWindows\EditOrderLine\EditOrderRedaction.xaml.cs">
+      <DependentUpon>EditOrderRedaction.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\EditOrderWindows\EditUniversity.xaml.cs">
       <DependentUpon>EditUniversity.xaml</DependentUpon>
     </Compile>
@@ -178,6 +181,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\EditOrderWindows\ContactsWindows\CompareContatctsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EditOrderWindows\EditOrderLine\EditOrderRedaction.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
