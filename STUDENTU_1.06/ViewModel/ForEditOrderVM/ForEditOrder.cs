@@ -1192,28 +1192,60 @@ namespace STUDENTU_1._06.ViewModel
                         EditOrderLine();
                     }
                     ));
-
+        //редактирование при оформлении заказа
+        //переделать надо нахрен все в этом методе
         private void EditOrderLine()
         {
             using (StudentuConteiner db = new StudentuConteiner())
             {
                 try
                 {
+                    Order = db.Orderlines.Find(TMPStaticClass.CurrentOrder.OrderLineId);
+                    if (!Persone.ComparePersons(Persone, TMPStaticClass.CurrentOrder.Client.Persone))
+                    {
+                        Persone pers = db.Persones.Find(TMPStaticClass.CurrentOrder.Client.Persone);
+                        db.Entry(pers).State = EntityState.Modified;
+                        int tmpId = pers.PersoneId;
+                        pers = (Persone)this.Persone.CloneExceptVirtual();
+                        pers.PersoneId = tmpId;
+
+                    }
+                    if (!_Contacts.CompareContacts(Persone.Contacts, TMPStaticClass.CurrentOrder.Client.Persone.Contacts))
+                    {
+                        Contacts contacts = db.Contacts.Find(TMPStaticClass.CurrentOrder.Client.Persone.Contacts);
+                        db.Entry(contacts).State = EntityState.Modified;
+                        int tmpId = contacts.ContactsId;
+                        contacts = (Contacts)this._Contacts.Contacts.CloneExceptVirtual();
+                        contacts.ContactsId = tmpId;
+
+                    }
                     db.Entry(Order).State = EntityState.Modified;
-                    Persone.Contacts = _Contacts.Contacts;
-                    Order.Client = new Client() { Persone = Persone };
-                    Order.Direction = db.Directions.Find(_Dir.Dir.DirectionId);
-                    Order.WorkType = db.WorkTypes.Find(_WorkType.WorkType.WorkTypeId);
-                    Order.Dates = Date;
-                    Order.Subject = db.Subjects.Find(_Subj.Subj.SubjectId); ;
-                    Order.Money = Price;
-                    _Status.Status = db.Statuses.Find(new Status() { StatusId = 2 }.StatusId);
-                    Order.Status = _Status.Status;
-                    Order.Source = db.Sources.Find(_Source.Source.SourceId);
+                    //сюда надо бы впилить проверку по контактам
+
+                    //Persone.Contacts = _Contacts.Contacts;
+                    //Order.Client = new Client() { Persone = Persone };
+                    if (_Dir.Dir.DirectionId != TMPStaticClass.CurrentOrder.Direction.DirectionId)
+                        Order.Direction = db.Directions.Find(_Dir.Dir.DirectionId);
+                    if (_WorkType.WorkType.WorkTypeId != TMPStaticClass.CurrentOrder.WorkType.WorkTypeId)
+                        Order.WorkType = db.WorkTypes.Find(_WorkType.WorkType.WorkTypeId);
+                    if (!Date.CompareDate(Date, TMPStaticClass.CurrentOrder.Dates))
+                        Order.Dates = Date;
+                    if (_Subj.Subj.SubjectId != TMPStaticClass.CurrentOrder.Subject.SubjectId)
+                        Order.Subject = db.Subjects.Find(_Subj.Subj.SubjectId); 
+                    if (!Price.CompareMoney(Price, TMPStaticClass.CurrentOrder.Money))
+                        Order.Money = Price;
+                    if (_Status.Status.StatusId != TMPStaticClass.CurrentOrder.Status.StatusId)
+                        {
+                            Order.Status = db.Statuses.Find(_Status.Status.StatusId);
+                            //db.SaveChanges();
+                        }
+                    if(_Source.Source.SourceId!=TMPStaticClass.CurrentOrder.Source.SourceId)  
+                        Order.Source = db.Sources.Find(_Source.Source.SourceId);
                     Order.Saved = true;
                     db.SaveChanges();
                     dialogService.ShowMessage("Данные о заказе сохранены");
-                    TMPStaticClass.CurrentOrder = Order;
+                    //4.2.20: can't clone Order yets
+                    TMPStaticClass.CurrentOrder =Order;
                     saved = true;
                 }
                 catch (ArgumentNullException ex)
@@ -1266,7 +1298,7 @@ namespace STUDENTU_1._06.ViewModel
                     ));
         private void CloseWindow(Window window)
         {
-            if (authorsRecord.Author.Persone.Name != "---" && !evaluationSetWinner && Order.Saved)
+            if (AuthorsRecord.Author.Persone.Name != "---" && !evaluationSetWinner && Order.Saved)
                 if (dialogService.YesNoDialog("Не сохранены результаты экспрес распределния заказа\n" +
                                    "Сохранить перед закрытием?"))
                 {
@@ -1344,8 +1376,18 @@ namespace STUDENTU_1._06.ViewModel
             {
                 try
                 {
-                    Evaluation evaluation = new Evaluation();
+                    db.Entry(Order).State = EntityState.Modified;
+
+                    Author = Order.GetExecuteAuthor(TMPStaticClass.CurrentOrder.Author);
+                    if (Author != null)
+                    {
+                        int WinnerEvaluationId = Author.GetWinnerEvaluation(Author).EvaluationId;
+                        db.Entry(Author).State = EntityState.Modified;
+                        Author.Evaluation[WinnerEvaluationId].Winner = false;
+                    }                    
                     Author = db.Authors.Find(AuthorsRecord.Author.AuthorId);
+                    Evaluation evaluation = new Evaluation();
+                    
                     //evaluation.Authors.Add(db.Authors.Find(AuthorsRecord.Author.AuthorId));
                     evaluation.Authors.Add(Author);
                     evaluation.AuthorDeadLine = FinalEvaluationRecord.DeadLine;
@@ -1356,12 +1398,15 @@ namespace STUDENTU_1._06.ViewModel
                     evaluation.Winner = true;
                     //db.Entry(Author).State = EntityState.Modified;
                     Author.Evaluation.Add(evaluation);
-                    db.Entry(Order).State = EntityState.Modified;
+                    
                     Order.Author.Add(Author);
                     db.SaveChanges();
+                  //  Author = (Author)this.Author.Clone();
+                    TMPStaticClass.CurrentOrder.Author.Add(Author);
                     roolMSG = $"Заказ выполняет {Author.Persone.NickName}";
                     evaluationSetWinner = true;
                     dialogService.ShowMessage("Заказ распределен");
+                   
                 }
                 catch (ArgumentNullException ex)
                 {

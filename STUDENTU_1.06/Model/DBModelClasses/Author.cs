@@ -80,23 +80,25 @@ namespace STUDENTU_1._06.Model
             return null;
         }
 
+
+
         public object Clone()
         {
             return new Author()
             {
-                //AuthorId= this.AuthorId,
-                //Source= this.Source,
-                //Punctually= this.Punctually,
-                //WorkQuality= this.WorkQuality,
-                //Responsibility= this.Responsibility,
-                //CompletionCompliance= this.CompletionCompliance,
-                //Rating= this.Rating,
-                //Persone=(Persone)this.Persone.Clone(this.Persone),
-                //OrderLine=new ObservableCollection<OrderLine>(this.OrderLine),
-                //Subject=new ObservableCollection<Subject>(this.Subject),
-                //Direction=new ObservableCollection<Direction>(this.Direction),
-                //Evaluation=new ObservableCollection<Evaluation>(this.Evaluation),
-                //AuthorStatus=(AuthorStatus)this.AuthorStatus.Clone()
+                AuthorId = this.AuthorId,
+                Source = this.Source,
+                Punctually = this.Punctually,
+                WorkQuality = this.WorkQuality,
+                Responsibility = this.Responsibility,
+                CompletionCompliance = this.CompletionCompliance,
+                Rating = this.Rating,
+                Persone = (Persone)this.Persone.Clone(),
+                OrderLine = new ObservableCollection<OrderLine>(this.OrderLine),
+                Subject = new ObservableCollection<Subject>(this.Subject),
+                Direction = new ObservableCollection<Direction>(this.Direction),
+                Evaluation = new ObservableCollection<Evaluation>(this.Evaluation),
+                AuthorStatus = (AuthorStatus)this.AuthorStatus.Clone()
             };
           
         }

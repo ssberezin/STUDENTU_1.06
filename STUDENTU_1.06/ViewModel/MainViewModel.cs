@@ -318,7 +318,11 @@ namespace STUDENTU_1._06.ViewModel
 
         private void EditOrderRedactionCall(int id)
         {
-            EditOrderRedaction editOrderRedaction = new EditOrderRedaction(id);
+            EditOrderRedaction editOrderRedaction;
+            if (id!=0)
+                 editOrderRedaction = new EditOrderRedaction(id);
+            else
+                editOrderRedaction = new EditOrderRedaction();
             editOrderRedaction.Owner = Application.Current.MainWindow;
             showWindow.ShowWindow(editOrderRedaction);
         }

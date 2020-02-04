@@ -32,6 +32,18 @@ namespace STUDENTU_1._06.Model
         public virtual ObservableCollection<OrderLine> OrderLine { get; set; }       
         public virtual Evaluation Evaluation { get; set; }
 
+        public bool CompareMoney(Money obj1, Money obj2)
+        {
+            if (obj1.Prepayment == obj2.Prepayment &&
+                obj1.Price == obj2.Price &&
+                obj1.PaidToAuthor == obj2.PaidToAuthor &&
+                obj1.PaidByClient == obj2.PaidByClient &&
+                obj1.AuthorEvalPrice == obj2.AuthorPrice &&
+                obj1.AuthorPrice == obj2.AuthorPrice)
+                return true;
+            return false;
+        }
+
         public object Clone()
         {
             return new Money()

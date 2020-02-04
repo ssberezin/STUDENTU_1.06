@@ -94,7 +94,19 @@ namespace STUDENTU_1._06.Model
                 OrderLine = new ObservableCollection<OrderLine>(OrderLine)
             };
         }
-
+        public bool CompareDate(Dates obj1, Dates obj2)
+        {           
+            if (obj1.AuthorDeadLine == obj2.AuthorDeadLine &&
+                obj1.EndDateWork == obj2.EndDateWork &&
+                obj1.StartDateWork == obj2.StartDateWork &&
+                obj1.DeadLine == obj2.DeadLine &&
+                obj1.DateDone == obj2.DateDone &&
+                obj1.DateOfPaid == obj2.DateOfPaid &&
+                obj1.DateOfAuthorPaid == obj2.DateOfAuthorPaid &&
+                obj1.DateOfReception == obj2.DateOfReception)
+                return true;
+            return false;
+        }
 
         //тут мы получаем только год , месяц, число, с нулевыми остальными показателями
         // here we get only the year, month, day, with zero other indicators
