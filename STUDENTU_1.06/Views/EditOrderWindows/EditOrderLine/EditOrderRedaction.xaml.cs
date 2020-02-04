@@ -25,5 +25,10 @@ namespace STUDENTU_1._06.Views.EditOrderWindows.EditOrderLine
             InitializeComponent();
             this.DataContext = new ForEditOrder();
         }
+        public EditOrderRedaction(int OrderLineId)
+        {
+            InitializeComponent();
+            this.DataContext = new ForEditOrder(OrderLineId);
+        }
     }
 }

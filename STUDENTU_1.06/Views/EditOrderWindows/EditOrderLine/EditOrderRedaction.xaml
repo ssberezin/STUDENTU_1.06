@@ -644,15 +644,19 @@
                 Converter={StaticResource dateFormatConverter}}" Foreground="Red" />
             </StackPanel>
             <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="117"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="100*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <TextBox x:Name="AuthorEvalComment" 
-                 Text="{Binding _Evaluation.FinalEvaluationRecord.EvaluateDescription}"
+                 Text="{Binding FinalEvaluationRecord.EvaluateDescription}"
                   TextAlignment="Justify" MinHeight="150"
                       VerticalContentAlignment="Center" Foreground="Red" Background="White"
-                       TextWrapping="Wrap" Grid.ColumnSpan="3" FontSize="12"  >
+                       TextWrapping="Wrap" Grid.ColumnSpan="2" FontSize="12"  >
                     <TextBox.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="Скопировать в буфер обмена" Command="{Binding CopyToClipBoardCommand}" 
@@ -692,7 +696,7 @@
                                    TextAlignment="Center" Foreground="Red"/>
                                 <TextBlock Text="{Binding Persone.Patronimic}" Margin="2"
                                    TextWrapping="WrapWithOverflow" 
-                                   TextAlignment="Center" Foreground="Red"/>                                
+                                   TextAlignment="Center" Foreground="Red"/>
                             </StackPanel>
                         </StackPanel>
                     </DataTemplate>
@@ -704,7 +708,7 @@
                     <TextBlock Text="Цена автора: " FontWeight="Bold" Foreground="OrangeRed"/>
                 </Viewbox>
                 <TextBox x:Name="AuthorPrice"    Foreground="OrangeRed" TabIndex="19" MinWidth="70" 
-                     Text="{Binding _Evaluation.FinalEvaluationRecord.Price, Mode=TwoWay}"/>
+                     Text="{Binding FinalEvaluationRecord.Price, Mode=TwoWay}"/>
                 <!--Price can find in ForEditOrder.cs-->
             </WrapPanel>
             <StackPanel Grid.Column="1" Grid.Row="9"   Margin="3" Grid.ColumnSpan="2" HorizontalAlignment="Left">
@@ -714,11 +718,11 @@
                 </Viewbox>
                 <DatePicker Name="AuthorDeadLine" IsDropDownOpen="False" SelectedDateFormat="Short" 
                         MaxWidth="150" TabIndex="13" HorizontalAlignment="Center"
-                         SelectedDate="{Binding _Evaluation.FinalEvaluationRecord.Deadline,Mode=TwoWay}"/>
+                         SelectedDate="{Binding FinalEvaluationRecord.Deadline,Mode=TwoWay}"/>
                 <!--Date can find in ForEditOrder.cs-->
             </StackPanel>
             <Button  Content="Установить исполнителя" Grid.Column="1" Background="Yellow" TabIndex="25"
-                   
+                     IsEnabled="{Binding Order.Saved}"
                       Command="{Binding SetFastRoolOrderCommand}" MinHeight="30" Margin="3,3,2.8,2.6" 
                       Foreground="Black"                    
                      ToolTip="Экспресс распределение заказа"/>

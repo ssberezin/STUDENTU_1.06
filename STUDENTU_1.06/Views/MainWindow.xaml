@@ -56,9 +56,9 @@
                     <MenuItem Header="Заказы" Height="17" VerticalAlignment="Top">
                         <MenuItem Header="Новый заказ  Ctrl+N" Command="{Binding NewOrder}"
                                   Height="17" VerticalAlignment="Top"/>
-                        
-                    "NewOrder" we can find in  "MainViewModel.cs"
-                    
+
+                        "NewOrder" we can find in  "MainViewModel.cs"
+
                         <MenuItem Header="Редактировать заказ" Height="17" VerticalAlignment="Top"
                               IsEnabled="{Binding SelectedItem,
                                           Converter={StaticResource NullBoolConverter}, ElementName=GridOrders}"/>
@@ -97,11 +97,11 @@
         </DockPanel>
 
 
-        <DataGrid x:Name="GridOrders" Grid.Row="1" ItemsSource="{Binding Records, UpdateSourceTrigger=PropertyChanged}" 
+        <DataGrid x:Name="GridOrders" ItemsSource="{Binding Records, UpdateSourceTrigger=PropertyChanged}" 
                   SelectedItem="{Binding SelectedOrderLine}"                  
                   AutoGenerateColumns="False" SelectionMode="Single"
-                  IsReadOnly="True" Grid.ColumnSpan="2"  >
-           
+                  IsReadOnly="True" Margin="0,22,0,10" Grid.RowSpan="2"  >
+
             <!--"Records" , "SelectedOrderLine" we can find in  "MainViewModel.cs"-->
             <DataGrid.RowStyle>
                 <Style TargetType="DataGridRow">
@@ -117,9 +117,9 @@
                             <!--задачаем фон и цвет шрифта записиси заказа со статусом "-отказ от выполнения-"-->
                             <!--set the background and font color of the order record with the status "rejection"-->
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding Status}" Value="-отказ от выполнения-" />                                
+                                <Condition Binding="{Binding Status}" Value="-отказ от выполнения-" />
                             </MultiDataTrigger.Conditions>
-                            <MultiDataTrigger.Setters>                                
+                            <MultiDataTrigger.Setters>
                                 <Setter Property="Background" Value="#FFE4C58E" />
                             </MultiDataTrigger.Setters>
                         </MultiDataTrigger>
@@ -130,20 +130,22 @@
                 <ContextMenu>
                     <MenuItem Header="Обновить Ctrl+R" Command="{Binding UpdateOrederList}"/>
                     <!--"UpdateOrederList" we can find in  "MainViewModel.cs"-->
-                    <MenuItem Header="Редактировать" />
+                    <MenuItem Header="Редактировать" 
+                              Command="{Binding EditOrderCommand}"/>
+
                     <MenuItem Header="Подробности" />
                     <MenuItem Header="Удалить" />
                 </ContextMenu>
             </DataGrid.ContextMenu>
             <!--all the binding elements of the DataGrid element can be found in the class "MainViewModel.cs"-->
-            <DataGrid.Columns>                
+            <DataGrid.Columns>
                 <DataGridTextColumn Width="0.355*" Binding="{Binding OrderNumber}"  Header="№заказа"/>
                 <DataGridTextColumn Width="0.5*" Binding="{Binding ClientName}" Header="Клиент"/>
                 <DataGridTextColumn Width="0.5*" Binding="{Binding SubName}" Header="Направление"/>
                 <DataGridTextColumn Width="0.35*"  Binding="{Binding  DateOfReception, Converter={StaticResource dateFormatConverter}}" Header="Принят"/>
                 <DataGridTextColumn Width="0.35*"  Binding="{Binding  DeadLine, Converter={StaticResource dateFormatConverter}}" Header="Deadline"/>
                 <DataGridTextColumn Width="0.39*" Binding="{Binding DateDone, Converter={StaticResource dateFormatConverter}}" Header="Выполнен"/>
-                <DataGridTextColumn Width="0.35*" Binding="{Binding Status}" Header="Статус">                    
+                <DataGridTextColumn Width="0.35*" Binding="{Binding Status}" Header="Статус">
                 </DataGridTextColumn>
                 <DataGridTextColumn Width="0.5*" Binding="{Binding TypeOfWork}" Header="Тип работы"/>
                 <DataGridTextColumn Width="0.3*" Binding="{Binding AuthorNickName}" Header="Автор"/>
@@ -166,9 +168,11 @@
             <Button Content="Править заказ" Grid.Column="1"
                     Name="EditOrder" Margin="5"  
                     Background="Black"
+                    Command="{Binding EditOrderCommand}"
+                  
                     IsEnabled="{Binding SelectedItem,
                      Converter={StaticResource NullBoolConverter}, ElementName=GridOrders}"/>
-         
+
             <Button Content="Печать квитанции" Grid.Column="2"
                     Name="PrintCheck" Margin="5"  
                     Background="LightBlue" Foreground="Black"

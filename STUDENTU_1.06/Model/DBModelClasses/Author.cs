@@ -69,6 +69,17 @@ namespace STUDENTU_1._06.Model
             return (Punctually + WorkQuality + Responsibility + CompletionCompliance) / 4.0;
         }
 
+        public Evaluation GetWinnerEvaluation(Author author)
+        {
+
+            foreach (var item in author.Evaluation)
+            {
+                if (item.Winner == true)
+                        return item;
+            }
+            return null;
+        }
+
         public object Clone()
         {
             return new Author()

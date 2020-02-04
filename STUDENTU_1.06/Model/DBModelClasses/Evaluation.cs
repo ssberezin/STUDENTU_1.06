@@ -16,20 +16,23 @@ namespace STUDENTU_1._06.Model
             this.Dates = new ObservableCollection<Dates>();
             this.Moneys = new ObservableCollection<Money>();
             this.Authors = new ObservableCollection<Author>();
-           
+            this.AuthorDeadLine = DateTime.Now;
             this.Winner = false;
+            this.AuthorPrice = 0;
         }
 
         public int EvaluationId { get; set; }
         public bool Winner { get; set; }
 
-       
+        [Column(TypeName = "datetime2")]
+        public System.DateTime AuthorDeadLine { get; set; }
 
         [Column("Description", TypeName = "nvarchar")]
         [MaxLength(1000)]
         public string Description { get; set; }
 
-      
+        public decimal AuthorPrice { get; set; }
+
         public virtual ObservableCollection<Dates> Dates { get; set; }
         public virtual ObservableCollection<Money> Moneys { get; set; }
 

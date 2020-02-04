@@ -296,11 +296,19 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
-
+        //for new order
         public ForEditOrder()
         {
             DefaultLoadData();
             Order = new OrderLine { OrderNumber = GetOrderNumber() };
+            showWindow = new DefaultShowWindowService();
+            dialogService = new DefaultDialogService();
+        }
+        //for edit allready exist order
+        public ForEditOrder(int OrderLineId)
+        {
+            DefaultLoadDataEditOrder(OrderLineId);
+           // Order = new OrderLine { OrderNumber = GetOrderNumber() };
             showWindow = new DefaultShowWindowService();
             dialogService = new DefaultDialogService();
         }
@@ -313,7 +321,8 @@ namespace STUDENTU_1._06.ViewModel
             ContactsRecords = new ObservableCollection<Contacts>();
             Records = new ObservableCollection<Records>();
 
-            Author = new Author();
+            AuthorsRecord = new AuthorsRecord();
+           Author = new Author();
             _Contacts = new _Contacts();
             Client = new Client();
             Date = new Dates();
@@ -332,9 +341,98 @@ namespace STUDENTU_1._06.ViewModel
             _Source = new _Source();
             _University = new _University();
             _WorkType = new _WorkType();
-
             roolMSG = "Заказ не распределен";
             AllAuthorsCall();//fill out the authors list
+        }
+
+        private void DefaultLoadDataEditOrder(int OrderLineId)
+        {
+            BlackListRecords = new ObservableCollection<BlackListHelpModel>();
+            AuthorsRecords = new ObservableCollection<AuthorsRecord>();
+            ContactsRecords = new ObservableCollection<Contacts>();
+            Records = new ObservableCollection<Records>();
+
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                try
+                {
+                    Order = db.Orderlines.Find(OrderLineId);
+                    //Author = Order.GetExecuteAuthor(Order.Client.Persone.Author);
+                    if (Order.Client.Persone.Author.Count() > 0)
+                    {
+                        Author = Order.GetExecuteAuthor(Order.Client.Persone.Author);
+                        if (Author == null)
+                            Author = new Author();
+                    }
+                    else
+                        Author = new Author();
+                    _Contacts = new _Contacts() { Contacts = Order.Client.Persone.Contacts };                    
+                    Client = Order.Client;
+                    Date = Order.Dates;
+                    _Dir = new _Direction { Dir = Order.Direction };
+                    Evaluation evaluation = new Evaluation();
+                    evaluation = Author.GetWinnerEvaluation(Author);
+                    if (evaluation == null)
+                    {
+                        FinalEvaluationRecord = new EvaluationRecord()
+                        {
+                            DeadLine = Date.AuthorDeadLine,
+                            Price = 0,
+                            EvaluateDescription = ""
+                        };
+                        roolMSG = "Заказ не распределен";
+                    }
+                    else
+                    {
+                        FinalEvaluationRecord = new EvaluationRecord()
+                        {
+                            DeadLine = evaluation.AuthorDeadLine,
+                            Price = evaluation.AuthorPrice,
+                            EvaluateDescription = evaluation.Description
+                        };
+                        roolMSG = $"Заказ закреплен за {Author.Persone.NickName}";
+                        evaluationSetWinner = true;//flag for us in CloseWindowCommand
+                    }
+                    AuthorsRecord = new AuthorsRecord(){Author = Author};
+                    Persone = Order.Client.Persone;
+                    PersoneDescription = Order.Client.Persone.PersoneDescription;
+                    Price = Order.Money;
+                    _Status = new _Status();
+                    _Status.Status = Order.Status;
+                    _Subj = new _Subject();
+                    _Subj.Subj = Order.Subject;
+                    _Source = new _Source();
+                    _Source.Source = Order.Source;
+                    _University = new _University();
+                    _University.University = Order.Client.Universities[0];
+                    _WorkType = new _WorkType();
+                    _WorkType.WorkType = Order.WorkType;                   
+                    AllAuthorsCall();//fill out the authors list
+
+                }
+                catch (ArgumentNullException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (OverflowException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+            }
+
+            
         }
 
 
@@ -1168,7 +1266,16 @@ namespace STUDENTU_1._06.ViewModel
                     ));
         private void CloseWindow(Window window)
         {
-            window.Close();
+            if (authorsRecord.Author.Persone.Name != "---" && !evaluationSetWinner && Order.Saved)
+                if (dialogService.YesNoDialog("Не сохранены результаты экспрес распределния заказа\n" +
+                                   "Сохранить перед закрытием?"))
+                {
+                    SetFastRoolOrder();
+                    window.Close();
+                }
+            else
+
+                    window.Close();
         }
 
         public void _CloseWindow()
@@ -1229,7 +1336,7 @@ namespace STUDENTU_1._06.ViewModel
                         SetFastRoolOrder();
                     }
                     ));
-
+        bool evaluationSetWinner = false;
         private void SetFastRoolOrder()
         {
             //AuthorsRecord
@@ -1241,20 +1348,19 @@ namespace STUDENTU_1._06.ViewModel
                     Author = db.Authors.Find(AuthorsRecord.Author.AuthorId);
                     //evaluation.Authors.Add(db.Authors.Find(AuthorsRecord.Author.AuthorId));
                     evaluation.Authors.Add(Author);
-                    evaluation.Dates.Add(new Dates() { AuthorDeadLine = FinalEvaluationRecord.DeadLine });
+                    evaluation.AuthorDeadLine = FinalEvaluationRecord.DeadLine;
+                    //evaluation.Dates.Add(new Dates() { AuthorDeadLine = FinalEvaluationRecord.DeadLine });
                     evaluation.Description = FinalEvaluationRecord.EvaluateDescription;
-                    evaluation.Moneys.Add(new Money() { AuthorPrice = FinalEvaluationRecord.Price });
+                    // evaluation.Moneys.Add(new Money() { AuthorPrice = FinalEvaluationRecord.Price });
+                    evaluation.AuthorPrice = FinalEvaluationRecord.Price;
                     evaluation.Winner = true;
+                    //db.Entry(Author).State = EntityState.Modified;
                     Author.Evaluation.Add(evaluation);
-                    if (!Order.Saved)
-                        Order.Author.Add(Author);
-                    else
-                    {
-                        db.Entry(Order).State = EntityState.Modified;
-                        Order.ParentId = Order.OrderLineId;
-                    }
+                    db.Entry(Order).State = EntityState.Modified;
+                    Order.Author.Add(Author);
                     db.SaveChanges();
                     roolMSG = $"Заказ выполняет {Author.Persone.NickName}";
+                    evaluationSetWinner = true;
                     dialogService.ShowMessage("Заказ распределен");
                 }
                 catch (ArgumentNullException ex)
@@ -1287,12 +1393,10 @@ namespace STUDENTU_1._06.ViewModel
             {
                 try
                 {
-
                     var result = db.Authors.Include("Persone").ToList();
                     AuthorsRecord record;
                     foreach (Author item in result)
                     {
-
                         record = new AuthorsRecord
                         {
                             Author = new Author() { AuthorId = item.AuthorId },
@@ -1303,7 +1407,6 @@ namespace STUDENTU_1._06.ViewModel
                                 Name = item.Persone.Name,
                                 Surname = item.Persone.Surname
                             }
-
                         };
                         AuthorsRecords.Add(record);
                     }
@@ -1329,7 +1432,6 @@ namespace STUDENTU_1._06.ViewModel
                     dialogService.ShowMessage(ex.Message);
                 }
             }
-
         }
 
     }

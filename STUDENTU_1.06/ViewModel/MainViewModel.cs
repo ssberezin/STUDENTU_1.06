@@ -39,6 +39,7 @@ namespace STUDENTU_1._06.ViewModel
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            SelectedOrderLine = new OrderLine();
             LoadData();
         }
 
@@ -66,6 +67,21 @@ namespace STUDENTU_1._06.ViewModel
                 {
                     persone = value;
                     OnPropertyChanged(nameof(Persone));
+                }
+            }
+        }
+
+        
+        private OrderLine selectedOrderLine;
+        public OrderLine SelectedOrderLine
+        {
+            get { return selectedOrderLine; }
+            set
+            {
+                if (selectedOrderLine != value)
+                {
+                    selectedOrderLine = value;
+                    OnPropertyChanged(nameof(SelectedOrderLine));
                 }
             }
         }
@@ -295,17 +311,26 @@ namespace STUDENTU_1._06.ViewModel
                         //EditOrder editOrder = new EditOrder();
                         //editOrder.Owner = Application.Current.MainWindow;                        
                         //showWindow.ShowWindow(editOrder);
-                        EditOrderRedactionCall();
+                        EditOrderRedactionCall(0);
                     }
                     ));
 
 
-        private void EditOrderRedactionCall()
+        private void EditOrderRedactionCall(int id)
         {
-            EditOrderRedaction editOrderRedaction = new EditOrderRedaction();
+            EditOrderRedaction editOrderRedaction = new EditOrderRedaction(id);
             editOrderRedaction.Owner = Application.Current.MainWindow;
             showWindow.ShowWindow(editOrderRedaction);
         }
+
+        private RelayCommand editOrderCommand;
+        public RelayCommand EditOrderCommand => editOrderCommand ?? (editOrderCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        int id = SelectedOrderLine.OrderLineId;
+                        EditOrderRedactionCall(id);
+                    }
+                    ));
 
         private RelayCommand closeMainWindow;
 
