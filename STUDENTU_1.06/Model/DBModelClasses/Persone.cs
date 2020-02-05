@@ -182,6 +182,20 @@ namespace STUDENTU_1._06.Model
             };
         }
 
+        public object CloneExceptVirtualAndId()
+        {
+            return new Persone()
+            {                
+                Name = this.Name,
+                NickName = this.NickName,
+                Surname = this.Surname,
+                Patronimic = this.Patronimic,
+                Photo = PhotoCopy(this.Photo),
+                Male = this.Male,
+                Female = this.Female
+            };
+        }
+
 
         public byte[] PhotoCopy(byte[] obj)
         {

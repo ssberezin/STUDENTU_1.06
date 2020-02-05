@@ -495,6 +495,7 @@
                      SelectedItem="{Binding _Source.Source,  UpdateSourceTrigger=PropertyChanged}"
                      DisplayMemberPath="SourceName"
                      HorizontalContentAlignment="Center"
+                     ToolTip="{Binding _Source.Source.SourceName}" 
                      Background="White" >
                     <!--SortedSources can find above in Window.Resources-->
                     <!--Source can find in _Source.cs-->
@@ -534,6 +535,7 @@
                      SelectedValuePath="WorkTypeId"
                      SelectedItem="{Binding _WorkType.WorkType,  UpdateSourceTrigger=PropertyChanged}"
                      DisplayMemberPath="TypeOfWork"
+                       ToolTip="{Binding _WorkType.WorkType.TypeOfWork}" 
                      HorizontalContentAlignment="Center"
                      Background="White" >
                 <!--SortedWorkTypes can find above in Window.Resources-->
@@ -697,6 +699,7 @@
                       SelectedValuePath="PersoneId"
                      SelectedItem="{Binding AuthorsRecord,  UpdateSourceTrigger=PropertyChanged}"
                      HorizontalContentAlignment="Center"
+                       ToolTip="{Binding AuthorsRecord.Persone.NickName}"
                      Background="White" >
                 <ComboBox.ItemTemplate>
                     <DataTemplate>

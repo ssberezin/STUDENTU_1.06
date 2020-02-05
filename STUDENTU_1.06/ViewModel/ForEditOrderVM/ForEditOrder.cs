@@ -387,8 +387,9 @@ namespace STUDENTU_1._06.ViewModel
                             EvaluateDescription = evaluation.Description
                         };
                         RoolMSG = $"Заказ закреплен за {Author.Persone.NickName}";
-                        evaluationSetWinner = true;//flag for us in CloseWindowCommand
+                        evaluationSetWinner = false;//flag for us in CloseWindowCommand
                     }
+                    saved = true;//flag for make suborder
                     AuthorsRecord = new AuthorsRecord(){Author = Author};
                     Persone = Order.Client.Persone;
                     PersoneDescription = Order.Client.Persone.PersoneDescription;
@@ -850,7 +851,7 @@ namespace STUDENTU_1._06.ViewModel
 
                         if (!personeCompare)
                         {
-                            db3.Entry(persone).State = EntityState.Modified;
+                            db3.Entry(persone).State = EntityState.Modified;                            
                             persone.Name = _Contacts.Persone.Name;
                             persone.Surname = _Contacts.Persone.Surname;
                             persone.Patronimic = _Contacts.Persone.Patronimic;
@@ -918,6 +919,7 @@ namespace STUDENTU_1._06.ViewModel
                     if (!personeCompare)
                     {
                         db4.Entry(persone).State = EntityState.Modified;
+
                         persone.Name = _Contacts.Persone.Name;
                         persone.Surname = _Contacts.Persone.Surname;
                         persone.Patronimic = _Contacts.Persone.Patronimic;
@@ -1203,21 +1205,27 @@ namespace STUDENTU_1._06.ViewModel
 
                     if (!Persone.ComparePersons(Persone, TMPStaticClass.CurrentOrder.Client.Persone))
                     {
-                        Persone pers = db.Persones.Find(TMPStaticClass.CurrentOrder.Client.Persone);
+                        Persone pers = db.Persones.Where(p=> p.PersoneId==TMPStaticClass.CurrentOrder.Client.Persone.PersoneId).FirstOrDefault();
                         db.Entry(pers).State = EntityState.Modified;
-                        int tmpId = pers.PersoneId;
-                        pers = (Persone)this.Persone.CloneExceptVirtual();
-                        pers.PersoneId = tmpId;
+                        pers.Name = Persone.Name;
+                        pers.Surname = Persone.Surname;
+                        pers.Patronimic = Persone.Patronimic;
+                        pers.Male = Persone.Male;
+                        pers.Female = Persone.Female;
 
                     }
                     if (!_Contacts.CompareContacts(Persone.Contacts, TMPStaticClass.CurrentOrder.Client.Persone.Contacts))
                     {
-                        Contacts contacts = db.Contacts.Find(TMPStaticClass.CurrentOrder.Client.Persone.Contacts);
+                        Contacts contacts = db.Contacts.Where(c=>c.ContactsId==TMPStaticClass.CurrentOrder.Client.Persone.Contacts.ContactsId).FirstOrDefault();
                         db.Entry(contacts).State = EntityState.Modified;
-                        int tmpId = contacts.ContactsId;
-                        contacts = (Contacts)this._Contacts.Contacts.CloneExceptVirtual();
-                        contacts.ContactsId = tmpId;
-
+                        contacts.Phone1 = _Contacts.Contacts.Phone1;
+                        contacts.Phone2 = _Contacts.Contacts.Phone2;
+                        contacts.Phone3 = _Contacts.Contacts.Phone3;
+                        contacts.Email1 = _Contacts.Contacts.Email1;
+                        contacts.Email2 = _Contacts.Contacts.Email2;
+                        contacts.VK = _Contacts.Contacts.VK;
+                        contacts.FaceBook = _Contacts.Contacts.FaceBook;
+                        contacts.Skype = _Contacts.Contacts.Skype;
                     }
                     db.Entry(Order).State = EntityState.Modified;
                     //сюда надо бы впилить проверку по контактам
@@ -1236,9 +1244,16 @@ namespace STUDENTU_1._06.ViewModel
                         Order.Money = Price;
                     if (_Status.Status.StatusId != TMPStaticClass.CurrentOrder.Status.StatusId)                       
                             Order.Status = db.Statuses.Find(_Status.Status.StatusId);
-                            //db.SaveChanges();
-                       
-                    if(_Source.Source.SourceId!=TMPStaticClass.CurrentOrder.Source.SourceId)  
+                    if (_University.University.UniversityId != TMPStaticClass.CurrentOrder.Client.Universities[0].UniversityId)                    
+                        if (_University.University.UniversityId == 1)
+                            Order.Client.Universities.Add(_University.University);                    
+                        else
+                        {
+                            Order.Client.Universities.Clear();
+                            Order.Client.Universities.Add(_University.University);
+                        }
+                    Order.Client.Course = Client.Course;
+                    if (_Source.Source.SourceId!=TMPStaticClass.CurrentOrder.Source.SourceId)  
                         Order.Source = db.Sources.Find(_Source.Source.SourceId);
                     Order.Saved = true;
                     db.SaveChanges();
@@ -1368,6 +1383,7 @@ namespace STUDENTU_1._06.ViewModel
                     }
                     ));
         bool evaluationSetWinner = false;
+
         private void SetFastRoolOrder()
         {
             //AuthorsRecord
