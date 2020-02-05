@@ -356,16 +356,12 @@ namespace STUDENTU_1._06.ViewModel
             {
                 try
                 {
-                    Order = db.Orderlines.Find(OrderLineId);
-                    //Author = Order.GetExecuteAuthor(Order.Client.Persone.Author);
-                    if (Order.Client.Persone.Author.Count() > 0)
-                    {
-                        Author = Order.GetExecuteAuthor(Order.Client.Persone.Author);
-                        if (Author == null)
-                            Author = new Author();
-                    }
-                    else
-                        Author = new Author();
+                    Order = db.Orderlines.Where(o=>o.OrderLineId==OrderLineId).FirstOrDefault();
+                    Author = Order.GetExecuteAuthor(Order.Author);
+                    //if (Order.Client.Persone.Author.Count() > 0)
+                    if(Author==null)
+                      Author = new Author();
+                    Order.Saved = true;
                     _Contacts = new _Contacts() { Contacts = Order.Client.Persone.Contacts };                    
                     Client = Order.Client;
                     Date = Order.Dates;
@@ -380,7 +376,7 @@ namespace STUDENTU_1._06.ViewModel
                             Price = 0,
                             EvaluateDescription = ""
                         };
-                        roolMSG = "Заказ не распределен";
+                        RoolMSG = "Заказ не распределен";
                     }
                     else
                     {
@@ -390,7 +386,7 @@ namespace STUDENTU_1._06.ViewModel
                             Price = evaluation.AuthorPrice,
                             EvaluateDescription = evaluation.Description
                         };
-                        roolMSG = $"Заказ закреплен за {Author.Persone.NickName}";
+                        RoolMSG = $"Заказ закреплен за {Author.Persone.NickName}";
                         evaluationSetWinner = true;//flag for us in CloseWindowCommand
                     }
                     AuthorsRecord = new AuthorsRecord(){Author = Author};
@@ -408,7 +404,7 @@ namespace STUDENTU_1._06.ViewModel
                     _WorkType = new _WorkType();
                     _WorkType.WorkType = Order.WorkType;                   
                     AllAuthorsCall();//fill out the authors list
-
+                    TMPStaticClass.CurrentOrder = (OrderLine)Order.Clone();
                 }
                 catch (ArgumentNullException ex)
                 {
@@ -749,6 +745,7 @@ namespace STUDENTU_1._06.ViewModel
         //флаг для возврата в основной контекст , если пользователь
         //заменил прежние контактные данные на другие
         bool doubleSaveCheckDif = false;
+
         private void SaveOrderPartAfterCheckContacts(int contactsId, int doubleId,
                                                     bool contactsCompare, bool personeCompare)
         {
@@ -1200,7 +1197,10 @@ namespace STUDENTU_1._06.ViewModel
             {
                 try
                 {
-                    Order = db.Orderlines.Find(TMPStaticClass.CurrentOrder.OrderLineId);
+                    
+
+                    Order = db.Orderlines.Where(o=>o.OrderLineId==TMPStaticClass.CurrentOrder.OrderLineId).FirstOrDefault();
+
                     if (!Persone.ComparePersons(Persone, TMPStaticClass.CurrentOrder.Client.Persone))
                     {
                         Persone pers = db.Persones.Find(TMPStaticClass.CurrentOrder.Client.Persone);
@@ -1234,18 +1234,17 @@ namespace STUDENTU_1._06.ViewModel
                         Order.Subject = db.Subjects.Find(_Subj.Subj.SubjectId); 
                     if (!Price.CompareMoney(Price, TMPStaticClass.CurrentOrder.Money))
                         Order.Money = Price;
-                    if (_Status.Status.StatusId != TMPStaticClass.CurrentOrder.Status.StatusId)
-                        {
+                    if (_Status.Status.StatusId != TMPStaticClass.CurrentOrder.Status.StatusId)                       
                             Order.Status = db.Statuses.Find(_Status.Status.StatusId);
                             //db.SaveChanges();
-                        }
+                       
                     if(_Source.Source.SourceId!=TMPStaticClass.CurrentOrder.Source.SourceId)  
                         Order.Source = db.Sources.Find(_Source.Source.SourceId);
                     Order.Saved = true;
                     db.SaveChanges();
                     dialogService.ShowMessage("Данные о заказе сохранены");
                     //4.2.20: can't clone Order yets
-                    TMPStaticClass.CurrentOrder =Order;
+                    TMPStaticClass.CurrentOrder =(OrderLine)Order.Clone();
                     saved = true;
                 }
                 catch (ArgumentNullException ex)
@@ -1374,18 +1373,26 @@ namespace STUDENTU_1._06.ViewModel
             //AuthorsRecord
             using (StudentuConteiner db = new StudentuConteiner())
             {
+                if (AuthorsRecord.Author.AuthorId == 1)
+                {
+                    dialogService.ShowMessage("Не задан автор. Сохранять нечего.");
+                    return;
+                }
                 try
                 {
+                    db.Orderlines.Attach(Order);
                     db.Entry(Order).State = EntityState.Modified;
-
-                    Author = Order.GetExecuteAuthor(TMPStaticClass.CurrentOrder.Author);
-                    if (Author != null)
-                    {
-                        int WinnerEvaluationId = Author.GetWinnerEvaluation(Author).EvaluationId;
-                        db.Entry(Author).State = EntityState.Modified;
-                        Author.Evaluation[WinnerEvaluationId].Winner = false;
-                    }                    
-                    Author = db.Authors.Find(AuthorsRecord.Author.AuthorId);
+                                           
+                        //if author not fake
+                        Author = Order.GetExecuteAuthor(TMPStaticClass.CurrentOrder.Author);
+                        if (Author != null)
+                        {
+                            Evaluation WinnerEvaluation = Author.GetWinnerEvaluation(Author);
+                            db.Entry(WinnerEvaluation).State = EntityState.Modified;
+                            WinnerEvaluation.Winner = false;
+                        }
+                        Author = db.Authors.Find(AuthorsRecord.Author.AuthorId);
+                    
                     Evaluation evaluation = new Evaluation();
                     
                     //evaluation.Authors.Add(db.Authors.Find(AuthorsRecord.Author.AuthorId));
@@ -1403,7 +1410,7 @@ namespace STUDENTU_1._06.ViewModel
                     db.SaveChanges();
                   //  Author = (Author)this.Author.Clone();
                     TMPStaticClass.CurrentOrder.Author.Add(Author);
-                    roolMSG = $"Заказ выполняет {Author.Persone.NickName}";
+                    RoolMSG = $"Заказ выполняет {Author.Persone.NickName}";
                     evaluationSetWinner = true;
                     dialogService.ShowMessage("Заказ распределен");
                    

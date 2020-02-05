@@ -30,18 +30,14 @@ namespace STUDENTU_1._06.ViewModel
 
         public MainViewModel(Window mainWindow, DefaultShowWindowService showWindow)
         {
-            Records = new ObservableCollection<Records>();            
+            Records = new ObservableCollection<Records>();
+            LoadData();
             this.mainWindow = mainWindow;            
-            mainWindow.Loaded += MainWindow_Loaded;
             this.showWindow = showWindow;
 
         }
 
-        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
-        {
-            SelectedOrderLine = new OrderLine();
-            LoadData();
-        }
+  
 
         private Author author;
         public Author Author
@@ -72,16 +68,16 @@ namespace STUDENTU_1._06.ViewModel
         }
 
         
-        private OrderLine selectedOrderLine;
-        public OrderLine SelectedOrderLine
+        private Records selectedRecord;
+        public Records SelectedRecord
         {
-            get { return selectedOrderLine; }
+            get { return selectedRecord; }
             set
             {
-                if (selectedOrderLine != value)
+                if (selectedRecord != value)
                 {
-                    selectedOrderLine = value;
-                    OnPropertyChanged(nameof(SelectedOrderLine));
+                    selectedRecord = value;
+                    OnPropertyChanged(nameof(SelectedRecord));
                 }
             }
         }
@@ -330,9 +326,8 @@ namespace STUDENTU_1._06.ViewModel
         private RelayCommand editOrderCommand;
         public RelayCommand EditOrderCommand => editOrderCommand ?? (editOrderCommand = new RelayCommand(
                     (obj) =>
-                    {
-                        int id = SelectedOrderLine.OrderLineId;
-                        EditOrderRedactionCall(id);
+                    {                        
+                        EditOrderRedactionCall(SelectedRecord.RecordId);
                     }
                     ));
 

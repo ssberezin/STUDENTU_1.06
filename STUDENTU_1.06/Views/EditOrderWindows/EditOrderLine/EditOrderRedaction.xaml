@@ -263,9 +263,11 @@
                 <TextBlock Text="Направление: " FontWeight="Bold"  Foreground="Brown"/>
             </Viewbox>
             <ComboBox x:Name="DirList"  MinWidth="165"  TabIndex="8" SelectedIndex="0" 
-                      IsEditable="False"
+                      IsEditable="False" IsSynchronizedWithCurrentItem="True"
                      ItemsSource="{Binding Source={StaticResource SortedItems}, 
                       UpdateSourceTrigger=PropertyChanged}" 
+                     SelectedValue="{Binding _Dir.Dir.DirectionId, Mode=TwoWay}"
+                     SelectedValuePath="DirectionId"
                      SelectedItem="{Binding _Dir.Dir,  UpdateSourceTrigger=PropertyChanged}"
                      DisplayMemberPath="DirectionName"
                      ToolTip="{Binding _Dir.Dir.DirectionName}" 
@@ -285,9 +287,11 @@
                 <TextBlock Text="Предмет:" FontWeight="Bold" />
             </Viewbox>
             <ComboBox x:Name="Subject"  MinWidth="200" MaxWidth="200"  TabIndex="10"   SelectedIndex="0" 
-                      
+                       IsSynchronizedWithCurrentItem="True"
                      ItemsSource="{Binding Source={StaticResource SortedSubjects}, 
                       UpdateSourceTrigger=PropertyChanged}" 
+                     SelectedValue="{Binding _Subj.Subj.SubjectId, Mode=TwoWay}"
+                     SelectedValuePath="SubjectId"
                      SelectedItem="{Binding _Subj.Subj,  UpdateSourceTrigger=PropertyChanged}"
                      DisplayMemberPath="SubName"
                       ToolTip="{Binding _Subj.Subj.SubName}" 
@@ -404,7 +408,7 @@
                 </Viewbox>
                 <ComboBox x:Name="UniverList"  MinWidth="250" MaxWidth="300"  TabIndex="8" SelectedIndex="0" 
                       IsEditable="False" IsSynchronizedWithCurrentItem="True"
-                     ItemsSource="{Binding Source={StaticResource SortedUniversities}, 
+                      ItemsSource="{Binding Source={StaticResource SortedUniversities}, 
                       UpdateSourceTrigger=PropertyChanged}" 
                       SelectedValue="{Binding _University.University.UniversityId, Mode=TwoWay}"
                       SelectedValuePath="UniversityId"
@@ -483,9 +487,11 @@
                     <TextBlock Text="Источник:" FontWeight="Bold" />
                 </Viewbox>
                 <ComboBox x:Name="Sourse"  MinWidth="180"  TabIndex="17" MinHeight="32" Margin="3"   SelectedIndex="0" 
-                      
+                       IsSynchronizedWithCurrentItem="True"
                      ItemsSource="{Binding Source={StaticResource SortedSources}, 
                       UpdateSourceTrigger=PropertyChanged}" 
+                     SelectedValue="{Binding _Source.Source.SourceId, Mode=TwoWay}"
+                     SelectedValuePath="SourceId"
                      SelectedItem="{Binding _Source.Source,  UpdateSourceTrigger=PropertyChanged}"
                      DisplayMemberPath="SourceName"
                      HorizontalContentAlignment="Center"
@@ -520,9 +526,12 @@
                 <TextBlock Text="Тип работы:" FontWeight="Bold" />
             </Viewbox>
             <ComboBox x:Name="WorkTypeList"  MinWidth="150" TabIndex="22"
-                        SelectedIndex="0" Margin="3"                        
+                     SelectedIndex="0" Margin="3" 
+                     IsSynchronizedWithCurrentItem="True"
                      ItemsSource="{Binding Source={StaticResource SortedWorkTypes}, 
-                      UpdateSourceTrigger=PropertyChanged}" 
+                     UpdateSourceTrigger=PropertyChanged}" 
+                     SelectedValue="{Binding _WorkType.WorkType.WorkTypeId, Mode=TwoWay}"
+                     SelectedValuePath="WorkTypeId"
                      SelectedItem="{Binding _WorkType.WorkType,  UpdateSourceTrigger=PropertyChanged}"
                      DisplayMemberPath="TypeOfWork"
                      HorizontalContentAlignment="Center"
@@ -543,9 +552,12 @@
                     <TextBlock Text="Статус заказа:" FontWeight="Bold" Foreground="red"/>
                 </Viewbox>
                 <ComboBox x:Name="StatusList"  MinWidth="150"  TabIndex="8" SelectedIndex="0" 
-                      IsEditable="False"
+                     IsEditable="False"
+                     IsSynchronizedWithCurrentItem="True"
                      ItemsSource="{Binding Source={StaticResource SortedStatuses}, 
                       UpdateSourceTrigger=PropertyChanged}" 
+                     SelectedValue="{Binding _Status.Status.StatusId, Mode=TwoWay}"
+                     SelectedValuePath="StatusId"
                      SelectedItem="{Binding _Status.Status,  UpdateSourceTrigger=PropertyChanged}"
                      DisplayMemberPath="StatusName"
                      ToolTip="{Binding _Status.Status.StatusName}" 
@@ -624,24 +636,32 @@
         </StackPanel>
         <StackPanel Grid.Column="5" Grid.RowSpan="10">
             <Viewbox Margin="5" MaxHeight="20">
-                <TextBlock Text="{Binding RooLMSG}"   Grid.Column="4" FontWeight="Bold" Foreground="#FF2D9C42"/>
+                <TextBlock Text="{Binding RooLMSG, UpdateSourceTrigger=PropertyChanged}"   Grid.Column="4" FontWeight="Bold" Foreground="#FF2D9C42"/>
             </Viewbox>
 
             <StackPanel Grid.Column="4" Grid.Row="1" HorizontalAlignment="Center" 
                         VerticalAlignment="Center" >
-                <TextBlock x:Name="AothorWinner"  
-                    Foreground="#FFEB6934" Margin="5"                   
-                    Text="{Binding ExecuteAuthor.Persone.NickName}"  />
-                <WrapPanel>
-                    <TextBlock  Text="Цена:" Margin="5" Foreground="Blue"/>
-                    <TextBlock  Text="{Binding FinalEvaluationRecord.Price}" Foreground="Red" />
-                </WrapPanel>
+                <Viewbox Margin="3" MaxHeight="20">
+                    <TextBlock x:Name="AothorWinner" Foreground="#FFEB6934"
+                               Margin="5" Text="{Binding RoolMSG}"  FontWeight="Bold"/>
+                </Viewbox>
+                <StackPanel Orientation="Horizontal" >
+                    <TextBlock  Text="Цена:" Margin="5" Foreground="Blue"
+                                HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock  Text="{Binding FinalEvaluationRecord.Price, UpdateSourceTrigger=PropertyChanged}"
+                                Foreground="Red" VerticalAlignment="Center"/>
+                </StackPanel>
+                
+                
             </StackPanel>
 
-            <StackPanel  HorizontalAlignment="Center" VerticalAlignment="Center" >
-                <TextBlock  Text="Срок выполнения:" Margin="5" Foreground="Blue"/>
-                <TextBlock  Text="{ Binding FinalEvaluationRecord.Deadline,
-                Converter={StaticResource dateFormatConverter}}" Foreground="Red" />
+            <StackPanel  HorizontalAlignment="Center"  >
+                <TextBlock  Text="Срок выполнения:" Margin="5" Foreground="Blue"
+                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <TextBlock  Text="{ Binding FinalEvaluationRecord.DeadLine,
+                                    Converter={StaticResource dateFormatConverter}, UpdateSourceTrigger=PropertyChanged}" 
+                            Foreground="Red" 
+                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </StackPanel>
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -673,8 +693,8 @@
                       IsEditable="False" IsSynchronizedWithCurrentItem="True"
                      ItemsSource="{Binding Source={StaticResource SortedAuthors}, 
                       UpdateSourceTrigger=PropertyChanged}" 
-                      SelectedValue="{Binding AuthorsRecord.Author.AuthorId, Mode=TwoWay}"
-                      SelectedValuePath="AuthorId"
+                      SelectedValue="{Binding AuthorsRecord.Persone.PersoneId, Mode=TwoWay}"
+                      SelectedValuePath="PersoneId"
                      SelectedItem="{Binding AuthorsRecord,  UpdateSourceTrigger=PropertyChanged}"
                      HorizontalContentAlignment="Center"
                      Background="White" >
@@ -708,7 +728,7 @@
                     <TextBlock Text="Цена автора: " FontWeight="Bold" Foreground="OrangeRed"/>
                 </Viewbox>
                 <TextBox x:Name="AuthorPrice"    Foreground="OrangeRed" TabIndex="19" MinWidth="70" 
-                     Text="{Binding FinalEvaluationRecord.Price, Mode=TwoWay}"/>
+                     Text="{Binding FinalEvaluationRecord.Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <!--Price can find in ForEditOrder.cs-->
             </WrapPanel>
             <StackPanel Grid.Column="1" Grid.Row="9"   Margin="3" Grid.ColumnSpan="2" HorizontalAlignment="Left">
@@ -718,7 +738,8 @@
                 </Viewbox>
                 <DatePicker Name="AuthorDeadLine" IsDropDownOpen="False" SelectedDateFormat="Short" 
                         MaxWidth="150" TabIndex="13" HorizontalAlignment="Center"
-                         SelectedDate="{Binding FinalEvaluationRecord.Deadline,Mode=TwoWay}"/>
+                         SelectedDate="{Binding FinalEvaluationRecord.DeadLine,Mode=TwoWay,
+                    UpdateSourceTrigger=PropertyChanged}"/>
                 <!--Date can find in ForEditOrder.cs-->
             </StackPanel>
             <Button  Content="Установить исполнителя" Grid.Column="1" Background="Yellow" TabIndex="25"

@@ -121,6 +121,7 @@
     <Compile Include="Helpes\BoolInverterConverter.cs" />
     <Compile Include="Helpes\ImagePathConverter.cs" />
     <Compile Include="Helpes\NullToBooleanConverter.cs" />
+    <Compile Include="Helpes\SelectedItemsConverter.cs" />
     <Compile Include="Helpes\StringToBoollConverter.cs" />
     <Compile Include="Helpes\StringToBrushConverter.cs" />
     <Compile Include="Helpes\TimeFormatConverter.cs" />

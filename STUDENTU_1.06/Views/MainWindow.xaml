@@ -26,6 +26,7 @@
             <helpes:DateFormatConverter x:Key="dateFormatConverter"/>
             <helpes:NullToBooleanConverter x:Key="NullBoolConverter" />
             <helpes:StringToBrushConverter x:Key="StringToBrushConverter" />
+            <helpes:SelectedItemsConverter x:Key="SelectedItemsConverter" />
         </ResourceDictionary>
 
     </Window.Resources>
@@ -97,8 +98,9 @@
         </DockPanel>
 
 
-        <DataGrid x:Name="GridOrders" ItemsSource="{Binding Records, UpdateSourceTrigger=PropertyChanged}" 
-                  SelectedItem="{Binding SelectedOrderLine}"                  
+        <DataGrid x:Name="GridOrders" ItemsSource="{Binding Records}" 
+                  SelectedItem="{Binding SelectedRecord}"                 
+                                 
                   AutoGenerateColumns="False" SelectionMode="Single"
                   IsReadOnly="True" Margin="0,22,0,10" Grid.RowSpan="2"  >
 
@@ -130,9 +132,8 @@
                 <ContextMenu>
                     <MenuItem Header="Обновить Ctrl+R" Command="{Binding UpdateOrederList}"/>
                     <!--"UpdateOrederList" we can find in  "MainViewModel.cs"-->
-                    <MenuItem Header="Редактировать" 
+                    <MenuItem Header="Редактировать"                               
                               Command="{Binding EditOrderCommand}"/>
-
                     <MenuItem Header="Подробности" />
                     <MenuItem Header="Удалить" />
                 </ContextMenu>
@@ -168,8 +169,9 @@
             <Button Content="Править заказ" Grid.Column="1"
                     Name="EditOrder" Margin="5"  
                     Background="Black"
+                    CommandParameter="{Binding ElementName=GridOrders, Path=SelectedItem}"
                     Command="{Binding EditOrderCommand}"
-                  
+                 
                     IsEnabled="{Binding SelectedItem,
                      Converter={StaticResource NullBoolConverter}, ElementName=GridOrders}"/>
 
