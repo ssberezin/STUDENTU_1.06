@@ -279,20 +279,19 @@ namespace STUDENTU_1._06.Model
                 FaceBook = this.FaceBook                
             };
         }
-        public object CloneExceptVirtualAndId()
+        public void CopyExceptVirtualAndId(Contacts obj1, Contacts obj2)
         {
-            return new Contacts()
-            {                
-                Phone1 = this.Phone1,
-                Phone2 = this.Phone2,
-                Phone3 = this.Phone3,
-                Email1 = this.Email1,
-                Email2 = this.Email2,
-                Adress = this.Adress,
-                Skype = this.Skype,
-                VK = this.VK,
-                FaceBook = this.FaceBook
-            };
+
+            obj1.Phone1 = obj2.Phone1;
+            obj1.Phone2 = obj2.Phone2;
+            obj1.Phone3 = obj2.Phone3;
+            obj1.Email1 = obj2.Email1;
+            obj1.Email2 = obj2.Email2;
+            obj1.Adress = obj2.Adress;
+            obj1.Skype = obj2.Skype;
+            obj1.VK = obj2.VK;
+            obj1.FaceBook = obj2.FaceBook;
+            
         }
     }
 }

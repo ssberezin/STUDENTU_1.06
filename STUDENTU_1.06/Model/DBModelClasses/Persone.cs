@@ -167,6 +167,16 @@ namespace STUDENTU_1._06.Model
                 Dates = new ObservableCollection<Dates>(this.Dates)
             };
         }
+
+        public void CopyExeptVirtualIdPhoto(Persone obj1,Persone obj2 )
+        {
+            obj1.Name = obj2.Name;
+            obj1.Surname = obj2.Surname;
+            obj2.Patronimic = obj2.Patronimic;
+            obj1.NickName = obj2.NickName;
+            obj1.Male = obj2.Male;
+            obj1.Female = obj2.Female;
+        }
         public object CloneExceptVirtual()
         {
             return new Persone()

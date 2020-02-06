@@ -851,25 +851,27 @@ namespace STUDENTU_1._06.ViewModel
 
                         if (!personeCompare)
                         {
-                            db3.Entry(persone).State = EntityState.Modified;                            
-                            persone.Name = _Contacts.Persone.Name;
-                            persone.Surname = _Contacts.Persone.Surname;
-                            persone.Patronimic = _Contacts.Persone.Patronimic;
-                            persone.Male = _Contacts.Persone.Male;
-                            persone.Female = _Contacts.Persone.Female;
+                            db3.Entry(persone).State = EntityState.Modified;
+                            persone.CopyExeptVirtualIdPhoto(persone, _Contacts.Persone);
+                            //persone.Name = _Contacts.Persone.Name;
+                            //persone.Surname = _Contacts.Persone.Surname;
+                            //persone.Patronimic = _Contacts.Persone.Patronimic;
+                            //persone.Male = _Contacts.Persone.Male;
+                            //persone.Female = _Contacts.Persone.Female;
                         }
 
                         if (!contactsCompare)
                         {
                             db3.Entry(OldContacts).State = EntityState.Modified;
-                            OldContacts.Phone1 = _Contacts.Contacts.Phone1;
-                            OldContacts.Phone2 = _Contacts.Contacts.Phone2;
-                            OldContacts.Phone3 = _Contacts.Contacts.Phone3;
-                            OldContacts.Email1 = _Contacts.Contacts.Email1;
-                            OldContacts.Email2 = _Contacts.Contacts.Email2;
-                            OldContacts.VK = _Contacts.Contacts.VK;
-                            OldContacts.FaceBook = _Contacts.Contacts.FaceBook;
-                            OldContacts.Skype = _Contacts.Contacts.Skype;
+                            _Contacts.Contacts.CopyExceptVirtualAndId(OldContacts, _Contacts.Contacts);
+                            //OldContacts.Phone1 = _Contacts.Contacts.Phone1;
+                            //OldContacts.Phone2 = _Contacts.Contacts.Phone2;
+                            //OldContacts.Phone3 = _Contacts.Contacts.Phone3;
+                            //OldContacts.Email1 = _Contacts.Contacts.Email1;
+                            //OldContacts.Email2 = _Contacts.Contacts.Email2;
+                            //OldContacts.VK = _Contacts.Contacts.VK;
+                            //OldContacts.FaceBook = _Contacts.Contacts.FaceBook;
+                            //OldContacts.Skype = _Contacts.Contacts.Skype;
                         }
 
                         db3.SaveChanges();
@@ -919,25 +921,12 @@ namespace STUDENTU_1._06.ViewModel
                     if (!personeCompare)
                     {
                         db4.Entry(persone).State = EntityState.Modified;
-
-                        persone.Name = _Contacts.Persone.Name;
-                        persone.Surname = _Contacts.Persone.Surname;
-                        persone.Patronimic = _Contacts.Persone.Patronimic;
-                        persone.Male = _Contacts.Persone.Male;
-                        persone.Female = _Contacts.Persone.Female;
-
+                        persone.CopyExeptVirtualIdPhoto(persone,_Contacts.Persone);
                     }
                     if (!contactsCompare)
                     {
                         db4.Entry(OldContacts).State = EntityState.Modified;
-                        OldContacts.Phone1 = _Contacts.Contacts.Phone1;
-                        OldContacts.Phone2 = _Contacts.Contacts.Phone2;
-                        OldContacts.Phone3 = _Contacts.Contacts.Phone3;
-                        OldContacts.Email1 = _Contacts.Contacts.Email1;
-                        OldContacts.Email2 = _Contacts.Contacts.Email2;
-                        OldContacts.VK = _Contacts.Contacts.VK;
-                        OldContacts.FaceBook = _Contacts.Contacts.FaceBook;
-                        OldContacts.Skype = _Contacts.Contacts.Skype;
+                        _Contacts.Contacts.CopyExceptVirtualAndId(OldContacts, _Contacts.Contacts);                        
                     }
                     Client client = new Client();
                     client = db4.Clients.Where(c => c.Persone.PersoneId == persone.PersoneId).FirstOrDefault();
@@ -1001,9 +990,7 @@ namespace STUDENTU_1._06.ViewModel
                     _Contacts.Contacts = client.Persone.Contacts;
                     Client = client;
                     _University.University = client.Universities[0];
-                    if (!persone.ComparePersons(persone, client.Persone))
-                        //dialogService.ShowMessage("Ранее этот клиент оформлял заказы под другими контактными данными\n" +
-                        //    "При сохранении заказа будут предложены варианты дальнейших действий");
+                    if (!persone.ComparePersons(persone, client.Persone))                       
                         LoadRecords(client.ClientId);
                 }
                 catch (ArgumentNullException ex)
@@ -1198,40 +1185,21 @@ namespace STUDENTU_1._06.ViewModel
             using (StudentuConteiner db = new StudentuConteiner())
             {
                 try
-                {
-                    
-
+                { 
                     Order = db.Orderlines.Where(o=>o.OrderLineId==TMPStaticClass.CurrentOrder.OrderLineId).FirstOrDefault();
-
                     if (!Persone.ComparePersons(Persone, TMPStaticClass.CurrentOrder.Client.Persone))
                     {
                         Persone pers = db.Persones.Where(p=> p.PersoneId==TMPStaticClass.CurrentOrder.Client.Persone.PersoneId).FirstOrDefault();
                         db.Entry(pers).State = EntityState.Modified;
-                        pers.Name = Persone.Name;
-                        pers.Surname = Persone.Surname;
-                        pers.Patronimic = Persone.Patronimic;
-                        pers.Male = Persone.Male;
-                        pers.Female = Persone.Female;
-
+                        Persone.CopyExeptVirtualIdPhoto(pers, Persone);
                     }
                     if (!_Contacts.CompareContacts(Persone.Contacts, TMPStaticClass.CurrentOrder.Client.Persone.Contacts))
                     {
                         Contacts contacts = db.Contacts.Where(c=>c.ContactsId==TMPStaticClass.CurrentOrder.Client.Persone.Contacts.ContactsId).FirstOrDefault();
                         db.Entry(contacts).State = EntityState.Modified;
-                        contacts.Phone1 = _Contacts.Contacts.Phone1;
-                        contacts.Phone2 = _Contacts.Contacts.Phone2;
-                        contacts.Phone3 = _Contacts.Contacts.Phone3;
-                        contacts.Email1 = _Contacts.Contacts.Email1;
-                        contacts.Email2 = _Contacts.Contacts.Email2;
-                        contacts.VK = _Contacts.Contacts.VK;
-                        contacts.FaceBook = _Contacts.Contacts.FaceBook;
-                        contacts.Skype = _Contacts.Contacts.Skype;
+                        _Contacts.Contacts.CopyExceptVirtualAndId(contacts,_Contacts.Contacts);                       
                     }
-                    db.Entry(Order).State = EntityState.Modified;
-                    //сюда надо бы впилить проверку по контактам
-
-                    //Persone.Contacts = _Contacts.Contacts;
-                    //Order.Client = new Client() { Persone = Persone };
+                    db.Entry(Order).State = EntityState.Modified;                    
                     if (_Dir.Dir.DirectionId != TMPStaticClass.CurrentOrder.Direction.DirectionId)
                         Order.Direction = db.Directions.Find(_Dir.Dir.DirectionId);
                     if (_WorkType.WorkType.WorkTypeId != TMPStaticClass.CurrentOrder.WorkType.WorkTypeId)

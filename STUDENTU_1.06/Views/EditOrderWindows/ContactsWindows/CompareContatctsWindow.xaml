@@ -363,11 +363,10 @@
                 <TextBlock Text="Пол:" FontWeight="Bold" Foreground="Brown"/>
             </Viewbox>
             <RadioButton GroupName="B" Content="Мужской" VerticalAlignment="Center" TabIndex="5"
-                          IsChecked="{Binding _Contacts.OldPersoneCompare.Sex, Mode=TwoWay,  UpdateSourceTrigger=PropertyChanged}" />
+                          IsChecked="{Binding _Contacts.OldPersoneCompare.Male, Mode=TwoWay,  UpdateSourceTrigger=PropertyChanged}" />
             <!--Persone can find in AuthorsVMClass.cs-->
             <RadioButton GroupName="B" Content="Женский" VerticalAlignment="Center" TabIndex="6" 
-                          IsChecked="{Binding _Contacts.OldPersoneCompare.Sex, UpdateSourceTrigger=PropertyChanged, 
-                          Converter={StaticResource boolInverterConverter},
+                          IsChecked="{Binding _Contacts.OldPersoneCompare.Female, UpdateSourceTrigger=PropertyChanged,                          
                           Mode=TwoWay}"/>
             
         </WrapPanel>
@@ -401,11 +400,10 @@
                 <TextBlock Text="Пол:" FontWeight="Bold" Foreground="Brown"/>
             </Viewbox>
             <RadioButton GroupName="A" Content="Мужской" VerticalAlignment="Center" TabIndex="5"
-                          IsChecked="{Binding  _Contacts.CurPersoneCompare.Sex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                          IsChecked="{Binding  _Contacts.CurPersoneCompare.Male, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
             <!--Persone can find in AuthorsVMClass.cs-->
             <RadioButton GroupName="A" Content="Женский" VerticalAlignment="Center" TabIndex="6" 
-                          IsChecked="{Binding  _Contacts.CurPersoneCompare.Sex,  UpdateSourceTrigger=PropertyChanged,
-                          Converter={StaticResource boolInverterConverter},
+                          IsChecked="{Binding  _Contacts.CurPersoneCompare.Female,  UpdateSourceTrigger=PropertyChanged,                          
                           Mode=TwoWay}"/>
         </WrapPanel>
         <Grid Grid.Column="2" Grid.Row="5" Grid.RowSpan="12" Background="#FFC9E5E5">
