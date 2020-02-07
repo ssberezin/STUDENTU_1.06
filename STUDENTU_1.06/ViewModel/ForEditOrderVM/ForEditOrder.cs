@@ -327,7 +327,7 @@ namespace STUDENTU_1._06.ViewModel
             dialogService = new DefaultDialogService();
         }
 
-
+        //for create ne order
         private void DefaultLoadData()
         {
             BlackListRecords = new ObservableCollection<BlackListHelpModel>();
@@ -357,8 +357,10 @@ namespace STUDENTU_1._06.ViewModel
             _WorkType = new _WorkType();
             roolMSG = "Заказ не распределен";
             AllAuthorsCall();//fill out the authors list
+            SetTmpOrder();//for look changes befor close window
         }
 
+        //for edit allready exist order
         private void DefaultLoadDataEditOrder(int OrderLineId)
         {
             BlackListRecords = new ObservableCollection<BlackListHelpModel>();
@@ -372,8 +374,7 @@ namespace STUDENTU_1._06.ViewModel
                 {
                     Order = db.Orderlines.Where(o=>o.OrderLineId==OrderLineId).FirstOrDefault();
                     TmpOrder = new OrderLine();
-                    Author = Order.GetExecuteAuthor(Order.Author);
-                    //if (Order.Client.Persone.Author.Count() > 0)
+                    Author = Order.GetExecuteAuthor(Order.Author);                    
                     if(Author==null)
                       Author = new Author();
                     Order.Saved = true;                    
@@ -466,9 +467,7 @@ namespace STUDENTU_1._06.ViewModel
                     else
                     {
                         //нужно допилить , когда придет время
-                        var res = db.Orderlines.OrderBy(p => p.OrderNumber).ToList().Last();
-
-                        //result = (from m in db.Orderlines.OrderBy(p => p.OrderNumber) select m.OrderNumber).ToList().Last();
+                        var res = db.Orderlines.OrderBy(p => p.OrderNumber).ToList().Last();                        
                         result = res.OrderNumber;
                         result += 1;
                     }
@@ -499,6 +498,32 @@ namespace STUDENTU_1._06.ViewModel
 
         }
 
+        private void SetTmpOrder()
+        {
+            TmpOrder = new OrderLine();
+            TmpOrder.Direction = this._Dir.Dir;
+            TmpOrder.WorkType = this._WorkType.WorkType;
+            TmpOrder.Subject = this._Subj.Subj;
+            TmpOrder.Source = this._Source.Source;
+            TmpOrder.Dates = this.Date;
+            TmpOrder.Money = this.Price;
+            TmpOrder.Status = this._Status.Status;
+            TmpOrder.Client = new Client()
+            {
+                Persone = new Persone()
+                {
+                    Name= this.Persone.Name,
+                    Surname= this.Persone.Surname,
+                    Patronimic= this.Persone.Patronimic,
+                    Male= this.Persone.Male,
+                    Female=this.Persone.Female,
+                    Contacts=this._Contacts.Contacts
+                },
+                Course=this.Client.Course
+
+            };
+            TmpOrder.Client.Universities.Add(_University.University);
+        }
 
         //==================================== COMMAND FOR SAVE NEW ORDER ====================================
 
@@ -555,14 +580,12 @@ namespace STUDENTU_1._06.ViewModel
                         DoubleSaveNewOrder();
                         return;
                     }
-
                     Order.Direction = db.Directions.Find(_Dir.Dir.DirectionId);
                     Order.WorkType = db.WorkTypes.Find(_WorkType.WorkType.WorkTypeId);
                     Order.Subject = db.Subjects.Find(_Subj.Subj.SubjectId);
                     Order.Source = db.Sources.Find(_Source.Source.SourceId);
                     Order.Dates = Date;
-                    Order.Money = Price;
-                    //if (_Status.Status.StatusName == "---")                        
+                    Order.Money = Price;                    
                     Order.Status = db.Statuses.Find(_Status.Status.StatusId);
                     Order.Saved = true;
 
@@ -647,18 +670,10 @@ namespace STUDENTU_1._06.ViewModel
             {
                 try
                 {
-                    db2.Orderlines.Attach(Order);
-                    //db2.Dates.Attach(Date);
-                    //db2.Directions.Attach(_Dir.Dir);
-                    db2.Contacts.Attach(_Contacts.Contacts);
-                    //db2.WorkTypes.Attach(_WorkType.WorkType);                    
-                    //db2.Moneys.Attach(Price);                   
+                    db2.Orderlines.Attach(Order);                   
+                    db2.Contacts.Attach(_Contacts.Contacts);                                     
                     db2.PersoneDescriptions.Attach(PersoneDescription);
                     db2.Persones.Attach(Persone);
-                    //db2.Subjects.Attach(_Subj.Subj);
-                    //db2.Statuses.Attach(_Status.Status);
-                    //db2.Sources.Attach(_Source.Source);
-
                     Order.Direction = db2.Directions.Find(_Dir.Dir.DirectionId);
                     Order.WorkType = db2.WorkTypes.Find(_WorkType.WorkType.WorkTypeId);
                     Order.Subject = db2.Subjects.Find(_Subj.Subj.SubjectId);
@@ -667,8 +682,6 @@ namespace STUDENTU_1._06.ViewModel
                     Order.Money = Price;
                     Order.Status = db2.Statuses.Find(_Status.Status.StatusId);
                     Order.Saved = true;
-
-
                     //тут нужно проверяем текущие контакты с контатными данными родительского заказа
                     //вдруг пользователь изменил чего?...
                     // here we need to check the current contacts with the contact data of the parent order
@@ -678,26 +691,21 @@ namespace STUDENTU_1._06.ViewModel
                     bool ContactsCompare = _Contacts.CompareContacts(_Contacts.Contacts, TMPStaticClass.CurrentOrder.Client.Persone.Contacts);
                     bool PersonFirsDataCompare = Persone.ComparePersons(Persone, TMPStaticClass.CurrentOrder.Client.Persone);
                     if (!ContactsCompare || !PersonFirsDataCompare)
-                    {
-
-                        // db2.Entry(Client).State = EntityState.Detached;
+                    {   
                         SaveOrderPartAfterCheckContacts(0, TMPStaticClass.CurrentOrder.ParentId, ContactsCompare, PersonFirsDataCompare);
                         if (doubleSaveCheck)
                         {
                             Client = db2.Clients.Find(TMPStaticClass.CurrentOrder.Client.ClientId);
-                            Client.OrderLine.Add(Order);
-                            //  Order.Client = db2.Clients.Find(Client.ClientId);
+                            Client.OrderLine.Add(Order);                     
                             doubleSaveCheck = false;
                         }
                         if (doubleSaveCheckDif)
                         {
                             int clientId = ChangeContactsPersonDataAndReturnClient(_Contacts);
                             Client = db2.Clients.Find(clientId);
-                            Client.OrderLine.Add(Order);
-                            // Order.Client = db2.Clients.Find(Client.ClientId);
+                            Client.OrderLine.Add(Order);                            
                             doubleSaveCheckDif = true;
                         }
-
                         Order.Client = db2.Clients.Find(Client.ClientId);
                         if (CancelSaveOrder)
                             return;
@@ -708,8 +716,6 @@ namespace STUDENTU_1._06.ViewModel
                         Client.OrderLine.Add(Order);
                         Order.Client = db2.Clients.Find(Client.ClientId);
                     }
-
-
                     db2.Configuration.AutoDetectChangesEnabled = false;
                     db2.Configuration.ValidateOnSaveEnabled = false;
                     db2.Orderlines.Add(Order);
@@ -757,10 +763,14 @@ namespace STUDENTU_1._06.ViewModel
 
         bool CancelSaveOrder = false;
         //флаг для возврата в основной контекст , если пользователь
-        //осnвил все контактные данные прежними
+        //оставил все контактные данные прежними
+        // flag to return to the main context, if the user
+        // left all contact details the same
         bool doubleSaveCheck = false;
         //флаг для возврата в основной контекст , если пользователь
         //заменил прежние контактные данные на другие
+        // flag to return to the main context, if the user
+        // replaced the previous contact details with other
         bool doubleSaveCheckDif = false;
 
         private void SaveOrderPartAfterCheckContacts(int contactsId, int doubleId,
@@ -792,26 +802,18 @@ namespace STUDENTU_1._06.ViewModel
                     else
                     {
 
-                        if (doubleId == 0)
-                        {
+                        if (doubleId == 0)                        
                             //ветка первичного сохранения
                             //first save branch
                             dialogService.ShowMessage("Уже есть клиент с такими контактными данными.\n" +
                                                  "Вносим правку в базу данных");
-                            //persone = db3.Persones.Where(c => c.Contacts.ContactsId == contactsId).FirstOrDefault();
-                            //OldContacts = db3.Contacts.Where(c => c.ContactsId == contactsId).FirstOrDefault();
-                        }
                         else
                         {
                             //ветка doublesave
                             //doublesave branch
                             dialogService.ShowMessage("Контактные данные в подзаказе не совпадают с теми,.\n" +
-                                                 "которые были в исходном заказе. ");
-                            //persone = TMPStaticClass.CurrentOrder.Client.Persone;
-                            contactsId = TMPStaticClass.CurrentOrder.Client.Persone.Contacts.ContactsId;
-                            //persone = db3.Persones.Where(c => c.Contacts.ContactsId == contactsId).FirstOrDefault();
-                            ////OldContacts = persone.Contacts;
-                            //OldContacts = db3.Contacts.Where(c => c.ContactsId == contactsId).FirstOrDefault();
+                                                 "которые были в исходном заказе. ");                            
+                            contactsId = TMPStaticClass.CurrentOrder.Client.Persone.Contacts.ContactsId;                            
                         }
                         persone = db3.Persones.Where(c => c.Contacts.ContactsId == contactsId).FirstOrDefault();
                         OldContacts = db3.Contacts.Where(c => c.ContactsId == contactsId).FirstOrDefault();
@@ -864,30 +866,15 @@ namespace STUDENTU_1._06.ViewModel
                             doubleSaveCheckDif = true;
                             return;
                         }
-
                         if (!personeCompare)
                         {
                             db3.Entry(persone).State = EntityState.Modified;
-                            persone.CopyExeptVirtualIdPhoto(persone, _Contacts.Persone);
-                            //persone.Name = _Contacts.Persone.Name;
-                            //persone.Surname = _Contacts.Persone.Surname;
-                            //persone.Patronimic = _Contacts.Persone.Patronimic;
-                            //persone.Male = _Contacts.Persone.Male;
-                            //persone.Female = _Contacts.Persone.Female;
+                            persone.CopyExeptVirtualIdPhoto(persone, _Contacts.Persone);                            
                         }
-
                         if (!contactsCompare)
                         {
                             db3.Entry(OldContacts).State = EntityState.Modified;
-                            _Contacts.Contacts.CopyExceptVirtualAndId(OldContacts, _Contacts.Contacts);
-                            //OldContacts.Phone1 = _Contacts.Contacts.Phone1;
-                            //OldContacts.Phone2 = _Contacts.Contacts.Phone2;
-                            //OldContacts.Phone3 = _Contacts.Contacts.Phone3;
-                            //OldContacts.Email1 = _Contacts.Contacts.Email1;
-                            //OldContacts.Email2 = _Contacts.Contacts.Email2;
-                            //OldContacts.VK = _Contacts.Contacts.VK;
-                            //OldContacts.FaceBook = _Contacts.Contacts.FaceBook;
-                            //OldContacts.Skype = _Contacts.Contacts.Skype;
+                            _Contacts.Contacts.CopyExceptVirtualAndId(OldContacts, _Contacts.Contacts);                            
                         }
 
                         db3.SaveChanges();
@@ -947,7 +934,6 @@ namespace STUDENTU_1._06.ViewModel
                     Client client = new Client();
                     client = db4.Clients.Where(c => c.Persone.PersoneId == persone.PersoneId).FirstOrDefault();
                     db4.SaveChanges();
-
                     return client.ClientId;
 
                 }
@@ -1296,36 +1282,48 @@ namespace STUDENTU_1._06.ViewModel
                     ));
         private void CloseWindow(Window window)
         {
-            if (TmpOrder == TMPStaticClass.CurrentOrder)
+            if (!Order.Saved&& CheckForChangesBeforClose())
                 window.Close();
             else
             {
-                if (dialogService.YesNoDialog("Не сохранены внесенные изменения\n" +
-                                     "Точно закрыть окно?"))
-                    window.Close();
+                if (!Order.Saved)
+                {
+                    if (dialogService.YesNoDialog("Не сохранены внесенные изменения\n" +
+                                       "Точно закрыть окно?"))
+                        window.Close();
+                    
+                }
                 else
-                    return;
+                if (Order.Saved && !evaluationSetWinner && AuthorsRecord.Author.AuthorId != 1)
+                    if (dialogService.YesNoDialog("Не сохранены результаты экспрес распределния заказа\n" +
+                                       "Сохранить перед закрытием?"))
+                    {
+                        SetFastRoolOrder();
+                        window.Close();
+                    }
+                    else
+                        window.Close();
             }
-
-            //    if (AuthorsRecord.Author.Persone.Name != "---" && !evaluationSetWinner && Order.Saved)
-            //    if (dialogService.YesNoDialog("Не сохранены результаты экспрес распределния заказа\n" +
-            //                       "Сохранить перед закрытием?"))
-            //    {
-            //        SetFastRoolOrder();
-            //        window.Close();
-            //    }
-            //else
-
-            //        window.Close();
         }
 
-        public void _CloseWindow()
+       
+
+
+        private bool CheckForChangesBeforClose()
         {
-            throw new NotImplementedException();
+            if (TmpOrder.Direction.DirectionId == _dir.Dir.DirectionId &&
+            TmpOrder.WorkType.WorkTypeId == _WorkType.WorkType.WorkTypeId &&
+            TmpOrder.Subject.SubjectId == _Subj.Subj.SubjectId &&
+            TmpOrder.Source.SourceId == _Source.Source.SourceId &&
+            TmpOrder.Dates.CompareDate(TmpOrder.Dates, Date) &&
+            TmpOrder.Money.CompareMoney(TmpOrder.Money, Price) &&
+            TmpOrder.Status.StatusId == _Status.Status.StatusId &&
+            Persone.ComparePersons(TmpOrder.Client.Persone, Persone) &&
+            TmpOrder.Client.Course == Client.Course &&
+            TmpOrder.Client.Universities[0].UniversityId == _University.University.UniversityId)
+                return true;
+            return false;
         }
-
-
-
 
 
         //========================================================================================================================
@@ -1404,27 +1402,19 @@ namespace STUDENTU_1._06.ViewModel
                         }
                         Author = db.Authors.Find(AuthorsRecord.Author.AuthorId);
                     
-                    Evaluation evaluation = new Evaluation();
-                    
-                    //evaluation.Authors.Add(db.Authors.Find(AuthorsRecord.Author.AuthorId));
+                    Evaluation evaluation = new Evaluation();                    
                     evaluation.Authors.Add(Author);
-                    evaluation.AuthorDeadLine = FinalEvaluationRecord.DeadLine;
-                    //evaluation.Dates.Add(new Dates() { AuthorDeadLine = FinalEvaluationRecord.DeadLine });
-                    evaluation.Description = FinalEvaluationRecord.EvaluateDescription;
-                    // evaluation.Moneys.Add(new Money() { AuthorPrice = FinalEvaluationRecord.Price });
+                    evaluation.AuthorDeadLine = FinalEvaluationRecord.DeadLine;                    
+                    evaluation.Description = FinalEvaluationRecord.EvaluateDescription;                    
                     evaluation.AuthorPrice = FinalEvaluationRecord.Price;
-                    evaluation.Winner = true;
-                    //db.Entry(Author).State = EntityState.Modified;
-                    Author.Evaluation.Add(evaluation);
-                    
+                    evaluation.Winner = true;                    
+                    Author.Evaluation.Add(evaluation);                    
                     Order.Author.Add(Author);
-                    db.SaveChanges();
-                  //  Author = (Author)this.Author.Clone();
+                    db.SaveChanges();                  
                     TMPStaticClass.CurrentOrder.Author.Add(Author);
                     RoolMSG = $"Заказ выполняет {Author.Persone.NickName}";
                     evaluationSetWinner = true;
-                    dialogService.ShowMessage("Заказ распределен");
-                   
+                    dialogService.ShowMessage("Заказ распределен");                   
                 }
                 catch (ArgumentNullException ex)
                 {

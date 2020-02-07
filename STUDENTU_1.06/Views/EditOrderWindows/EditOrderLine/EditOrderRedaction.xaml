@@ -184,15 +184,8 @@
 
 
             <TextBox x:Name="TBxName"  MinWidth="220" TabIndex="0"
-                   Validation.ErrorTemplate="{StaticResource validationFailed}"
-                     MaxLength="34">
-                <TextBox.Text>
-                    <Binding  Path="Persone.Name" NotifyOnValidationError="True">
-                        <Binding.ValidationRules>
-                            <DataErrorValidationRule />
-                        </Binding.ValidationRules>
-                    </Binding>
-                </TextBox.Text>
+                   Text="{Binding Persone.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     MaxLength="34">                
             </TextBox>
             <!--тут хз пока шо прилепить, забацал кнопку и забыл накой она нужна была-->
             <Button Content="+ ?" Background="Yellow" Foreground="Black" Width="40" 
@@ -206,7 +199,7 @@
                      VerticalAlignment="Stretch">
                 <TextBlock Text="Фамилия: " />
             </Viewbox>
-            <TextBox x:Name="Surname"   Text="{Binding Persone.Surname, Mode=TwoWay}"
+            <TextBox x:Name="Surname"   Text="{Binding Persone.Surname, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      TabIndex="1"  MinWidth="250" MaxLength="34"/>
         </WrapPanel>
         <!--Persone can find in ForEditOrder.cs-->
@@ -215,7 +208,7 @@
                      VerticalAlignment="Stretch">
                 <TextBlock Text="Отчество: " />
             </Viewbox>
-            <TextBox x:Name="Patronimic"   Text="{Binding Persone.Patronimic, Mode=TwoWay}"
+            <TextBox x:Name="Patronimic"   Text="{Binding Persone.Patronimic, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      MaxLength="34" TabIndex="2"  MinWidth="250"/>
             <!--Persone can find in ForEditOrder.cs-->
         </WrapPanel>
@@ -226,11 +219,11 @@
             </Viewbox>
             <!--для валидации https://www.codeproject.com/Articles/97564/Attributes-based-Validation-in-a-WPF-MVVM-Applicat-->
             <RadioButton GroupName="A" Content="Мужской" VerticalAlignment="Center" TabIndex="4"
-                          IsChecked="{Binding Persone.Male, Mode=TwoWay}" />
+                          IsChecked="{Binding Persone.Male, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <!--Persone can find in ForEditOrder.cs-->
             <!--Converter={StaticResource boolInverterConverter},-->
             <RadioButton GroupName="A" Content="Женский" VerticalAlignment="Center" TabIndex="3" 
-                          IsChecked="{Binding Persone.Female, Mode=TwoWay}"/>
+                          IsChecked="{Binding Persone.Female, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <!--Persone can find in ForEditOrder.cs-->
             <StackPanel Orientation="Horizontal"  >
                 <Label Content="    Вариант" VerticalAlignment="Center" FontWeight="Bold" Foreground="Red"/>
