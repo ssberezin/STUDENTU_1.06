@@ -210,6 +210,20 @@ namespace STUDENTU_1._06.ViewModel
                 }
             }
         }
+        //for temp stre Order in order redaction
+        private OrderLine tmpOrder;
+        public OrderLine TmpOrder
+        {
+            get { return tmpOrder; }
+            set
+            {
+                if (tmpOrder != value)
+                {
+                    tmpOrder = value;
+                    OnPropertyChanged(nameof(TmpOrder));
+                }
+            }
+        }
 
         private _Subject _subj;
         public _Subject _Subj
@@ -357,11 +371,12 @@ namespace STUDENTU_1._06.ViewModel
                 try
                 {
                     Order = db.Orderlines.Where(o=>o.OrderLineId==OrderLineId).FirstOrDefault();
+                    TmpOrder = new OrderLine();
                     Author = Order.GetExecuteAuthor(Order.Author);
                     //if (Order.Client.Persone.Author.Count() > 0)
                     if(Author==null)
                       Author = new Author();
-                    Order.Saved = true;
+                    Order.Saved = true;                    
                     _Contacts = new _Contacts() { Contacts = Order.Client.Persone.Contacts };                    
                     Client = Order.Client;
                     Date = Order.Dates;
@@ -405,6 +420,7 @@ namespace STUDENTU_1._06.ViewModel
                     _WorkType = new _WorkType();
                     _WorkType.WorkType = Order.WorkType;                   
                     AllAuthorsCall();//fill out the authors list
+                    TmpOrder = (OrderLine)this.Order.Clone();
                     TMPStaticClass.CurrentOrder = (OrderLine)Order.Clone();
                 }
                 catch (ArgumentNullException ex)
@@ -1280,16 +1296,27 @@ namespace STUDENTU_1._06.ViewModel
                     ));
         private void CloseWindow(Window window)
         {
-            if (AuthorsRecord.Author.Persone.Name != "---" && !evaluationSetWinner && Order.Saved)
-                if (dialogService.YesNoDialog("Не сохранены результаты экспрес распределния заказа\n" +
-                                   "Сохранить перед закрытием?"))
-                {
-                    SetFastRoolOrder();
-                    window.Close();
-                }
+            if (TmpOrder == TMPStaticClass.CurrentOrder)
+                window.Close();
             else
-
+            {
+                if (dialogService.YesNoDialog("Не сохранены внесенные изменения\n" +
+                                     "Точно закрыть окно?"))
                     window.Close();
+                else
+                    return;
+            }
+
+            //    if (AuthorsRecord.Author.Persone.Name != "---" && !evaluationSetWinner && Order.Saved)
+            //    if (dialogService.YesNoDialog("Не сохранены результаты экспрес распределния заказа\n" +
+            //                       "Сохранить перед закрытием?"))
+            //    {
+            //        SetFastRoolOrder();
+            //        window.Close();
+            //    }
+            //else
+
+            //        window.Close();
         }
 
         public void _CloseWindow()
@@ -1469,7 +1496,5 @@ namespace STUDENTU_1._06.ViewModel
                 }
             }
         }
-
     }
-
 }

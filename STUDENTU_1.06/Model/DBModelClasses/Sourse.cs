@@ -32,6 +32,15 @@ namespace STUDENTU_1._06.Model.DBModelClasses
                 OrderLine = new ObservableCollection<OrderLine>(this.OrderLine)
             };
         }
+
+        public  bool CompareSource(Source obj1, Source obj2)
+        {
+            if (obj1.SourceId == obj2.SourceId)
+                return true;
+            return false;
+        }
+
+       
     }
 
 

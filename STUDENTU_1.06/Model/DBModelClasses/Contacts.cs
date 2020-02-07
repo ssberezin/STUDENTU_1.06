@@ -181,12 +181,12 @@ namespace STUDENTU_1._06.Model
         //check for validation of Contacts fields
         public bool ContactsValidation()
         {
-            bool flag = true;
+            
 
             if (Phone1 == "+380" && Phone2 == "---" && Phone3 == "---" && Email1 == "---" && Email2 == "---" && VK == "---" && FaceBook == "---")
-                flag = false;
+                return false;
 
-            return flag;
+            return true; ;
         }
 
         IDialogService dialogService;
@@ -281,7 +281,6 @@ namespace STUDENTU_1._06.Model
         }
         public void CopyExceptVirtualAndId(Contacts obj1, Contacts obj2)
         {
-
             obj1.Phone1 = obj2.Phone1;
             obj1.Phone2 = obj2.Phone2;
             obj1.Phone3 = obj2.Phone3;
@@ -290,8 +289,18 @@ namespace STUDENTU_1._06.Model
             obj1.Adress = obj2.Adress;
             obj1.Skype = obj2.Skype;
             obj1.VK = obj2.VK;
-            obj1.FaceBook = obj2.FaceBook;
-            
+            obj1.FaceBook = obj2.FaceBook;            
         }
+
+        public  bool CompareContacts(Contacts obj1, Contacts obj2)
+        {
+            if ((obj1.Phone1 == obj2.Phone1) && (obj1.Phone2 == obj2.Phone2) &&
+                (obj1.Phone3 == obj2.Phone3) && (obj1.Email1 == obj2.Email1) &&
+                (obj1.Email2 == obj2.Email2) && (obj1.VK == obj2.VK) &&
+                (obj1.FaceBook == obj2.FaceBook) && (obj1.Skype == obj2.Skype))
+                return true;
+            return false;
+        }
+
     }
 }

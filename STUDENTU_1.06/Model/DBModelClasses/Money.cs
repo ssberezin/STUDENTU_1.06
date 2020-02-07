@@ -58,5 +58,16 @@ namespace STUDENTU_1._06.Model
             //Evaluation=(Evaluation)this.Evaluation.Clone()
             };
         }
+
+        public  bool MoneyCompare(Money obj1, Money obj2)
+        {        
+            if ((obj1.Price == obj2.Price) && (obj1.Prepayment == obj2.Prepayment) &&
+               (obj1.PaidToAuthor == obj2.PaidToAuthor) && (obj1.PaidByClient == obj2.PaidByClient) &&
+               (obj1.AuthorPrice == obj2.AuthorPrice) && (obj1.AuthorEvalPrice == obj2.AuthorEvalPrice))
+                return true;
+            return false;
+        }
+
+       
     }
 }

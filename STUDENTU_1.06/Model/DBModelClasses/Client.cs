@@ -153,5 +153,15 @@ namespace STUDENTU_1._06.Model
 
             };
         }
+
+        public  bool CompareClients (Client obj1, Client obj2)
+        {
+            if ((obj1.Course == obj2.Course) && (obj1.GroupName == obj2.GroupName) &&
+                 obj1.Persone.ComparePersons(obj1.Persone,obj2.Persone))
+                return true;
+            return false;
+        }
+
+       
     }
 }

@@ -247,5 +247,25 @@ namespace STUDENTU_1._06.Model
             return null;
         }
 
+       
+        public static bool OrderLinesCompare (OrderLine obj1, OrderLine obj2)
+        {
+
+            if ((obj1.OrderLineId == obj2.OrderLineId) && (obj1.OrderNumber == obj2.OrderNumber) &&
+                (obj1.OrderCount == obj2.OrderCount) && (obj1.ParentId == obj2.ParentId) &&
+                (obj1.Variant == obj2.Variant) && (obj1.DescriptionForClient == obj2.DescriptionForClient) &&
+                (obj1.WorkDescription == obj2.WorkDescription) && (obj1.WorkInCredit == obj2.WorkInCredit) &&
+                (obj1.Saved == obj2.Saved) && (obj1.RedactionLog == obj2.RedactionLog) &&
+                
+                obj1.Client.CompareClients(obj1.Client,obj2.Client) && obj1.Dates.CompareDate(obj1.Dates, obj2.Dates)  &&
+                obj1.Money.MoneyCompare(obj1.Money,obj2.Money) && obj1.Status.StatusCompare(obj1.Status,obj2.Status) &&
+                obj1.Subject.CompareSubject(obj1.Subject,obj2.Subject) && obj1.WorkType.WorkTypeCompare(obj1.WorkType,obj2.WorkType) &&
+                obj1.Direction.CompareDirection(obj1.Direction,obj2.Direction) && obj1.Source.CompareSource(obj1.Source, obj2.Source))
+                return true;
+            return false;
+        }
+
+
+
     }
 }

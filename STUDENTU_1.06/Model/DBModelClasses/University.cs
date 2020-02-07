@@ -38,5 +38,14 @@ namespace STUDENTU_1._06.Model.DBModelClasses
                 //Clients=new ObservableCollection<Client>(this.Clients)
             };
         }
+
+        public  bool UniversityCompare(University obj1, University obj2)
+        {
+            if (obj1.UniversityId == obj2.UniversityId)
+                return true;
+            return false;
+        }
+
+      
     }
 }

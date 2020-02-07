@@ -522,30 +522,9 @@ namespace STUDENTU_1._06.ViewModel
             return false;
         }
 
-        //public static bool operator ==(Contacts obj1, Contacts obj2)
-        //{
 
 
-        //    if ((obj1.Phone1 == obj2.Phone1) && (obj1.Phone2 == obj2.Phone2) &&
-        //        (obj1.Phone3 == obj2.Phone3) && (obj1.Email1 == obj2.Email1) &&
-        //        (obj1.Email2 == obj2.Email2) && (obj1.VK == obj2.VK) &&
-        //        (obj1.FaceBook == obj2.FaceBook) && (obj1.Skype == obj2.Skype))
-        //        return true;
-        //    return false;
-        //}
 
-        //public static bool operator !=(Contacts obj1, Contacts obj2)
-        //{
-
-        //    if ((obj1.Phone1 != obj2.Phone1) || (obj1.Phone2 != obj2.Phone2) ||
-        //        (obj1.Phone3 != obj2.Phone3) || (obj1.Email1 != obj2.Email1) ||
-        //        (obj1.Email2 != obj2.Email2) || (obj1.VK != obj2.VK) ||
-        //        (obj1.FaceBook != obj2.FaceBook) || (obj1.Skype != obj2.Skype))
-        //        return true;
-        //    return false;
-        //}
-
-        
 
 
     }

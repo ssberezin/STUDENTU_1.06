@@ -100,7 +100,16 @@ namespace STUDENTU_1._06.Model
                 Evaluation = new ObservableCollection<Evaluation>(this.Evaluation),
                 AuthorStatus = (AuthorStatus)this.AuthorStatus.Clone()
             };
-          
+
         }
+
+        public  bool CompareAuthors(Author obj1, Author obj2)
+        {
+            if (obj1.AuthorId == obj2.AuthorId)
+                return true;
+            return false;
+        }
+
+       
     }
 }

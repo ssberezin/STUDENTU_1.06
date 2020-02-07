@@ -33,5 +33,14 @@ namespace STUDENTU_1._06.Model
                 OrderLine = new ObservableCollection<OrderLine>(this.OrderLine)
             };
         }
+
+        public bool WorkTypeCompare(WorkType obj1, WorkType obj2)
+        {
+            if (obj1.WorkTypeId == obj2.WorkTypeId)
+                return true;
+            return false;
+        }
+
+       
     }
 }

@@ -37,5 +37,14 @@ namespace STUDENTU_1._06.Model
                OrderLine = new ObservableCollection<OrderLine>(this.OrderLine)
            };
         }
+
+        public  bool StatusCompare(Status obj1, Status obj2)
+        {
+            if (obj1.StatusId == obj2.StatusId)
+                return true;
+            return false;
+        }
+
+      
     }
 }

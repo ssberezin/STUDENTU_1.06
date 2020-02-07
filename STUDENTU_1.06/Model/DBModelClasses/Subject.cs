@@ -37,8 +37,15 @@ namespace STUDENTU_1._06.Model
                 Authors = new ObservableCollection<Author>(this.Authors),
                 OrderLine = new ObservableCollection<OrderLine>(this.OrderLine)
             };
-            
-
         }
+
+        public bool CompareSubject(Subject obj1, Subject obj2)
+        {
+            if (obj1.SubjectId == obj2.SubjectId)
+                return true;
+            return false;
+        }
+
+      
     }
 }

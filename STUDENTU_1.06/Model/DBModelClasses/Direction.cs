@@ -34,9 +34,15 @@ namespace STUDENTU_1._06.Model
                 DirectionName = this.DirectionName,
                 OrderLine = new ObservableCollection<OrderLine>(this.OrderLine),
                 Author = new ObservableCollection<Author>(this.Author)
-            };
-           
-            
+            };                      
         }
+        public bool CompareDirection(Direction obj1, Direction obj2)
+        {
+            if (obj1.DirectionId == obj2.DirectionId)
+                return true;
+            return false;
+        }
+
+
     }
 }
