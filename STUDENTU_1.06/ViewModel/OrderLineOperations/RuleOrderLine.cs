@@ -10,6 +10,7 @@ using STUDENTU_1._06.Views.EditOrderWindows.Evaluation;
 using STUDENTU_1._06.Model.HelpModelClasses.DialogWindows;
 using STUDENTU_1._06.Model.HelpModelClasses.ShowWindows;
 using STUDENTU_1._06.Views.EditOrderWindows.RuleOrderLineWindows;
+using System.Data.Entity;
 
 namespace STUDENTU_1._06.ViewModel
 {
@@ -42,7 +43,8 @@ namespace STUDENTU_1._06.ViewModel
             _Status = new _Status();
             if (TMPStaticClass.CurrentOrder != null)
             {
-                Order = TMPStaticClass.CurrentOrder;
+                //Order = TMPStaticClass.CurrentOrder;
+                Order = (OrderLine)TMPStaticClass.CurrentOrder.Clone();
                 Order.DescriptionForClient = "Вариант(ы): " + CheckForEmpty(Order.Variant) + ". \n"  + Order.DescriptionForClient+
                     "\n\nСрок выполнения: "+Order.Dates.AuthorDeadLine.ToShortDateString() + " или свой вариант. "+
                     "\n Время: к " + Order.Dates.AuthorDeadLine.ToShortTimeString()+" или свой вариант. ";
@@ -662,37 +664,7 @@ namespace STUDENTU_1._06.ViewModel
                         var res = db.Authors.Include("Persone").ToList();
                         foreach (Author item in res)
                             if (item.Persone.NickName == nick)
-                            {
-                                //Author author = new Author()
-                                //{
-                                //    AuthorId = item.AuthorId,                                  
-                                //    Source = item.Source,
-                                //    Rating = item.Rating,
-                                //    Punctually = item.Punctually,
-                                //    CompletionCompliance = item.CompletionCompliance,
-                                //    WorkQuality = item.WorkQuality,
-                                //    Responsibility = item.Responsibility
-                                //};
-                                //Persone persone = new Persone()
-                                //{
-                                //    PersoneId = item.Persone.PersoneId,
-                                //    PersoneDescription = item.Persone.PersoneDescription,
-                                //    Name = item.Persone.Name,
-                                //    Surname = item.Persone.Surname,
-                                //    Patronimic = item.Persone.Patronimic,
-                                //    Sex = item.Persone.Sex,
-                                //    NickName = item.Persone.NickName
-                                //};
-                                //Contacts _contacts = new Contacts()
-                                //{
-                                //    Phone1 = item.Persone.Contacts.Phone1,
-                                //    Phone2 = item.Persone.Contacts.Phone2,
-                                //    Phone3 = item.Persone.Contacts.Phone3,
-                                //    Email1 = item.Persone.Contacts.Email1,
-                                //    Email2 = item.Persone.Contacts.Email2,
-                                //    VK = item.Persone.Contacts.VK,
-                                //    FaceBook = item.Persone.Contacts.FaceBook
-                                //};
+                            {                                
                                 record = new AuthorsRecord
                                 {
                                     Author = item,
@@ -815,39 +787,113 @@ namespace STUDENTU_1._06.ViewModel
 
         private void SaveAuthorEvaluateAuthorRecord()
         {
-            if (_Evaluation.EvaluationRecord.Price == 0)
-            {
-                dialogService.ShowMessage("Цена работы не может быть нулевой");
-                return;
-            }
+            //есть подозрение , что эта фича работать будет через мат-перемат. 
 
-            //check for the entry before adding
-            if (AuthorsRecord.EvaluationRecords.Count() > 0)
+            ////check for the entry before adding
+            //if (AuthorsRecord.EvaluationRecords.Count() > 0)
 
+            //{
+            //    foreach (var item in AuthorsRecord.EvaluationRecords)
+            //    {
+            //        if (item.DeadLine == _Evaluation.EvaluationRecord.DeadLine &&
+            //              item.Price == _Evaluation.EvaluationRecord.Price &&
+            //              item.EvaluateDescription == _Evaluation.EvaluationRecord.EvaluateDescription)
+            //        {
+            //            dialogService.ShowMessage("Уже есть запись с такой оценкой");
+            //            return;
+            //        }
+            //    }
+            //    AuthorsRecord.EvaluationRecords.Add(_Evaluation.EvaluationRecord);
+            //    dialogService.ShowMessage("Данные сохранены");
+            //    _Evaluation.EvaluationRecord = new EvaluationRecord()
+            //    { DeadLine = TMPStaticClass.CurrentOrder.Dates.AuthorDeadLine };
+            //}
+            //else
+            //{
+            //    AuthorsRecord.EvaluationRecords.Add(_Evaluation.EvaluationRecord);
+            //    dialogService.ShowMessage("Данные сохранены");
+            //    _Evaluation.EvaluationRecord = new EvaluationRecord()
+            //    { DeadLine = TMPStaticClass.CurrentOrder.Dates.AuthorDeadLine };
+            //    //_Evaluation.EvaluationRecord = new EvaluationRecord();
+            //}
+
+            using (StudentuConteiner db = new StudentuConteiner())
             {
-                foreach (var item in AuthorsRecord.EvaluationRecords)
+                try
                 {
-                    if (item.DeadLine == _Evaluation.EvaluationRecord.DeadLine &&
-                          item.Price == _Evaluation.EvaluationRecord.Price &&
-                          item.EvaluateDescription == _Evaluation.EvaluationRecord.EvaluateDescription)
+                    Order = db.Orderlines.Where(o=>o.OrderLineId==Order.OrderLineId).FirstOrDefault();
+                    Author author = db.Authors.Where(a=>a.AuthorId==AuthorsRecord.Author.AuthorId).FirstOrDefault();
+                    Evaluation evaluation = new Evaluation()
                     {
-                        dialogService.ShowMessage("Уже есть запись с такой оценкой");
-                        return;
+                        AuthorPrice = _Evaluation.EvaluationRecord.Price,
+                        AuthorDeadLine = _Evaluation.EvaluationRecord.DeadLine,
+                        Description= _Evaluation.EvaluationRecord.EvaluateDescription,
+                        Winner= _Evaluation.EvaluationRecord.FinalEvaluation
+                    };
+                    foreach (var i in author.Evaluation)
+                        if (i.AuthorPrice == evaluation.AuthorPrice &&
+                            i.AuthorDeadLine == evaluation.AuthorDeadLine &&
+                            i.Description == evaluation.Description)
+                        {
+                            dialogService.ShowMessage("Уже есть такая оценка от этого автора");
+                            return;
+                        }
+                   
+
+                    db.Entry(author).State = EntityState.Modified;
+                    db.Entry(Order).State = EntityState.Modified;
+
+                    db.Configuration.AutoDetectChangesEnabled = false;
+                    db.Configuration.ValidateOnSaveEnabled = false;
+
+                    evaluation.Authors.Add(author);
+                    evaluation.OrderLines.Add(Order);
+                    db.Evaluations.Add(evaluation);
+
+                    Order.Evaluations.Add(evaluation);
+
+                    
+                    bool existEvalInAuthor = false;
+                    foreach (var i in Order.Author)
+                        if (i.AuthorId == author.AuthorId)
+                        {
+                            i.Evaluation.Add(evaluation);
+                            existEvalInAuthor = true;
+                            break;
+                        }
+                    if (!existEvalInAuthor)
+                    {
+                        author.Evaluation.Add(evaluation);
+                        Order.Author.Add(author);
                     }
+                    db.SaveChanges();
+                    dialogService.ShowMessage("Данные об оценке внесены в базу данных");
+
+
+
                 }
-                AuthorsRecord.EvaluationRecords.Add(_Evaluation.EvaluationRecord);
-                dialogService.ShowMessage("Данные сохранены");
-                _Evaluation.EvaluationRecord = new EvaluationRecord()
-                { DeadLine = TMPStaticClass.CurrentOrder.Dates.AuthorDeadLine };
+                catch (ArgumentNullException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (OverflowException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
             }
-            else
-            {
-                AuthorsRecord.EvaluationRecords.Add(_Evaluation.EvaluationRecord);
-                dialogService.ShowMessage("Данные сохранены");
-                _Evaluation.EvaluationRecord = new EvaluationRecord()
-                { DeadLine = TMPStaticClass.CurrentOrder.Dates.AuthorDeadLine };
-                //_Evaluation.EvaluationRecord = new EvaluationRecord();
-            }
+
         }
 
         //===================================== For delete evaluate selected author in EditAvaluationWindow.xaml====================

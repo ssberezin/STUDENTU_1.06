@@ -12,13 +12,15 @@ namespace STUDENTU_1._06.Model
     public class Evaluation: ICloneable
     {
         public Evaluation()
-        {
-            this.Dates = new ObservableCollection<Dates>();
-            this.Moneys = new ObservableCollection<Money>();
-            this.Authors = new ObservableCollection<Author>();
+        {            
             this.AuthorDeadLine = DateTime.Now;
             this.Winner = false;
             this.AuthorPrice = 0;
+
+            this.Dates = new ObservableCollection<Dates>();
+            this.Moneys = new ObservableCollection<Money>();
+            this.Authors = new ObservableCollection<Author>();
+            this.OrderLines = new ObservableCollection<OrderLine>();
         }
 
         public int EvaluationId { get; set; }
@@ -35,7 +37,7 @@ namespace STUDENTU_1._06.Model
 
         public virtual ObservableCollection<Dates> Dates { get; set; }
         public virtual ObservableCollection<Money> Moneys { get; set; }
-
+        public virtual ObservableCollection<OrderLine> OrderLines { get; set; }
         public virtual ObservableCollection<Author> Authors { get; set; }
 
         public object Clone()

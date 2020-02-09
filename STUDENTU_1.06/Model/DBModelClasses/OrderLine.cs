@@ -20,11 +20,12 @@ namespace STUDENTU_1._06.Model
            // this.AfterDoneDescriptions = new List<AfterDoneDescription>();
             this.WorkInCredit = false;
             this.OrderCount = 1;
-            this.Author = new ObservableCollection<Author>();
-           
             this.variant = null;
             this.Saved = false;
             this.ParentOrder = true;
+
+            this.Author = new ObservableCollection<Author>();
+            this.Evaluations = new ObservableCollection<Evaluation>();
 
         }
         [Key]
@@ -137,7 +138,7 @@ namespace STUDENTU_1._06.Model
         public virtual Source Source { get; set; }
         public virtual AfterDoneDescription AfterDoneDescriptions { get; set; }
         public virtual ObservableCollection<Author> Author { get; set; }
-        
+        public virtual ObservableCollection<Evaluation> Evaluations { get; set; }
 
         public object Clone()
         {
