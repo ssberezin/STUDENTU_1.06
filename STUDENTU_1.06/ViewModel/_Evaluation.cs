@@ -102,15 +102,15 @@ namespace STUDENTU_1._06.ViewModel
                     ));
 
         //=====================Commands for call Editing wondow of Author evaluation ======================================
-        private RelayCommand setAuthorAvaluationCommand;
-        public RelayCommand SetAuthorAvaluationCommand => setAuthorAvaluationCommand ?? (setAuthorAvaluationCommand = new RelayCommand(
-                    (obj) =>
-                    {
-                        //editAvaluationWindow
-                        EditAvaluationWindow editAvaluationWindow = new EditAvaluationWindow(obj);                        
-                        showWindow.ShowDialog(editAvaluationWindow);
-                    }
-                    ));
+        //private RelayCommand setAuthorAvaluationCommand;
+        //public RelayCommand SetAuthorAvaluationCommand => setAuthorAvaluationCommand ?? (setAuthorAvaluationCommand = new RelayCommand(
+        //            (obj) =>
+        //            {
+        //                //editAvaluationWindow
+        //                EditAvaluationWindow editAvaluationWindow = new EditAvaluationWindow(obj);                        
+        //                showWindow.ShowDialog(editAvaluationWindow);
+        //            }
+        //            ));
 
         
 

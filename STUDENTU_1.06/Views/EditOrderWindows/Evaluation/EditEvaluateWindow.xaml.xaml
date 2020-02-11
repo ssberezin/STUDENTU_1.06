@@ -73,7 +73,7 @@
             </Viewbox>
             <DatePicker Name="DateOfDeadLine" IsDropDownOpen="False" SelectedDateFormat="Short" 
                         MaxWidth="150" TabIndex="13" HorizontalAlignment="Center"
-                        SelectedDate="{Binding _Evaluation.EvaluationRecord.AuthorDeadLine,Mode=TwoWay}"
+                        SelectedDate="{Binding _Evaluation.EvaluationRecord.DeadLine,Mode=TwoWay}"
                         />
             <!-- "EvaluationRecord" can find in "EvaluationClass.cs"-->
             <!--x:Static sys:DateTime.Now-->
@@ -83,7 +83,7 @@
             <TextBlock  Text="Время" FontWeight="Bold" Foreground="Blue"/>
         </Viewbox>
         <wpfTool:TimePicker Grid.ColumnSpan="2" Grid.Row="1" Grid.Column="4" Margin="20"
-                             Value="{Binding _Evaluation.EvaluationRecord.AuthorDeadLine, Mode=TwoWay}"
+                             Value="{Binding _Evaluation.EvaluationRecord.DeadLine, Mode=TwoWay}"
                             MaxWidth="90" MaxHeight="40"/>
         <!--Command "Date" can find in "ForEditOrder.cs"-->
         <TextBox  Grid.Row="2" Grid.RowSpan="2" Grid.ColumnSpan="6"    

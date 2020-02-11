@@ -136,11 +136,9 @@
         
         
        
-        <TextBlock Text="Варианты оценки автора "  Grid.Column="0" Grid.ColumnSpan="2"/>
+        <TextBlock Text="Варианты оценки автора :"  Grid.Column="0" Grid.ColumnSpan="2"/>
         <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.ColumnSpan="3">
-            <TextBlock Text="{Binding AuthorsRecord.Author.Persone.NickName}" Margin="2"
-                                   TextWrapping="WrapWithOverflow" 
-                                   TextAlignment="Center"  />
+            
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{Binding AuthorsRecord.Persone.Surname}" Margin="2"
                                    TextWrapping="WrapWithOverflow" 

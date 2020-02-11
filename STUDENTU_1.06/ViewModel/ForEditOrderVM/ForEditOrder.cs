@@ -585,8 +585,8 @@ namespace STUDENTU_1._06.ViewModel
                     Order.Subject = db.Subjects.Find(_Subj.Subj.SubjectId);
                     Order.Source = db.Sources.Find(_Source.Source.SourceId);
                     Order.Dates = Date;
-                    Order.Money = Price;                    
-                    Order.Status = db.Statuses.Find(_Status.Status.StatusId);
+                    Order.Money = Price;                 
+                    Order.Status = _Status.Status.StatusId == 1 ? db.Statuses.Find(2) : db.Statuses.Find(_Status.Status.StatusId);
                     Order.Saved = true;
 
                     //ищем совпададения по полям контактов Person в БД. Если "0", то совпадений не найдено
@@ -680,14 +680,12 @@ namespace STUDENTU_1._06.ViewModel
                     Order.Source = db2.Sources.Find(_Source.Source.SourceId);
                     Order.Dates = Date;
                     Order.Money = Price;
-                    Order.Status = db2.Statuses.Find(_Status.Status.StatusId);
+                    Order.Status = _Status.Status.StatusId == 1 ? db2.Statuses.Find(2) : db2.Statuses.Find(_Status.Status.StatusId);
                     Order.Saved = true;
                     //тут нужно проверяем текущие контакты с контатными данными родительского заказа
                     //вдруг пользователь изменил чего?...
                     // here we need to check the current contacts with the contact data of the parent order
-                    // suddenly the user changed something? ... (
-                    //var order = db2.Orderlines.Where(o => o.ParentId == TMPStaticClass.CurrentOrder.ParentId).FirstOrDefault();
-                    //var order = db2.Orderlines.Find(TMPStaticClass.CurrentOrder.ParentId);
+                    // suddenly the user changed something? ...    
                     bool ContactsCompare = _Contacts.CompareContacts(_Contacts.Contacts, TMPStaticClass.CurrentOrder.Client.Persone.Contacts);
                     bool PersonFirsDataCompare = Persone.ComparePersons(Persone, TMPStaticClass.CurrentOrder.Client.Persone);
                     if (!ContactsCompare || !PersonFirsDataCompare)
@@ -1410,6 +1408,7 @@ namespace STUDENTU_1._06.ViewModel
                     evaluation.Winner = true;                    
                     Author.Evaluation.Add(evaluation);                    
                     Order.Author.Add(Author);
+                    Order.Evaluations.Add(evaluation);
                     db.SaveChanges();                  
                     TMPStaticClass.CurrentOrder.Author.Add(Author);
                     RoolMSG = $"Заказ выполняет {Author.Persone.NickName}";
