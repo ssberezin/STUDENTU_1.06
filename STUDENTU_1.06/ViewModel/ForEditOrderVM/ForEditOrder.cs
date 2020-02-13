@@ -383,7 +383,8 @@ namespace STUDENTU_1._06.ViewModel
                     Date = Order.Dates;
                     _Dir = new _Direction { Dir = Order.Direction };
                     Evaluation evaluation = new Evaluation();
-                    evaluation = Author.GetWinnerEvaluation(Author);
+                    // evaluation = Author.GetWinnerEvaluation(Author);
+                    evaluation = Order.GetWinnerEvaluation(Order);
                     if (evaluation == null)
                     {
                         FinalEvaluationRecord = new EvaluationRecord()
@@ -396,10 +397,14 @@ namespace STUDENTU_1._06.ViewModel
                     }
                     else
                     {
+                        DateTime date = db.Dates.Where(d=>d.Evaluation.EvaluationId==evaluation.EvaluationId).FirstOrDefault().AuthorDeadLine;
+                        Decimal price = db.Moneys.Where(m => m.Evaluation.EvaluationId == evaluation.EvaluationId).FirstOrDefault().AuthorPrice;
                         FinalEvaluationRecord = new EvaluationRecord()
                         {
-                            DeadLine = evaluation.AuthorDeadLine,
-                            Price = evaluation.AuthorPrice,
+                            //DeadLine = evaluation.AuthorDeadLine,
+                            DeadLine = date,
+                            //Price = evaluation.AuthorPrice,
+                            Price=price,
                             EvaluateDescription = evaluation.Description
                         };
                         RoolMSG = $"Заказ закреплен за {Author.Persone.NickName}";
@@ -585,8 +590,15 @@ namespace STUDENTU_1._06.ViewModel
                     Order.Subject = db.Subjects.Find(_Subj.Subj.SubjectId);
                     Order.Source = db.Sources.Find(_Source.Source.SourceId);
                     Order.Dates = Date;
-                    Order.Money = Price;                 
-                    Order.Status = _Status.Status.StatusId == 1 ? db.Statuses.Find(2) : db.Statuses.Find(_Status.Status.StatusId);
+                    Order.Money = Price;
+                    if (_Status.Status.StatusId == 1)
+                    {
+                        Order.Status = db.Statuses.Find(2);
+                        _Status.Status= db.Statuses.Find(2);
+                    }
+                    else                    
+                        Order.Status = db.Statuses.Find(_Status.Status.StatusId);                    
+                    
                     Order.Saved = true;
 
                     //ищем совпададения по полям контактов Person в БД. Если "0", то совпадений не найдено
@@ -680,7 +692,13 @@ namespace STUDENTU_1._06.ViewModel
                     Order.Source = db2.Sources.Find(_Source.Source.SourceId);
                     Order.Dates = Date;
                     Order.Money = Price;
-                    Order.Status = _Status.Status.StatusId == 1 ? db2.Statuses.Find(2) : db2.Statuses.Find(_Status.Status.StatusId);
+                    if (_Status.Status.StatusId == 1)
+                    {
+                        Order.Status = db2.Statuses.Find(2);
+                        _Status.Status = db2.Statuses.Find(2);
+                    }
+                    else
+                        Order.Status = db2.Statuses.Find(_Status.Status.StatusId);
                     Order.Saved = true;
                     //тут нужно проверяем текущие контакты с контатными данными родительского заказа
                     //вдруг пользователь изменил чего?...
@@ -1402,9 +1420,15 @@ namespace STUDENTU_1._06.ViewModel
                     
                     Evaluation evaluation = new Evaluation();                    
                     evaluation.Authors.Add(Author);
-                    evaluation.AuthorDeadLine = FinalEvaluationRecord.DeadLine;                    
-                    evaluation.Description = FinalEvaluationRecord.EvaluateDescription;                    
-                    evaluation.AuthorPrice = FinalEvaluationRecord.Price;
+                    
+                    //evaluation.AuthorDeadLine = FinalEvaluationRecord.DeadLine;                    
+                    evaluation.Dates.Add(new Dates() { AuthorDeadLine=FinalEvaluationRecord.DeadLine});
+
+                    evaluation.Description = FinalEvaluationRecord.EvaluateDescription;
+
+                    //evaluation.AuthorPrice = FinalEvaluationRecord.Price;
+                    evaluation.Moneys.Add(new Money() { AuthorPrice=FinalEvaluationRecord.Price});
+
                     evaluation.Winner = true;                    
                     Author.Evaluation.Add(evaluation);                    
                     Order.Author.Add(Author);

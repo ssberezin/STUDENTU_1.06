@@ -266,6 +266,16 @@ namespace STUDENTU_1._06.Model
             return false;
         }
 
+        public Evaluation GetWinnerEvaluation(OrderLine order)
+        {
+
+            foreach (var item in order.Evaluations)
+            {
+                if (item.Winner == true)
+                    return item;
+            }
+            return null;
+        }
 
 
     }
