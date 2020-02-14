@@ -316,7 +316,7 @@
 
         <StackPanel Grid.Column="4" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" >
             <TextBlock  Text="Срок выполнения:" Margin="5" Foreground="Blue"/>
-            <TextBlock  Text="{ Binding _Evaluation.FinalEvaluationRecord.Deadline,
+            <TextBlock  Text="{ Binding _Evaluation.FinalEvaluationRecord.DeadLine,
                 Converter={StaticResource dateFormatConverter}}" Foreground="Red" />
         </StackPanel>
         

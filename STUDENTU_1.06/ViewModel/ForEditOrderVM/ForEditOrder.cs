@@ -1205,32 +1205,43 @@ namespace STUDENTU_1._06.ViewModel
                 try
                 { 
                     Order = db.Orderlines.Where(o=>o.OrderLineId==TMPStaticClass.CurrentOrder.OrderLineId).FirstOrDefault();
-                    if (!Persone.ComparePersons(Persone, TMPStaticClass.CurrentOrder.Client.Persone))
+                    db.Entry(Order).State = EntityState.Modified;
+                    if (!Persone.ComparePersons(Persone, Order.Client.Persone))
                     {
-                        Persone pers = db.Persones.Where(p=> p.PersoneId==TMPStaticClass.CurrentOrder.Client.Persone.PersoneId).FirstOrDefault();
+                        Persone pers = db.Persones.Where(p=> p.PersoneId== Order.Client.Persone.PersoneId).FirstOrDefault();
                         db.Entry(pers).State = EntityState.Modified;
                         Persone.CopyExeptVirtualIdPhoto(pers, Persone);
                     }
-                    if (!_Contacts.CompareContacts(Persone.Contacts, TMPStaticClass.CurrentOrder.Client.Persone.Contacts))
+                    if (!_Contacts.CompareContacts(Persone.Contacts, Order.Client.Persone.Contacts))
                     {
-                        Contacts contacts = db.Contacts.Where(c=>c.ContactsId==TMPStaticClass.CurrentOrder.Client.Persone.Contacts.ContactsId).FirstOrDefault();
+                        Contacts contacts = db.Contacts.Where(c=>c.ContactsId== Order.Client.Persone.Contacts.ContactsId).FirstOrDefault();
                         db.Entry(contacts).State = EntityState.Modified;
                         _Contacts.Contacts.CopyExceptVirtualAndId(contacts,_Contacts.Contacts);                       
                     }
                     db.Entry(Order).State = EntityState.Modified;                    
-                    if (_Dir.Dir.DirectionId != TMPStaticClass.CurrentOrder.Direction.DirectionId)
+                    if (_Dir.Dir.DirectionId != Order.Direction.DirectionId)
                         Order.Direction = db.Directions.Find(_Dir.Dir.DirectionId);
-                    if (_WorkType.WorkType.WorkTypeId != TMPStaticClass.CurrentOrder.WorkType.WorkTypeId)
+                    if (_WorkType.WorkType.WorkTypeId != Order.WorkType.WorkTypeId)
                         Order.WorkType = db.WorkTypes.Find(_WorkType.WorkType.WorkTypeId);
-                    if (!Date.CompareDate(Date, TMPStaticClass.CurrentOrder.Dates))
-                        Order.Dates = Date;
-                    if (_Subj.Subj.SubjectId != TMPStaticClass.CurrentOrder.Subject.SubjectId)
-                        Order.Subject = db.Subjects.Find(_Subj.Subj.SubjectId); 
+                    if (!Date.CompareDate(Date, Order.Dates))
+                    {
+                        Dates date = db.Dates.Where(d => d.DatesId == Order.Dates.DatesId).FirstOrDefault();
+                        db.Entry(date).State = EntityState.Modified;
+                        date.DateOfReception = Date.DateOfReception;
+                        date.DeadLine = Date.DeadLine;
+                    }
+                    if (_Subj.Subj.SubjectId != Order.Subject.SubjectId)
+                        Order.Subject = db.Subjects.Find(_Subj.Subj.SubjectId);
                     if (!Price.CompareMoney(Price, TMPStaticClass.CurrentOrder.Money))
-                        Order.Money = Price;
-                    if (_Status.Status.StatusId != TMPStaticClass.CurrentOrder.Status.StatusId)                       
+                        {
+                            Money money = db.Moneys.Where(m => m.MoneyId == Order.Money.MoneyId).FirstOrDefault();
+                            db.Entry(money).State = EntityState.Modified;
+                            money.Price = Price.Price;
+                            money.Prepayment = Price.Prepayment;
+                        }
+                    if (_Status.Status.StatusId != Order.Status.StatusId)                       
                             Order.Status = db.Statuses.Find(_Status.Status.StatusId);
-                    if (_University.University.UniversityId != TMPStaticClass.CurrentOrder.Client.Universities[0].UniversityId)                    
+                    if (_University.University.UniversityId != Order.Client.Universities[0].UniversityId)                    
                         if (_University.University.UniversityId == 1)
                             Order.Client.Universities.Add(_University.University);                    
                         else
@@ -1239,7 +1250,7 @@ namespace STUDENTU_1._06.ViewModel
                             Order.Client.Universities.Add(_University.University);
                         }
                     Order.Client.Course = Client.Course;
-                    if (_Source.Source.SourceId!=TMPStaticClass.CurrentOrder.Source.SourceId)  
+                    if (_Source.Source.SourceId!= Order.Source.SourceId)  
                         Order.Source = db.Sources.Find(_Source.Source.SourceId);
                     Order.Saved = true;
                     db.SaveChanges();

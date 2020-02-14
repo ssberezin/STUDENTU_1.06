@@ -54,9 +54,8 @@ namespace STUDENTU_1._06.ViewModel
             ExecuteAuthor = new AuthorsRecord();
             ExecuteAuthor.Persone.NickName = "не задан";
             SelectedExecuteAuthor = new Author();
-
             FillAuthorsRecords();
-           // PropertyChanged += Change_AuthorsRecord;
+            CheckWinnerEvaluation();
         }
 
         //этот конструктор задействуется при редакции данных автора 
@@ -307,8 +306,72 @@ namespace STUDENTU_1._06.ViewModel
                             Persone = item.Persone,
                             Contacts = item.Persone.Contacts
                         };
-                        SelectedAuthorsRecords.Add(record);
-                    }                   
+                        SelectedAuthorsRecords.Add(record);                       
+                    }
+                }
+                catch (ArgumentNullException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (OverflowException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+            }
+
+        }
+
+        private void CheckWinnerEvaluation()
+        {
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                try
+                {
+                    var order = db.Orderlines.Where(o => o.OrderLineId == TMPStaticClass.CurrentOrder.OrderLineId).FirstOrDefault();                    
+                    foreach (var item in order.Evaluations)
+                    {
+                        int authorId = 0;
+                        if (item.Winner)
+                        {                           
+                            foreach (var i in order.Author)
+                            {
+                                foreach (var j in i.Evaluation)
+                                    if (j.EvaluationId == item.EvaluationId)
+                                    {
+                                        authorId = i.AuthorId;
+                                        break;
+                                    }
+                                if (authorId != 0)
+                                    break;
+                            }
+                            SetExecuteAuthor(item.EvaluationId, authorId);
+                            return;
+                        }                        
+                    }
+                   
+                    foreach (var item in SelectedAuthorsRecords)
+                    {
+                        int j = 0;
+                        foreach (var i in item.EvaluationRecords)
+                            if (i.FinalEvaluation)
+                            {
+                                SetExecuteAuthor(item.EvaluationRecords[j].EvalCopyId, item.Author.AuthorId);
+                                return;
+                            }
+                        j++;
+                    }
                 }
                 catch (ArgumentNullException ex)
                 {
@@ -871,7 +934,10 @@ namespace STUDENTU_1._06.ViewModel
                     {
 
                         if (SetSelectEvaluation())
+                        {
                             dialogService.ShowMessage("Оценка задана");
+                            Change_AuthorsRecord();
+                        }
                         else
                             dialogService.ShowMessage("Оценка НЕ задана");
                     }
@@ -879,36 +945,118 @@ namespace STUDENTU_1._06.ViewModel
 
         private bool SetSelectEvaluation()
         {
-            foreach (EvaluationRecord item in AuthorsRecord.EvaluationRecords)
-            {                
-                _Evaluation.EvaluationRecord = AuthorsRecord.EvaluationRecords[Index];
-                //проверка на наличие финальной оценки
-                //check for existing final evaluation
-                if (item.FinalEvaluation)
+            EvaluationRecord evalRecord = (EvaluationRecord)this._Evaluation.EvaluationRecord.Clone
+                                           (_Evaluation.EvaluationRecord.DeadLine, _Evaluation.EvaluationRecord.Price);
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                try
                 {
-                    if (dialogService.YesNoDialog("Уже заданиа финальная оценка. Переназначить?"))
+                    var order = db.Orderlines.Where(o => o.OrderLineId == Order.OrderLineId).FirstOrDefault();
+                    Evaluation eval = db.Evaluations.Where(e => e.EvaluationId == evalRecord.EvalCopyId).FirstOrDefault();
+                    if (eval.Winner)
                     {
-                        //AuthorsRecord.EvaluationRecords[Index].FinalEvaluation = true;
-                        //_Evaluation.FinalEvaluationRecord = AuthorsRecord.EvaluationRecords[Index];
-                        SetExecuteAuthor(Index);
-                        item.FinalEvaluation = false;
-                        return true;  
-                    }
-                    else
+                        dialogService.ShowMessage("Эта оценка и так указана как финальная...");
                         return false;
+                    };
+                    foreach (var item in order.Evaluations)
+                        if (item.Winner&&item.EvaluationId!=eval.EvaluationId)
+                        {
+                            if (dialogService.YesNoDialog("Уже задана финальная оценка. Переназначить?"))
+                            {
+                                db.Entry(item).State = EntityState.Modified;
+                                db.Entry(eval).State = EntityState.Modified;
+                                item.Winner = false;
+                                eval.Winner = true;
+                                db.SaveChanges();
+                                SetExecuteAuthor(eval.EvaluationId, AuthorsRecord.Author.AuthorId);
+                                return true;
+                            }
+                            else
+                                return false;
+                            
+                        }
+                    if (!eval.Winner)
+                    {
+                        db.Entry(eval).State = EntityState.Modified;
+                        eval.Winner = true;
+                        db.SaveChanges();
+                        SetExecuteAuthor(eval.EvaluationId, AuthorsRecord.Author.AuthorId);
+                        return true;
+                    }
                 }
+                catch (ArgumentNullException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (OverflowException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                return false;
             }
-            SetExecuteAuthor(Index);
-            //AuthorsRecord.EvaluationRecords[Index].FinalEvaluation = true;
-            //_Evaluation.FinalEvaluationRecord = AuthorsRecord.EvaluationRecords[Index];
-            return true;  
         }
-
-        private void SetExecuteAuthor(int index)
+        //для корректного отображения атвора работа в окне распределения заказа.
+        //все данные достаем из базы данных
+        //index - эквивалентно Evaluation.EvaluationId, authorId - эквивалентно Author.AuthorId
+        // to display the author correctly, work in the order distribution window.
+        // we get all the data from the database
+        // index - equivalent to Evaluation.EvaluationId, authorId - equivalent to Author.AuthorId
+        private void SetExecuteAuthor(int index, int authorId)
         {
-            AuthorsRecord.EvaluationRecords[index].FinalEvaluation = true;
-            _Evaluation.FinalEvaluationRecord = AuthorsRecord.EvaluationRecords[index];
-            ExecuteAuthor = AuthorsRecord;
+            if (index == 0)
+                return;
+           
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                try
+                {                   
+                    Evaluation eval = db.Evaluations.Where(e => e.EvaluationId == index).FirstOrDefault();
+                    _Evaluation.FinalEvaluationRecord = new EvaluationRecord()
+                    {
+                        EvalCopyId = eval.EvaluationId,
+                        DeadLine = db.Dates.Where(d => d.Evaluation.EvaluationId == eval.EvaluationId).FirstOrDefault().AuthorDeadLine,
+                        Price = db.Moneys.Where(m=>m.Evaluation.EvaluationId==eval.EvaluationId).FirstOrDefault().AuthorPrice,
+                        EvaluateDescription = eval.Description,
+                        FinalEvaluation = eval.Winner
+                    };
+                    Author author = db.Authors.Where(a => a.AuthorId == authorId).FirstOrDefault();
+                    ExecuteAuthor.Author = author;
+                    ExecuteAuthor.Persone = author.Persone;
+                   
+                }
+                catch (ArgumentNullException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (OverflowException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }              
+            }
         }
 
 
