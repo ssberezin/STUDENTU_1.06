@@ -282,6 +282,20 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
+        private RuleOrderLine ruleOrderLine;
+        public RuleOrderLine RuleOrderLine
+        {
+            get { return ruleOrderLine; }
+            set
+            {
+                if (ruleOrderLine != value)
+                {
+                    ruleOrderLine = value;
+                    OnPropertyChanged(nameof(RuleOrderLine));
+                }
+            }
+        }
+
         private _University _university;
         public _University _University
         {
@@ -327,7 +341,7 @@ namespace STUDENTU_1._06.ViewModel
             dialogService = new DefaultDialogService();
         }
 
-        //for create ne order
+        //for create new order
         private void DefaultLoadData()
         {
             BlackListRecords = new ObservableCollection<BlackListHelpModel>();
@@ -424,10 +438,12 @@ namespace STUDENTU_1._06.ViewModel
                     _University = new _University();
                     _University.University = Order.Client.Universities[0];
                     _WorkType = new _WorkType();
-                    _WorkType.WorkType = Order.WorkType;                   
+                    _WorkType.WorkType = Order.WorkType;
+                   
                     AllAuthorsCall();//fill out the authors list
                     TmpOrder = (OrderLine)this.Order.Clone();
                     TMPStaticClass.CurrentOrder = (OrderLine)Order.Clone();
+                    RuleOrderLine = new RuleOrderLine();
                 }
                 catch (ArgumentNullException ex)
                 {
@@ -1370,17 +1386,17 @@ namespace STUDENTU_1._06.ViewModel
                     }
                     ));
 
-        //call RuleOrderLineWindow
-        private RelayCommand newRuleOrderLineWindowCommand;
-        public RelayCommand NewRuleOrderLineWindowCommand =>
-            newRuleOrderLineWindowCommand ?? (newRuleOrderLineWindowCommand = new RelayCommand(
-                    (obj) =>
-                    {
-                        RuleOrderLineWindow ruleOrderLineWindow = new RuleOrderLineWindow();
-                        showWindow.ShowDialog(ruleOrderLineWindow);
+        ////call RuleOrderLineWindow
+        //private RelayCommand newRuleOrderLineWindowCommand;
+        //public RelayCommand NewRuleOrderLineWindowCommand =>
+        //    newRuleOrderLineWindowCommand ?? (newRuleOrderLineWindowCommand = new RelayCommand(
+        //            (obj) =>
+        //            {
+        //                RuleOrderLineWindow ruleOrderLineWindow = new RuleOrderLineWindow();
+        //                showWindow.ShowDialog(ruleOrderLineWindow);
 
-                    }
-                    ));
+        //            }
+        //            ));
 
         //=====================Command for call AddContactsWindow.xaml ======================================
         private RelayCommand newEditContactCommand;

@@ -27,6 +27,7 @@ namespace STUDENTU_1._06.ViewModel
         IDialogService dialogService;
         IShowWindowService showWindow;
 
+        
 
         public RuleOrderLine()
         {
@@ -69,8 +70,6 @@ namespace STUDENTU_1._06.ViewModel
             _AuthorStatus = new _AuthorStatus();
             _Dir = new _Direction();
             _Subject = new _Subject();
-
-            
         }
 
         //проверяем не пустое ли поле с вариантами. Возращает "не задано" если пустое. Если не пустое - возвращет исходное значение
@@ -128,6 +127,23 @@ namespace STUDENTU_1._06.ViewModel
                 }
             }
         }
+
+        //флаг для отслеживания соятояния оценки аатвора: сохранена или нет
+        // flag for tracking the status of the rating of the author: saved or not
+        private bool saveEvaluate;
+        public bool SaveEvaluate
+        {
+            get { return saveEvaluate; }
+            set
+            {
+                if (saveEvaluate != value)
+                {
+                    saveEvaluate = value;
+                    OnPropertyChanged(nameof(SaveEvaluate));
+                }
+            }
+        }
+
 
         private Author selectedExecuteAuthor;
         public Author SelectedExecuteAuthor
@@ -229,14 +245,28 @@ namespace STUDENTU_1._06.ViewModel
                 }
             }
         }
+        //==================================================call RuleOrderLineWindow==================================================
+        private RelayCommand newRuleOrderLineWindowCommand;
+        public RelayCommand NewRuleOrderLineWindowCommand =>
+            newRuleOrderLineWindowCommand ?? (newRuleOrderLineWindowCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        RuleOrderLineWindow ruleOrderLineWindow = new RuleOrderLineWindow(obj);
+                        showWindow.ShowDialog(ruleOrderLineWindow);
+
+                    }
+                    ));
+        //==============================================================================================================================
 
         //==================================================EDIT AUTHOR EVALUATION COMMAND =============================================
         private RelayCommand setAuthorAvaluationCommand;
         public RelayCommand SetAuthorAvaluationCommand => setAuthorAvaluationCommand ?? (setAuthorAvaluationCommand = new RelayCommand(
                     (obj) =>
                     {
+                        AuthorsRecord.EvaluationRecords.Clear();
                         Change_AuthorsRecord();
-                        EditAvaluationWindow editAvaluationWindow = new EditAvaluationWindow(this);
+                        //EditAvaluationWindow editAvaluationWindow = new EditAvaluationWindow(this);
+                        EditAvaluationWindow editAvaluationWindow = new EditAvaluationWindow(obj);
                         showWindow.ShowDialog(editAvaluationWindow);
                     }
                     ));
@@ -249,8 +279,6 @@ namespace STUDENTU_1._06.ViewModel
             {
                 try
                 {
-                    AuthorsRecord.EvaluationRecords.Clear();
-
                       var order = db.Orderlines.Where(o => o.OrderLineId == TMPStaticClass.CurrentOrder.OrderLineId).FirstOrDefault();
                     foreach (var item in order.Evaluations)
                     {
@@ -905,9 +933,10 @@ namespace STUDENTU_1._06.ViewModel
                 }
             }
             AuthorsRecord.EvaluationRecords.Add(_Evaluation.EvaluationRecord);
-            dialogService.ShowMessage("Данные сохранены");
+            dialogService.ShowMessage("Данные добавлены в список оценок");
             _Evaluation.EvaluationRecord = new EvaluationRecord()
             { DeadLine = TMPStaticClass.CurrentOrder.Dates.AuthorDeadLine };
+            SaveEvaluate = false;
         }
 
         //===================================== For delete evaluate selected author in EditAvaluationWindow.xaml====================
@@ -1109,58 +1138,61 @@ namespace STUDENTU_1._06.ViewModel
         // edit entries by authors evaluation
         private void EditAuthorEvaluateAuthorRecord()
         {
-          //  int i = _Evaluation.EvaluationRecord.EvalCopyId;
-            EvaluationRecord evalRecord = (EvaluationRecord)this._Evaluation.EvaluationRecord.Clone
-                                           (_Evaluation.EvaluationRecord.DeadLine, _Evaluation.EvaluationRecord.Price);
-            AuthorsRecord.EvaluationRecords[Index] = evalRecord;
-            if (evalRecord.EvalCopyId == 0)
-                return;
-            
-            using (StudentuConteiner db = new StudentuConteiner())
-            {
-                try
-                {
-                   // db.Orderlines.Attach(Order);
+            AuthorsRecord.EvaluationRecords[Index] = _Evaluation.EvaluationRecord;
+            dialogService.ShowMessage("Изменения внесены");
+            //нижеприведененный закомментированный кусок кода для редакции с проямой записью в БД
+            // below commented out piece of code for the editor with a record in the database
 
-                    Evaluation eval = db.Evaluations.Where(e=>e.EvaluationId== evalRecord.EvalCopyId).FirstOrDefault();
-                    Dates date = db.Dates.Where(d=>d.Evaluation.EvaluationId==eval.EvaluationId).FirstOrDefault();
-                    Money money = db.Moneys.Where(m => m.Evaluation.EvaluationId == eval.EvaluationId).FirstOrDefault();
+            //EvaluationRecord evalRecord = (EvaluationRecord)this._Evaluation.EvaluationRecord.Clone
+            //                               (_Evaluation.EvaluationRecord.DeadLine, _Evaluation.EvaluationRecord.Price);
+            //AuthorsRecord.EvaluationRecords[Index] = evalRecord;
+            //if (evalRecord.EvalCopyId == 0)
+            //    return;
 
-                    db.Entry(eval).State = EntityState.Modified;
-                    db.Entry(date).State = EntityState.Modified;
-                    db.Entry(money).State = EntityState.Modified;
+            //using (StudentuConteiner db = new StudentuConteiner())
+            //{
+            //    try
+            //    {        
 
-                    eval.Description = evalRecord.EvaluateDescription;
-                    eval.Winner = evalRecord.FinalEvaluation;
-                    date.AuthorDeadLine = evalRecord.DeadLine;
-                    money.AuthorPrice = evalRecord.Price;
-                    db.SaveChanges();
-                            
-                            
-                    dialogService.ShowMessage("Изменения внесены");
-                }
-                catch (ArgumentNullException ex)
-                {
-                    dialogService.ShowMessage(ex.Message);
-                }
-                catch (OverflowException ex)
-                {
-                    dialogService.ShowMessage(ex.Message);
-                }
-                catch (System.Data.SqlClient.SqlException ex)
-                {
-                    dialogService.ShowMessage(ex.Message);
-                }
-                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
-                {
-                    dialogService.ShowMessage(ex.Message);
-                }
-                catch (System.Data.Entity.Core.EntityException ex)
-                {
-                    dialogService.ShowMessage(ex.Message);
-                }
-            }
-            
+            //        Evaluation eval = db.Evaluations.Where(e=>e.EvaluationId== evalRecord.EvalCopyId).FirstOrDefault();
+            //        Dates date = db.Dates.Where(d=>d.Evaluation.EvaluationId==eval.EvaluationId).FirstOrDefault();
+            //        Money money = db.Moneys.Where(m => m.Evaluation.EvaluationId == eval.EvaluationId).FirstOrDefault();
+
+            //        db.Entry(eval).State = EntityState.Modified;
+            //        db.Entry(date).State = EntityState.Modified;
+            //        db.Entry(money).State = EntityState.Modified;
+
+            //        eval.Description = evalRecord.EvaluateDescription;
+            //        eval.Winner = evalRecord.FinalEvaluation;
+            //        date.AuthorDeadLine = evalRecord.DeadLine;
+            //        money.AuthorPrice = evalRecord.Price;
+            //        db.SaveChanges();
+
+
+            //        dialogService.ShowMessage("Изменения внесены");
+            //    }
+            //    catch (ArgumentNullException ex)
+            //    {
+            //        dialogService.ShowMessage(ex.Message);
+            //    }
+            //    catch (OverflowException ex)
+            //    {
+            //        dialogService.ShowMessage(ex.Message);
+            //    }
+            //    catch (System.Data.SqlClient.SqlException ex)
+            //    {
+            //        dialogService.ShowMessage(ex.Message);
+            //    }
+            //    catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+            //    {
+            //        dialogService.ShowMessage(ex.Message);
+            //    }
+            //    catch (System.Data.Entity.Core.EntityException ex)
+            //    {
+            //        dialogService.ShowMessage(ex.Message);
+            //    }
+            //}
+
 
         }
 
@@ -1229,6 +1261,9 @@ namespace STUDENTU_1._06.ViewModel
             cancelEvaluateCommand ?? (cancelEvaluateCommand = new RelayCommand(
                     (obj) =>
                     {
+                        if (!SaveEvaluate)                       
+                            if (dialogService.YesNoDialog("Последние изменения не сохранены. Сохранить?"))                           
+                                AddEvaluationToOrder();                                                   
                         CancelAuthorEvaluate();
                         Window window = obj as Window;
                         window.Close();
@@ -1270,38 +1305,65 @@ namespace STUDENTU_1._06.ViewModel
                     }
                     ));
 
+      
         private void AddEvaluationToOrder()
         {
             using (StudentuConteiner db = new StudentuConteiner())
             {
                 try
                 {
-                   var res = db.Orderlines.Where(o=>o.OrderLineId==TMPStaticClass.CurrentOrder.OrderLineId).FirstOrDefault();
-
-                    foreach (var item1 in SelectedAuthorsRecords)
-                    {
-                        //Order.Author.Add(item1.Author);
-                        foreach (var item2 in item1.EvaluationRecords)
-                        {                            
-                            Evaluation evaluation = new Evaluation();                           
+                    var res = db.Orderlines.Where(o => o.OrderLineId == TMPStaticClass.CurrentOrder.OrderLineId).FirstOrDefault();                   
+                        foreach (var item2 in AuthorsRecord.EvaluationRecords)
+                        {
+                            Evaluation evaluation = new Evaluation();
                             evaluation.Description = item2.EvaluateDescription;
                             evaluation.Winner = item2.FinalEvaluation;
-                            evaluation.Dates.Add(new Dates() { AuthorDeadLine= item2.DeadLine});                                                       
-                            evaluation.Moneys.Add( new Money() { AuthorPrice=item2.Price});                           
-                            evaluation.Authors.Add(db.Authors.Find(item1.Author.AuthorId));
+                            evaluation.Dates.Add(new Dates() { AuthorDeadLine = item2.DeadLine });
+                            evaluation.Moneys.Add(new Money() { AuthorPrice = item2.Price });
+                            evaluation.Authors.Add(db.Authors.Find(AuthorsRecord.Author.AuthorId));
 
                             res.Evaluations.Add(evaluation);
-                            var author = db.Authors.Where(a => a.AuthorId == item1.Author.AuthorId).FirstOrDefault();
+                            var author = db.Authors.Where(a => a.AuthorId == AuthorsRecord.Author.AuthorId).FirstOrDefault();
                             author.Evaluation.Add(evaluation);
                         }
-                        res.Author.Add(db.Authors.Find(item1.Author.AuthorId));
-                    }
+                        res.Author.Add(db.Authors.Find(AuthorsRecord.Author.AuthorId));
+                   
                     if (_Status.Status.StatusId == 1 && SelectedAuthorsRecords.Count() > 0)
                         res.Status = db.Statuses.Find(6);
                     else
                         db.Statuses.Find(_Status.Status.StatusId);
-                    db.SaveChanges();                     
+                    db.SaveChanges();
+                    SaveEvaluate = true;
                     dialogService.ShowMessage("Данные о заказе сохранены");
+
+
+                    //var res = db.Orderlines.Where(o=>o.OrderLineId==TMPStaticClass.CurrentOrder.OrderLineId).FirstOrDefault();
+
+                    // foreach (var item1 in SelectedAuthorsRecords)
+                    // {
+                   
+                    //     foreach (var item2 in item1.EvaluationRecords)
+                    //     {                            
+                    //         Evaluation evaluation = new Evaluation();                           
+                    //         evaluation.Description = item2.EvaluateDescription;
+                    //         evaluation.Winner = item2.FinalEvaluation;
+                    //         evaluation.Dates.Add(new Dates() { AuthorDeadLine= item2.DeadLine});                                                       
+                    //         evaluation.Moneys.Add( new Money() { AuthorPrice=item2.Price});                           
+                    //         evaluation.Authors.Add(db.Authors.Find(item1.Author.AuthorId));
+
+                    //         res.Evaluations.Add(evaluation);
+                    //         var author = db.Authors.Where(a => a.AuthorId == item1.Author.AuthorId).FirstOrDefault();
+                    //         author.Evaluation.Add(evaluation);
+                    //     }
+                    //     res.Author.Add(db.Authors.Find(item1.Author.AuthorId));
+                    // }
+                    // if (_Status.Status.StatusId == 1 && SelectedAuthorsRecords.Count() > 0)
+                    //     res.Status = db.Statuses.Find(6);
+                    // else
+                    //     db.Statuses.Find(_Status.Status.StatusId);
+                    // db.SaveChanges();
+                    // SaveEvaluate = true;
+                    // dialogService.ShowMessage("Данные о заказе сохранены");
                 }
                 catch (ArgumentNullException ex)
                 {

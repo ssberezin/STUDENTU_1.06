@@ -34,7 +34,7 @@
             <helpes:BoolInverterConverter x:Key="boolInverterConverter"/>
 
             <!--for sorting in listbox without behind code-->
-            <CollectionViewSource x:Key="SortedItems" Source="{Binding AuthorsRecords}"
+            <CollectionViewSource x:Key="SortedItems" Source="{Binding RuleOrderLine.AuthorsRecords}"
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
                 <!--AuthorsRecords can find in RuleOrderLineClass.cs-->
                 <CollectionViewSource.SortDescriptions>
@@ -42,7 +42,7 @@
                 </CollectionViewSource.SortDescriptions>
             </CollectionViewSource>
 
-            <CollectionViewSource x:Key="SortedStatuses" Source="{Binding _Status.StatusRecords}"
+            <CollectionViewSource x:Key="SortedStatuses" Source="{Binding RuleOrderLine._Status.StatusRecords}"
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
                 <!--StatusRecords can find in _Status.cs-->
                 <CollectionViewSource.SortDescriptions>
@@ -51,7 +51,7 @@
             </CollectionViewSource>
 
             <CollectionViewSource x:Key="SortedSelectedAuthors" 
-                                  Source="{Binding SelectedAuthorsRecords}"
+                                  Source="{Binding RuleOrderLine.SelectedAuthorsRecords}"
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
                 <!--SelectedAuthorsRecords can find in RuleOrderLineClass.cs-->
                 <CollectionViewSource.SortDescriptions>
@@ -127,12 +127,12 @@
         <StackPanel Grid.ColumnSpan="2" Margin="2" >
             <TextBlock Text="Авторы" />
             <StackPanel>
-                <RadioButton GroupName="GroupA" Content="Все авторы" IsChecked="False" Command="{Binding AllAuthorsCallCommand}"
+                <RadioButton GroupName="GroupA" Content="Все авторы" IsChecked="False" Command="{Binding RuleOrderLine.AllAuthorsCallCommand}"
                              IsEnabled="{Binding ElementName=ComplicatedFilter, Path=IsChecked, Converter={StaticResource boolInverterConverter}}"/>
                 <!--Command AllAuthorsCallCommand can find in _RuleOrderLine.cs -->
                 <RadioButton GroupName="GroupA"
                               IsEnabled="{Binding ElementName=ComplicatedFilter, Path=IsChecked, Converter={StaticResource boolInverterConverter}}"
-                             Content="Авторы по тематике" IsChecked="False" Command="{Binding ThemAuthorsCallCommand}"/>
+                             Content="Авторы по тематике" IsChecked="False" Command="{Binding RuleOrderLine.ThemAuthorsCallCommand}"/>
                 <!--Command ThemAuthorsCallCommand  can find in _RuleOrderLine.cs -->
                 <StackPanel Orientation="Horizontal">
                     <CheckBox x:Name="ComplicatedFilter" IsChecked="False"/>
@@ -147,7 +147,7 @@
         <StackPanel Grid.Column="1" Grid.ColumnSpan="2">
             <StackPanel HorizontalAlignment="Stretch"/>
             <TextBlock/>
-            <RadioButton GroupName="GroupA" x:Name="AuthorNickFind" Content="Поиск по нику автора" IsChecked="False" Command="{Binding ThemAuthorsCallCommand}"
+            <RadioButton GroupName="GroupA" x:Name="AuthorNickFind" Content="Поиск по нику автора" IsChecked="False" Command="{Binding RuleOrderLine.ThemAuthorsCallCommand}"
                              VerticalContentAlignment="Bottom"
                          IsEnabled="{Binding ElementName=ComplicatedFilter, Path=IsChecked, Converter={StaticResource boolInverterConverter}}"/>
             <StackPanel Orientation="Horizontal">
@@ -155,7 +155,7 @@
                          FontSize="12"
                          IsEnabled="{Binding IsChecked, ElementName=AuthorNickFind}" Height="22"/>
                 <Button Content="Найти" Width="70" IsEnabled="{Binding IsChecked,ElementName=AuthorNickFind}"
-                        Command="{Binding  FindAuthorByNickCommand}"
+                        Command="{Binding  RuleOrderLine.FindAuthorByNickCommand}"
                         CommandParameter="{Binding Path=Text, ElementName=AuthorNick}"/>
             </StackPanel>
         </StackPanel>
@@ -163,7 +163,7 @@
                      Grid.Row="1" Grid.RowSpan="5"
                     ItemsSource="{Binding Source={StaticResource SortedItems}, 
                     UpdateSourceTrigger=PropertyChanged}" 
-                    SelectedItem="{Binding AuthorsRecord}" 
+                    SelectedItem="{Binding RuleOrderLine.AuthorsRecord}" 
                      TabIndex="2" Grid.ColumnSpan="2" Margin="10,4.4,35.8,1.6" >
             <!--SortedItems can find above in Window.Resources-->
             <ListBox.ItemTemplate>
@@ -197,7 +197,7 @@
         <ListBox x:Name="AuthorsAvaluat" Grid.Row="2" Grid.Column="2" Grid.RowSpan="4"
                     ItemsSource="{Binding Source={StaticResource SortedSelectedAuthors}, 
                     UpdateSourceTrigger=PropertyChanged}" 
-                   SelectedItem="{Binding AuthorsRecord}"                   
+                   SelectedItem="{Binding RuleOrderLine.AuthorsRecord}"                   
                    TabIndex="6">
             <!--SortedItems can find above in Window.Resources-->
             <ListBox.ItemTemplate>
@@ -222,12 +222,12 @@
         <Button Grid.Column="1" Grid.Row="2" Content="+" Background="Green" TabIndex="6"
                 IsEnabled="{Binding SelectedItem,
                      Converter={StaticResource NullBoolConverter}, ElementName=Authors}"
-                Command="{Binding AddSelectedAuthorCommand}" Height="33" Margin="3,3,3,0" VerticalAlignment="Top"/>
+                Command="{Binding RuleOrderLine.AddSelectedAuthorCommand}" Height="33" Margin="3,3,3,0" VerticalAlignment="Top"/>
         <!-- Command AddSelectedAuthorCommand can find in RuleOrderLineClass.cs-->
         <Button Grid.Column="1" Grid.Row="3" Content="-" Background="Red" FontWeight="ExtraBold" TabIndex="5"
                 IsEnabled="{Binding SelectedItem,
                      Converter={StaticResource NullBoolConverter}, ElementName=AuthorsAvaluat}"
-                 Command="{Binding DelSelectedAuthorCommand}"/>
+                 Command="{Binding RuleOrderLine.DelSelectedAuthorCommand}"/>
         <!-- Command DelSelectedAuthorCommand can find in RuleOrderLineClass.cs-->
         <StackPanel Grid.Row="9" Grid.ColumnSpan="3" Orientation="Horizontal"
                     Margin="3" HorizontalAlignment="Center" VerticalAlignment="Center" >
@@ -239,17 +239,17 @@
                       IsEditable="False"
                      ItemsSource="{Binding Source={StaticResource SortedStatuses}, 
                       UpdateSourceTrigger=PropertyChanged}" 
-                     SelectedItem="{Binding _Status.Status}"
+                     SelectedItem="{Binding RuleOrderLine._Status.Status}"
                      DisplayMemberPath="StatusName">
                 <!--Status can find in _Status.cs-->
             </ComboBox>
             <Button x:Name="AddDStatus" Width="40" Background="Gray" Content="..." TabIndex="4"
-                    Command="{Binding _Status.NewEditStatusCommand}" CommandParameter="{Binding DataContext, RelativeSource=
+                    Command="{Binding RuleOrderLine._Status.NewEditStatusCommand}" CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}"/>
             <!--Command NewEditStatusCommand can find in _Status.cs-->
             <StackPanel>
                 <Button x:Name="CompareAvaluation"  Background="Orange" Content="Сравнить оценки" TabIndex="7"
-                    Command="{Binding CompareAvaluationCommand}" CommandParameter="{Binding DataContext, RelativeSource=
+                    Command="{Binding RuleOrderLine.CompareAvaluationCommand}" CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}" MinHeight="30"/>
                 
             </StackPanel>
@@ -262,29 +262,29 @@
                      TabIndex="8" >
             <ListBox.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Скопировать оба Email" Command="{Binding CopyEmailToClipBoardCommand}" 
+                    <MenuItem Header="Скопировать оба Email" Command="{Binding RuleOrderLine.CopyEmailToClipBoardCommand}" 
                               Height="20"/>
-                    <MenuItem Header="Скопировать 1-й номер телефона" Command="{Binding CopyPhone1ToClipBoardCommand}" 
+                    <MenuItem Header="Скопировать 1-й номер телефона" Command="{Binding RuleOrderLine.CopyPhone1ToClipBoardCommand}" 
                               Height="20"/>
-                    <MenuItem Header="Скопировать 2-й номер телефона" Command="{Binding CopyPhone2ToClipBoardCommand}" 
+                    <MenuItem Header="Скопировать 2-й номер телефона" Command="{Binding RuleOrderLine.CopyPhone2ToClipBoardCommand}" 
                               Height="20"/>
-                    <MenuItem Header="Скопировать FaceBook" Command="{Binding CopyFBToClipBoardCommand}" 
+                    <MenuItem Header="Скопировать FaceBook" Command="{Binding RuleOrderLine.CopyFBToClipBoardCommand}" 
                               Height="20"/>
-                    <MenuItem Header="Скопировать VK" Command="{Binding CopyVKToClipBoardCommand}" 
+                    <MenuItem Header="Скопировать VK" Command="{Binding RuleOrderLine.CopyVKToClipBoardCommand}" 
                               Height="20"/>
                 </ContextMenu>
             </ListBox.ContextMenu>
-            <TextBlock Text="{Binding  AuthorsRecord.Contacts.Email1}" Margin="2"                                   
+            <TextBlock Text="{Binding RuleOrderLine.AuthorsRecord.Contacts.Email1}" Margin="2"                                   
                                    TextAlignment="Center"/>
-            <TextBlock Text="{Binding AuthorsRecord.Contacts.Email2}" Margin="2"                                   
+            <TextBlock Text="{Binding RuleOrderLine.AuthorsRecord.Contacts.Email2}" Margin="2"                                   
                                    TextAlignment="Center"/>
-            <TextBlock Text="{Binding AuthorsRecord.Contacts.Phone1}" Margin="2"                                   
+            <TextBlock Text="{Binding RuleOrderLine.AuthorsRecord.Contacts.Phone1}" Margin="2"                                   
                                    TextAlignment="Center"/>
-            <TextBlock Text="{Binding AuthorsRecord.Contacts.Phone2}" Margin="2"                                  
+            <TextBlock Text="{Binding RuleOrderLine.AuthorsRecord.Contacts.Phone2}" Margin="2"                                  
                                    TextAlignment="Center"/>
-            <TextBlock Text="{Binding AuthorsRecord.Contacts.FaceBook}" Margin="2"                                  
+            <TextBlock Text="{Binding RuleOrderLine.AuthorsRecord.Contacts.FaceBook}" Margin="2"                                  
                                    TextAlignment="Center"/>
-            <TextBlock Text="{Binding AuthorsRecord.Contacts.VK}" Margin="2"                                  
+            <TextBlock Text="{Binding RuleOrderLine.AuthorsRecord.Contacts.VK}" Margin="2"                                  
                                    TextAlignment="Center"/>
         </ListBox>
 
@@ -293,35 +293,35 @@
                 TabIndex="9"
                  IsEnabled="{Binding SelectedItem,
                      Converter={StaticResource NullBoolConverter}, ElementName=AuthorsAvaluat}"
-                Command="{Binding _Evaluation.SetFinalEvaluationCommand}" 
+                Command="{Binding RuleOrderLine._Evaluation.SetFinalEvaluationCommand}" 
                 CommandParameter="{Binding ElementName=AuthorsAvaluat , Path=SelectedItem}"/>
         <!--Command SetExecuteAuthorCommand can find in  RuleOrderLineClass.cs-->
         <Button Grid.Column="0" Grid.Row="6" Content="Задать оценку автору" Background="CadetBlue"
                 TabIndex="9"
                   IsEnabled="{Binding SelectedItem,
                      Converter={StaticResource NullBoolConverter}, ElementName=AuthorsAvaluat}"
-                Command="{Binding SetAuthorAvaluationCommand}" CommandParameter="{Binding DataContext, RelativeSource=
+                Command="{Binding RuleOrderLine.SetAuthorAvaluationCommand}" CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}"/>
         <!--Command SetExecuteAuthorCommand can find in  SetAuthorAvaluationCommand-->
         <TextBlock Text="Заказ выполняет"  Grid.Column="4" Foreground="#FF2D9C42"/>
         <StackPanel Grid.Column="4" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" >
             <TextBlock x:Name="AothorWinner"  
                     Foreground="#FFEB6934" Margin="5"                   
-                    Text="{Binding ExecuteAuthor.Persone.NickName}"  />
+                    Text="{Binding RuleOrderLine.ExecuteAuthor.Persone.NickName}"  />
             <WrapPanel>
                 <TextBlock  Text="Цена:" Margin="5" Foreground="Blue"/>
-                <TextBlock  Text="{Binding _Evaluation.FinalEvaluationRecord.Price}" Foreground="Red" />
+                <TextBlock  Text="{Binding RuleOrderLine._Evaluation.FinalEvaluationRecord.Price}" Foreground="Red" />
             </WrapPanel>
         </StackPanel>
 
         <StackPanel Grid.Column="4" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" >
             <TextBlock  Text="Срок выполнения:" Margin="5" Foreground="Blue"/>
-            <TextBlock  Text="{ Binding _Evaluation.FinalEvaluationRecord.DeadLine,
+            <TextBlock  Text="{ Binding RuleOrderLine._Evaluation.FinalEvaluationRecord.DeadLine,
                 Converter={StaticResource dateFormatConverter}}" Foreground="Red" />
         </StackPanel>
-        
-        
-        <TextBox x:Name="AuthorEvalComment" Text="{Binding _Evaluation.FinalEvaluationRecord.EvaluateDescription}"
+
+
+        <TextBox x:Name="AuthorEvalComment" Text="{Binding RuleOrderLine._Evaluation.FinalEvaluationRecord.EvaluateDescription}"
                   TextAlignment="Justify" Grid.Column="5" Grid.Row="4" Grid.RowSpan="5"
                       VerticalContentAlignment="Center" Foreground="Red" Background="White"
                        TextWrapping="Wrap" Grid.ColumnSpan="3" FontSize="12"  >            
@@ -351,22 +351,18 @@
         </TextBlock>
         <Button Grid.Column="4" Grid.Row="9" Content="Отмена" Background="Red"
                 TabIndex="9"                
-                Command="{Binding  _Evaluation.CancelAuthorEvaluateAuthorRecordCommand}"
+                Command="{Binding  RuleOrderLine._Evaluation.CancelAuthorEvaluateAuthorRecordCommand}"
                  CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
-        <Button Grid.Column="3" Grid.Row="9" Content="Сохранить" Background="#FF183ACD"
-                TabIndex="9" 
-                IsEnabled="{Binding SelectedItem,
-                     Converter={StaticResource NullBoolConverter}, ElementName=AuthorsAvaluat}"
-                Command="{Binding AddEvaluationToOrderCommand}"/>
+        
         <TextBlock Grid.Row="6" Grid.Column="2"  Text="Постановка задачи для автора" Margin="5" Foreground="Blue"/>
         <StackPanel Orientation="Horizontal"  Grid.Row="6" Grid.Column="3" HorizontalAlignment="Center" >
             <CheckBox x:Name="TimePlus" IsChecked="False"
                        ToolTip="Будет назначено время с запасом по умолчанию"
-                      Command="{Binding  TimePlusDefaultCommand}" Content="С запасом по времени?"/>
+                      Command="{Binding  RuleOrderLine.TimePlusDefaultCommand}" Content="С запасом по времени?"/>
             
         </StackPanel>
         <TextBox x:Name="AuthorTrablSet" Grid.Row="7" Grid.RowSpan="2" Grid.ColumnSpan="4"    
-                 Text="{Binding Order.DescriptionForClient}"
+                 Text="{Binding RuleOrderLine.Order.DescriptionForClient}"
                   TextAlignment="Justify"  AcceptsReturn="True"
                       VerticalContentAlignment="Stretch" HorizontalContentAlignment="Left" Foreground="Red" Background="White"
                       Margin="6,6,5.4,6" TextWrapping="Wrap" FontSize="11" >

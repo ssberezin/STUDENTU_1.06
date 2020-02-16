@@ -11,7 +11,7 @@
         Title="Добавление оценки" HorizontalAlignment="Center" MaxHeight="450" MaxWidth="450" MinHeight="450" MinWidth="450" Height="350" Width="350"
         Background="#FFDEE6D6">
     <Window.InputBindings>
-        <KeyBinding Gesture="Esc" Command="{Binding _Evaluation.CloseWindowCommand}"
+        <KeyBinding Gesture="Esc" Command="{Binding RuleOrderLine._Evaluation.CloseWindowCommand}"
                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
         <!--Command "CloseWindowCommand" can find in "ForEditOrder.cs"-->
     </Window.InputBindings>
@@ -51,7 +51,7 @@
         </Viewbox>
         <Viewbox Grid.Column="1" Grid.ColumnSpan="3"  MaxHeight="25"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
                      VerticalAlignment="Stretch" >
-            <TextBlock  Text="{Binding AuthorsRecord.Persone.NickName}" FontWeight="Bold" Foreground="Red"/>
+            <TextBlock  Text="{Binding RuleOrderLine.AuthorsRecord.Persone.NickName}" FontWeight="Bold" Foreground="Red"/>
             <!--"AuthorsRecord" can find in "RuleOrderLineClass.cs"-->
         </Viewbox>
 
@@ -60,7 +60,7 @@
             <TextBlock x:Name="PrLable" Text="Цена: " FontWeight="Bold" Foreground="Blue"/>
         </Viewbox>
         <TextBox x:Name="Price" Grid.Row="0" Grid.Column="4"  
-                 Text="{Binding _Evaluation.EvaluationRecord.Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                 Text="{Binding RuleOrderLine._Evaluation.EvaluationRecord.Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                  Foreground="Red" TextAlignment="Center" 
                      VerticalAlignment="Center" FontWeight="Bold"
                     FontSize="{Binding ElementName=PrLable, Path=ActualHeight}"
@@ -73,7 +73,7 @@
             </Viewbox>
             <DatePicker Name="DateOfDeadLine" IsDropDownOpen="False" SelectedDateFormat="Short" 
                         MaxWidth="150" TabIndex="13" HorizontalAlignment="Center"
-                        SelectedDate="{Binding _Evaluation.EvaluationRecord.DeadLine,Mode=TwoWay,
+                        SelectedDate="{Binding RuleOrderLine._Evaluation.EvaluationRecord.DeadLine,Mode=TwoWay,
                                         UpdateSourceTrigger=PropertyChanged}"
                         />
             <!-- "EvaluationRecord" can find in "EvaluationClass.cs"-->
@@ -84,23 +84,23 @@
         <TextBlock  Text="Время" FontWeight="Bold" Foreground="Blue"/>
         </Viewbox>
         <wpfTool:TimePicker Grid.ColumnSpan="2" Grid.Row="1" Grid.Column="4" Margin="20"
-                             Value="{Binding _Evaluation.EvaluationRecord.DeadLine, Mode=TwoWay,
+                             Value="{Binding RuleOrderLine._Evaluation.EvaluationRecord.DeadLine, Mode=TwoWay,
                                 UpdateSourceTrigger=PropertyChanged}"
                             MaxWidth="90" MaxHeight="40"/>
         <!--Command "Date" can find in "ForEditOrder.cs"-->
         <TextBox  Grid.Row="2" Grid.RowSpan="2" Grid.ColumnSpan="6"    
-                 Text="{Binding _Evaluation.EvaluationRecord.EvaluateDescription, Mode=TwoWay,
+                 Text="{Binding RuleOrderLine._Evaluation.EvaluationRecord.EvaluateDescription, Mode=TwoWay,
                         UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True"
                   TextAlignment="Justify"
                   VerticalScrollBarVisibility="Auto"
                   VerticalContentAlignment="Stretch" Foreground="Red" Background="White"
                   TextWrapping="Wrap" Margin="5,10"   />
         <!--Command "EvaluationRecord" can find in "EvaluationClass.cs"-->
-        <Button Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Content="Сохранить" Background="Green" FontWeight="ExtraBold" TabIndex="5"
+        <Button Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Content="Добавить" Background="Green" FontWeight="ExtraBold" TabIndex="5"
                 IsEnabled="{Binding ElementName=Price,  Path=Text.Length}"
-                 Command="{Binding SaveAuthorEvaluateAuthorRecordCommand}"/>
+                 Command="{Binding RuleOrderLine.SaveAuthorEvaluateAuthorRecordCommand}"/>
         <Button Grid.Column="4" Grid.Row="4" Grid.ColumnSpan="2" Content="Закрыть" Background="Red" FontWeight="ExtraBold" TabIndex="5"                
-                 Command="{Binding _Evaluation.CloseWindowCommand}"
+                 Command="{Binding RuleOrderLine._Evaluation.CloseWindowCommand}"
                 CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
         <!--Command "SaveAuthorEvaluateAuthorRecordCommand" can find in "EvaluationClass.cs"-->
     </Grid>

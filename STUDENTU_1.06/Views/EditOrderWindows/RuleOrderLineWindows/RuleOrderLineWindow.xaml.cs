@@ -31,6 +31,12 @@ namespace STUDENTU_1._06.Views.EditOrderWindows.RuleOrderLineWindows
             this.DataContext = new RuleOrderLine();
         }
 
+        public RuleOrderLineWindow(object DataContext)
+        {
+            InitializeComponent();
+            this.DataContext = DataContext;
+        }
+
 
     }
 }

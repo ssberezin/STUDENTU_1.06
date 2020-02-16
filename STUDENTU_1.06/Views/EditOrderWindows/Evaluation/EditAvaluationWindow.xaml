@@ -13,11 +13,11 @@
         Height="350" Width="600"
         >
     <Window.InputBindings>
-        <KeyBinding Gesture="Esc" Command="{Binding CancelEvaluateCommand}"
+        <KeyBinding Gesture="Esc" Command="{Binding RuleOrderLine.CancelEvaluateCommand}"
                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
-        <KeyBinding Gesture="Ctrl+n" Command="{Binding AddEvaluationCommand}"/>
-        <KeyBinding Gesture="Ctrl+e" Command="{Binding EditEvaluationCommand}"/>
-        <KeyBinding Gesture="Ctrl+d" Command="{Binding DeleteSelectedAvaluateCommand}"/>
+        <KeyBinding Gesture="Ctrl+n" Command="{Binding RuleOrderLine.AddEvaluationCommand}"/>
+        <KeyBinding Gesture="Ctrl+e" Command="{Binding RuleOrderLine.EditEvaluationCommand}"/>
+        <KeyBinding Gesture="Ctrl+d" Command="{Binding RuleOrderLine.DeleteSelectedAvaluateCommand}"/>
     </Window.InputBindings>
     <Window.Resources>
 
@@ -84,10 +84,10 @@
 
         
         <ListBox x:Name="Avaluation" Grid.Row="1" Grid.Column="0" Grid.RowSpan="5" Grid.ColumnSpan="4"
-                    ItemsSource="{Binding AuthorsRecord.EvaluationRecords, 
+                    ItemsSource="{Binding RuleOrderLine.AuthorsRecord.EvaluationRecords, 
                     UpdateSourceTrigger=PropertyChanged}" 
-                    SelectedIndex="{Binding Index}"
-                    SelectedItem="{Binding  _Evaluation.EvaluationRecord}"
+                    SelectedIndex="{Binding RuleOrderLine.Index}"
+                    SelectedItem="{Binding  RuleOrderLine._Evaluation.EvaluationRecord}"
                    TabIndex="6" Margin="8" >
             <!--"AuthorsRecords" can find in "RuleOrderLineClass.cs"-->
             
@@ -140,17 +140,17 @@
         <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.ColumnSpan="3">
             
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{Binding AuthorsRecord.Persone.Surname}" Margin="2"
+                <TextBlock Text="{Binding RuleOrderLine.AuthorsRecord.Persone.Surname}" Margin="2"
                                    TextWrapping="WrapWithOverflow" 
                                    TextAlignment="Center" Foreground="Red"/>
-                <TextBlock Text="{Binding AuthorsRecord.Persone.Name}" Margin="2"
+                <TextBlock Text="{Binding RuleOrderLine.AuthorsRecord.Persone.Name}" Margin="2"
                                    TextWrapping="WrapWithOverflow" 
                                    TextAlignment="Center" Foreground="Red"/>
-                <TextBlock Text="{Binding AuthorsRecord.Persone.Patronimic}" Margin="2"
+                <TextBlock Text="{Binding RuleOrderLine.AuthorsRecord.Persone.Patronimic}" Margin="2"
                                    TextWrapping="WrapWithOverflow" 
                                    TextAlignment="Center" Foreground="Red"/>
                 <TextBlock Text="Ник: " Margin="2" Foreground="Blue"/>
-                <TextBlock Text="{Binding AuthorsRecord.Persone.NickName}" Margin="2"
+                <TextBlock Text="{Binding RuleOrderLine.AuthorsRecord.Persone.NickName}" Margin="2"
                                    TextWrapping="WrapWithOverflow" 
                                    TextAlignment="Center" Foreground="Blue"/>
             </StackPanel>
@@ -165,26 +165,31 @@
             </Grid.ColumnDefinitions>
             <Button  Content="Добавить" Background="Green" TabIndex="6"
              
-                Command="{Binding _Evaluation.AddEvaluationCommand}" CommandParameter="{Binding DataContext, RelativeSource=
+                Command="{Binding  RuleOrderLine._Evaluation.AddEvaluationCommand}" CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}"  />
             <!--Command "AddEvaluationCommand" can find in EvaluationClass.cs -->
             <Button Grid.Column="1"  Content="Удалить" Background="Red" FontWeight="ExtraBold" TabIndex="5"
                 IsEnabled="{Binding SelectedItem,
                      Converter={StaticResource NullBoolConverter}, ElementName=Avaluation}"
-                 Command="{Binding DeleteSelectedAvaluateCommand}" 
+                 Command="{Binding  RuleOrderLine.DeleteSelectedAvaluateCommand}" 
                     CommandParameter="{Binding ElementName=Avaluation, Path=SelectedItem}"/>
             <!--Command "DeleteSelectedAvaluateRuleOrderCommand" can find in EvaluationClass.cs -->
+            <Button Grid.Column="2" Content="Сохранить" Background="#FF183ACD"
+                TabIndex="9" 
+                IsEnabled="{Binding SelectedItem,
+                     Converter={StaticResource NullBoolConverter}, ElementName=Avaluation}"
+                Command="{Binding RuleOrderLine.AddEvaluationToOrderCommand}"/>
             <Button Grid.Column="3"  Content="Редактировать" Background="BlueViolet"
                 FontWeight="ExtraBold" TabIndex="5"
                 IsEnabled="{Binding SelectedItem,
                      Converter={StaticResource NullBoolConverter}, ElementName=Avaluation}"
-                 Command="{Binding CallEditSelectedAvaluateRuleOrderWindowCommand}" 
+                 Command="{Binding RuleOrderLine.CallEditSelectedAvaluateRuleOrderWindowCommand}" 
                     CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}"/>
             <!--Command "EditSelectedAvaluateRuleOrderCommand" can find in EvaluationClass.cs -->
             <Button Grid.Column="4" Content="Закрыть" Background="Red"
                 FontWeight="ExtraBold" TabIndex="5"                
-                 Command="{Binding CancelEvaluateCommand}" 
+                 Command="{Binding RuleOrderLine.CancelEvaluateCommand}" 
                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" Margin="0.6,3,4.6,3.4"/>
             <!--<Button Grid.Column="4" Content="Сохранить" Background="#FF0B422B"
                 FontWeight="ExtraBold" TabIndex="5"                
