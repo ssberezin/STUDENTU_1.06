@@ -98,6 +98,21 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
+        //for compare with AuthorsRecord befor save
+        private AuthorsRecord TMPauthorsRecord;
+        public AuthorsRecord TMPAuthorsRecord
+        {
+            get { return TMPauthorsRecord; }
+            set
+            {
+                if (TMPauthorsRecord != value)
+                {
+                    TMPauthorsRecord = value;
+                    OnPropertyChanged(nameof(TMPAuthorsRecord));
+                }
+            }
+        }
+
         //for show authorstatus in Complicated filter
         private _AuthorStatus _authorStatus;
         public _AuthorStatus _AuthorStatus
@@ -265,6 +280,9 @@ namespace STUDENTU_1._06.ViewModel
                     {
                         AuthorsRecord.EvaluationRecords.Clear();
                         Change_AuthorsRecord();
+                        //Author = new ObservableCollection<Author>(this.Author)
+                        TMPAuthorsRecord = new AuthorsRecord()
+                        { EvaluationRecords= new ObservableCollection<EvaluationRecord>(this.AuthorsRecord.EvaluationRecords) };
                         //EditAvaluationWindow editAvaluationWindow = new EditAvaluationWindow(this);
                         EditAvaluationWindow editAvaluationWindow = new EditAvaluationWindow(obj);
                         showWindow.ShowDialog(editAvaluationWindow);
@@ -1062,7 +1080,7 @@ namespace STUDENTU_1._06.ViewModel
                     };
                     Author author = db.Authors.Where(a => a.AuthorId == authorId).FirstOrDefault();
                     ExecuteAuthor.Author = author;
-                    ExecuteAuthor.Persone = author.Persone;
+                   // ExecuteAuthor.Persone = author.Persone;
                    
                 }
                 catch (ArgumentNullException ex)
@@ -1305,29 +1323,71 @@ namespace STUDENTU_1._06.ViewModel
                     }
                     ));
 
-      
+        
+
+        private void CheckEvaluationBeforSave()
+        {
+            foreach (var item in AuthorsRecord.EvaluationRecords)
+                foreach (var i in TMPAuthorsRecord.EvaluationRecords)
+                    if (i.CompareEvaluationRecords(i, item))
+                    {
+
+                    };
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                try
+                {
+
+                }
+                catch (ArgumentNullException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (OverflowException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+            }
+
+        }
+
         private void AddEvaluationToOrder()
         {
             using (StudentuConteiner db = new StudentuConteiner())
             {
                 try
                 {
-                    var res = db.Orderlines.Where(o => o.OrderLineId == TMPStaticClass.CurrentOrder.OrderLineId).FirstOrDefault();                   
-                        foreach (var item2 in AuthorsRecord.EvaluationRecords)
-                        {
-                            Evaluation evaluation = new Evaluation();
-                            evaluation.Description = item2.EvaluateDescription;
-                            evaluation.Winner = item2.FinalEvaluation;
-                            evaluation.Dates.Add(new Dates() { AuthorDeadLine = item2.DeadLine });
-                            evaluation.Moneys.Add(new Money() { AuthorPrice = item2.Price });
-                            evaluation.Authors.Add(db.Authors.Find(AuthorsRecord.Author.AuthorId));
 
-                            res.Evaluations.Add(evaluation);
-                            var author = db.Authors.Where(a => a.AuthorId == AuthorsRecord.Author.AuthorId).FirstOrDefault();
-                            author.Evaluation.Add(evaluation);
-                        }
-                        res.Author.Add(db.Authors.Find(AuthorsRecord.Author.AuthorId));
-                   
+                    var res = db.Orderlines.Where(o => o.OrderLineId == TMPStaticClass.CurrentOrder.OrderLineId).FirstOrDefault();
+                    foreach (var item2 in AuthorsRecord.EvaluationRecords)
+                    {
+                        //if (item2.EvalCopyId)
+
+                        Evaluation evaluation = new Evaluation();
+                        evaluation.Description = item2.EvaluateDescription;
+                        evaluation.Winner = item2.FinalEvaluation;
+                        evaluation.Dates.Add(new Dates() { AuthorDeadLine = item2.DeadLine });
+                        evaluation.Moneys.Add(new Money() { AuthorPrice = item2.Price });
+                        evaluation.Authors.Add(db.Authors.Find(AuthorsRecord.Author.AuthorId));
+
+                        res.Evaluations.Add(evaluation);
+                        var author = db.Authors.Where(a => a.AuthorId == AuthorsRecord.Author.AuthorId).FirstOrDefault();
+                        author.Evaluation.Add(evaluation);
+                    }
+                    res.Author.Add(db.Authors.Find(AuthorsRecord.Author.AuthorId));
+
                     if (_Status.Status.StatusId == 1 && SelectedAuthorsRecords.Count() > 0)
                         res.Status = db.Statuses.Find(6);
                     else
@@ -1337,33 +1397,7 @@ namespace STUDENTU_1._06.ViewModel
                     dialogService.ShowMessage("Данные о заказе сохранены");
 
 
-                    //var res = db.Orderlines.Where(o=>o.OrderLineId==TMPStaticClass.CurrentOrder.OrderLineId).FirstOrDefault();
 
-                    // foreach (var item1 in SelectedAuthorsRecords)
-                    // {
-                   
-                    //     foreach (var item2 in item1.EvaluationRecords)
-                    //     {                            
-                    //         Evaluation evaluation = new Evaluation();                           
-                    //         evaluation.Description = item2.EvaluateDescription;
-                    //         evaluation.Winner = item2.FinalEvaluation;
-                    //         evaluation.Dates.Add(new Dates() { AuthorDeadLine= item2.DeadLine});                                                       
-                    //         evaluation.Moneys.Add( new Money() { AuthorPrice=item2.Price});                           
-                    //         evaluation.Authors.Add(db.Authors.Find(item1.Author.AuthorId));
-
-                    //         res.Evaluations.Add(evaluation);
-                    //         var author = db.Authors.Where(a => a.AuthorId == item1.Author.AuthorId).FirstOrDefault();
-                    //         author.Evaluation.Add(evaluation);
-                    //     }
-                    //     res.Author.Add(db.Authors.Find(item1.Author.AuthorId));
-                    // }
-                    // if (_Status.Status.StatusId == 1 && SelectedAuthorsRecords.Count() > 0)
-                    //     res.Status = db.Statuses.Find(6);
-                    // else
-                    //     db.Statuses.Find(_Status.Status.StatusId);
-                    // db.SaveChanges();
-                    // SaveEvaluate = true;
-                    // dialogService.ShowMessage("Данные о заказе сохранены");
                 }
                 catch (ArgumentNullException ex)
                 {

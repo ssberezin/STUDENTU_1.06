@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Data.Entity;
 using System.Data.Objects;
 using System.Linq;
@@ -420,7 +421,7 @@ namespace STUDENTU_1._06.ViewModel
                             //Price = evaluation.AuthorPrice,
                             Price=price,
                             EvaluateDescription = evaluation.Description
-                        };
+                        };                      
                         RoolMSG = $"Заказ закреплен за {Author.Persone.NickName}";
                         evaluationSetWinner = false;//flag for us in CloseWindowCommand
                     }
@@ -470,6 +471,15 @@ namespace STUDENTU_1._06.ViewModel
             
         }
 
+        // //RuleOrderLine.ExecuteAuthor.Persone.NickName
+        //RoolMSG = $"Заказ закреплен за {Author.Persone.NickName}";
+        private void ChangeRuleOrder(object sender, PropertyChangedEventArgs e)
+        {
+            if (RuleOrderLine.ExecuteAuthor.Author.AuthorId!=0)
+                RoolMSG = $"Заказ закреплен за {RuleOrderLine.ExecuteAuthor.Persone.NickName}";
+
+
+        }
 
         //=================================METHODS FOR PREVIOS LOAD TO CONTROLS OF EditOrder.xaml ===================
 

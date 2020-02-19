@@ -125,7 +125,7 @@
             <ListBox.ContextMenu>
                 <ContextMenu DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}">
                     <MenuItem Header="Сделать выделенную запись финальной?" 
-                              Command="{Binding DataContext.SetSelectEvaluationCommand}" 
+                              Command="{Binding DataContext.RuleOrderLine.SetSelectEvaluationCommand}" 
                               IsEnabled="{Binding Path=SelectedItem, Converter={StaticResource NullBoolConverter}}"
                               Height="20" />
                 </ContextMenu>
