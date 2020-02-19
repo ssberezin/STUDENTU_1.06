@@ -72,7 +72,16 @@ namespace STUDENTU_1._06.Model.HelpModelClasses
             else
                 return false;
         }
-         //не всегда корректно работает, пришлось отказаться      
+
+        public bool CompareEvaluationRecordsWNotId(EvaluationRecord obj1, EvaluationRecord obj2)
+        {
+            if (obj1.EvaluateDescription == obj2.EvaluateDescription &&
+                obj1.Price == obj2.Price && obj1.DeadLine == obj2.DeadLine)
+                return true;
+            else
+                return false;
+        }
+        //не всегда корректно работает, пришлось отказаться      
         //public ObservableCollection<EvaluationRecord>  GetEvaluationRecordCollection(OrderLine order)
         //{
         //    using (StudentuConteiner db = new StudentuConteiner())

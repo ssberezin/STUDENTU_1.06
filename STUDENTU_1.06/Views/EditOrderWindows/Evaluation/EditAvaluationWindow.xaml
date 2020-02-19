@@ -174,11 +174,11 @@
                  Command="{Binding  RuleOrderLine.DeleteSelectedAvaluateCommand}" 
                     CommandParameter="{Binding ElementName=Avaluation, Path=SelectedItem}"/>
             <!--Command "DeleteSelectedAvaluateRuleOrderCommand" can find in EvaluationClass.cs -->
-            <Button Grid.Column="2" Content="Сохранить" Background="#FF183ACD"
+            <!--<Button Grid.Column="2" Content="Сохранить" Background="#FF183ACD"
                 TabIndex="9" 
                 IsEnabled="{Binding SelectedItem,
                      Converter={StaticResource NullBoolConverter}, ElementName=Avaluation}"
-                Command="{Binding RuleOrderLine.AddEvaluationToOrderCommand}"/>
+                Command="{Binding RuleOrderLine.AddEvaluationToOrderCommand}"/>-->
             <Button Grid.Column="3"  Content="Редактировать" Background="BlueViolet"
                 FontWeight="ExtraBold" TabIndex="5"
                 IsEnabled="{Binding SelectedItem,
