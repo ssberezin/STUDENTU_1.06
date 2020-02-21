@@ -149,10 +149,11 @@ namespace STUDENTU_1._06.ViewModel
                 if (msg != value)
                 {
                     msg = value;
-                    OnPropertyChanged(nameof(msg));
+                    OnPropertyChanged(nameof(Msg));
                 }
             }
         }
+
         private string roolMSG;
         public string RoolMSG
         {
@@ -167,7 +168,6 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
-
         private Persone persone;
         public Persone Persone
         {
@@ -181,8 +181,6 @@ namespace STUDENTU_1._06.ViewModel
                 }
             }
         }
-
-
 
         private Money price;
         public Money Price
@@ -332,14 +330,15 @@ namespace STUDENTU_1._06.ViewModel
             Order = new OrderLine { OrderNumber = GetOrderNumber() };
             showWindow = new DefaultShowWindowService();
             dialogService = new DefaultDialogService();
+            PropertyChanged += ChangeRuleOrder;
         }
         //for edit allready exist order
         public ForEditOrder(int OrderLineId)
         {
-            DefaultLoadDataEditOrder(OrderLineId);
-           // Order = new OrderLine { OrderNumber = GetOrderNumber() };
+            DefaultLoadDataEditOrder(OrderLineId);           
             showWindow = new DefaultShowWindowService();
             dialogService = new DefaultDialogService();
+            PropertyChanged += ChangeRuleOrder;
         }
 
         //for create new order
@@ -373,6 +372,7 @@ namespace STUDENTU_1._06.ViewModel
             roolMSG = "Заказ не распределен";
             AllAuthorsCall();//fill out the authors list
             SetTmpOrder();//for look changes befor close window
+            RuleOrderLine = new RuleOrderLine();
         }
 
         //for edit allready exist order
@@ -470,15 +470,17 @@ namespace STUDENTU_1._06.ViewModel
 
             
         }
-
-        // //RuleOrderLine.ExecuteAuthor.Persone.NickName
-        //RoolMSG = $"Заказ закреплен за {Author.Persone.NickName}";
+                
+        
         private void ChangeRuleOrder(object sender, PropertyChangedEventArgs e)
         {
             if (RuleOrderLine.ExecuteAuthor.Author.AuthorId!=0)
                 RoolMSG = $"Заказ закреплен за {RuleOrderLine.ExecuteAuthor.Persone.NickName}";
 
-
+            if (RuleOrderLine._Status.Status.StatusId != _Status.Status.StatusId)
+                _Status.Status = RuleOrderLine._Status.Status;
+                Date.DeadLine = Date.ZeroDefaultDate(Date.DeadLine).AddHours(9);
+                //dialogService.ShowMessage("Изменился стутс");
         }
 
         //=================================METHODS FOR PREVIOS LOAD TO CONTROLS OF EditOrder.xaml ===================
@@ -563,17 +565,11 @@ namespace STUDENTU_1._06.ViewModel
                     (obj) =>
                     {
 
-                        SaveOrderChanges();
+                        SaveNewOrder();
                     }
                     ));
 
-        private void SaveOrderChanges()
-        {
-            if (saved)
-                dialogService.ShowMessage("Заказ уже был сохранен");
-            else
-                SaveNewOrder();
-        }
+     
 
         private RelayCommand createDobleNewOrderLine;
         public RelayCommand CreateDobleNewOrderLine => createDobleNewOrderLine ?? (createDobleNewOrderLine = new RelayCommand(

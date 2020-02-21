@@ -26,7 +26,7 @@
             <helpes:DateFormatConverter x:Key="dateFormatConverter"/>
             <helpes:TimeFormatConverter x:Key="timeFormatConverter"/>
             <helpes:HeightToFontSizeConverter x:Key="heightToFontSizeConverter"/>
-            <helpes:BoolInverterConverter x:Key="boolInverterConverter"/>
+            
 
             <!--for sorting in listbox without behind code-->
             <CollectionViewSource x:Key="SortedSelectedAuthors" Source="{Binding _Evaluation._RuleOrderLine.SelectedAuthorsRecords}"
@@ -95,6 +95,10 @@
                 <DataTemplate>
                     <StackPanel VerticalAlignment="Center">
                         <StackPanel Orientation="Horizontal">
+                            <RadioButton  IsChecked="{Binding  FinalEvaluation}" GroupName="GroupA"
+                                        Command="{Binding RuleOrderLine.SetSelectEvaluationCommand}" 
+                                        Focusable="False" IsHitTestVisible="False"
+                                        Content="   Финальная оценка?   "/>
                             <TextBlock Text="Дата: " Foreground="Red" FontWeight="Bold"  />
                             <TextBlock Text="{Binding DeadLine, Converter={StaticResource dateFormatConverter}}" 
                                      Foreground="Red" FontWeight="Bold"
@@ -107,7 +111,7 @@
                             <TextBlock Text="{Binding Price}" 
                                    Margin="2"  Foreground="Red" FontWeight="Bold"
                                    TextWrapping="WrapWithOverflow" 
-                                   TextAlignment="Center"/>
+                                   TextAlignment="Center"/>                           
                         </StackPanel>
                         <StackPanel>
                             <Label Content="Комментарии"  HorizontalAlignment="Center" Background="AliceBlue" FontWeight="Bold"/>
@@ -130,13 +134,11 @@
                               Height="20" />
                 </ContextMenu>
             </ListBox.ContextMenu>
-
-
         </ListBox>
         
         
        
-        <TextBlock Text="Варианты оценки автора :"  Grid.Column="0" Grid.ColumnSpan="2"/>
+        <TextBlock Text="Варианты оценки автора : "  Grid.Column="0" Grid.ColumnSpan="2"/>
         <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.ColumnSpan="3">
             
             <StackPanel Orientation="Horizontal">

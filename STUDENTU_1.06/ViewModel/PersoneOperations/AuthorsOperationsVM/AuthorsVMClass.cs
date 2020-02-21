@@ -231,14 +231,14 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
             PropertyChanged += ChangeProperty;
         }
 
+        bool kastil1,kastil2,kastil3,kastil4,kastil5 = false;
         private void ChangeProperty(object sender, PropertyChangedEventArgs e)
         {           
             using (StudentuConteiner db = new StudentuConteiner())
             {
                 try
-                {
-                   
-                    if (AuthorsRecord != null)
+                {                    
+                    if (AuthorsRecord != null && !kastil1)
                     {
                         
                         db.Authors.Attach(AuthorsRecord.Author);
@@ -250,8 +250,8 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                         _Subj.AuthorSubjects.Clear();
                         foreach (var item in AuthorsRecord.Author.Subject)
                             _Subj.AuthorSubjects.Add(item);
-                    }
-                    
+                        kastil1 = true;
+                    }                    
                 }
                 catch (ArgumentNullException ex)
                 {
@@ -276,14 +276,38 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
             }
             if (AuthorsRecord != null)
             {
-                Persone = AuthorsRecord.Persone;
-                Author = AuthorsRecord.Author;
-                _AuthorStatus.AuthorStatus = Author.AuthorStatus;
-                _Contacts.Contacts = Persone.Contacts;
-                _Contacts.TmpContacts = _Contacts.Contacts;
+                if (!kastil2)
+                {
+                    kastil2 = true;
+                    Persone = AuthorsRecord.Persone;                    
+                }
+                if (!kastil3)
+                {
+                    kastil3 = true;
+                    Author = AuthorsRecord.Author;                    
+                }
+
+                if (!kastil4)
+                {
+                    kastil4 = true;
+                    Date = AuthorsRecord.Persone.Dates[0];                    
+                }
+                if (!kastil5)
+                {
+                    kastil5 = true;
+                    PersoneDescription = AuthorsRecord.Persone.PersoneDescription;                    
+                }
                
-                Date = AuthorsRecord.Persone.Dates[0];
-                PersoneDescription = AuthorsRecord.Persone.PersoneDescription;
+                    _AuthorStatus.AuthorStatus = Author.AuthorStatus;
+                    _Contacts.Contacts = Persone.Contacts;
+                    _Contacts.TmpContacts = _Contacts.Contacts;
+                   
+                
+                if (kastil1 && kastil2 && kastil3 && kastil4 && kastil5 )
+                    kastil1 = kastil2 = kastil3 = kastil4 = kastil5  = false;
+
+
+
             }
             
         }

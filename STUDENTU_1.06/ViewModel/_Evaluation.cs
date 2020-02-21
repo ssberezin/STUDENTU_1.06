@@ -26,9 +26,14 @@ namespace STUDENTU_1._06.ViewModel
 
 
         public _Evaluation()
-        {  
+        {
             //Evaluation = new Evaluation();
-            EvaluationRecord = new EvaluationRecord() { DeadLine = TMPStaticClass.CurrentOrder.Dates.AuthorDeadLine };                                   
+            //Dates date = new Dates();
+            //date.AuthorDeadLine = date.ZeroDefaultDate(DateTime.Now).AddDays(1).AddHours(9);
+            //if(TMPStaticClass.CurrentOrder==null)
+            // EvaluationRecord = new EvaluationRecord() { DeadLine = date.AuthorDeadLine };                                   
+            //else
+             EvaluationRecord = new EvaluationRecord() { DeadLine = TMPStaticClass.CurrentOrder.Dates.AuthorDeadLine };
             FinalEvaluationRecord = new EvaluationRecord()
             {
                 DeadLine = EvaluationRecord.DeadLine,

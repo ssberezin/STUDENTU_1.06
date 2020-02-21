@@ -235,14 +235,21 @@
                      VerticalAlignment="Stretch">
                 <TextBlock Text="Статус заказа: " FontWeight="Bold"  Foreground="Brown"/>
             </Viewbox>
-            <ComboBox x:Name="StatusList"  MinWidth="130"  TabIndex="9" SelectedIndex="0" 
-                      IsEditable="False"
+            <ComboBox x:Name="StatusList"  MinWidth="150"  TabIndex="8" SelectedIndex="0" 
+                     IsEditable="False"
+                     IsSynchronizedWithCurrentItem="True"
                      ItemsSource="{Binding Source={StaticResource SortedStatuses}, 
                       UpdateSourceTrigger=PropertyChanged}" 
-                     SelectedItem="{Binding RuleOrderLine._Status.Status}"
-                     DisplayMemberPath="StatusName">
-                <!--Status can find in _Status.cs-->
+                     SelectedValue="{Binding RuleOrderLine._Status.Status.StatusId, Mode=TwoWay}"
+                     SelectedValuePath="StatusId"
+                     SelectedItem="{Binding RuleOrderLine._Status.Status,  UpdateSourceTrigger=PropertyChanged}"
+                     DisplayMemberPath="StatusName"
+                     ToolTip="{Binding RuleOrderLine._Status.Status.StatusName}" 
+                     HorizontalContentAlignment="Center"
+                     Background="White" >
+            
             </ComboBox>
+          
             <Button x:Name="AddDStatus" Width="40" Background="Gray" Content="..." TabIndex="4"
                     Command="{Binding RuleOrderLine._Status.NewEditStatusCommand}" CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}"/>
@@ -303,22 +310,24 @@
                 Command="{Binding RuleOrderLine.SetAuthorAvaluationCommand}" CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}"/>
         <!--Command SetExecuteAuthorCommand can find in  SetAuthorAvaluationCommand-->
-        <TextBlock Text="Заказ выполняет"  Grid.Column="4" Foreground="#FF2D9C42"/>
-        <StackPanel Grid.Column="4" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" >
+        
+        <StackPanel Grid.Column="4" Grid.Row="0" Grid.RowSpan="3" HorizontalAlignment="Center" VerticalAlignment="Center" >
+            <TextBlock Text="Заказ выполняет"  Grid.Column="4" Foreground="#FF2D9C42"/>
             <TextBlock x:Name="AothorWinner"  
                     Foreground="#FFEB6934" Margin="5"                   
-                    Text="{Binding RuleOrderLine.ExecuteAuthor.Persone.NickName}"  />
+                    Text="{Binding RuleOrderLine.RoolMSG}"  />
             <WrapPanel>
                 <TextBlock  Text="Цена:" Margin="5" Foreground="Blue"/>
                 <TextBlock  Text="{Binding RuleOrderLine._Evaluation.FinalEvaluationRecord.Price}" Foreground="Red" />
             </WrapPanel>
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" >
+                <TextBlock  Text="Срок выполнения:" Margin="5" Foreground="Blue"/>
+                <TextBlock  Text="{ Binding RuleOrderLine._Evaluation.FinalEvaluationRecord.DeadLine,
+                Converter={StaticResource dateFormatConverter}}" Foreground="Red" />
+            </StackPanel>
         </StackPanel>
 
-        <StackPanel Grid.Column="4" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" >
-            <TextBlock  Text="Срок выполнения:" Margin="5" Foreground="Blue"/>
-            <TextBlock  Text="{ Binding RuleOrderLine._Evaluation.FinalEvaluationRecord.DeadLine,
-                Converter={StaticResource dateFormatConverter}}" Foreground="Red" />
-        </StackPanel>
+        
 
 
         <TextBox x:Name="AuthorEvalComment" Text="{Binding RuleOrderLine._Evaluation.FinalEvaluationRecord.EvaluateDescription}"

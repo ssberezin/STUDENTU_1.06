@@ -19,7 +19,20 @@ namespace STUDENTU_1._06.Model.HelpModelClasses
         }
       
         public int EvalCopyId { get; set; }
-        public bool FinalEvaluation { get; set; }
+        
+        private bool finalEvaluation;
+        public bool FinalEvaluation
+        {
+            get { return finalEvaluation; }
+            set
+            {
+                if (finalEvaluation != value)
+                {
+                    finalEvaluation = value;
+                    OnPropertyChanged(nameof(FinalEvaluation));
+                }
+            }
+        }
 
         private string evaluateDescription;
         public string EvaluateDescription

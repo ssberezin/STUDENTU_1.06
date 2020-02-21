@@ -119,6 +119,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Helpes\BoolInverterConverter.cs" />
+    <Compile Include="Helpes\BoolToBrushConverter.cs" />
     <Compile Include="Helpes\ImagePathConverter.cs" />
     <Compile Include="Helpes\NullToBooleanConverter.cs" />
     <Compile Include="Helpes\SelectedItemsConverter.cs" />

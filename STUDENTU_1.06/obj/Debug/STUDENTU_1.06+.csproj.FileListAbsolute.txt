@@ -1105,7 +1105,6 @@ E:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindow
 E:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\ContactsWindows\CompareContatctsWindow.g.cs
 E:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\ContactsWindows\AddContactsWindow.baml
 E:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\ContactsWindows\CompareContatctsWindow.baml
-E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\STUDENTU_1.06+.csprojAssemblyReference.cache
 E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\EditUniversity.g.cs
 E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\EditUniversity.baml
 E:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\EditUniversity.g.cs
@@ -1115,3 +1114,4 @@ E:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindow
 E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\EditOrderLine\EditOrderRedaction.g.cs
 E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\EditOrderLine\EditOrderRedaction.baml
 E:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\STUDENTU_1.06+.csprojAssemblyReference.cache
+E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\STUDENTU_1.06+.csprojAssemblyReference.cache

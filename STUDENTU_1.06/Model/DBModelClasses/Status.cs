@@ -1,4 +1,5 @@
 ﻿
+using STUDENTU_1._06.Helpes;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -7,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace STUDENTU_1._06.Model
 {
-   public class Status:ICloneable
+   public class Status: ObservableObject, ICloneable
     {
         public Status()
         {
@@ -16,7 +17,21 @@ namespace STUDENTU_1._06.Model
             
         }
         [ForeignKey("OrderLine")]
-        public int StatusId { get; set; }
+       // public int StatusId { get; set; }
+
+        private int statusId;
+        public int StatusId
+        {
+            get { return statusId; }
+            set
+            {
+                if (statusId != value)
+                {
+                    statusId = value;
+                    OnPropertyChanged(nameof(StatusId));
+                }
+            }
+        }
 
         [Column("Description", TypeName = "nvarchar")]
         [MaxLength(500)]
