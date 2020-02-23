@@ -22,7 +22,7 @@
             <helpes:NullToBooleanConverter x:Key="NullBoolConverter" />
 
             <!--for sorting in listbox without behind code-->
-            <CollectionViewSource x:Key="SortedItems" Source="{Binding _Status.StatusRecords}"
+            <CollectionViewSource x:Key="SortedItems" Source="{Binding RuleOrderLine._Status.StatusRecords}"
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
                 <CollectionViewSource.SortDescriptions>
                     <scm1:SortDescription PropertyName="StatusName"/>
@@ -47,7 +47,7 @@
             <RowDefinition Height="0.5*"/>
         </Grid.RowDefinitions>
         <TextBox x:Name="DirName" Grid.ColumnSpan="3" Margin="5" 
-                 Text="{Binding _Status.Status.StatusName , Mode=OneWay,
+                 Text="{Binding RuleOrderLine._Status.Status.StatusName , Mode=OneWay,
             UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="0"
                  SpellCheck.IsEnabled="True" Language="ru-ru" TextAlignment="Center"/>
         <!-- Statuse can find in _Statuse.cs-->
@@ -56,7 +56,7 @@
                      Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="2" Margin="5" 
                     ItemsSource="{Binding Source={StaticResource SortedItems}, 
                     UpdateSourceTrigger=PropertyChanged}" 
-                    SelectedItem="{Binding _Status.Status}"                   
+                    SelectedItem="{Binding RuleOrderLine._Status.Status}"                   
                      SelectionMode="Single" 
                      IsSynchronizedWithCurrentItem="False"
                      TabIndex="3"
@@ -76,7 +76,7 @@
 
         </ListBox>
         <Button Grid.Column="0" Grid.Row="3"  Content="Добавить" Background="Green"
-                 Command="{Binding _Status.AddStatusCommand}" 
+                 Command="{Binding RuleOrderLine._Status.AddStatusCommand}" 
                  CommandParameter="{Binding ElementName=DirName, Path=Text}"
                  IsEnabled="{Binding ElementName=DirName,  Path=Text.Length}"
                 TabIndex="1">
@@ -86,12 +86,12 @@
 
 
         <Button  x:Name="EditButton" Grid.Column="1" Grid.Row="3" Content="Редактировать" Background="BlueViolet"
-                Command="{Binding _Status.EditStatusCommand}" IsEnabled="{Binding SelectedItem,
+                Command="{Binding RuleOrderLine._Status.EditStatusCommand}" IsEnabled="{Binding SelectedItem,
                      Converter={StaticResource NullBoolConverter}, ElementName=DirList}"
                  CommandParameter="{Binding ElementName=DirName, Path=Text}"
                  TabIndex="4" />
         <!--Command EditStatusCommand can find in _Status.cs-->
-        <Button Grid.Column="2" Grid.Row="3" Content="Удалить" Command="{Binding _Status.DeleteStatusCommand}"
+        <Button Grid.Column="2" Grid.Row="3" Content="Удалить" Command="{Binding RuleOrderLine._Status.DeleteStatusCommand}"
                  CommandParameter="{Binding ElementName=DirName, Path=Text}"
                 IsEnabled="{Binding SelectedItem, 
                      Converter={StaticResource NullBoolConverter}, ElementName=DirList}"

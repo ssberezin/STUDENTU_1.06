@@ -109,6 +109,35 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
+        //for track changes Date.DeadLine
+        private DateTime deadLine;
+        public DateTime DeadLine
+        {
+            get { return deadLine; }
+            set
+            {
+                if (deadLine != value)
+                {
+                    deadLine = value;
+                    OnPropertyChanged(nameof(DeadLine));
+                }
+            }
+        }
+        //for track changes Date.DeadLine
+        private DateTime deadLineHHMM;
+        public DateTime DeadLineHHMM
+        {
+            get { return deadLineHHMM; }
+            set
+            {
+                if (deadLineHHMM != value)
+                {
+                    deadLineHHMM = value;
+                    OnPropertyChanged(nameof(DeadLineHHMM));
+                }
+            }
+        }
+
         private _Direction _dir;
         public _Direction _Dir
         {
@@ -122,18 +151,32 @@ namespace STUDENTU_1._06.ViewModel
                 }
             }
         }
+                
+        //private EvaluationRecord finalevaluationRecord;
+        //public EvaluationRecord FinalEvaluationRecord
+        //{
+        //    get { return finalevaluationRecord; ; }
+        //    set
+        //    {
+        //        if (finalevaluationRecord != value)
+        //        {
+        //            finalevaluationRecord = value;
+        //            OnPropertyChanged(nameof(FinalEvaluationRecord));
+        //        }
+        //    }
+        //}
 
-        //for stor evaluation of any author
-        private EvaluationRecord finalevaluationRecord;
-        public EvaluationRecord FinalEvaluationRecord
+        //for save previos state Order and compare 
+        private OrderLine nullOrder;
+        public OrderLine NullOrder
         {
-            get { return finalevaluationRecord; ; }
+            get { return nullOrder; }
             set
             {
-                if (finalevaluationRecord != value)
+                if (nullOrder != value)
                 {
-                    finalevaluationRecord = value;
-                    OnPropertyChanged(nameof(FinalEvaluationRecord));
+                    nullOrder = value;
+                    OnPropertyChanged(nameof(NullOrder));
                 }
             }
         }
@@ -238,19 +281,19 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
-        private _Status _status;
-        public _Status _Status
-        {
-            get { return _status; }
-            set
-            {
-                if (_status != value)
-                {
-                    _status = value;
-                    OnPropertyChanged(nameof(_Status));
-                }
-            }
-        }
+        //private _Status _status;
+        //public _Status _Status
+        //{
+        //    get { return _status; }
+        //    set
+        //    {
+        //        if (_status != value)
+        //        {
+        //            _status = value;
+        //            OnPropertyChanged(nameof(_Status));
+        //        }
+        //    }
+        //}
 
 
         private _Source _source;
@@ -354,25 +397,32 @@ namespace STUDENTU_1._06.ViewModel
             _Contacts = new _Contacts();
             Client = new Client();
             Date = new Dates();
+            DeadLine = Date.DeadLine;
+            DeadLineHHMM = Date.DeadLine; 
             _Dir = new _Direction();
-            FinalEvaluationRecord = new EvaluationRecord()
+            
+            Persone = new Persone();
+            PersoneDescription = new PersoneDescription();
+            Price = new Money();
+            RuleOrderLine = new RuleOrderLine();
+            RuleOrderLine._Evaluation.FinalEvaluationRecord = new EvaluationRecord()
             {
                 DeadLine = Date.AuthorDeadLine,
                 Price = 0,
                 EvaluateDescription = ""
             };
-            Persone = new Persone();
-            PersoneDescription = new PersoneDescription();
-            Price = new Money();
-            _Status = new _Status();
+            //RuleOrderLine._Status = new _Status();
             _Subj = new _Subject();
             _Source = new _Source();
             _University = new _University();
             _WorkType = new _WorkType();
             roolMSG = "Заказ не распределен";
             AllAuthorsCall();//fill out the authors list
-            SetTmpOrder();//for look changes befor close window
-            RuleOrderLine = new RuleOrderLine();
+            TmpOrder = new OrderLine();
+            SetTmpOrder(TmpOrder);//for look changes befor close window
+            NullOrder = new OrderLine();
+            SetTmpOrder(NullOrder);
+            
         }
 
         //for edit allready exist order
@@ -388,6 +438,7 @@ namespace STUDENTU_1._06.ViewModel
                 try
                 {
                     Order = db.Orderlines.Where(o=>o.OrderLineId==OrderLineId).FirstOrDefault();
+                    TMPStaticClass.CurrentOrder = (OrderLine)Order.Clone();
                     TmpOrder = new OrderLine();
                     Author = Order.GetExecuteAuthor(Order.Author);                    
                     if(Author==null)
@@ -396,33 +447,36 @@ namespace STUDENTU_1._06.ViewModel
                     _Contacts = new _Contacts() { Contacts = Order.Client.Persone.Contacts };                    
                     Client = Order.Client;
                     Date = Order.Dates;
+                    DeadLine = Date.DeadLine;
+                    DeadLineHHMM = Date.DeadLine;
                     _Dir = new _Direction { Dir = Order.Direction };
                     Evaluation evaluation = new Evaluation();
                     // evaluation = Author.GetWinnerEvaluation(Author);
                     evaluation = Order.GetWinnerEvaluation(Order);
+                    RuleOrderLine = new RuleOrderLine();
                     if (evaluation == null)
                     {
-                        FinalEvaluationRecord = new EvaluationRecord()
+                        RuleOrderLine._Evaluation.FinalEvaluationRecord = new EvaluationRecord()
                         {
                             DeadLine = Date.AuthorDeadLine,
                             Price = 0,
                             EvaluateDescription = ""
                         };
-                        RoolMSG = "Заказ не распределен";
+                        RuleOrderLine.RoolMSG = "Заказ не распределен";
                     }
                     else
                     {
                         DateTime date = db.Dates.Where(d=>d.Evaluation.EvaluationId==evaluation.EvaluationId).FirstOrDefault().AuthorDeadLine;
                         Decimal price = db.Moneys.Where(m => m.Evaluation.EvaluationId == evaluation.EvaluationId).FirstOrDefault().AuthorPrice;
-                        FinalEvaluationRecord = new EvaluationRecord()
+                        RuleOrderLine._Evaluation.FinalEvaluationRecord = new EvaluationRecord()
                         {
                             //DeadLine = evaluation.AuthorDeadLine,
                             DeadLine = date,
                             //Price = evaluation.AuthorPrice,
                             Price=price,
                             EvaluateDescription = evaluation.Description
-                        };                      
-                        RoolMSG = $"Заказ закреплен за {Author.Persone.NickName}";
+                        };
+                        RuleOrderLine.RoolMSG = $"Заказ закреплен за {Author.Persone.NickName}";
                         evaluationSetWinner = false;//flag for us in CloseWindowCommand
                     }
                     saved = true;//flag for make suborder
@@ -430,8 +484,9 @@ namespace STUDENTU_1._06.ViewModel
                     Persone = Order.Client.Persone;
                     PersoneDescription = Order.Client.Persone.PersoneDescription;
                     Price = Order.Money;
-                    _Status = new _Status();
-                    _Status.Status = Order.Status;
+                    
+                   // RuleOrderLine._Status = new _Status();
+                    RuleOrderLine._Status.Status = Order.Status;
                     _Subj = new _Subject();
                     _Subj.Subj = Order.Subject;
                     _Source = new _Source();
@@ -443,8 +498,13 @@ namespace STUDENTU_1._06.ViewModel
                    
                     AllAuthorsCall();//fill out the authors list
                     TmpOrder = (OrderLine)this.Order.Clone();
-                    TMPStaticClass.CurrentOrder = (OrderLine)Order.Clone();
-                    RuleOrderLine = new RuleOrderLine();
+                    
+
+
+
+                    NullOrder = new OrderLine();
+                    SetTmpOrder(NullOrder);
+                   
                 }
                 catch (ArgumentNullException ex)
                 {
@@ -470,17 +530,21 @@ namespace STUDENTU_1._06.ViewModel
 
             
         }
-                
+
         
         private void ChangeRuleOrder(object sender, PropertyChangedEventArgs e)
         {
-            if (RuleOrderLine.ExecuteAuthor.Author.AuthorId!=0)
-                RoolMSG = $"Заказ закреплен за {RuleOrderLine.ExecuteAuthor.Persone.NickName}";
-
-            if (RuleOrderLine._Status.Status.StatusId != _Status.Status.StatusId)
-                _Status.Status = RuleOrderLine._Status.Status;
-                Date.DeadLine = Date.ZeroDefaultDate(Date.DeadLine).AddHours(9);
-                //dialogService.ShowMessage("Изменился стутс");
+            //if (RuleOrderLine.ExecuteAuthor.Author.AuthorId != 0&& !kastil1)
+            //{
+            //    kastil1 = true;
+            //    RoolMSG = $"Заказ закреплен за {RuleOrderLine.ExecuteAuthor.Persone.NickName}";
+            //}
+ 
+                Date.DeadLine = DeadLine.AddHours(9);                
+                DeadLineHHMM= Date.DeadLine;
+                RuleOrderLine._Evaluation.FinalEvaluationRecord.DeadLine = Date.DeadLine;
+              
+            
         }
 
         //=================================METHODS FOR PREVIOS LOAD TO CONTROLS OF EditOrder.xaml ===================
@@ -531,17 +595,17 @@ namespace STUDENTU_1._06.ViewModel
 
         }
 
-        private void SetTmpOrder()
+        private void SetTmpOrder(OrderLine order)
         {
-            TmpOrder = new OrderLine();
-            TmpOrder.Direction = this._Dir.Dir;
-            TmpOrder.WorkType = this._WorkType.WorkType;
-            TmpOrder.Subject = this._Subj.Subj;
-            TmpOrder.Source = this._Source.Source;
-            TmpOrder.Dates = this.Date;
-            TmpOrder.Money = this.Price;
-            TmpOrder.Status = this._Status.Status;
-            TmpOrder.Client = new Client()
+            //TmpOrder = new OrderLine();
+            order.Direction = this._Dir.Dir;
+            order.WorkType = this._WorkType.WorkType;
+            order.Subject = this._Subj.Subj;
+            order.Source = this._Source.Source;
+            order.Dates = this.Date;
+            order.Money = this.Price;
+            order.Status = this.RuleOrderLine._Status.Status;
+            order.Client = new Client()
             {
                 Persone = new Persone()
                 {
@@ -613,13 +677,13 @@ namespace STUDENTU_1._06.ViewModel
                     Order.Source = db.Sources.Find(_Source.Source.SourceId);
                     Order.Dates = Date;
                     Order.Money = Price;
-                    if (_Status.Status.StatusId == 1)
+                    if (RuleOrderLine._Status.Status.StatusId == 1)
                     {
                         Order.Status = db.Statuses.Find(2);
-                        _Status.Status= db.Statuses.Find(2);
+                        RuleOrderLine._Status.Status= db.Statuses.Find(2);
                     }
                     else                    
-                        Order.Status = db.Statuses.Find(_Status.Status.StatusId);                    
+                        Order.Status = db.Statuses.Find(RuleOrderLine._Status.Status.StatusId);                    
                     
                     Order.Saved = true;
 
@@ -714,13 +778,13 @@ namespace STUDENTU_1._06.ViewModel
                     Order.Source = db2.Sources.Find(_Source.Source.SourceId);
                     Order.Dates = Date;
                     Order.Money = Price;
-                    if (_Status.Status.StatusId == 1)
+                    if (RuleOrderLine._Status.Status.StatusId == 1)
                     {
                         Order.Status = db2.Statuses.Find(2);
-                        _Status.Status = db2.Statuses.Find(2);
+                        RuleOrderLine._Status.Status = db2.Statuses.Find(2);
                     }
                     else
-                        Order.Status = db2.Statuses.Find(_Status.Status.StatusId);
+                        Order.Status = db2.Statuses.Find(RuleOrderLine._Status.Status.StatusId);
                     Order.Saved = true;
                     //тут нужно проверяем текущие контакты с контатными данными родительского заказа
                     //вдруг пользователь изменил чего?...
@@ -1261,8 +1325,8 @@ namespace STUDENTU_1._06.ViewModel
                             money.Price = Price.Price;
                             money.Prepayment = Price.Prepayment;
                         }
-                    if (_Status.Status.StatusId != Order.Status.StatusId)                       
-                            Order.Status = db.Statuses.Find(_Status.Status.StatusId);
+                    if (RuleOrderLine._Status.Status.StatusId != Order.Status.StatusId)                       
+                            Order.Status = db.Statuses.Find(RuleOrderLine._Status.Status.StatusId);
                     if (_University.University.UniversityId != Order.Client.Universities[0].UniversityId)                    
                         if (_University.University.UniversityId == 1)
                             Order.Client.Universities.Add(_University.University);                    
@@ -1366,7 +1430,7 @@ namespace STUDENTU_1._06.ViewModel
             TmpOrder.Source.SourceId == _Source.Source.SourceId &&
             TmpOrder.Dates.CompareDate(TmpOrder.Dates, Date) &&
             TmpOrder.Money.CompareMoney(TmpOrder.Money, Price) &&
-            TmpOrder.Status.StatusId == _Status.Status.StatusId &&
+            TmpOrder.Status.StatusId == RuleOrderLine._Status.Status.StatusId &&
             Persone.ComparePersons(TmpOrder.Client.Persone, Persone) &&
             TmpOrder.Client.Course == Client.Course &&
             TmpOrder.Client.Universities[0].UniversityId == _University.University.UniversityId)
@@ -1455,12 +1519,12 @@ namespace STUDENTU_1._06.ViewModel
                     evaluation.Authors.Add(Author);
                     
                     //evaluation.AuthorDeadLine = FinalEvaluationRecord.DeadLine;                    
-                    evaluation.Dates.Add(new Dates() { AuthorDeadLine=FinalEvaluationRecord.DeadLine});
+                    evaluation.Dates.Add(new Dates() { AuthorDeadLine= RuleOrderLine._Evaluation.FinalEvaluationRecord.DeadLine });
 
-                    evaluation.Description = FinalEvaluationRecord.EvaluateDescription;
+                    evaluation.Description = RuleOrderLine._Evaluation.FinalEvaluationRecord.EvaluateDescription;
 
                     //evaluation.AuthorPrice = FinalEvaluationRecord.Price;
-                    evaluation.Moneys.Add(new Money() { AuthorPrice=FinalEvaluationRecord.Price});
+                    evaluation.Moneys.Add(new Money() { AuthorPrice= RuleOrderLine._Evaluation.FinalEvaluationRecord.Price});
 
                     evaluation.Winner = true;                    
                     Author.Evaluation.Add(evaluation);                    
@@ -1468,7 +1532,7 @@ namespace STUDENTU_1._06.ViewModel
                     Order.Evaluations.Add(evaluation);
                     db.SaveChanges();                  
                     TMPStaticClass.CurrentOrder.Author.Add(Author);
-                    RoolMSG = $"Заказ выполняет {Author.Persone.NickName}";
+                    RuleOrderLine.RoolMSG = $"Заказ выполняет {Author.Persone.NickName}";
                     evaluationSetWinner = true;
                     dialogService.ShowMessage("Заказ распределен");                   
                 }

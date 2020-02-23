@@ -40,7 +40,7 @@ namespace STUDENTU_1._06.ViewModel
             AuthorsRecord = new AuthorsRecord();
             _AuthorStatus = new _AuthorStatus();           
             _Dir = new _Direction();
-            
+            _Evaluation = new _Evaluation();
             Order = new OrderLine();
             _Subject = new _Subject();
             _Status = new _Status();
@@ -68,6 +68,7 @@ namespace STUDENTU_1._06.ViewModel
             _AuthorStatus = new _AuthorStatus();
             _Dir = new _Direction();
             _Subject = new _Subject();
+            _Evaluation = new _Evaluation();
         }
 
         
@@ -244,7 +245,7 @@ namespace STUDENTU_1._06.ViewModel
         private void PushInitial()
         {
             
-            _Evaluation = new _Evaluation();
+            
             Order = (OrderLine)TMPStaticClass.CurrentOrder.Clone();
             Order.DescriptionForClient = "Вариант(ы): " + CheckForEmpty(Order.Variant) + ". \n" + Order.DescriptionForClient +
                 "\n\nСрок выполнения: " + Order.Dates.AuthorDeadLine.ToShortDateString() + " или свой вариант. " +

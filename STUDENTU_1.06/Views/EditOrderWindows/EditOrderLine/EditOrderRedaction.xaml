@@ -56,7 +56,7 @@
                 <scm1:SortDescription PropertyName="DirectionName"/>
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
-        <CollectionViewSource x:Key="SortedStatuses" Source="{Binding  _Status.StatusRecords}"
+        <CollectionViewSource x:Key="SortedStatuses" Source="{Binding  RuleOrderLine._Status.StatusRecords}"
                 xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
             <CollectionViewSource.SortDescriptions>
                 <scm1:SortDescription PropertyName="StatusName"/>
@@ -317,7 +317,8 @@
             </Viewbox>
             <DatePicker Name="DeadLine" IsDropDownOpen="False" SelectedDateFormat="Short" 
                         MaxWidth="150" TabIndex="13" HorizontalAlignment="Center"
-                         SelectedDate="{Binding Date.DeadLine,Mode=TwoWay}"/>
+                        
+                         SelectedDate="{Binding DeadLine,Mode=TwoWay}"/>
             <!--Date can find in ForEditOrder.cs-->
         </StackPanel>
         <StackPanel Orientation="Horizontal"
@@ -328,7 +329,7 @@
                      VerticalAlignment="Stretch">
                 <TextBlock Text="Не позже, чем на (время) :" Foreground="Red" FontWeight="Bold"/>
             </Viewbox>
-            <wpfTool:TimePicker Value="{Binding Date.DeadLine, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            <wpfTool:TimePicker Value="{Binding DeadLineHHMM, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  TabIndex="14" Margin="3" MaxWidth="100" MaxHeight="30"
                  Height="30" Width="110"
                  ToolTip="Крайнее время"/>
@@ -552,18 +553,18 @@
                      IsSynchronizedWithCurrentItem="True"
                      ItemsSource="{Binding Source={StaticResource SortedStatuses}, 
                       UpdateSourceTrigger=PropertyChanged}" 
-                     SelectedValue="{Binding _Status.Status.StatusId, Mode=TwoWay}"
+                     SelectedValue="{Binding RuleOrderLine._Status.Status.StatusId, Mode=TwoWay}"
                      SelectedValuePath="StatusId"
-                     SelectedItem="{Binding _Status.Status,  UpdateSourceTrigger=PropertyChanged}"
+                     SelectedItem="{Binding RuleOrderLine._Status.Status,  UpdateSourceTrigger=PropertyChanged}"
                      DisplayMemberPath="StatusName"
-                     ToolTip="{Binding _Status.Status.StatusName}" 
+                     ToolTip="{Binding RuleOrderLine._Status.Status.StatusName}" 
                      HorizontalContentAlignment="Center"
                      Background="White" >
                     <!--SortedItems can find above in Window.Resources-->
                     <!--Dir can find in _Direction.cs-->
                 </ComboBox>
                 <Button  Width="40" Background="Gray" Content="..." TabIndex="9"
-                    Command="{Binding _Status.NewEditStatusCommand}"
+                    Command="{Binding RuleOrderLine._Status.NewEditStatusCommand}"
                          CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}"/>
             </StackPanel>
@@ -639,12 +640,12 @@
                         VerticalAlignment="Center" >
                 <Viewbox Margin="3" MaxHeight="20">
                     <TextBlock x:Name="AothorWinner" Foreground="#FFEB6934"
-                               Margin="5" Text="{Binding RoolMSG}"  FontWeight="Bold"/>
+                               Margin="5" Text="{Binding RuleOrderLine.RoolMSG,UpdateSourceTrigger=PropertyChanged}"  FontWeight="Bold"/>
                 </Viewbox>
                 <StackPanel Orientation="Horizontal" >
                     <TextBlock  Text="Цена:" Margin="5" Foreground="Blue"
                                 HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <TextBlock  Text="{Binding FinalEvaluationRecord.Price, UpdateSourceTrigger=PropertyChanged}"
+                    <TextBlock  Text="{Binding RuleOrderLine._Evaluation.FinalEvaluationRecord.Price, UpdateSourceTrigger=PropertyChanged}"
                                 Foreground="Red" VerticalAlignment="Center"/>
                 </StackPanel>
                 
@@ -654,7 +655,7 @@
             <StackPanel  HorizontalAlignment="Center"  >
                 <TextBlock  Text="Срок выполнения:" Margin="5" Foreground="Blue"
                             HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                <TextBlock  Text="{ Binding FinalEvaluationRecord.DeadLine,
+                <TextBlock  Text="{ Binding RuleOrderLine._Evaluation.FinalEvaluationRecord.DeadLine,
                                     Converter={StaticResource dateFormatConverter}, UpdateSourceTrigger=PropertyChanged}" 
                             Foreground="Red" 
                             HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -669,7 +670,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <TextBox x:Name="AuthorEvalComment" 
-                 Text="{Binding FinalEvaluationRecord.EvaluateDescription}"
+                 Text="{Binding RuleOrderLine._Evaluation.FinalEvaluationRecord.EvaluateDescription,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
                   TextAlignment="Justify" MinHeight="150"
                       VerticalContentAlignment="Center" Foreground="Red" Background="White"
                        TextWrapping="Wrap" Grid.ColumnSpan="2" FontSize="12"  >
@@ -725,7 +726,7 @@
                     <TextBlock Text="Цена автора: " FontWeight="Bold" Foreground="OrangeRed"/>
                 </Viewbox>
                 <TextBox x:Name="AuthorPrice"    Foreground="OrangeRed" TabIndex="19" MinWidth="70" 
-                     Text="{Binding FinalEvaluationRecord.Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                     Text="{Binding RuleOrderLine._Evaluation.FinalEvaluationRecord.Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <!--Price can find in ForEditOrder.cs-->
             </WrapPanel>
             <StackPanel Grid.Column="1" Grid.Row="9"   Margin="3" Grid.ColumnSpan="2" HorizontalAlignment="Left">
@@ -735,7 +736,7 @@
                 </Viewbox>
                 <DatePicker Name="AuthorDeadLine" IsDropDownOpen="False" SelectedDateFormat="Short" 
                         MaxWidth="150" TabIndex="13" HorizontalAlignment="Center"
-                         SelectedDate="{Binding FinalEvaluationRecord.DeadLine,Mode=TwoWay,
+                         SelectedDate="{Binding RuleOrderLine._Evaluation.FinalEvaluationRecord.DeadLine,Mode=TwoWay,
                     UpdateSourceTrigger=PropertyChanged}"/>
                 <!--Date can find in ForEditOrder.cs-->
             </StackPanel>

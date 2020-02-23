@@ -200,10 +200,9 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
 
 
         IDialogService dialogService;
-        IShowWindowService showWindow;
+        IShowWindowService showWindow;     
         
-        //this.DataContext = new AuthorsVMClass(this, new DefaultShowWindowService(),
-        //        new DefaultDialogService());
+
 
         public AuthorsVMClass()
         {
@@ -225,22 +224,22 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
         {
             AuthorsRecords = new ObservableCollection<AuthorsRecord>();    
             AuthorsRecord = new AuthorsRecord();
+           
             RuleOrderLine = new RuleOrderLine("");
             DefaultDataLoad();
             AllAuthorsCall();
             PropertyChanged += ChangeProperty;
         }
 
-        bool kastil1,kastil2,kastil3,kastil4,kastil5 = false;
+        // тут все кастыльно и тупо. И пока ХЗ как его надо было бы лучше            
         private void ChangeProperty(object sender, PropertyChangedEventArgs e)
         {           
             using (StudentuConteiner db = new StudentuConteiner())
             {
                 try
                 {                    
-                    if (AuthorsRecord != null && !kastil1)
-                    {
-                        
+                    if (AuthorsRecord != null )
+                    {                      
                         db.Authors.Attach(AuthorsRecord.Author);
                         db.Dates.Attach(AuthorsRecord.Persone.Dates[0]);
                         db.PersoneDescriptions.Attach(AuthorsRecord.Persone.PersoneDescription);
@@ -249,8 +248,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                             _Dir.AuthorDirections.Add(item);
                         _Subj.AuthorSubjects.Clear();
                         foreach (var item in AuthorsRecord.Author.Subject)
-                            _Subj.AuthorSubjects.Add(item);
-                        kastil1 = true;
+                            _Subj.AuthorSubjects.Add(item);                       
                     }                    
                 }
                 catch (ArgumentNullException ex)
@@ -275,38 +273,14 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                 }
             }
             if (AuthorsRecord != null)
-            {
-                if (!kastil2)
-                {
-                    kastil2 = true;
-                    Persone = AuthorsRecord.Persone;                    
-                }
-                if (!kastil3)
-                {
-                    kastil3 = true;
-                    Author = AuthorsRecord.Author;                    
-                }
-
-                if (!kastil4)
-                {
-                    kastil4 = true;
-                    Date = AuthorsRecord.Persone.Dates[0];                    
-                }
-                if (!kastil5)
-                {
-                    kastil5 = true;
-                    PersoneDescription = AuthorsRecord.Persone.PersoneDescription;                    
-                }
-               
-                    _AuthorStatus.AuthorStatus = Author.AuthorStatus;
-                    _Contacts.Contacts = Persone.Contacts;
-                    _Contacts.TmpContacts = _Contacts.Contacts;
-                   
-                
-                if (kastil1 && kastil2 && kastil3 && kastil4 && kastil5 )
-                    kastil1 = kastil2 = kastil3 = kastil4 = kastil5  = false;
-
-
+            {                
+                Persone = AuthorsRecord.Persone;
+                Author = AuthorsRecord.Author;
+                Date = AuthorsRecord.Persone.Dates[0];
+                PersoneDescription = AuthorsRecord.Persone.PersoneDescription;
+                _AuthorStatus.AuthorStatus = Author.AuthorStatus;
+                _Contacts.Contacts = Persone.Contacts;
+                _Contacts.TmpContacts = _Contacts.Contacts;
 
             }
             
