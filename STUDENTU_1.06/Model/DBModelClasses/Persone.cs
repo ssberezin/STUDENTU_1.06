@@ -233,26 +233,6 @@ namespace STUDENTU_1._06.Model
             return false;
         }
 
-       
-
-        //public static bool operator ==(Persone obj1, Persone obj2)
-        //{
-        //    if ((obj1.Name == obj2.Name) && (obj1.Surname == obj2.Surname) &&
-        //        (obj1.Patronimic == obj2.Patronimic) && (obj1.Male == obj2.Male) &&
-        //        (obj1.Female == obj2.Female) && (obj1.NickName == obj2.NickName))
-        //        return true;
-        //    return false;
-        //}
-
-        //public static bool operator !=(Persone obj1, Persone obj2)
-        //{
-        //    if ((obj1.Name != obj2.Name) || (obj1.Surname != obj2.Surname) ||
-        //        (obj1.Patronimic != obj2.Patronimic) || (obj1.Male != obj2.Male) ||
-        //        (obj1.Female != obj2.Female) || (obj1.NickName != obj2.NickName))
-        //        return true;
-        //    return false;
-        //}
-
 
     }
 }

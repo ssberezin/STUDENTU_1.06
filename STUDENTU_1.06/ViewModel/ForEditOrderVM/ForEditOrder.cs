@@ -26,8 +26,7 @@ namespace STUDENTU_1._06.ViewModel
         //for stor author list
         public ObservableCollection<AuthorsRecord> AuthorsRecords { get; set; }
 
-        private Window editWindow;
-        private Window editDirection;
+        
 
 
 

@@ -269,7 +269,7 @@
                 <TextBlock Text="Имя: " Foreground="Brown" FontWeight="Bold"/>
             </Viewbox>
             <TextBox x:Name="TBxName"  MinWidth="220" TabIndex="0"
-                    Text="{Binding Persone.Name, Mode=TwoWay}"/>
+                    Text="{Binding PersoneContactsData.Persone.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <!--Persone can find in AuthorsVMClass.cs-->
         </WrapPanel>
         <WrapPanel Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="3">
@@ -277,7 +277,7 @@
                      VerticalAlignment="Stretch">
                 <TextBlock Text="Фамилия: " Foreground="Brown" />
             </Viewbox>
-            <TextBox x:Name="Surname"   Text="{Binding Persone.Surname, Mode=TwoWay}" TabIndex="1"  MinWidth="250"/>
+            <TextBox x:Name="Surname"   Text="{Binding PersoneContactsData.Persone.Surname, Mode=TwoWay}" TabIndex="1"  MinWidth="250"/>
         </WrapPanel>
         <!--Persone can find in AuthorsVMClass.cs-->
         <WrapPanel Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="3">
@@ -285,7 +285,7 @@
                      VerticalAlignment="Stretch">
                 <TextBlock Text="Отчество: " Foreground="Brown"/>
             </Viewbox>
-            <TextBox x:Name="Patronimic"   Text="{Binding Persone.Patronimic, Mode=TwoWay}" TabIndex="2"  MinWidth="250"/>
+            <TextBox x:Name="Patronimic"   Text="{Binding PersoneContactsData.Persone.Patronimic, Mode=TwoWay}" TabIndex="2"  MinWidth="250"/>
             <!--Persone can find in ForEditOrder.cs-->
         </WrapPanel>
         <WrapPanel Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Margin="3">
@@ -293,7 +293,7 @@
                      VerticalAlignment="Stretch">
                 <TextBlock Text="Ник: " FontWeight="Bold" Foreground="Brown"/>
             </Viewbox>
-            <TextBox    Text="{Binding Persone.NickName, Mode=TwoWay}"  MinWidth="110"  TabIndex="3"/>
+            <TextBox    Text="{Binding PersoneContactsData.Persone.NickName, Mode=TwoWay}"  MinWidth="110"  TabIndex="3"/>
             <!--Persone can find in AuthorsVMClass.cs-->
             <Button Content="Добавить контакты " Background="YellowGreen" Height="30" TabIndex="4" Margin="5"
                      Command="{Binding NewEditContactsCommand}" CommandParameter="{Binding DataContext, RelativeSource=
@@ -307,11 +307,11 @@
                 <TextBlock Text="Пол:" FontWeight="Bold" Foreground="Brown"/>
             </Viewbox>
             <RadioButton GroupName="A" Content="Мужской" VerticalAlignment="Center" TabIndex="5"
-                          IsChecked="{Binding Persone.Male, Mode=TwoWay}" />
+                          IsChecked="{Binding PersoneContactsData.Persone.Male, Mode=TwoWay}" />
             <!--Persone can find in AuthorsVMClass.cs-->
             <!--Converter={StaticResource boolInverterConverter}-->
             <RadioButton GroupName="A" Content="Женский" VerticalAlignment="Center" TabIndex="6" 
-                          IsChecked="{Binding Persone.Female, Mode=TwoWay}"/>
+                          IsChecked="{Binding PersoneContactsData.Persone.Female, Mode=TwoWay}"/>
             <!--Persone can find in AuthorsVMClass.cs-->
             <Button Content="В ч.списке?" Background="Black" Height="30" Width="149" TabIndex="7" Margin="5"
                     Command="{Binding CheckBlackListCommand}"/>
@@ -324,7 +324,7 @@
             </Viewbox>
             <DatePicker  IsDropDownOpen="False" SelectedDateFormat="Short" 
                         MaxWidth="150" TabIndex="9" HorizontalAlignment="Center"
-                        SelectedDate="{Binding Date.DayBirth,Mode=TwoWay}"
+                        SelectedDate="{Binding PersoneContactsData.Date.DayBirth,Mode=TwoWay}"
                          IsEnabled="{Binding ElementName=BirthDate, Path=IsChecked}"/>
 
             <!--Date can find in AuthorsVMClass.cs-->
@@ -395,7 +395,7 @@
                 <DatePicker x:Name="DateOfReception" IsDropDownOpen="False" SelectedDateFormat="Short" 
                             IsEnabled="{Binding ElementName=StartWorkEnable,  Path=IsChecked}"
                         MaxWidth="150" TabIndex="13" HorizontalAlignment="Center"
-                        SelectedDate="{Binding Date.StartDateWork, Mode=TwoWay}"  Width="111" Height="21" Margin="10,0,29.4,0"
+                        SelectedDate="{Binding PersoneContactsData.Date.StartDateWork, Mode=TwoWay}"  Width="111" Height="21" Margin="10,0,29.4,0"
                         HorizontalContentAlignment="Center"/>
             </StackPanel>
 
@@ -410,7 +410,7 @@
                 <DatePicker  IsDropDownOpen="False" SelectedDateFormat="Short" 
                              IsEnabled="{Binding IsChecked, ElementName=EndWorkEnable}"
                         MaxWidth="150" TabIndex="13" HorizontalAlignment="Center"
-                        SelectedDate="{Binding Date.EndDateWork, Mode=TwoWay}"  Width="111" Height="21" Margin="10,0,29.4,0"
+                        SelectedDate="{Binding PersoneContactsData.Date.EndDateWork, Mode=TwoWay}"  Width="111" Height="21" Margin="10,0,29.4,0"
                         HorizontalContentAlignment="Center"/>
                 <CheckBox x:Name="EndWorkEnable" TabIndex="18"  />
             </StackPanel>
@@ -424,7 +424,7 @@
         <TextBox Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="4" Margin="5" 
                      FontSize="12" TabIndex="19" TextWrapping="Wrap"  AcceptsReturn="True" MinHeight="103"
                     VerticalScrollBarVisibility="Auto" 
-                    Text="{Binding PersoneDescription.Description, Mode=TwoWay}" Height="169"/>
+                    Text="{Binding PersoneContactsData.PersoneDescription.Description, Mode=TwoWay}" Height="169"/>
         <!--PersoneDescription can find in AuthorsVMClass.cs-->
         <StackPanel Grid.Column="3" Grid.Row="5" Grid.ColumnSpan="3" Grid.RowSpan="4"  Margin="3">
             <Viewbox MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Center" 
@@ -435,7 +435,7 @@
             <TextBox  Margin="5,5,4.8,5" FontSize="12" TabIndex="20" MinHeight="85"
                       TextWrapping="Wrap"  AcceptsReturn="True"
                       VerticalScrollBarVisibility="Auto"                     
-                      Text="{Binding PersoneDescription.FeedBack, Mode=TwoWay}" Height="98"/>
+                      Text="{Binding PersoneContactsData.PersoneDescription.FeedBack, Mode=TwoWay}" Height="98"/>
             <!--PersoneDescription can find in AuthorsVMClass.cs-->
         </StackPanel>
         <StackPanel Grid.Column="3" Grid.Row="8" Grid.ColumnSpan="3" Grid.RowSpan="3"  Margin="3">
@@ -443,7 +443,7 @@
             <TextBox x:Name="AuthorStop"  Margin="5,5,4.4,5" FontSize="12" TabIndex="21" MinHeight="115"
                       TextWrapping="Wrap"  AcceptsReturn="True"
                       VerticalScrollBarVisibility="Auto" Foreground="Red"
-                      Text="{Binding PersoneDescription.ReasonFortermCoop, Mode=TwoWay}" 
+                      Text="{Binding PersoneContactsData.PersoneDescription.ReasonFortermCoop, Mode=TwoWay}" 
                        IsEnabled="{Binding ElementName=EndWorkEnable,  Path=IsChecked}" />
             <!--PersoneDescription can find in AuthorsVMClass.cs-->
         </StackPanel>
@@ -474,7 +474,7 @@
                 <ImageBrush ImageSource="{Binding DefaultPhoto, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid.Background>
             <!--<Image Source="{Binding Photo, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" />-->
-            <Image Source="{Binding Path=Persone.Photo, Converter={StaticResource imagePathConverter}, Mode=OneWay}" VerticalAlignment="Center" />
+            <Image Source="{Binding Path=PersoneContactsData.Persone.Photo, Converter={StaticResource imagePathConverter}, Mode=OneWay}" VerticalAlignment="Center" />
         </Grid>
 
 
@@ -641,32 +641,32 @@
 
             <StackPanel  Orientation="Horizontal" MinHeight="25" HorizontalAlignment="Center" >
                 <TextBlock Text="Рейтинг: " Margin="3,0" VerticalAlignment="Center" Foreground="Brown" FontWeight="Bold"  />
-                <TextBlock Text="{Binding Author.Rating,UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Center" Foreground="Red" FontWeight="Bold"  />
+                <TextBlock Text="{Binding PersoneContactsData.Author.Rating,UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Center" Foreground="Red" FontWeight="Bold"  />
             </StackPanel>
             <TextBlock Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center"
                                Text="Пунктуальность:" FontWeight="Bold"  Foreground="Brown"   />
             <xctk:IntegerUpDown Grid.Row="1" Grid.Column="1"
                         MaxWidth="800" Maximum="10" Minimum="0"                                          
-                                Value="{Binding Author.Punctually, Mode=TwoWay}"
+                                Value="{Binding PersoneContactsData.Author.Punctually, Mode=TwoWay}"
                                 TabIndex="0" Margin="3" />
             <TextBlock Grid.Row="2" Grid.Column="0"  HorizontalAlignment="Left" VerticalAlignment="Center"
                                Text="Качество работы:" FontWeight="Bold"  Foreground="Brown"/>
             <xctk:IntegerUpDown  Grid.Row="2" Grid.Column="1"
                         MaxWidth="800" Maximum="10" Minimum="0"  Margin="3"
-                                    Value="{Binding Author.WorkQuality, Mode=TwoWay}"
+                                    Value="{Binding PersoneContactsData.Author.WorkQuality, Mode=TwoWay}"
                                     TabIndex="1"/>
             <TextBlock   Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center"
                         Text="Ответсвенность:" FontWeight="Bold"  Foreground="Brown"/>
             <xctk:IntegerUpDown  Grid.Row="3" Grid.Column="1"
                         MaxWidth="800" Maximum="10" Minimum="0"  Margin="3"
-                                Value="{Binding Author.Responsibility, Mode=TwoWay}" 
+                                Value="{Binding PersoneContactsData.Author.Responsibility, Mode=TwoWay}" 
                                 TabIndex="2"/>
             <TextBlock Grid.Row="4" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center"
                         Text="Сговорчивость по доработке:" 
                                FontWeight="Bold"  Foreground="Brown"/>
             <xctk:IntegerUpDown Grid.Row="4" Grid.Column="1"
                         MaxWidth="800" Maximum="10" Minimum="0"  Margin="3" 
-                                Value="{Binding Author.CompletionCompliance, Mode=TwoWay}" 
+                                Value="{Binding PersoneContactsData.Author.CompletionCompliance, Mode=TwoWay}" 
                                 TabIndex="3"/>
 
             <Button Grid.Row="5"   Content="Сформировать рейтинг" Background="Orange"

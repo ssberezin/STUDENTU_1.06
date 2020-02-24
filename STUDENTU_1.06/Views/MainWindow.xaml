@@ -119,7 +119,7 @@
                             <!--задачаем фон и цвет шрифта записиси заказа со статусом "-отказ от выполнения-"-->
                             <!--set the background and font color of the order record with the status "rejection"-->
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding Status}" Value="-отказ от выполнения-" />
+                                <Condition Binding="{Binding Status}" Value="отказ от выполнения" />
                             </MultiDataTrigger.Conditions>
                             <MultiDataTrigger.Setters>
                                 <Setter Property="Background" Value="#FFE4C58E" />

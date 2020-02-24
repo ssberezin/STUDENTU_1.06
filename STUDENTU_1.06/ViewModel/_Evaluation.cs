@@ -1,18 +1,13 @@
 ﻿
-using STUDENTU_1._06.Model;
-using STUDENTU_1._06.Views;
 using System;
-using System.Linq;
 using System.Windows;
-using System.Collections.ObjectModel;
-using System.Collections.Generic;
 using STUDENTU_1._06.Model.HelpModelClasses.DialogWindows;
 using STUDENTU_1._06.Model.HelpModelClasses.ShowWindows;
 using STUDENTU_1._06.Model.HelpModelClasses;
-using STUDENTU_1._06.Model.DBModelClasses;
 using STUDENTU_1._06.Helpes;
 using STUDENTU_1._06.Views.EditOrderWindows;
 using STUDENTU_1._06.Views.EditOrderWindows.Evaluation;
+using STUDENTU_1._06.Model;
 
 namespace STUDENTU_1._06.ViewModel
 {
@@ -27,13 +22,14 @@ namespace STUDENTU_1._06.ViewModel
 
         public _Evaluation()
         {
-            //Evaluation = new Evaluation();
-            //Dates date = new Dates();
-            //date.AuthorDeadLine = date.ZeroDefaultDate(DateTime.Now).AddDays(1).AddHours(9);
-            //if(TMPStaticClass.CurrentOrder==null)
-            // EvaluationRecord = new EvaluationRecord() { DeadLine = date.AuthorDeadLine };                                   
-            //else
-             EvaluationRecord = new EvaluationRecord() { DeadLine = TMPStaticClass.CurrentOrder.Dates.AuthorDeadLine };
+            Evaluation Evaluation = new Evaluation();
+            Dates date = new Dates();
+            date.AuthorDeadLine = date.ZeroDefaultDate(DateTime.Now).AddDays(1).AddHours(9);
+            if (TMPStaticClass.CurrentOrder == null)
+                // EvaluationRecord = new EvaluationRecord();
+                EvaluationRecord = new EvaluationRecord() { DeadLine = date.AuthorDeadLine };
+            else
+                EvaluationRecord = new EvaluationRecord() { DeadLine = TMPStaticClass.CurrentOrder.Dates.AuthorDeadLine };
             FinalEvaluationRecord = new EvaluationRecord()
             {
                 DeadLine = EvaluationRecord.DeadLine,

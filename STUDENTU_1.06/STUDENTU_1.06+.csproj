@@ -134,6 +134,7 @@
     <Compile Include="Model\HelpModelClasses\BlackListHelpModel.cs" />
     <Compile Include="Model\HelpModelClasses\DialogWindows\DefaultDialogService.cs" />
     <Compile Include="Model\HelpModelClasses\DialogWindows\IDialogService.cs" />
+    <Compile Include="Model\HelpModelClasses\PersoneContactsData.cs" />
     <Compile Include="ViewModel\PersoneOperations\AuthorsOperationsVM\AuthorsVMClass.cs" />
     <Compile Include="ViewModel\_AuthorStatus.cs" />
     <Compile Include="ViewModel\_Contacts.cs" />

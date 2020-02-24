@@ -88,15 +88,17 @@ namespace STUDENTU_1._06.ViewModel
             using (StudentuConteiner db = new StudentuConteiner())
             {
                 try
-                {                    
-                    var COrders = db.Orderlines.Include("Client")                                              
-                                               .Include("Dates")
-                                               .Include("Subject")
-                                               .Include("Author")
-                                               .Include("Status")
-                                               .Include("Money")
-                                               .Include("WorkType")
-                        .ToList<OrderLine>();
+                {
+                    //var COrders = db.Orderlines.Include("Client")                                              
+                    //                           .Include("Dates")
+                    //                           .Include("Subject")
+                    //                           .Include("Author")
+                    //                           .Include("Status")
+                    //                           .Include("Money")
+                    //                           .Include("WorkType")
+                    //    .ToList<OrderLine>();
+                    DateTime defaultDate = DateTime.Now.AddDays(-30).AddHours(-DateTime.Now.Hour).AddMinutes(-DateTime.Now.Minute);
+                    var COrders = db.Orderlines.Where(o => o.Dates.DateOfReception >= defaultDate);
                     string authorNickName;
                     //creat a orderlist in datagrid (mainwindow)
                     foreach (var item in COrders)
@@ -126,6 +128,7 @@ namespace STUDENTU_1._06.ViewModel
                         };
                         Records.Add(record);
                     }
+                   
                 }
                 catch (ArgumentNullException ex)
                 {

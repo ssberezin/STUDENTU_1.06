@@ -48,19 +48,19 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
         
         //simple "musthave" because whithot it we can't do any operations in this class
         //in particular, in order to be able to make further changes to the Persone database table
-        private Persone persone;
-        public Persone Persone
-        {
-            get { return persone; }
-            set
-            {
-                if (persone != value)
-                {
-                    persone = value;
-                    OnPropertyChanged(nameof(Persone));
-                }
-            }
-        }
+        //private Persone persone;
+        //public Persone Persone
+        //{
+        //    get { return persone; }
+        //    set
+        //    {
+        //        if (persone != value)
+        //        {
+        //            persone = value;
+        //            OnPropertyChanged(nameof(Persone));
+        //        }
+        //    }
+        //}
 
 
 
@@ -81,19 +81,19 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
         }
 
         //to be able to make further changes to the Authors database table
-        private Author author;
-        public Author Author
-        {
-            get { return author; }
-            set
-            {
-                if (author != value)
-                {
-                    author = value;
-                    OnPropertyChanged(nameof(Author));
-                }
-            }
-        }
+        //private Author author;
+        //public Author Author
+        //{
+        //    get { return author; }
+        //    set
+        //    {
+        //        if (author != value)
+        //        {
+        //            author = value;
+        //            OnPropertyChanged(nameof(Author));
+        //        }
+        //    }
+        //}
 
         private AuthorsRecord authorsRecord;
         public AuthorsRecord AuthorsRecord
@@ -124,19 +124,19 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
         }
 
         //to be able to make further changes to the Dates database table
-        private Dates date;
-        public Dates Date
-        {
-            get { return date; }
-            set
-            {
-                if (date != value)
-                {
-                    date = value;
-                    OnPropertyChanged(nameof(Date));
-                }
-            }
-        }
+        //private Dates date;
+        //public Dates Date
+        //{
+        //    get { return date; }
+        //    set
+        //    {
+        //        if (date != value)
+        //        {
+        //            date = value;
+        //            OnPropertyChanged(nameof(Date));
+        //        }
+        //    }
+        //}
 
         //to be able to make further changes to the Subjects database table
         private _Subject _subj;
@@ -170,16 +170,30 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
 
 
         //to be able to make further changes to the PersoneDescription database table
-        private PersoneDescription personeDescription;
-        public PersoneDescription PersoneDescription
+        //private PersoneDescription personeDescription;
+        //public PersoneDescription PersoneDescription
+        //{
+        //    get { return personeDescription; }
+        //    set
+        //    {
+        //        if (personeDescription != value)
+        //        {
+        //            personeDescription = value;
+        //            OnPropertyChanged(nameof(PersoneDescription));
+        //        }
+        //    }
+        //}
+        //Эта фича пидумана в попытке избежать лишних запросов при срабатывании PropertyChanged
+        private PersoneContactsData personeContactsData;
+        public PersoneContactsData PersoneContactsData
         {
-            get { return personeDescription; }
+            get { return personeContactsData; }
             set
             {
-                if (personeDescription != value)
+                if (personeContactsData != value)
                 {
-                    personeDescription = value;
-                    OnPropertyChanged(nameof(PersoneDescription));
+                    personeContactsData = value;
+                    OnPropertyChanged(nameof(PersoneContactsData));
                 }
             }
         }
@@ -212,8 +226,9 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
         public AuthorsVMClass(Author author)
         {
             edit = !edit;
-            Author = new Author();
-            Author =author;
+            //Author = new Author();
+            //Author =author;
+            PersoneContactsData.Author = author;
             DefaultPhoto = "default_avatar.png";
             AuthorDafaultDataLoad(author);
             dialogService = new DefaultDialogService();
@@ -244,7 +259,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                         db.Dates.Attach(AuthorsRecord.Persone.Dates[0]);
                         db.PersoneDescriptions.Attach(AuthorsRecord.Persone.PersoneDescription);
                         _Dir.AuthorDirections.Clear();
-                        foreach (var item in Author.Direction)
+                        foreach (var item in AuthorsRecord.Author.Direction)
                             _Dir.AuthorDirections.Add(item);
                         _Subj.AuthorSubjects.Clear();
                         foreach (var item in AuthorsRecord.Author.Subject)
@@ -273,29 +288,37 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                 }
             }
             if (AuthorsRecord != null)
-            {                
-                Persone = AuthorsRecord.Persone;
-                Author = AuthorsRecord.Author;
-                Date = AuthorsRecord.Persone.Dates[0];
-                PersoneDescription = AuthorsRecord.Persone.PersoneDescription;
-                _AuthorStatus.AuthorStatus = Author.AuthorStatus;
-                _Contacts.Contacts = Persone.Contacts;
+            {
+                //PersoneContactsData = new PersoneContactsData();
+                //Persone = AuthorsRecord.Persone;
+                PersoneContactsData.Persone = AuthorsRecord.Persone;
+                //Author = AuthorsRecord.Author;
+                PersoneContactsData.Author = AuthorsRecord.Author;
+                //Date = AuthorsRecord.Persone.Dates[0];
+                PersoneContactsData.Date = AuthorsRecord.Persone.Dates[0];
+                //PersoneDescription = AuthorsRecord.Persone.PersoneDescription;
+                PersoneContactsData.PersoneDescription = AuthorsRecord.Persone.PersoneDescription;
+                //_AuthorStatus.AuthorStatus = Author.AuthorStatus;
+                //_Contacts.Contacts = Persone.Contacts;
+                //_Contacts.TmpContacts = _Contacts.Contacts;
+
+                _AuthorStatus.AuthorStatus = PersoneContactsData.Author.AuthorStatus;
+                _Contacts.Contacts = PersoneContactsData.Persone.Contacts;
                 _Contacts.TmpContacts = _Contacts.Contacts;
-
-            }
-            
+            }            
         }
-
         private void DefaultDataLoad()
         {
             DefaultPhoto = "default_avatar.png";
-            Author = new Author();
+            //Author = new Author();
             _AuthorStatus = new _AuthorStatus();
             _Contacts = new _Contacts();
-            Date = new Dates();
+            //Date = new Dates();
             _Dir = new _Direction();
-            Persone = new Persone();
-            PersoneDescription = new PersoneDescription();
+            //Persone = new Persone();
+            PersoneContactsData = new PersoneContactsData();
+
+            //PersoneDescription = new PersoneDescription();
             _Subj = new _Subject();
             dialogService = new DefaultDialogService();
             showWindow = new DefaultShowWindowService();
@@ -317,10 +340,13 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                     _Dir = new _Direction();                 
                     foreach (var item in author.Direction)
                         _Dir.AuthorDirections.Add(item);
-                    Date = new Dates();
-                    Date = author.Persone.Dates[0];
-                    Persone = author.Persone ;
-                    PersoneDescription = author.Persone.PersoneDescription;
+                    //Date = new Dates();
+                    //Date = author.Persone.Dates[0];
+                    PersoneContactsData.Date = author.Persone.Dates[0];
+                    PersoneContactsData.Persone = author.Persone ;
+                    //Persone = author.Persone;
+                    //PersoneDescription = author.Persone.PersoneDescription;
+                    PersoneContactsData.PersoneDescription = author.Persone.PersoneDescription;
                     _Subj = new _Subject();
                     foreach (var item in author.Subject)
                         _Subj.AuthorSubjects.Add(item);
@@ -414,7 +440,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
         {   
             string path;            
             path = dialogService.OpenFileDialog("C:\\");
-            Persone.Photo = File.ReadAllBytes(path);
+            PersoneContactsData.Persone.Photo = File.ReadAllBytes(path);
         }
 
         //=====================Command for call AuthorRatingEditWindow.xaml======================================
@@ -438,7 +464,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
 
         private void AuthorRatingCreate()
         {
-           Author.Rating = Author.RatingCreate();           
+           PersoneContactsData.Author.Rating =PersoneContactsData.Author.RatingCreate();           
         }
 
         //==================================COMMAND FOR CLOSE WINDOW ==========================
@@ -528,26 +554,26 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                     else
                     {
                         //if we  need to modified entrie
-                        if (Author.AuthorId != 0)
+                        if (PersoneContactsData.Author.AuthorId != 0)
                         {
-                            db.Entry(Persone).State = EntityState.Modified;
-                            db.Entry(Date).State = EntityState.Modified;
-                            db.Entry(Author).State = EntityState.Modified;
+                            db.Entry(PersoneContactsData.Persone).State = EntityState.Modified;
+                            db.Entry(PersoneContactsData.Date).State = EntityState.Modified;
+                            db.Entry(PersoneContactsData.Author).State = EntityState.Modified;
                             db.Entry(_Dir.Dir).State = EntityState.Modified;
                             db.Entry(_Subj.Subj).State = EntityState.Modified;
-                            db.Entry(PersoneDescription).State = EntityState.Modified;                            
+                            db.Entry(PersoneContactsData.PersoneDescription).State = EntityState.Modified;                            
                         }
-                        Persone.Contacts = _Contacts.Contacts;
-                        if (Author.AuthorId != 0)
-                            Persone.Dates[0]=Date;
+                        PersoneContactsData.Persone.Contacts = _Contacts.Contacts;
+                        if (PersoneContactsData.Author.AuthorId != 0)
+                            PersoneContactsData.Persone.Dates[0]= PersoneContactsData.Date;
                         else
-                            Persone.Dates.Add(Date);
-                        
-                        Persone.PersoneDescription = PersoneDescription;
-                        Author.Persone = Persone;                        
-                        Author.AuthorStatus = db.AuthorStatuses.Find(_AuthorStatus.AuthorStatus.AuthorStatusId);
-                       if (Author.AuthorId == 0) 
-                            db.Authors.Add(Author);
+                            PersoneContactsData.Persone.Dates.Add(PersoneContactsData.Date);
+
+                        PersoneContactsData.Persone.PersoneDescription = PersoneContactsData.PersoneDescription;
+                        PersoneContactsData.Author.Persone = PersoneContactsData.Persone;
+                        PersoneContactsData.Author.AuthorStatus = db.AuthorStatuses.Find(_AuthorStatus.AuthorStatus.AuthorStatusId);
+                       if (PersoneContactsData.Author.AuthorId == 0) 
+                            db.Authors.Add(PersoneContactsData.Author);
                         db.SaveChanges();
 
                         //удаляем из списка направлений упоминания об авторе, если в списке направлений автора нет более того или  иного направления после правки
@@ -555,8 +581,8 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                         var res = db.Directions.ToList();
                             foreach (var i in res)
                             {                     
-                            if (i.Author.Contains(Author) && !_Dir.AuthorDirections.Contains(i))
-                                    i.Author.Remove(Author);
+                            if (i.Author.Contains(PersoneContactsData.Author) && !_Dir.AuthorDirections.Contains(i))
+                                    i.Author.Remove(PersoneContactsData.Author);
                                 continue;
                             }
                                                                                
@@ -564,17 +590,17 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                         foreach (Direction item in _Dir.AuthorDirections)
                         {
                             var res1 = db.Directions.Find(item.DirectionId);
-                            if (res1 != null&& !res1.Author.Contains(Author))
+                            if (res1 != null&& !res1.Author.Contains(PersoneContactsData.Author))
                             {
                                 //changing DB
-                                if (Author.AuthorId != 0)
+                                if (PersoneContactsData.Author.AuthorId != 0)
                                 {
                                     
-                                    res1.Author.Add(Author);
+                                    res1.Author.Add(PersoneContactsData.Author);
                                     continue;
                                 }
                                 else                                    
-                                res1.Author.Add(Author);                                
+                                res1.Author.Add(PersoneContactsData.Author);                                
                                 continue;
                             }
                         }
@@ -585,8 +611,8 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                         var res2 = db.Subjects.ToList();
                         foreach (var i in res2)
                         {
-                            if (i.Authors.Contains(Author) && !_Subj.AuthorSubjects.Contains(i))
-                                i.Authors.Remove(Author);
+                            if (i.Authors.Contains(PersoneContactsData.Author) && !_Subj.AuthorSubjects.Contains(i))
+                                i.Authors.Remove(PersoneContactsData.Author);
                             continue;
                         }
                         //here we add author in subjects
@@ -596,11 +622,11 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                             if (res1 != null)
                             {
                                 //changing DB
-                                res1.Authors.Add(Author);                                
+                                res1.Authors.Add(PersoneContactsData.Author);                                
                                 continue;
                             }
                             else
-                                res1.Authors.Add(Author);
+                                res1.Authors.Add(PersoneContactsData.Author);
                             continue;
 
                         }
@@ -609,16 +635,16 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
                         dialogService.ShowMessage("Данные автора сохранены");
                         //обнуляем поля окна
                         //clear window fields
-                        if (Author.AuthorId == 0)
+                        if (PersoneContactsData.Author.AuthorId == 0)
                         {
                             _Contacts = new _Contacts();
-                            Persone = new Persone();
+                            PersoneContactsData.Persone = new Persone();
                             _AuthorStatus = new _AuthorStatus();
-                            Author = new Author();
-                            Date = new Dates();
+                            PersoneContactsData.Author = new Author();
+                            PersoneContactsData.Date = new Dates();
                             _Subj = new _Subject();
                             _Dir = new _Direction();
-                            PersoneDescription = new PersoneDescription();
+                            PersoneContactsData.PersoneDescription = new PersoneDescription();
                         }
                     }
 
@@ -650,7 +676,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
         private string ValidAuthorDataCheck()
         {
             string error;
-            error = Persone.Name == "" ? "Поле имени не должно быть пустым" : null;
+            error = PersoneContactsData.Persone.Name == "" ? "Поле имени не должно быть пустым" : null;
             error += _Dir.AuthorDirections.Count() == 0 ? "\nНЕ добавлено ни одного направления" : null;
             error += !_Contacts.Contacts.ContactsValidation() ?"\nНи одно из полей контактных данных не заполнено":null;
             error = error == "" ? null:error ;
