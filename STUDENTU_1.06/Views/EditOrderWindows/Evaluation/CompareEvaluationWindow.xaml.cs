@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace STUDENTU_1._06.Views.EditOrderWindows.Evaluation
 {
     /// <summary>
-    /// Логика взаимодействия для SetFinalAvaluationWindow.xaml
+    /// Логика взаимодействия для CompareEvaluationWindow.xaml
     /// </summary>
-    public partial class SetFinalAvaluationWindow : Window
+    public partial class CompareEvaluationWindow : Window
     {
-        public SetFinalAvaluationWindow(object DataContext)
+        public CompareEvaluationWindow(object DataContext)
         {
             InitializeComponent();
             this.DataContext = DataContext;

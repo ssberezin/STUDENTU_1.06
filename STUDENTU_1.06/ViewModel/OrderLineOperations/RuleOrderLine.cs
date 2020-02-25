@@ -243,9 +243,7 @@ namespace STUDENTU_1._06.ViewModel
         //TMPStaticClass.CurrentOrder may be null. Ideally, when trying to distribute an order
         // immediately at the time of its creation, i.e. without closing the order acceptance window
         private void PushInitial()
-        {
-            
-            
+        {   
             Order = (OrderLine)TMPStaticClass.CurrentOrder.Clone();
             Order.DescriptionForClient = "Вариант(ы): " + CheckForEmpty(Order.Variant) + ". \n" + Order.DescriptionForClient +
                 "\n\nСрок выполнения: " + Order.Dates.AuthorDeadLine.ToShortDateString() + " или свой вариант. " +
@@ -451,8 +449,20 @@ namespace STUDENTU_1._06.ViewModel
 
         }
 
+        //==============================Command for call CompareEvaluationWindow =======================
 
+        //CompareAvaluationCommand
+        private RelayCommand compareAvaluationCommand;
+        public RelayCommand CompareAvaluationCommand =>
+            compareAvaluationCommand ?? (compareAvaluationCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        CompareEvaluationWindow window = new CompareEvaluationWindow(obj);
+                        showWindow.ShowWindow(window);
+                    }
+                    ));
 
+        //============================================================================================
         //=============================fill listbox "Authors" if check "All authors"====================
 
 

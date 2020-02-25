@@ -85,8 +85,8 @@ namespace STUDENTU_1._06.ViewModel
             setFinalEvaluationCommand ?? (setFinalEvaluationCommand = new RelayCommand(
                     (obj) =>
                     {
-                        SetFinalAvaluationWindow finalEvaluateWindow = new SetFinalAvaluationWindow(obj);
-                        showWindow.ShowDialog(finalEvaluateWindow);
+                        CompareEvaluationWindow compareEvaluateWindow = new CompareEvaluationWindow(obj);
+                        showWindow.ShowDialog(compareEvaluateWindow);
                     }
                     ));
 

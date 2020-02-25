@@ -89,16 +89,9 @@ namespace STUDENTU_1._06.ViewModel
             {
                 try
                 {
-                    //var COrders = db.Orderlines.Include("Client")                                              
-                    //                           .Include("Dates")
-                    //                           .Include("Subject")
-                    //                           .Include("Author")
-                    //                           .Include("Status")
-                    //                           .Include("Money")
-                    //                           .Include("WorkType")
-                    //    .ToList<OrderLine>();
+                    
                     DateTime defaultDate = DateTime.Now.AddDays(-30).AddHours(-DateTime.Now.Hour).AddMinutes(-DateTime.Now.Minute);
-                    var COrders = db.Orderlines.Where(o => o.Dates.DateOfReception >= defaultDate);
+                    var COrders = db.Orderlines.Where(o => o.Dates.DateOfReception >= defaultDate).OrderBy(o=>o.OrderNumber);
                     string authorNickName;
                     //creat a orderlist in datagrid (mainwindow)
                     foreach (var item in COrders)
@@ -128,7 +121,11 @@ namespace STUDENTU_1._06.ViewModel
                         };
                         Records.Add(record);
                     }
-                   
+
+                    //myCollection.Sort((c1, c2) => c1.Level1.CompareTo(c2.Level1));
+                   // Records.Sort
+
+
                 }
                 catch (ArgumentNullException ex)
                 {
