@@ -303,7 +303,7 @@
                 Command="{Binding RuleOrderLine._Evaluation.SetFinalEvaluationCommand}" 
                 CommandParameter="{Binding ElementName=AuthorsAvaluat , Path=SelectedItem}"/>
         <!--Command SetExecuteAuthorCommand can find in  RuleOrderLineClass.cs-->
-        <Button Grid.Column="0" Grid.Row="6" Content="Оценку автора" Background="CadetBlue"
+        <Button Grid.Column="0" Grid.Row="6" Content="Оценка автора" Background="CadetBlue"
                 TabIndex="9"
                   IsEnabled="{Binding SelectedItem,
                      Converter={StaticResource NullBoolConverter}, ElementName=AuthorsAvaluat}"

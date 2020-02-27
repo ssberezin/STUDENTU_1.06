@@ -19,7 +19,22 @@ namespace STUDENTU_1._06.Model.HelpModelClasses
         }
       
         public int EvalCopyId { get; set; }
-        
+
+
+        private Author author;
+        public Author Author
+        {
+            get { return author; }
+            set
+            {
+                if (author != value)
+                {
+                    author = value;
+                    OnPropertyChanged(nameof(Author));
+                }
+            }
+        }
+
         private bool finalEvaluation;
         public bool FinalEvaluation
         {

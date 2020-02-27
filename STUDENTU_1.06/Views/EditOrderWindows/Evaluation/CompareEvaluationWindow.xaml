@@ -10,7 +10,7 @@
         mc:Ignorable="d"
          WindowStartupLocation="CenterScreen"
         Title="Выбор оценки автора" 
-        Height="350" Width="400"
+        Height="550" Width="600"
         >
     <Window.InputBindings>
         <KeyBinding Gesture="Esc" Command="{Binding CloseWindowCommand}"
@@ -61,82 +61,95 @@
 
     <Grid Background="#FFEBD549">
         <Grid.ColumnDefinitions>
+            <ColumnDefinition  />            
             <ColumnDefinition />
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
+            <ColumnDefinition />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="0.25*"/>
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
-            <RowDefinition />
+            <RowDefinition Height="0.4*"/>
         </Grid.RowDefinitions>
 
         <!--<TextBlock Text="Авторы, оцениваеющие работы" Grid.Column="0"/>-->
-        <ListBox x:Name="Avaluation" Grid.Row="1" Grid.Column="0" Grid.RowSpan="5" 
-                 Grid.ColumnSpan="4"
-                    ItemsSource="{Binding RuleOrderLine.AuthorsRecord.EvaluationRecords, 
+        <ListBox x:Name="Avaluation" Grid.Row="1"  Grid.RowSpan="5" Grid.ColumnSpan="4"
+                    ItemsSource="{Binding RuleOrderLine.ExistOrderEvaluations, 
                     UpdateSourceTrigger=PropertyChanged}" 
-                 SelectedItem="{Binding  EvaluationRecord}"                   
+                    SelectedIndex="{Binding RuleOrderLine.Index}"
+                    SelectedItem="{Binding  RuleOrderLine._Evaluation.EvaluationRecord}"
                    TabIndex="6" Margin="8" >
             <!--"AuthorsRecords" can find in "RuleOrderLineClass.cs"-->
+
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <DockPanel >
-                        <WrapPanel>
-                            <Label Content="Дата: " Foreground="Red" Background="Black" />
+                    <StackPanel VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal">                         
+                                <TextBlock Text="Ник: " Margin="2" Foreground="Blue"/>
+                                <TextBlock Text="{Binding Author.Persone.NickName}" Margin="2"
+                                   TextWrapping="WrapWithOverflow" 
+                                   TextAlignment="Center" Foreground="Blue"/>
+                            </StackPanel>
+                            <RadioButton  IsChecked="{Binding  FinalEvaluation}" GroupName="GroupA"
+                                        Command="{Binding RuleOrderLine.SetSelectEvaluationCommand}" 
+                                        Focusable="False" IsHitTestVisible="False"
+                                        Content="   Финальная оценка?   "/>
+                            <TextBlock Text="Дата: " Foreground="Red" FontWeight="Bold"  />
                             <TextBlock Text="{Binding DeadLine, Converter={StaticResource dateFormatConverter}}" 
-                                   Margin="2" Background="Black" Foreground="Red"
-                                   TextWrapping="WrapWithOverflow" 
-                                   TextAlignment="Center"/>
-                            <Label Content="Время: " Foreground="Orange" Background="Black" />
+                                     Foreground="Red" FontWeight="Bold"
+                                   TextWrapping="WrapWithOverflow" />
+                            <TextBlock Text="      Время: " Foreground="#FF55240C" />
                             <TextBlock Text="{Binding DeadLine, Converter={StaticResource timeFormatConverter}}" 
-                                   Margin="2" Background="Black" Foreground="Orange"
+                                   Foreground="#FF55240C" FontWeight="Bold"
+                                   TextWrapping="WrapWithOverflow"  />
+                            <TextBlock Text="      Цена: " Foreground="Blue" FontWeight="Bold" />
+                            <TextBlock Text="{Binding Price}" 
+                                   Margin="2"  Foreground="Red" FontWeight="Bold"
                                    TextWrapping="WrapWithOverflow" 
                                    TextAlignment="Center"/>
-                        </WrapPanel>
-                        <Label Content="Цена: " Foreground="Blue" Background="Yellow" />
-                        <TextBlock Text="{Binding Price}" 
-                                   Margin="2" Background="Yellow" Foreground="Red"
-                                   TextWrapping="WrapWithOverflow" 
-                                   TextAlignment="Center"/>
-                        <Label Content="Комментарии" Foreground="Blue" />
-                        <TextBlock Text="{Binding EvaluateDescription}" 
+                        </StackPanel>
+                        <StackPanel>
+                            <Label Content="Комментарии"  HorizontalAlignment="Center" Background="AliceBlue" FontWeight="Bold"/>
+                            <TextBlock Text="{Binding EvaluateDescription}" 
                                    Margin="2" 
                                    TextWrapping="WrapWithOverflow" 
                                    TextAlignment="Center"/>
-                    </DockPanel>
+                            <Label Content="------------------------------------------------------------------------------------------------------------------------------------" 
+                       Foreground="Blue" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
+
+            <ListBox.ContextMenu>
+                <ContextMenu DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}">
+                    <MenuItem Header="Сделать выделенную запись финальной?" 
+                              Command="{Binding DataContext.RuleOrderLine.SetSelectEvaluationCommand}" 
+                              IsEnabled="{Binding Path=SelectedItem, Converter={StaticResource NullBoolConverter}}"
+                              Height="20" />
+                </ContextMenu>
+            </ListBox.ContextMenu>
         </ListBox>
-        <Button Grid.Column="0" Grid.Row="6" Content="+" Background="Green" TabIndex="6"
-               IsEnabled="{Binding SelectedItem,
-                     Converter={StaticResource NullBoolConverter}, ElementName=Authors}"
-                Command="{Binding RuleOrderLine.AddEvaluationCommand}" CommandParameter="{Binding DataContext, RelativeSource=
-                    {RelativeSource AncestorType={x:Type Window}}}" RenderTransformOrigin="0.5,0.706" />
-        <!--Command "AddEvaluationCommand" can find in EvaluationClass.cs -->
-        <Button Grid.Column="1" Grid.Row="6" Content="-" Background="Red" FontWeight="ExtraBold" TabIndex="5"
-                IsEnabled="{Binding SelectedItem,
-                     Converter={StaticResource NullBoolConverter}, ElementName=Avaluation}"
-                 Command="{Binding RuleOrderLine.DeleteSelectedAvaluateRuleOrderCommand}"   />
-        <!--Command "DeleteSelectedAvaluateRuleOrderCommand" can find in EvaluationClass.cs -->
-        <Button Grid.Column="2" Grid.Row="6" Content="Ред." Background="BlueViolet"
+
+
+        <Button Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" Content="Ред." Background="BlueViolet"
                 FontWeight="ExtraBold" TabIndex="5"
                 IsEnabled="{Binding SelectedItem,
                      Converter={StaticResource NullBoolConverter}, ElementName=Avaluation}"
                  Command="{Binding RuleOrderLine.CallEditSelectedAvaluateRuleOrderWindowCommand}"    />
         <!--Command "EditSelectedAvaluateRuleOrderCommand" can find in EvaluationClass.cs -->
-        <WrapPanel Grid.ColumnSpan="4" HorizontalAlignment="Center">
-            <TextBlock Text="Оценки автора " Grid.Row="1"  Grid.Column="1" />
+        <WrapPanel Grid.ColumnSpan="2" HorizontalAlignment="Center" Grid.Column="1" Margin="31.482,0,47,0">
+            <TextBlock Text="Оценки авторов " Grid.Row="1"  Grid.Column="1" />
             <TextBlock x:Name="AothorWinner"                   
                     Foreground="Green" Margin="5"                   
                     Text="{Binding AuthorsRecord.Persone.NickName}"/>
         </WrapPanel>
-        <Button Grid.Column="3"  Grid.Row="7" Content="Выбрать" Background="Green" TabIndex="6"
+        <Button Grid.Column="2"  Grid.Row="6" Grid.ColumnSpan="2" Content="Выбрать" Background="Green" TabIndex="6"
               IsEnabled="{Binding SelectedItem,
                      Converter={StaticResource NullBoolConverter}, ElementName=Avaluation}"
                 Command="{Binding RuleOrderLine.SetSelectEvaluationCommand}" CommandParameter="{Binding DataContext, RelativeSource=

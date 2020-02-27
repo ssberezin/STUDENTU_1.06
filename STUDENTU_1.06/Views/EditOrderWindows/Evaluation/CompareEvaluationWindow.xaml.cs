@@ -24,5 +24,6 @@ namespace STUDENTU_1._06.Views.EditOrderWindows.Evaluation
             InitializeComponent();
             this.DataContext = DataContext;
         }
+
     }
 }

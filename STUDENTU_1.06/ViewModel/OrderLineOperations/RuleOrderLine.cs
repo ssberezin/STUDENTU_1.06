@@ -23,7 +23,9 @@ namespace STUDENTU_1._06.ViewModel
         public ObservableCollection<AuthorsRecord> AuthorsRecords { get; set; }
         //SelectedAuthors collection
         public ObservableCollection<AuthorsRecord> SelectedAuthorsRecords { get; set; }
-
+        //общий списко оценок авторов по заказу
+        // general list of author ratings for the order
+        public ObservableCollection<EvaluationRecord> ExistOrderEvaluations { get; set; }
         IDialogService dialogService;
         IShowWindowService showWindow;
 
@@ -36,7 +38,8 @@ namespace STUDENTU_1._06.ViewModel
 
             AuthorsRecords = new ObservableCollection<AuthorsRecord>();
             SelectedAuthorsRecords = new ObservableCollection<AuthorsRecord>();
-            
+            ExistOrderEvaluations = new ObservableCollection<EvaluationRecord>();
+
             AuthorsRecord = new AuthorsRecord();
             _AuthorStatus = new _AuthorStatus();           
             _Dir = new _Direction();
@@ -449,6 +452,52 @@ namespace STUDENTU_1._06.ViewModel
 
         }
 
+        private void FillExistOrderEvaluations()
+        {          
+
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                try
+                {
+                    var order = db.Orderlines.Where(o => o.OrderLineId == TMPStaticClass.CurrentOrder.OrderLineId).FirstOrDefault();
+                    foreach (var item in order.Evaluations)
+                    {
+                        
+                        int i = 0;
+                        _Evaluation.EvaluationRecord = new EvaluationRecord()
+                        {
+                            EvalCopyId = item.EvaluationId,
+                            DeadLine = item.Dates[i].AuthorDeadLine,
+                            Price = item.Moneys[i].AuthorPrice,
+                            EvaluateDescription = item.Description,
+                            FinalEvaluation = item.Winner
+                        };
+                        ExistOrderEvaluations.Add(_Evaluation.EvaluationRecord);
+                        i++;
+                    }
+                }
+                catch (ArgumentNullException ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+
+
+        }
+
+
         //==============================Command for call CompareEvaluationWindow =======================
 
         //CompareAvaluationCommand
@@ -457,6 +506,7 @@ namespace STUDENTU_1._06.ViewModel
             compareAvaluationCommand ?? (compareAvaluationCommand = new RelayCommand(
                     (obj) =>
                     {
+                        FillExistOrderEvaluations();
                         CompareEvaluationWindow window = new CompareEvaluationWindow(obj);
                         showWindow.ShowWindow(window);
                     }
