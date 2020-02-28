@@ -97,6 +97,9 @@ namespace STUDENTU_1._06.ViewModel
             addEvaluationCommand ?? (addEvaluationCommand = new RelayCommand(
                     (obj) =>
                     {
+
+                        EvaluationRecord = new EvaluationRecord()
+                                                { DeadLine = TMPStaticClass.CurrentOrder.Dates.AuthorDeadLine };
                         AddEvaluateWindow addEvaluateWindow = new AddEvaluateWindow(obj);                        
                         showWindow.ShowDialog(addEvaluateWindow);
                     }

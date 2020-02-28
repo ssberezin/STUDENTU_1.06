@@ -29,8 +29,10 @@ namespace STUDENTU_1._06.ViewModel
         IDialogService dialogService;
         IShowWindowService showWindow;
 
-        
+        //rating view  evaluations
+        bool LookEvaluations = false;
 
+        //basic constructor. 
         public RuleOrderLine()
         {
             showWindow = new DefaultShowWindowService();
@@ -137,22 +139,6 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
- 
-
-        //private Author selectedExecuteAuthor;
-        //public Author SelectedExecuteAuthor
-        //{
-        //    get { return selectedExecuteAuthor; }
-        //    set
-        //    {
-        //        if (selectedExecuteAuthor != value)
-        //        {
-        //            selectedExecuteAuthor = value;
-        //            OnPropertyChanged(nameof(SelectedExecuteAuthor));
-        //        }
-        //    }
-        //}
-
         //for show subject in Complicated filter
         private _Subject _subject;
         public _Subject _Subject
@@ -239,6 +225,9 @@ namespace STUDENTU_1._06.ViewModel
                 }
             }
         }
+
+//===============================================INITIAL METHODS ===================================================================
+
         //нужен потому что на момент сосздания объекта RuleOrderLine в контекте ForEditOrder.cs 
         //TMPStaticClass.CurrentOrder может бЫть равен null.Актуально при попытке распределния заказа
         //сразу в момент его создания, т.е.  не закрывая окно приема заказа
@@ -254,138 +243,6 @@ namespace STUDENTU_1._06.ViewModel
             FillAuthorsRecords();
             CheckWinnerEvaluation();
         }
-
-        //проверяем не пустое ли поле с вариантами. Возращает "не задано" если пустое. Если не пустое - возвращет исходное значение
-        // check if the field with options is empty. Returns "not set" if empty. If not empty, returns the original value.
-        private string CheckForEmpty(string str)
-        {
-            if (str == null || str == " ")
-                return "не задано";
-            str.Trim();
-            if (str[0] == ' ' || str == "")
-                return "не задано";
-            return str;
-        }
-        //==================================================call RuleOrderLineWindow==================================================
-        private RelayCommand newRuleOrderLineWindowCommand;
-        public RelayCommand NewRuleOrderLineWindowCommand =>
-            newRuleOrderLineWindowCommand ?? (newRuleOrderLineWindowCommand = new RelayCommand(
-                    (obj) =>
-                    {
-                        if (TMPStaticClass.CurrentOrder==null)
-                         PushInitial();
-                        RuleOrderLineWindow ruleOrderLineWindow = new RuleOrderLineWindow(obj);
-                        showWindow.ShowDialog(ruleOrderLineWindow);
-
-                    }
-                    ));
-        //==============================================================================================================================
-
-        //==================================================EDIT AUTHOR EVALUATION COMMAND =============================================
-        private RelayCommand setAuthorAvaluationCommand;
-        public RelayCommand SetAuthorAvaluationCommand => setAuthorAvaluationCommand ?? (setAuthorAvaluationCommand = new RelayCommand(
-                    (obj) =>
-                    {
-                        AuthorsRecord.EvaluationRecords.Clear();
-                        Change_AuthorsRecord();
-                        
-                        EditAvaluationWindow editAvaluationWindow = new EditAvaluationWindow(obj);
-                        showWindow.ShowDialog(editAvaluationWindow);
-                    }
-                    ));
-
-        //єта фича меняет значение AuthorsRecord для корректного отображения оценок в EditAvaluationWindow.xaml
-        // This feature changes the value of AuthorsRecord to correctly display grades in EditAvaluationWindow.xaml
-        private void Change_AuthorsRecord()
-        {
-            using (StudentuConteiner db = new StudentuConteiner())
-            {
-                try
-                {
-                      var order = db.Orderlines.Where(o => o.OrderLineId == TMPStaticClass.CurrentOrder.OrderLineId).FirstOrDefault();
-                    foreach (var item in order.Evaluations)
-                    {
-                        int i = 0;
-                        _Evaluation.EvaluationRecord = new EvaluationRecord()
-                        {
-                            EvalCopyId = item.EvaluationId,
-                            DeadLine = item.Dates[i].AuthorDeadLine,
-                            Price = item.Moneys[i].AuthorPrice,
-                            EvaluateDescription = item.Description,
-                            FinalEvaluation = item.Winner
-                        };
-                        AuthorsRecord.EvaluationRecords.Add(_Evaluation.EvaluationRecord);
-                        i++;
-                    }                    
-                }
-                catch (ArgumentNullException ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-                catch (System.Data.SqlClient.SqlException ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-                catch (System.Data.Entity.Core.EntityException ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-            }
-        }
-        //============================================================================================================================================
-
-        //напоняем  SelectedAuthorsRecords записями, если заказ уже содержит какие-либо оценки от авторов
-        // we make  SelectedAuthorsRecords records if the order already contains any ratings from the authors
-        private void FillAuthorsRecords()
-        {
-            //if (TMPStaticClass.CurrentOrder == null)
-            //    return;
-            using (StudentuConteiner db = new StudentuConteiner())
-            {
-                try
-                {
-                    var order = db.Orderlines.Where(o=>o.OrderLineId==TMPStaticClass.CurrentOrder.OrderLineId).FirstOrDefault();
-                    AuthorsRecord record;
-                    //Evaluation evaluation;
-                    foreach (var item in order.Author)
-                    {
-                        record = new AuthorsRecord
-                        {
-                            Author = item,
-                            Persone = item.Persone,
-                            Contacts = item.Persone.Contacts
-                        };
-                        SelectedAuthorsRecords.Add(record);                       
-                    }
-                }
-                catch (ArgumentNullException ex)
-                {
-                    dialogService.ShowMessage(ex.Message);
-                }
-                catch (OverflowException ex)
-                {
-                    dialogService.ShowMessage(ex.Message);
-                }
-                catch (System.Data.SqlClient.SqlException ex)
-                {
-                    dialogService.ShowMessage(ex.Message);
-                }
-                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
-                {
-                    dialogService.ShowMessage(ex.Message);
-                }
-                catch (System.Data.Entity.Core.EntityException ex)
-                {
-                    dialogService.ShowMessage(ex.Message);
-                }
-            }
-
-        }
-
         private void CheckWinnerEvaluation()
         {
             //if (TMPStaticClass.CurrentOrder == null)
@@ -394,12 +251,12 @@ namespace STUDENTU_1._06.ViewModel
             {
                 try
                 {
-                    var order = db.Orderlines.Where(o => o.OrderLineId == TMPStaticClass.CurrentOrder.OrderLineId).FirstOrDefault();                    
+                    var order = db.Orderlines.Where(o => o.OrderLineId == TMPStaticClass.CurrentOrder.OrderLineId).FirstOrDefault();
                     foreach (var item in order.Evaluations)
                     {
                         int authorId = 0;
                         if (item.Winner)
-                        {                           
+                        {
                             foreach (var i in order.Author)
                             {
                                 foreach (var j in i.Evaluation)
@@ -413,9 +270,9 @@ namespace STUDENTU_1._06.ViewModel
                             }
                             SetExecuteAuthor(item.EvaluationId, authorId);
                             return;
-                        }                        
+                        }
                     }
-                   
+
                     foreach (var item in SelectedAuthorsRecords)
                     {
                         int j = 0;
@@ -451,9 +308,148 @@ namespace STUDENTU_1._06.ViewModel
             }
 
         }
+        //проверяем не пустое ли поле с вариантами. Возращает "не задано" если пустое. Если не пустое - возвращет исходное значение
+        // check if the field with options is empty. Returns "not set" if empty. If not empty, returns the original value.
+        private string CheckForEmpty(string str)
+        {
+            if (str == null || str == " ")
+                return "не задано";
+            str.Trim();
+            if (str[0] == ' ' || str == "")
+                return "не задано";
+            return str;
+        }
+
+        //напоняем  SelectedAuthorsRecords записями, если заказ уже содержит какие-либо оценки от авторов
+        // we make  SelectedAuthorsRecords records if the order already contains any ratings from the authors
+        private void FillAuthorsRecords()
+        {
+            //if (TMPStaticClass.CurrentOrder == null)
+            //    return;
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                try
+                {
+                    var order = db.Orderlines.Where(o => o.OrderLineId == TMPStaticClass.CurrentOrder.OrderLineId).FirstOrDefault();
+                    AuthorsRecord record;
+                    //Evaluation evaluation;
+                    foreach (var item in order.Author)
+                    {
+                        record = new AuthorsRecord
+                        {
+                            Author = item,
+                            Persone = item.Persone,
+                            Contacts = item.Persone.Contacts
+                        };
+                        SelectedAuthorsRecords.Add(record);
+                    }
+                }
+                catch (ArgumentNullException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (OverflowException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+            }
+
+        }
+//====================================================================================================================================
+
+
+//==================================================EDIT AUTHOR EVALUATION COMMAND =============================================
+        private RelayCommand setAuthorAvaluationCommand;
+        public RelayCommand SetAuthorAvaluationCommand => setAuthorAvaluationCommand ?? (setAuthorAvaluationCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        LookEvaluations = false;
+                        AuthorsRecord.EvaluationRecords.Clear();
+                        Change_AuthorsRecord();                        
+                        EditAvaluationWindow editAvaluationWindow = new EditAvaluationWindow(obj);
+                        showWindow.ShowDialog(editAvaluationWindow);
+                    }
+                    ));
+        //эта фича меняет значение AuthorsRecord для корректного отображения оценок в EditAvaluationWindow.xaml
+        // This feature changes the value of AuthorsRecord to correctly display grades in EditAvaluationWindow.xaml
+        private void Change_AuthorsRecord()
+        {
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                try
+                {
+                      var order = db.Orderlines.Where(o => o.OrderLineId == TMPStaticClass.CurrentOrder.OrderLineId).FirstOrDefault();
+                    foreach (var item in order.Evaluations)
+                    {
+                        int i = 0;
+                        if (item.Authors[i].AuthorId != AuthorsRecord.Author.AuthorId)
+                        {
+                            i++;
+                            continue;
+                        }
+                        _Evaluation.EvaluationRecord = new EvaluationRecord()
+                        {
+                            EvalCopyId = item.EvaluationId,
+                            DeadLine = item.Dates[i].AuthorDeadLine,
+                            Price = item.Moneys[i].AuthorPrice,
+                            EvaluateDescription = item.Description,
+                            FinalEvaluation = item.Winner
+                        };
+                        AuthorsRecord.EvaluationRecords.Add(_Evaluation.EvaluationRecord);
+                        i++;
+                    }                    
+                }
+                catch (ArgumentNullException ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
+//============================================================================================================================================
+
+//==============================Command for call CompareEvaluationWindow =======================
+
+        //CompareAvaluationCommand
+        private RelayCommand compareAvaluationCommand;
+        public RelayCommand CompareAvaluationCommand =>
+            compareAvaluationCommand ?? (compareAvaluationCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        //rating view  evaluations
+                         LookEvaluations = true;
+                        ExistOrderEvaluations.Clear();
+                        FillExistOrderEvaluations();
+                        CompareEvaluationWindow window = new CompareEvaluationWindow(obj);
+                        showWindow.ShowWindow(window);
+                    }
+                    ));
 
         private void FillExistOrderEvaluations()
-        {          
+        {
 
             using (StudentuConteiner db = new StudentuConteiner())
             {
@@ -462,7 +458,7 @@ namespace STUDENTU_1._06.ViewModel
                     var order = db.Orderlines.Where(o => o.OrderLineId == TMPStaticClass.CurrentOrder.OrderLineId).FirstOrDefault();
                     foreach (var item in order.Evaluations)
                     {
-                        
+
                         int i = 0;
                         _Evaluation.EvaluationRecord = new EvaluationRecord()
                         {
@@ -470,7 +466,8 @@ namespace STUDENTU_1._06.ViewModel
                             DeadLine = item.Dates[i].AuthorDeadLine,
                             Price = item.Moneys[i].AuthorPrice,
                             EvaluateDescription = item.Description,
-                            FinalEvaluation = item.Winner
+                            FinalEvaluation = item.Winner,
+                            Author = item.Authors[i]
                         };
                         ExistOrderEvaluations.Add(_Evaluation.EvaluationRecord);
                         i++;
@@ -496,38 +493,9 @@ namespace STUDENTU_1._06.ViewModel
 
 
         }
-
-
-        //==============================Command for call CompareEvaluationWindow =======================
-
-        //CompareAvaluationCommand
-        private RelayCommand compareAvaluationCommand;
-        public RelayCommand CompareAvaluationCommand =>
-            compareAvaluationCommand ?? (compareAvaluationCommand = new RelayCommand(
-                    (obj) =>
-                    {
-                        FillExistOrderEvaluations();
-                        CompareEvaluationWindow window = new CompareEvaluationWindow(obj);
-                        showWindow.ShowWindow(window);
-                    }
-                    ));
-
-        //============================================================================================
-        //=============================fill listbox "Authors" if check "All authors"====================
-
-
-        private RelayCommand allAuthorsCallCommand;
-        public RelayCommand AllAuthorsCallCommand =>
-            allAuthorsCallCommand ?? (allAuthorsCallCommand = new RelayCommand(
-                    (obj) =>
-                    {
-
-                        AuthorsRecords.Clear();
-                        AuthorsCall("AllAuthors");
-                    }
-                    ));
-
-        //=============================fill listbox "Authors" if check "Authors by direction"====================
+ //=========================================================================================================================
+        
+ //=============================FILTERS FOR fill listbox "Authors" if check "Authors by direction"====================
         private RelayCommand themAuthorsCallCommand;
         public RelayCommand ThemAuthorsCallCommand =>
             themAuthorsCallCommand ?? (themAuthorsCallCommand = new RelayCommand(
@@ -557,7 +525,6 @@ namespace STUDENTU_1._06.ViewModel
                     break;
             }
         }
-
         //call for all authors. If param=="all" et last we'll see all authors with any asuthorstatus
         //if  param=="all"  et last we'll see all authors with asuthorstatus "работает"
         private void AllAuthorsCall(string param)
@@ -655,7 +622,6 @@ namespace STUDENTU_1._06.ViewModel
                      dialogService.ShowMessage(ex.Message);
                 }
             }
-
         }      
 
         public void AuthorsCallByParams(string dir, string subj, string authorStatus, ObservableCollection<AuthorsRecord> authorsRecords)
@@ -713,8 +679,7 @@ namespace STUDENTU_1._06.ViewModel
                             Author = item,
                             Persone = item.Persone,
                             Contacts = item.Persone.Contacts
-                        };
-                        // AuthorsRecords.Add(record);
+                        };                        
                         authorsRecords.Add(record);
                     }
                 }
@@ -741,102 +706,45 @@ namespace STUDENTU_1._06.ViewModel
             }
 
         }
-
-        //=================Clear selected authors collection =================================================
-        private RelayCommand clearSelectedAuthorsListCommand;
-        public RelayCommand ClearSelectedAuthorsListCommand =>
-            clearSelectedAuthorsListCommand ?? (clearSelectedAuthorsListCommand = new RelayCommand(
+//=============================================================================================================================================================
+//=====================================COMMAND For show complicated filter window  EditAvaluatonWindow.xaml====================
+        private RelayCommand initComplicatedFilterCommand;
+        public RelayCommand InitComplicatedFilterCommand =>
+            initComplicatedFilterCommand ?? (initComplicatedFilterCommand = new RelayCommand(
                     (obj) =>
                     {
-                        ClearSelectedAuthorsList();
-                    }
-                    ));
-        private void ClearSelectedAuthorsList()
-        {
-            SelectedAuthorsRecords.Clear();
-        }
-
-
-        //=============================Copy to ClipBoard commands================================
-        private RelayCommand copyEmailToClipBoardCommand;
-        public RelayCommand CopyEmailToClipBoardCommand =>
-            copyEmailToClipBoardCommand ?? (copyEmailToClipBoardCommand = new RelayCommand(
-                    (obj) =>
-                    {
-                        CopyEmailToClipBoard();
-                    }
-                    ));
-        private void CopyEmailToClipBoard()
-        {
-            Clipboard.SetText($"{AuthorsRecord.Contacts.Email1},{AuthorsRecord.Contacts.Email2}");
-        }
-
-        private RelayCommand copyPhone1ToClipBoardCommand;
-        public RelayCommand CopyPhone1ToClipBoardCommand =>
-            copyPhone1ToClipBoardCommand ?? (copyPhone1ToClipBoardCommand = new RelayCommand(
-                    (obj) =>
-                    {
-                        CopyPhone1ToClipBoard();
+                        InitComplicatedFilter();
                     }
                     ));
 
-        private void CopyPhone1ToClipBoard()
+        private void InitComplicatedFilter()
         {
-            Clipboard.SetText($"{AuthorsRecord.Contacts.Phone1}");
+            AuthorsRecords.Clear();
+            if (_Dir.Dir.DirectionName == "---" && _Subject.Subj.SubName == "---" && _AuthorStatus.AuthorStatus.AuthorStatusName == "---")
+            {
+                AllAuthorsCall("all");
+                return;
+            }
+            //AuthorsCallByParams(_Dir.Dir.DirectionName, _Subject.Subj.SubName, _AuthorStatus.AuthorStatus.AuthorStatusName);
+            AuthorsCallByParams(_Dir.Dir.DirectionName, _Subject.Subj.SubName, _AuthorStatus.AuthorStatus.AuthorStatusName, AuthorsRecords);
+
         }
 
-        private RelayCommand copyPhone2ToClipBoardCommand;
-        public RelayCommand CopyPhone2ToClipBoardCommand =>
-            copyPhone2ToClipBoardCommand ?? (copyPhone2ToClipBoardCommand = new RelayCommand(
-                    (obj) =>
-                    {
-                        CopyPhone2ToClipBoard();
-                    }
-                    ));
-        private void CopyPhone2ToClipBoard()
-        {
-            Clipboard.SetText($"{AuthorsRecord.Contacts.Phone2}");
-        }
+//==============================================================================================================================
+        ////=================Clear selected authors collection =================================================
+        //private RelayCommand clearSelectedAuthorsListCommand;
+        //public RelayCommand ClearSelectedAuthorsListCommand =>
+        //    clearSelectedAuthorsListCommand ?? (clearSelectedAuthorsListCommand = new RelayCommand(
+        //            (obj) =>
+        //            {
+        //                ClearSelectedAuthorsList();
+        //            }
+        //            ));
+        //private void ClearSelectedAuthorsList()
+        //{
+        //    SelectedAuthorsRecords.Clear();
+        //}
 
-        private RelayCommand copyFBToClipBoardCommand;
-        public RelayCommand CopyFBToClipBoardCommand =>
-            copyFBToClipBoardCommand ?? (copyFBToClipBoardCommand = new RelayCommand(
-                    (obj) =>
-                    {
-                        CopyFBToClipBoard();
-                    }
-                    ));
-        private void CopyFBToClipBoard()
-        {
-            Clipboard.SetText($"{AuthorsRecord.Contacts.FaceBook}");
-        }
-
-        private RelayCommand copyVKToClipBoardCommand;
-        public RelayCommand CopyVKToClipBoardCommand =>
-            copyVKToClipBoardCommand ?? (copyVKToClipBoardCommand = new RelayCommand(
-                    (obj) =>
-                    {
-                        CopyVKToClipBoard();
-                    }
-                    ));
-        private void CopyVKToClipBoard()
-        {
-            Clipboard.SetText($"{AuthorsRecord.Contacts.VK}");
-        }
-
-        private RelayCommand copyToClipBoardCommand;
-        public RelayCommand CopyToClipBoardCommand =>
-            copyToClipBoardCommand ?? (copyToClipBoardCommand = new RelayCommand(
-                    (obj) =>
-                    {
-                        CopyToClipBoard();
-                    }
-                    ));
-        private void CopyToClipBoard()
-        {
-            Clipboard.SetText($"{ Order.DescriptionForClient}");
-        }
-        //==========================================================================================================================
 
         //==============================COMMAND TO EDIT Order.DescriptionForClient BY EDIT DEADLINE ================================        
         private RelayCommand timePlusDefaultCommand;
@@ -866,9 +774,9 @@ namespace STUDENTU_1._06.ViewModel
                 Order.Dates.AuthorDeadLine.AddDays(-3);
 
         }
-        //==========================================================================================================================
+//==========================================================================================================================
 
-        //==============================COMMAND TO FIND AUTHOR BY NICKNAME ================================        
+//==============================COMMAND TO FIND AUTHOR BY NICKNAME ================================        
 
         private RelayCommand findAuthorByNickCommand;
         public RelayCommand FindAuthorByNickCommand =>
@@ -878,7 +786,6 @@ namespace STUDENTU_1._06.ViewModel
                         FindAuthorByNick(obj as string);
                     }
                     ));
-
         private void FindAuthorByNick(string nick)
         {
             using (StudentuConteiner db = new StudentuConteiner())
@@ -930,14 +837,10 @@ namespace STUDENTU_1._06.ViewModel
                 {
                     dialogService.ShowMessage(ex.Message);
                 }
-            }
+            }         
+        }        
 
-         
-        }
-
-        
-
-        //=============================fill listbox "AuthorsAvaluat" if press button "+"====================
+//=============================fill listbox "AuthorsAvaluat" if press button "+"====================
         private RelayCommand addSelectedAuthorCommand;
         public RelayCommand AddSelectedAuthorCommand =>
             addSelectedAuthorCommand ?? (addSelectedAuthorCommand = new RelayCommand(
@@ -962,7 +865,6 @@ namespace STUDENTU_1._06.ViewModel
             else
                 dialogService.ShowMessage("Уже есть в списке выбранных авторов");
         }
-
         private void AddSelectedAuthorToDB(AuthorsRecord authorsRecord)
         {
             using (StudentuConteiner db = new StudentuConteiner())
@@ -972,8 +874,7 @@ namespace STUDENTU_1._06.ViewModel
                     OrderLine order = db.Orderlines.Where(o => o.OrderLineId == TMPStaticClass.CurrentOrder.OrderLineId).FirstOrDefault();
                     db.Entry(order).State = EntityState.Modified;
                     order.Author.Add(db.Authors.Find(authorsRecord.Author.AuthorId));
-                    db.SaveChanges();
-                    //dialogService.ShowMessage("Запись удалена");
+                    db.SaveChanges();                  
                 }
                 catch (ArgumentNullException ex)
                 {
@@ -998,7 +899,7 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
-        //=============================edit listbox "AuthorsAvaluat" if press button "-"====================
+//=============================DELETE AUTHOR FROM SELECTED LIST ============================================================
         private RelayCommand delSelectedAuthorCommand;
         public RelayCommand DelSelectedAuthorCommand =>
             delSelectedAuthorCommand ?? (delSelectedAuthorCommand = new RelayCommand(
@@ -1007,7 +908,6 @@ namespace STUDENTU_1._06.ViewModel
                         DelSelectedAuthor();
                     }
                     ));
-
       
         private void DelSelectedAuthor()
         {
@@ -1019,14 +919,10 @@ namespace STUDENTU_1._06.ViewModel
                     DelSelectedAuthorFromDB(AuthorsRecord);
                     SelectedAuthorsRecords.Remove(AuthorsRecord);
                 }
-
-
             }
             else
-                dialogService.ShowMessage("Нечего уже  удалять");
-            
+                dialogService.ShowMessage("Нечего уже  удалять");            
         }
-
         private void DelSelectedAuthorFromDB(AuthorsRecord authorsRecord)
         {
             using (StudentuConteiner db = new StudentuConteiner())
@@ -1038,14 +934,14 @@ namespace STUDENTU_1._06.ViewModel
                     while (authorsRecord.EvaluationRecords.Count() != 0)                        
                         {
                             DeleteSelectedAvaluate(authorsRecord.EvaluationRecords.First(), msg);
-                        };
-                 
+                        };                 
                    
                         OrderLine order = db.Orderlines.Where(o => o.OrderLineId == TMPStaticClass.CurrentOrder.OrderLineId).FirstOrDefault();                       
                         db.Entry(order).State = EntityState.Modified;
                         order.Author.Remove(db.Authors.Find(authorsRecord.Author.AuthorId));
-                        
+
                     //меняем значение статуса заказа на "принят" в случае удаления всех авторов из списка оценок
+                    // change the status value of the order to “accepted” if all authors are removed from the list of ratings
                     if (_Status.Status.StatusId != 1 && SelectedAuthorsRecords.Count() == 0)
                     {                        
                         order.Status = db.Statuses.Find(2);
@@ -1074,24 +970,10 @@ namespace STUDENTU_1._06.ViewModel
                     dialogService.ShowMessage(ex.Message);
                 }
             }
-
         }
 
-        //=========================================================================================================================
-
-        //=============================Call window ComplicatedFilterAuthorsparamWondow.xaml========================================
-
-        private RelayCommand callAuthorsComlicatedFilterCommand;
-        public RelayCommand CallAuthorsComlicatedFilterCommand =>
-            callAuthorsComlicatedFilterCommand ?? (callAuthorsComlicatedFilterCommand = new RelayCommand(
-                    (obj) =>
-                    {
-                        ComplicatedFilterAuthorsparamWondow window = new ComplicatedFilterAuthorsparamWondow(obj);
-                        showWindow.ShowWindow(window);                       
-                    }
-                    ));       
-
-        //===================================== For save evaluate order any author in EditAvaluatonWindow.xaml====================
+//=========================================================================================================================
+//===================================== For save evaluate order any author in EditAvaluatonWindow.xaml====================
         private RelayCommand saveAuthorEvaluateAuthorRecordCommand;
         public RelayCommand SaveAuthorEvaluateAuthorRecordCommand =>
                             saveAuthorEvaluateAuthorRecordCommand ??
@@ -1101,7 +983,6 @@ namespace STUDENTU_1._06.ViewModel
                         SaveAuthorEvaluateAuthorRecord();
                     }
                     ));
-
         private void SaveAuthorEvaluateAuthorRecord()
         {            
             AddEvaluationToOrder();
@@ -1109,8 +990,8 @@ namespace STUDENTU_1._06.ViewModel
             _Evaluation.EvaluationRecord = new EvaluationRecord()
             { DeadLine = TMPStaticClass.CurrentOrder.Dates.AuthorDeadLine };         
         }
-
-        //===================================== For delete evaluate selected author in EditAvaluationWindow.xaml====================
+//====================================================================================================================================
+//===================================== For delete evaluate selected author in EditAvaluationWindow.xaml====================
         private RelayCommand deleteSelectedAvaluateCommand;
         public RelayCommand DeleteSelectedAvaluateCommand =>
                             deleteSelectedAvaluateCommand ??
@@ -1121,7 +1002,7 @@ namespace STUDENTU_1._06.ViewModel
                         DeleteSelectedAvaluate(obj as EvaluationRecord, msg);
                     }
                     ));
-
+        //====================================================================================================================================
         private void DeleteSelectedAvaluate(EvaluationRecord i, string msg)
         {   
             using (StudentuConteiner db = new StudentuConteiner())
@@ -1140,15 +1021,13 @@ namespace STUDENTU_1._06.ViewModel
                     Dates date = db.Dates.Where(d => d.Evaluation.EvaluationId == eval.EvaluationId).FirstOrDefault();
                     Money money = db.Moneys.Where(m => m.Evaluation.EvaluationId == eval.EvaluationId).FirstOrDefault();
                     OrderLine order = db.Orderlines.Where(o => o.OrderLineId == TMPStaticClass.CurrentOrder.OrderLineId).FirstOrDefault();
-
-                    //context.Entry(customer.Orders.First()).State = EntityState.Deleted;
+                    
                     db.Entry(order.Evaluations.Where(e=>e.EvaluationId== eval.EvaluationId).First()).State = EntityState.Deleted;
                     db.Entry(date).State = EntityState.Deleted;
                     db.Entry(money).State = EntityState.Deleted;                                
                     db.Entry(eval).State= EntityState.Deleted;
                     db.SaveChanges();
-                    AuthorsRecord.EvaluationRecords.Remove(i);
-                    //dialogService.ShowMessage("Запись удалена");
+                    AuthorsRecord.EvaluationRecords.Remove(i);                    
                 }
                 catch (ArgumentNullException ex)
                 {
@@ -1173,19 +1052,27 @@ namespace STUDENTU_1._06.ViewModel
             }
 
         }
+//====================================================================================================================================
+        
 
-        //=======================================here we set final evalue of evaluation ==================================================
+//=======================================COMMAND FOR SET final evalue of evaluation ==================================================
         private RelayCommand setSelectEvaluationCommand;
         public RelayCommand SetSelectEvaluationCommand =>
             setSelectEvaluationCommand ?? (setSelectEvaluationCommand = new RelayCommand(
                     (obj) =>
                     {
-
                         if (SetSelectEvaluation())
                         {
-                           //dialogService.ShowMessage("Оценка задана");
-                            AuthorsRecord.EvaluationRecords.Clear();
-                            Change_AuthorsRecord();
+                            if (LookEvaluations)
+                            {
+                                ExistOrderEvaluations.Clear();
+                                FillExistOrderEvaluations();                                
+                            }
+                            else
+                            {
+                                AuthorsRecord.EvaluationRecords.Clear();
+                                Change_AuthorsRecord();                                
+                            }                          
                         }
                         else
                             dialogService.ShowMessage("Оценка НЕ задана");
@@ -1217,12 +1104,11 @@ namespace STUDENTU_1._06.ViewModel
                                 item.Winner = false;
                                 eval.Winner = true;
                                 db.SaveChanges();
-                                SetExecuteAuthor(eval.EvaluationId, AuthorsRecord.Author.AuthorId);                                
+                                SetExecuteAuthor(eval.EvaluationId, ExistOrderEvaluations[Index].Author.AuthorId);                                
                                 return true;
                             }
                             else
-                                return false;
-                            
+                                return false;                            
                         }
                     if (!eval.Winner)
                     {
@@ -1310,8 +1196,7 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
-
-        //==================================== COMMAND FOR ADD EVALUATION TO SELECTED AUTHOR ====================================
+//==================================== COMMAND FOR ADD EVALUATION TO SELECTED AUTHOR ====================================
         //Эта команда нахрен не нужна сдесь. Исключил ее из работы в XAML, ранее бЫла на кнопке
         //"Сохранить" в окне EditAvaluationWindow.xaml
         private RelayCommand addEvaluationToAuthorCommand;
@@ -1344,6 +1229,7 @@ namespace STUDENTU_1._06.ViewModel
 
         }
 
+//==================================== COMMAND FOR EDIT EVALUATION ================================================
         private RelayCommand editAuthorEvaluateAuthorRecordCommand;
         public RelayCommand EditAuthorEvaluateAuthorRecordCommand =>
                             editAuthorEvaluateAuthorRecordCommand ??
@@ -1420,43 +1306,6 @@ namespace STUDENTU_1._06.ViewModel
 
         }
 
-        //===================================== For show complicated filter window  EditAvaluatonWindow.xaml====================
-        private RelayCommand initComplicatedFilterCommand;
-        public RelayCommand InitComplicatedFilterCommand =>
-            initComplicatedFilterCommand ?? (initComplicatedFilterCommand = new RelayCommand(
-                    (obj) =>
-                    {
-                        InitComplicatedFilter();
-                    }
-                    ));
-
-        private void InitComplicatedFilter()
-        {
-            AuthorsRecords.Clear();
-            if (_Dir.Dir.DirectionName == "---" && _Subject.Subj.SubName == "---" && _AuthorStatus.AuthorStatus.AuthorStatusName == "---")
-            {                
-                AllAuthorsCall("all");
-                return;
-            }
-            //AuthorsCallByParams(_Dir.Dir.DirectionName, _Subject.Subj.SubName, _AuthorStatus.AuthorStatus.AuthorStatusName);
-            AuthorsCallByParams(_Dir.Dir.DirectionName, _Subject.Subj.SubName, _AuthorStatus.AuthorStatus.AuthorStatusName, AuthorsRecords);
-
-        }
-
-
-        //===================================== For call EDIT window  EditAvaluatWindow.xaml====================
-        private RelayCommand calleditSelectedAvaluateRuleOrderWindowCommand;
-        public RelayCommand CallEditSelectedAvaluateRuleOrderWindowCommand =>
-                            calleditSelectedAvaluateRuleOrderWindowCommand ??
-                            (calleditSelectedAvaluateRuleOrderWindowCommand = new RelayCommand(
-                    (obj) =>
-                    {
-                        _Evaluation.EvaluationRecord = AuthorsRecord.EvaluationRecords[Index];
-                        EditEvaluateWindow editAvaluatWindow = new EditEvaluateWindow(obj);
-                        showWindow.ShowDialog(editAvaluatWindow);
-                    }
-                    ));
-
 
         //===================================== For Cancel set author complicated filter and close window w.xaml====================
         private RelayCommand cancelSetAuthorComlicatedFilterCommand;
@@ -1469,7 +1318,6 @@ namespace STUDENTU_1._06.ViewModel
                         window.Close();
                     }
                     ));
-
         private void CancelSetAuthorComlicatedFilter()
         {
             _Dir = new _Direction();
@@ -1480,8 +1328,7 @@ namespace STUDENTU_1._06.ViewModel
 
         //===================================== For Cancel save evaluate order any author in EditAvaluatonWindow.xaml====================
         private RelayCommand cancelEvaluateCommand;
-        public RelayCommand 
-            CancelEvaluateCommand =>
+        public RelayCommand  CancelEvaluateCommand =>
             cancelEvaluateCommand ?? (cancelEvaluateCommand = new RelayCommand(
                     (obj) =>
                     {                                                                         
@@ -1490,12 +1337,12 @@ namespace STUDENTU_1._06.ViewModel
                         window.Close();
                     }
                     ));
-
         private void CancelAuthorEvaluate()
         {
             AuthorsRecord = new AuthorsRecord();
             _Evaluation.EvaluationRecord = new EvaluationRecord() { DeadLine = TMPStaticClass.CurrentOrder.Dates.AuthorDeadLine };
         }
+        //============================================================================================================
 
         //===================================== For close any window ===========================================
         private RelayCommand closeWindowCommand;
@@ -1508,7 +1355,7 @@ namespace STUDENTU_1._06.ViewModel
                     }
                     ));
 
-       
+        //============================================================================================================       
         //private void SetExecuteAuthor(int index)
         //{
         //    AuthorsRecord.EvaluationRecords[index].FinalEvaluation = true;
@@ -1524,11 +1371,7 @@ namespace STUDENTU_1._06.ViewModel
                     {
                         AddEvaluationToOrder();
                     }
-                    ));
-
-        
-
-       
+                    ));        
         //проверяем AuthorsRecord на наличие идентичной оценки 
         // check AuthorsRecord for an identical evaluation
         private bool CheckEval(EvaluationRecord evRec, ObservableCollection<EvaluationRecord> evRecColl)
@@ -1551,14 +1394,7 @@ namespace STUDENTU_1._06.ViewModel
                     //проверяем наличие такой же оценки перед сохранением
                     // check for the same evaluation before saving
                     if (CheckEval(_Evaluation.EvaluationRecord, AuthorsRecord.EvaluationRecords))
-                        return;                    
-                    //foreach (var item in AuthorsRecord.EvaluationRecords)
-                    //    if (_Evaluation.EvaluationRecord.CompareEvaluationRecordsWNotId(_Evaluation.EvaluationRecord, item))
-                    //    {
-                    //        dialogService.ShowMessage("Уже есть такая оценка. Оценка не добавлена");
-                    //        return;
-                    //    };                   
-
+                        return;
                     var res = db.Orderlines.Where(o => o.OrderLineId == TMPStaticClass.CurrentOrder.OrderLineId).FirstOrDefault();
                     Evaluation evaluation = new Evaluation();
                     evaluation.Description = _Evaluation.EvaluationRecord.EvaluateDescription;
@@ -1577,33 +1413,6 @@ namespace STUDENTU_1._06.ViewModel
                         db.Statuses.Find(_Status.Status.StatusId);
                     db.SaveChanges();                    
                     dialogService.ShowMessage("Данные об оценке сохранены");
-
-
-                    //var res = db.Orderlines.Where(o => o.OrderLineId == TMPStaticClass.CurrentOrder.OrderLineId).FirstOrDefault();
-                    //foreach (var item2 in AuthorsRecord.EvaluationRecords)
-                    //{
-                    //    //if (item2.EvalCopyId)
-
-                    //    Evaluation evaluation = new Evaluation();
-                    //    evaluation.Description = item2.EvaluateDescription;
-                    //    evaluation.Winner = item2.FinalEvaluation;
-                    //    evaluation.Dates.Add(new Dates() { AuthorDeadLine = item2.DeadLine });
-                    //    evaluation.Moneys.Add(new Money() { AuthorPrice = item2.Price });
-                    //    evaluation.Authors.Add(db.Authors.Find(AuthorsRecord.Author.AuthorId));
-
-                    //    res.Evaluations.Add(evaluation);
-                    //    var author = db.Authors.Where(a => a.AuthorId == AuthorsRecord.Author.AuthorId).FirstOrDefault();
-                    //    author.Evaluation.Add(evaluation);
-                    //}
-                    //res.Author.Add(db.Authors.Find(AuthorsRecord.Author.AuthorId));
-
-                    //if (_Status.Status.StatusId == 1 && SelectedAuthorsRecords.Count() > 0)
-                    //    res.Status = db.Statuses.Find(6);
-                    //else
-                    //    db.Statuses.Find(_Status.Status.StatusId);
-                    //db.SaveChanges();
-                    //SaveEvaluate = true;
-                    //dialogService.ShowMessage("Данные о заказе сохранены");
 
 
 
@@ -1631,8 +1440,140 @@ namespace STUDENTU_1._06.ViewModel
             }
 
         }
+        //============================================================================================================
 
+//=============================Copy to ClipBoard commands================================
+        private RelayCommand copyEmailToClipBoardCommand;
+        public RelayCommand CopyEmailToClipBoardCommand =>
+            copyEmailToClipBoardCommand ?? (copyEmailToClipBoardCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        CopyEmailToClipBoard();
+                    }
+                    ));
+        private void CopyEmailToClipBoard()
+        {
+            Clipboard.SetText($"{AuthorsRecord.Contacts.Email1},{AuthorsRecord.Contacts.Email2}");
+        }
 
+        private RelayCommand copyPhone1ToClipBoardCommand;
+        public RelayCommand CopyPhone1ToClipBoardCommand =>
+            copyPhone1ToClipBoardCommand ?? (copyPhone1ToClipBoardCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        CopyPhone1ToClipBoard();
+                    }
+                    ));
+        private void CopyPhone1ToClipBoard()
+        {
+            Clipboard.SetText($"{AuthorsRecord.Contacts.Phone1}");
+        }
 
+        private RelayCommand copyPhone2ToClipBoardCommand;
+        public RelayCommand CopyPhone2ToClipBoardCommand =>
+            copyPhone2ToClipBoardCommand ?? (copyPhone2ToClipBoardCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        CopyPhone2ToClipBoard();
+                    }
+                    ));
+        private void CopyPhone2ToClipBoard()
+        {
+            Clipboard.SetText($"{AuthorsRecord.Contacts.Phone2}");
+        }
+
+        private RelayCommand copyFBToClipBoardCommand;
+        public RelayCommand CopyFBToClipBoardCommand =>
+            copyFBToClipBoardCommand ?? (copyFBToClipBoardCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        CopyFBToClipBoard();
+                    }
+                    ));
+        private void CopyFBToClipBoard()
+        {
+            Clipboard.SetText($"{AuthorsRecord.Contacts.FaceBook}");
+        }
+
+        private RelayCommand copyVKToClipBoardCommand;
+        public RelayCommand CopyVKToClipBoardCommand =>
+            copyVKToClipBoardCommand ?? (copyVKToClipBoardCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        CopyVKToClipBoard();
+                    }
+                    ));
+        private void CopyVKToClipBoard()
+        {
+            Clipboard.SetText($"{AuthorsRecord.Contacts.VK}");
+        }
+
+        private RelayCommand copyToClipBoardCommand;
+        public RelayCommand CopyToClipBoardCommand =>
+            copyToClipBoardCommand ?? (copyToClipBoardCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        CopyToClipBoard();
+                    }
+                    ));
+        private void CopyToClipBoard()
+        {
+            Clipboard.SetText($"{ Order.DescriptionForClient}");
+        }
+        //==========================================================================================================================
+
+        //==================================================call RuleOrderLineWindow==================================================
+        private RelayCommand newRuleOrderLineWindowCommand;
+        public RelayCommand NewRuleOrderLineWindowCommand =>
+            newRuleOrderLineWindowCommand ?? (newRuleOrderLineWindowCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        if (TMPStaticClass.CurrentOrder == null)
+                            PushInitial();
+                        RuleOrderLineWindow ruleOrderLineWindow = new RuleOrderLineWindow(obj);
+                        showWindow.ShowDialog(ruleOrderLineWindow);
+
+                    }
+                    ));
+        //==============================================================================================================================
+
+        //=============================fill listbox "Authors" if check "All authors"====================
+        private RelayCommand allAuthorsCallCommand;
+        public RelayCommand AllAuthorsCallCommand =>
+            allAuthorsCallCommand ?? (allAuthorsCallCommand = new RelayCommand(
+                    (obj) =>
+                    {
+
+                        AuthorsRecords.Clear();
+                        AuthorsCall("AllAuthors");
+                    }
+                    ));
+        //============================================================================================  
+
+        //===================================== For call EDIT window  EditAvaluatWindow.xaml====================
+        private RelayCommand calleditSelectedAvaluateRuleOrderWindowCommand;
+        public RelayCommand CallEditSelectedAvaluateRuleOrderWindowCommand =>
+                            calleditSelectedAvaluateRuleOrderWindowCommand ??
+                            (calleditSelectedAvaluateRuleOrderWindowCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        _Evaluation.EvaluationRecord = AuthorsRecord.EvaluationRecords[Index];
+                        EditEvaluateWindow editAvaluatWindow = new EditEvaluateWindow(obj);
+                        showWindow.ShowDialog(editAvaluatWindow);
+                    }
+                    ));
+        //=========================================================================================================================
+
+        //=============================Call window ComplicatedFilterAuthorsparamWondow.xaml========================================
+        private RelayCommand callAuthorsComlicatedFilterCommand;
+        public RelayCommand CallAuthorsComlicatedFilterCommand =>
+            callAuthorsComlicatedFilterCommand ?? (callAuthorsComlicatedFilterCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        ComplicatedFilterAuthorsparamWondow window = new ComplicatedFilterAuthorsparamWondow(obj);
+                        showWindow.ShowWindow(window);
+                    }
+                    ));
+        //====================================================================================================================================
     }
 }

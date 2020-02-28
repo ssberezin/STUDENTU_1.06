@@ -78,11 +78,10 @@
 
         <!--<TextBlock Text="Авторы, оцениваеющие работы" Grid.Column="0"/>-->
         <ListBox x:Name="Avaluation" Grid.Row="1"  Grid.RowSpan="5" Grid.ColumnSpan="4"
-                    ItemsSource="{Binding RuleOrderLine.ExistOrderEvaluations, 
-                    UpdateSourceTrigger=PropertyChanged}" 
+                    ItemsSource="{Binding RuleOrderLine.ExistOrderEvaluations}" 
                     SelectedIndex="{Binding RuleOrderLine.Index}"
                     SelectedItem="{Binding  RuleOrderLine._Evaluation.EvaluationRecord}"
-                   TabIndex="6" Margin="8" >
+                   TabIndex="6" Margin="8" HorizontalContentAlignment="Center" >
             <!--"AuthorsRecords" can find in "RuleOrderLineClass.cs"-->
 
             <ListBox.ItemTemplate>
@@ -90,13 +89,13 @@
                     <StackPanel VerticalAlignment="Center">
                         <StackPanel Orientation="Horizontal">
                             <StackPanel Orientation="Horizontal">                         
-                                <TextBlock Text="Ник: " Margin="2" Foreground="Blue"/>
+                                <!--<TextBlock Text="Ник: " Margin="2" Foreground="Blue"/>-->
                                 <TextBlock Text="{Binding Author.Persone.NickName}" Margin="2"
                                    TextWrapping="WrapWithOverflow" 
-                                   TextAlignment="Center" Foreground="Blue"/>
+                                   TextAlignment="Center" Foreground="ForestGreen" FontWeight="ExtraBold"/>
                             </StackPanel>
-                            <RadioButton  IsChecked="{Binding  FinalEvaluation}" GroupName="GroupA"
-                                        Command="{Binding RuleOrderLine.SetSelectEvaluationCommand}" 
+                            <RadioButton  IsChecked="{Binding  FinalEvaluation, UpdateSourceTrigger=PropertyChanged}" GroupName="GroupA"
+                                        
                                         Focusable="False" IsHitTestVisible="False"
                                         Content="   Финальная оценка?   "/>
                             <TextBlock Text="Дата: " Foreground="Red" FontWeight="Bold"  />

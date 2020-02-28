@@ -1046,7 +1046,6 @@ E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\
 E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\EditOrderLine\EditOrder.g.cs
 E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\EditWorkTypeWindow.g.cs
 E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\Evaluation\EditEvaluateWindow.xaml.g.cs
-E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\Evaluation\SetFinalAvaluationWindow.g.cs
 E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\RuleOrderLineWindows\ComplicatedFilterAuthorsparamWondow.g.cs
 E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\RuleOrderLineWindows\RuleOrderLineWindow.g.cs
 E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\MainWindow.g.cs
@@ -1071,7 +1070,6 @@ E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\
 E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\EditOrderLine\EditOrder.baml
 E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\EditWorkTypeWindow.baml
 E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\Evaluation\EditEvaluateWindow.xaml.baml
-E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\Evaluation\SetFinalAvaluationWindow.baml
 E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\RuleOrderLineWindows\ComplicatedFilterAuthorsparamWondow.baml
 E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\RuleOrderLineWindows\RuleOrderLineWindow.baml
 E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\MainWindow.baml
@@ -1115,3 +1113,5 @@ E:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\STUDENTU_1.06+.csproj
 E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\STUDENTU_1.06+.csprojAssemblyReference.cache
 E:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\Evaluation\CompareEvaluationWindow.g.cs
 E:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\Evaluation\CompareEvaluationWindow.baml
+E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\Evaluation\CompareEvaluationWindow.g.cs
+E:\STEP\ADO.NET\eaxam\STUDENTU_1.06\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\EditOrderWindows\Evaluation\CompareEvaluationWindow.baml
