@@ -142,7 +142,58 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Width="0.355*" Binding="{Binding OrderNumber}"  Header="№заказа"/>
                 <DataGridTextColumn Width="0.5*" Binding="{Binding ClientName}" Header="Клиент"/>
-                <DataGridTextColumn Width="0.5*" Binding="{Binding SubName}" Header="Направление"/>
+                <DataGridTextColumn Width="0.5*" Binding="{Binding SubName}">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                    <DataGridTextColumn.Header>
+                        <DockPanel>
+                            <Button DockPanel.Dock="Right" x:Name="btnFilter" Content="v" FontWeight="ExtraBold" 
+                                    Background="White" Foreground="Blue" Margin="3,0,0,0"
+                                    Command="{Binding _Filters.SetDirectionFilterCommand}">
+                                <!--<Button.Background>
+                                    <ImageBrush ImageSource="pack://application:,,,/Images/for_filter.png"/>
+                                </Button.Background>-->
+                            </Button>
+                            <TextBlock Text="Направление" />
+                            <Popup Name="popCountry" Placement="Bottom" PlacementTarget="{Binding ElementName=btnFilter}" 
+                                   IsOpen="{Binding  _Filters.DirrectionFilter, UpdateSourceTrigger=PropertyChanged}" StaysOpen="False" Width="200">
+                                <Border Background="White" BorderBrush="Gray" BorderThickness="1,1,1,1">
+                                    <StackPanel Margin="5,5,5,15">
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
+                                            <Button Margin="0,0,0,0" Name="btnSelectAll" Command="{Binding _Filters.SelectAlltDirectionFilterCommand}">
+                                                <Button.Template>
+                                                    <ControlTemplate>
+                                                        <TextBlock Text="Выюрать все" Foreground="Blue" Cursor="Hand" />
+                                                    </ControlTemplate>
+                                                </Button.Template>
+                                            </Button>
+
+                                            <Button Margin="10,0,0,0" Name="btnUnselectAll" Command="{Binding _Filters.UnselectAllDirectionFilter}">
+                                                <Button.Template>
+                                                    <ControlTemplate>
+                                                        <TextBlock Text="Снять фильтр" Foreground="Blue" Cursor="Hand" />
+                                                    </ControlTemplate>
+                                                </Button.Template>
+                                            </Button>
+                                        </StackPanel>
+
+                                        <ListBox x:Name="lstDirs" BorderThickness="0">
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <CheckBox IsChecked="{Binding IsChecked}" Content="{Binding Item}" Checked="ApplyFilters" Unchecked="ApplyFilters" />
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                        </ListBox>
+                                    </StackPanel>
+                                </Border>
+                            </Popup>
+                        </DockPanel>                        
+                    </DataGridTextColumn.Header>
+                    
+                </DataGridTextColumn>
                 <DataGridTextColumn Width="0.35*"  Binding="{Binding  DateOfReception, Converter={StaticResource dateFormatConverter}}" Header="Принят"/>
                 <DataGridTextColumn Width="0.35*"  Binding="{Binding  DeadLine, Converter={StaticResource dateFormatConverter}}" Header="Deadline"/>
                 <DataGridTextColumn Width="0.39*" Binding="{Binding DateDone, Converter={StaticResource dateFormatConverter}}" Header="Выполнен"/>

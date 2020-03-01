@@ -7,7 +7,7 @@ using System.Linq;
 using System.Windows;
 using STUDENTU_1._06.Helpes;
 using STUDENTU_1._06.Model;
-using STUDENTU_1._06.Views;
+using STUDENTU_1._06.ViewModel.Filters;
 using STUDENTU_1._06.Model.HelpModelClasses.ShowWindows;
 using STUDENTU_1._06.Model.HelpModelClasses;
 using STUDENTU_1._06.Model.DBModelClasses;
@@ -34,7 +34,6 @@ namespace STUDENTU_1._06.ViewModel
             LoadData();
             this.mainWindow = mainWindow;            
             this.showWindow = showWindow;
-
         }
 
   
@@ -82,6 +81,20 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
+        private _Filters _filters;
+        public _Filters _Filters
+        {
+            get { return _filters; }
+            set
+            {
+                if (_filters != value)
+                {
+                    _filters = value;
+                    OnPropertyChanged(nameof(Filters));
+                }
+            }
+        }
+
         private void LoadData()
         {
             LoadPreviosData();//setting default values in DB ​​on first start
@@ -89,7 +102,7 @@ namespace STUDENTU_1._06.ViewModel
             {
                 try
                 {
-                    
+                    _Filters = new _Filters();
                     DateTime defaultDate = DateTime.Now.AddDays(-30).AddHours(-DateTime.Now.Hour).AddMinutes(-DateTime.Now.Minute);
                     var COrders = db.Orderlines.Where(o => o.Dates.DateOfReception >= defaultDate).OrderBy(o=>o.OrderNumber);
                     string authorNickName;
