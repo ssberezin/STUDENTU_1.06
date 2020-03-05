@@ -126,7 +126,22 @@ namespace STUDENTU_1._06.Model
         [MaxLength(2000)]
         public string RedactionLog { get; set; }
 
-     
+        //flag to save to base
+        private bool saveToBase;
+        public bool SaveToBase
+        {
+            get { return saveToBase; }
+            set
+            {
+                if (saveToBase != value)
+                {
+                    saveToBase = value;
+                    OnPropertyChanged(nameof(SaveToBase));
+                }
+            }
+        }
+
+
         public virtual User User { get; set; }
         public virtual Client Client { get; set; }     
         public virtual Dates Dates { get; set; }

@@ -21,6 +21,7 @@ namespace STUDENTU_1._06.ViewModel.Filters
 {
     public class _Filters : Helpes.ObservableObject
     {
+        public ObservableCollection<Direction> SelectedDirections { get; set; }
 
         //DirrectionFilter
         //source here http://www.jarloo.com/excel-like-autofilter-in-wpf/
@@ -58,12 +59,26 @@ namespace STUDENTU_1._06.ViewModel.Filters
                     }
                     ));
 
-        
+
 
         //======================================================================================================
-        
-        
+
+
         //====================================COMMAND FOR SET DIRECTION  FILTER===============================
+        //SelectAlltDirectionFilterCommand
+        private RelayCommand selectAlltDirectionFilterCommand;
+        public RelayCommand SelectAlltDirectionFilterCommand => selectAlltDirectionFilterCommand ?? (selectAlltDirectionFilterCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        UnselectAllDirectionFilter();
+                    }
+                    ));
+
+        private void SelectAllDirectionFilter()
+        {
+
+        }
+
 
         private RelayCommand unselectAllDirectionFilterCommand;
         public RelayCommand UnselectAllDirectionFilterCommand => unselectAllDirectionFilterCommand ?? (unselectAllDirectionFilterCommand = new RelayCommand(
