@@ -133,6 +133,7 @@ namespace STUDENTU_1._06.ViewModel
                             SubName = item.Direction.DirectionName
                         };
                         Records.Add(record);
+                        _Filters.AllDirections.Add(item.Direction);
                     }
 
                     //myCollection.Sort((c1, c2) => c1.Level1.CompareTo(c2.Level1));

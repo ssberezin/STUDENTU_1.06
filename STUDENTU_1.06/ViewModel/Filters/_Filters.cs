@@ -22,7 +22,7 @@ namespace STUDENTU_1._06.ViewModel.Filters
     public class _Filters : Helpes.ObservableObject
     {
         public ObservableCollection<Direction> SelectedDirections { get; set; }
-
+        public ObservableCollection<Direction> AllDirections { get; set; }
         //DirrectionFilter
         //source here http://www.jarloo.com/excel-like-autofilter-in-wpf/
         IDialogService dialogService;
@@ -46,6 +46,8 @@ namespace STUDENTU_1._06.ViewModel.Filters
         public _Filters()
         {
             this.DirrectionFilter = false;
+           SelectedDirections = new ObservableCollection<Direction>();
+           AllDirections = new ObservableCollection<Direction>();
         }
 
 
@@ -56,9 +58,33 @@ namespace STUDENTU_1._06.ViewModel.Filters
                     (obj) =>
                     {
                         DirrectionFilter = true;
+                        SetDirectionFilter(AllDirections);
                     }
                     ));
+        private void SetDirectionFilter(ObservableCollection<Direction> OrdersDirections)
+        {
+            bool existFlag = false;
+            int countOrders = OrdersDirections.Count();
+            SelectedDirections.Add(OrdersDirections[0]);
+            for (int i = 0; i < countOrders; i++)
 
+            {
+                foreach (var item in OrdersDirections)
+                {
+                    if (item.DirectionId == SelectedDirections[i].DirectionId)
+                    {
+                        existFlag = true;
+                        break;
+                    }
+                }
+                if (!existFlag)
+                {
+                    SelectedDirections.Add(OrdersDirections[i]);
+                    existFlag=false;
+                }
+            }
+                  
+        }
 
 
         //======================================================================================================

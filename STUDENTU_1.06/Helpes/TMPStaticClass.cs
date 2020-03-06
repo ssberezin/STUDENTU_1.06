@@ -1,6 +1,7 @@
 ﻿using STUDENTU_1._06.Model;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +13,9 @@ namespace STUDENTU_1._06.Helpes
 
        // public static OrderLine CurrentOrder = new OrderLine() { Dates=new Dates()};
 
-                public static OrderLine CurrentOrder { get; set; }
-                //public static Author CurrentAuthor { get; set; }
+        public static OrderLine CurrentOrder { get; set; }
+        //public static Author CurrentAuthor { get; set; }
+        // public static ObservableCollection<Direction> TMPOrdersDirection;
+       // public static List<int> OrdersIDs;
     }
 }

@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:STUDENTU_1._06"
         xmlns:model="clr-namespace:STUDENTU_1._06.Model"         
         xmlns:helpes="clr-namespace:STUDENTU_1._06.Helpes" 
-        
+        xmlns:scm1="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"               
         mc:Ignorable="d"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -28,6 +28,15 @@
             <helpes:NullToBooleanConverter x:Key="NullBoolConverter" />
             <helpes:StringToBrushConverter x:Key="StringToBrushConverter" />
             <helpes:SelectedItemsConverter x:Key="SelectedItemsConverter" />
+
+            <CollectionViewSource x:Key="SortedDirections" Source="{Binding _Filters.SelectedDirections}"
+                xmlns:scm="clr-namespace:System.ComponentModel;assembly=Win‌​dowsBase">
+                <!--DirRecords can find in DirectionClass.cs-->
+                <CollectionViewSource.SortDescriptions>
+                    <scm1:SortDescription PropertyName="DirectionName"/>
+                </CollectionViewSource.SortDescriptions>
+            </CollectionViewSource>
+
         </ResourceDictionary>
 
     </Window.Resources>
@@ -188,14 +197,21 @@
                                         </StackPanel>
 
                                         <ListBox x:Name="lstDirs" BorderThickness="0"
-                                                    ItemsSource="{Binding _Filters.SelectedDirections}" 
-                                                    SelectedIndex="{Binding RuleOrderLine.Index}"
-                                                    SelectedItem="{Binding  RuleOrderLine._Evaluation.EvaluationRecord}">       
+                                                    ItemsSource="{Binding Source={StaticResource SortedDirections}}"                                                     
+                                                    >       
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate>
-                                                    <CheckBox IsChecked="{Binding IsChecked}" Content="{Binding Item}" 
-                                                              Checked="{Binding ApplyFilters}" 
-                                                              Unchecked="{Binding ApplyFilters}" />
+                                                    <DockPanel >
+                                                        <CheckBox Content="{Binding  DirectionName}" 
+                                                              />
+                                                        <!--IsChecked="{Binding IsChecked}"-->
+                                                        <!--Checked="{Binding ApplyFilters}" 
+                                                              Unchecked="{Binding ApplyFilters}"-->
+                                                        <!--<TextBlock Text="{Binding DirectionName}" Margin="2"
+                                                                   TextWrapping="WrapWithOverflow" 
+                                                                   TextAlignment="Center"/>-->             
+                                                    </DockPanel>
+                                                   
                                                 </DataTemplate>
                                             </ListBox.ItemTemplate>
                                         </ListBox>
