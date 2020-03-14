@@ -51,7 +51,7 @@ namespace STUDENTU_1._06.ViewModel.Filters
         }
 
 
-        //====================================COMMAND FOR SETF DIRECTION  FILTER===============================
+        //====================================COMMAND FOR SET DIRECTION  FILTER===============================
         
         private RelayCommand setDirectionFilterCommand;
         public RelayCommand SetDirectionFilterCommand => setDirectionFilterCommand ?? (setDirectionFilterCommand = new RelayCommand(
@@ -65,6 +65,8 @@ namespace STUDENTU_1._06.ViewModel.Filters
         {
             bool existFlag = false;
             int countOrders = OrdersDirections.Count();
+            if (countOrders == 0)
+                return;
             SelectedDirections.Add(OrdersDirections[0]);
             for (int i = 0; i < countOrders; i++)
 
@@ -119,5 +121,22 @@ namespace STUDENTU_1._06.ViewModel.Filters
 
         }
         //======================================================================================================
+
+        //        ApplyFiltersCommand
+
+        //===========================================COMMAND FOR APPLY FILTERS===========================================================
+        private RelayCommand applyFiltersCommand;
+        public RelayCommand ApplyFiltersCommand => applyFiltersCommand ?? (applyFiltersCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        ApplyFilters();
+                    }
+                    ));
+
+        private void ApplyFilters()
+        {
+
+        }
+
     }
 }

@@ -203,10 +203,12 @@
                                                 <DataTemplate>
                                                     <DockPanel >
                                                         <CheckBox Content="{Binding  DirectionName}" 
+                                                                  IsChecked="False"
+                                                                  Checked="{Binding _Checked, Mode= TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                                
                                                               />
-                                                        <!--IsChecked="{Binding IsChecked}"-->
-                                                        <!--Checked="{Binding ApplyFilters}" 
-                                                              Unchecked="{Binding ApplyFilters}"-->
+
+                                                        <!--Unchecked="{Binding ApplyFilters}"-->
                                                         <!--<TextBlock Text="{Binding DirectionName}" Margin="2"
                                                                    TextWrapping="WrapWithOverflow" 
                                                                    TextAlignment="Center"/>-->             
@@ -222,7 +224,8 @@
                                                     <ColumnDefinition Width="1*"/>
                                                     <ColumnDefinition Width="1*"/>
                                                 </Grid.ColumnDefinitions>
-                                                <Button Content="Применить" Command="{Binding _Filters.ApplyFiltersCommand}" Background="Green"/>
+                                                <Button Content="Применить" Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
+                                                             AncestorType={x:Type Window}},Path=DataContext._Filters.ApplyFiltersCommand}" Background="Green"/>
                                                 <Button Grid.Column="2" Content="Отменить" Command="{Binding _Filters.CancelFiltersCommand}" HorizontalAlignment="Right"/>
                                             </Grid>
                                         </StackPanel>

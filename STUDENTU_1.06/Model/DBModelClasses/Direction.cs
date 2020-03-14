@@ -7,12 +7,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace STUDENTU_1._06.Model
 {
-    public class Direction :ICloneable
+    public class Direction : Helpes.ObservableObject ,ICloneable
     {
         public Direction()
         {          
             this.OrderLine = new ObservableCollection<OrderLine>();
             this.Author = new ObservableCollection<Author>();
+            this._Checked = false;
         }
                 
         public int DirectionId { get; set; }
@@ -20,6 +21,23 @@ namespace STUDENTU_1._06.Model
         [Column("DirectionName", TypeName = "nvarchar")]
         [MaxLength(80)]
         public string DirectionName { get; set; }
+
+        //для фильтрации
+        //for filter
+        private bool _checked;
+        [NotMapped]
+        public bool _Checked
+        {
+            get { return _checked; }
+            set
+            {
+                if (_checked != value)
+                {
+                    _checked = value;
+                    OnPropertyChanged(nameof(_Checked));
+                }
+            }
+        }
 
         public virtual ObservableCollection<Author> Author { get; set; }
         //public virtual Author Author { get; set; }
@@ -33,7 +51,8 @@ namespace STUDENTU_1._06.Model
                 DirectionId = this.DirectionId,
                 DirectionName = this.DirectionName,
                 OrderLine = new ObservableCollection<OrderLine>(this.OrderLine),
-                Author = new ObservableCollection<Author>(this.Author)
+                Author = new ObservableCollection<Author>(this.Author),
+                _Checked= this._Checked
             };                      
         }
         public bool CompareDirection(Direction obj1, Direction obj2)
