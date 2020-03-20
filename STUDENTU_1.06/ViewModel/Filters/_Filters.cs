@@ -19,7 +19,7 @@ using STUDENTU_1._06.Views.EditOrderWindows.RuleOrderLineWindows;
 
 namespace STUDENTU_1._06.ViewModel.Filters
 {
-    public class _Filters : Helpes.ObservableObject
+    public class _Filters : Helpes.ObservableObject, ICloneable
     {
         public ObservableCollection<Direction> SelectedDirections { get; set; }
         public ObservableCollection<Direction> AllDirections { get; set; }
@@ -58,7 +58,9 @@ namespace STUDENTU_1._06.ViewModel.Filters
                     (obj) =>
                     {
                         DirrectionFilter = true;
-                        SetDirectionFilter(AllDirections);
+                        SelectedDirections.Clear();
+                        SetDirectionFilter(TMPStaticClass.TMPFilters.AllDirections);
+                        //AllDirections.Clear();
                     }
                     ));
         private void SetDirectionFilter(ObservableCollection<Direction> OrdersDirections)
@@ -67,25 +69,37 @@ namespace STUDENTU_1._06.ViewModel.Filters
             int countOrders = OrdersDirections.Count();
             if (countOrders == 0)
                 return;
-            SelectedDirections.Add(OrdersDirections[0]);
+            if (SelectedDirections.Count()==0)
+                SelectedDirections.Add(OrdersDirections[0]);
             for (int i = 0; i < countOrders; i++)
-
             {
-                foreach (var item in OrdersDirections)
+                int countSelDirs = SelectedDirections.Count();
+                for (int j = 0; j < countSelDirs; j++)
                 {
-                    if (item.DirectionId == SelectedDirections[i].DirectionId)
+                    if (OrdersDirections[i].DirectionId == SelectedDirections[j].DirectionId)
                     {
                         existFlag = true;
                         break;
                     }
                 }
+
+
+                //foreach (var item in OrdersDirections)
+                //{
+                //    if (item.DirectionId == SelectedDirections[i].DirectionId)
+                //    {
+                //        existFlag = true;
+                //        break;
+                //    }
+                //}
                 if (!existFlag)
                 {
                     SelectedDirections.Add(OrdersDirections[i]);
-                    existFlag=false;
+                    // existFlag=false;
                 }
+                existFlag = false;
             }
-                  
+
         }
 
 
@@ -138,5 +152,15 @@ namespace STUDENTU_1._06.ViewModel.Filters
 
         }
 
+
+        public object Clone()
+        {      
+            return new _Filters()
+            {
+                DirrectionFilter = this.DirrectionFilter,
+                SelectedDirections = new ObservableCollection<Direction>(this.SelectedDirections),
+                AllDirections = new ObservableCollection<Direction>(this.AllDirections)
+            };
+        }
     }
 }
