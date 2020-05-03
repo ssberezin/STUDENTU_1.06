@@ -103,8 +103,8 @@ namespace STUDENTU_1._06.ViewModel
                 try
                 {
                     //if (_Filters==null)
-                        _Filters = new _Filters();
-
+                    _Filters = new _Filters();
+                    
                     DateTime defaultDate = DateTime.Now.AddDays(-30).AddHours(-DateTime.Now.Hour).AddMinutes(-DateTime.Now.Minute);
                     var COrders = db.Orderlines.Where(o => o.Dates.DateOfReception >= defaultDate).OrderBy(o=>o.OrderNumber);
                     string authorNickName;
@@ -138,8 +138,7 @@ namespace STUDENTU_1._06.ViewModel
                         _Filters.AllDirections.Add(item.Direction);
                     }
                     TMPStaticClass.TMPFilters = (_Filters)_Filters.Clone();                    
-                    //myCollection.Sort((c1, c2) => c1.Level1.CompareTo(c2.Level1));
-                    // Records.Sort
+                   
 
 
                 }

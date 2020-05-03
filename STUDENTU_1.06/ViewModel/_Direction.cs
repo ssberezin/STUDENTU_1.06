@@ -174,8 +174,11 @@ namespace STUDENTU_1._06.ViewModel
         //===================THIS METHOD IS FOR ADD RECORDS IN DIRECTIONS TABLE==============        
        public void  AddDir(string newDirName)
         {
-
-            Dir.DirectionName = newDirName;
+            if (Dir != null)
+                Dir.DirectionName = newDirName;
+            else            
+                Dir = new Direction() { DirectionName=newDirName};
+            
             using (StudentuConteiner db = new StudentuConteiner())
             {
                 try

@@ -56,11 +56,13 @@ namespace STUDENTU_1._06.ViewModel.Filters
         private RelayCommand setDirectionFilterCommand;
         public RelayCommand SetDirectionFilterCommand => setDirectionFilterCommand ?? (setDirectionFilterCommand = new RelayCommand(
                     (obj) =>
-                    {
-                        DirrectionFilter = true;
+                    {                       
+                        if (!DirrectionFilter)
+                            DirrectionFilter = true;
                         SelectedDirections.Clear();
                         SetDirectionFilter(TMPStaticClass.TMPFilters.AllDirections);
                         //AllDirections.Clear();
+                      
                     }
                     ));
         private void SetDirectionFilter(ObservableCollection<Direction> OrdersDirections)
@@ -95,6 +97,7 @@ namespace STUDENTU_1._06.ViewModel.Filters
                 if (!existFlag)
                 {
                     SelectedDirections.Add(OrdersDirections[i]);
+                    //TMPStaticClass.TMPFilters.AllDirections.Add(OrdersDirections[i]);
                     // existFlag=false;
                 }
                 existFlag = false;

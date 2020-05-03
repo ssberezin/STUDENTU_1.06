@@ -158,27 +158,28 @@
                             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                         </Style>
                     </DataGridTextColumn.HeaderStyle>
-                    <DataGridTextColumn.Header>
-                        <!--<DockPanel >-->
+                    <DataGridTextColumn.Header>                      
                         <DockPanel >
                             <Button DockPanel.Dock="Right" 
                                     x:Name="btnFilter" Content=" v " FontWeight="ExtraBold" 
                                     Background="White" Foreground="Blue" Margin="3,0,0,0"
-                            Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}},Path=DataContext._Filters.SetDirectionFilterCommand}">
-                            </Button>
-                            
-                            <TextBlock Text="Направление" />
-                           
+                            Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}},
+                                    Path=DataContext._Filters.SetDirectionFilterCommand}">
+                            </Button>                            
+                            <TextBlock Text="Направление" />                           
                             <Popup x:Name="popDir" Placement="Bottom"                                   
                                    PlacementTarget="{Binding ElementName=btnFilter}" 
-                                   IsOpen="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}},Path=DataContext._Filters.DirrectionFilter, UpdateSourceTrigger=PropertyChanged}"
+                                   IsOpen="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
+                                            AncestorType={x:Type Window}},Path=DataContext._Filters.DirrectionFilter,
+                                            UpdateSourceTrigger=PropertyChanged}"
                                    StaysOpen="False" Width="Auto">
                                 <Border Background="White" BorderBrush="Gray" BorderThickness="1,1,1,1">
                                     <StackPanel Margin="5,5,5,15">
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
                                             <Button Margin="0,0,0,0" Name="btnSelectAll" 
                                                     Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
-                                                             AncestorType={x:Type Window}},Path=DataContext._Filters.SelectAlltDirectionFilterCommand}">
+                                                             AncestorType={x:Type Window}},
+                                                             Path=DataContext._Filters.SelectAlltDirectionFilterCommand}">
                                                 <Button.Template>
                                                     <ControlTemplate>
                                                         <TextBlock Text="Выбрать все" Foreground="Blue" Cursor="Hand" />

@@ -1224,3 +1224,4 @@ D:\ProjectFix\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\STUDENTU_1.06+.csproj.Genera
 D:\ProjectFix\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\STUDENTU_1.06+.csproj.CopyComplete
 D:\ProjectFix\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\STUDENTU_1.06.exe
 D:\ProjectFix\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\STUDENTU_1.06.pdb
+D:\ProjectFix\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\STUDENTU_1.06+.csproj.CoreCompileInputs.cache
