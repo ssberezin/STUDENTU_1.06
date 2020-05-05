@@ -93,7 +93,7 @@
                  CommandParameter="{Binding ElementName=DirName, Path=Text}"
                 IsEnabled="{Binding SelectedItem,
                      Converter={StaticResource NullBoolConverter}, ElementName=DirList}"
-                TabIndex="4"/>
+                TabIndex="4" Height="48" VerticalAlignment="Center"/>
         <!--Command DeleteWorkTypeCommand can find in WorkTypeClass.cs-->
     </Grid>
 </Window>

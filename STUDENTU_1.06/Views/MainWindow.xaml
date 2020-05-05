@@ -158,15 +158,15 @@
                             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                         </Style>
                     </DataGridTextColumn.HeaderStyle>
-                    <DataGridTextColumn.Header>                      
+                    <DataGridTextColumn.Header>
                         <DockPanel >
                             <Button DockPanel.Dock="Right" 
                                     x:Name="btnFilter" Content=" v " FontWeight="ExtraBold" 
                                     Background="White" Foreground="Blue" Margin="3,0,0,0"
                             Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}},
                                     Path=DataContext._Filters.SetDirectionFilterCommand}">
-                            </Button>                            
-                            <TextBlock Text="Направление" />                           
+                            </Button>
+                            <TextBlock Text="Направление" />
                             <Popup x:Name="popDir" Placement="Bottom"                                   
                                    PlacementTarget="{Binding ElementName=btnFilter}" 
                                    IsOpen="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
@@ -199,7 +199,7 @@
 
                                         <ListBox x:Name="lstDirs" BorderThickness="0" 
                                                     ItemsSource="{Binding Source={StaticResource SortedDirections}}"                                                     
-                                                    >       
+                                                    >
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate>
                                                     <DockPanel >
@@ -210,9 +210,9 @@
                                                         <!--Unchecked="{Binding ApplyFilters}"-->
                                                         <!--<TextBlock Text="{Binding DirectionName}" Margin="2"
                                                                    TextWrapping="WrapWithOverflow" 
-                                                                   TextAlignment="Center"/>-->             
+                                                                   TextAlignment="Center"/>-->
                                                     </DockPanel>
-                                                   
+
                                                 </DataTemplate>
                                             </ListBox.ItemTemplate>
                                         </ListBox>
@@ -231,9 +231,9 @@
                                     </StackPanel>
                                 </Border>
                             </Popup>
-                        </DockPanel>                        
+                        </DockPanel>
                     </DataGridTextColumn.Header>
-                    
+
                 </DataGridTextColumn>
                 <DataGridTextColumn Width="0.35*"  Binding="{Binding  DateOfReception, Converter={StaticResource dateFormatConverter}}" Header="Принят"/>
                 <DataGridTextColumn Width="0.35*"  Binding="{Binding  DeadLine, Converter={StaticResource dateFormatConverter}}" Header="Deadline"/>
@@ -248,18 +248,19 @@
         </DataGrid>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.25*"/>
-                <ColumnDefinition Width="0.27*"/>
-                <ColumnDefinition Width="0.31*"/>
-                <ColumnDefinition />
-                <ColumnDefinition Width="0.26*"/>
+                <ColumnDefinition Width="142*"/>
+                <ColumnDefinition Width="154*"/>
+                <ColumnDefinition Width="177*"/>
+                <ColumnDefinition Width="407*" />
+                <ColumnDefinition Width="164*"/>
+                <ColumnDefinition Width="149*"/>
             </Grid.ColumnDefinitions>
             <Button Content="Новый заказ" Grid.Column="0"
-                    Name="NewOrder" Margin="5"  Command="{Binding NewOrder}"
+                    Name="NewOrder" Margin="5,5,5.4,5"  Command="{Binding NewOrder}"
                     Background="Green"/>
             <!--"NewOrder" can be found in the class "MainViewModel.cs"-->
             <Button Content="Править заказ" Grid.Column="1"
-                    Name="EditOrder" Margin="5"  
+                    Name="EditOrder" Margin="4.6,5,4.8,5"  
                     Background="Black"
                     CommandParameter="{Binding ElementName=GridOrders, Path=SelectedItem}"
                     Command="{Binding EditOrderCommand}"
@@ -268,15 +269,50 @@
                      Converter={StaticResource NullBoolConverter}, ElementName=GridOrders}"/>
 
             <Button Content="Печать квитанции" Grid.Column="2"
-                    Name="PrintCheck" Margin="5"  
+                    Name="PrintCheck" Margin="5.2,5,4.6,5"  
                     Background="LightBlue" Foreground="Black"
                       IsEnabled="{Binding SelectedItem,
                      Converter={StaticResource NullBoolConverter}, ElementName=GridOrders}"/>
-            <Button Content="Удалить заказ" Grid.Column="4"
-                    Name="DeleteOrder" Margin="5"  
+            <StackPanel Grid.Column="3"   Margin="3" VerticalAlignment="Center" >
+                <TextBlock Text="Заказы , принятые" Foreground="Blue" FontWeight="Bold" HorizontalAlignment="Center"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Orientation="Horizontal">
+                        <Viewbox  MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
+                                VerticalAlignment="Stretch">
+                            <TextBlock Text="с " Foreground="Blue" FontWeight="Bold"/>
+                        </Viewbox>
+                        <DatePicker  Name="DateStart" IsDropDownOpen="False" SelectedDateFormat="Short" 
+                        MaxWidth="150" TabIndex="12" HorizontalAlignment="Center" VerticalAlignment="Center"
+                        SelectedDate="{Binding StartDateReception,Mode=TwoWay}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <Viewbox  MaxHeight="18"  Stretch="Uniform" Margin="5" HorizontalAlignment="Left" 
+                                VerticalAlignment="Stretch">
+                            <TextBlock Text=" по " Foreground="Blue" FontWeight="Bold"/>
+                        </Viewbox>
+                        <DatePicker  Name="DateEnd" IsDropDownOpen="False" SelectedDateFormat="Short" 
+                        MaxWidth="150" TabIndex="12" HorizontalAlignment="Center" VerticalAlignment="Center"
+                        SelectedDate="{Binding EndDateReception,Mode=TwoWay}"/>
+                    </StackPanel>
+                    <Button Content="Показать" Grid.Column="2"
+                    Name="ShowOrdes" Margin="5.2,5,4.6,5"  
+                    Background="LightBlue" Foreground="Black" 
+                    Command="{Binding UpdateOrederList}"/>
+                </Grid>
+            </StackPanel>
+            <Button Content="Удалить заказ" Grid.Column="5"
+                    Name="DeleteOrder" Margin="5.2,5,4.6,5"  
                     Background="DarkRed"
                       IsEnabled="{Binding SelectedItem,
-                     Converter={StaticResource NullBoolConverter}, ElementName=GridOrders}"/>
+                     Converter={StaticResource NullBoolConverter}, ElementName=GridOrders}"
+                   Command="{Binding DeleteOrderCommand}"
+                    CommandParameter="{Binding ElementName=GridOrders, Path=SelectedItem}"/>
             <!--<Button Content="Добавить тестовую информацию в БД" Grid.Column="3"
                      Margin="5"  Command="{Binding AddTestInfoCommand}"
                     Background="LightBlue" Foreground="Black"/>-->

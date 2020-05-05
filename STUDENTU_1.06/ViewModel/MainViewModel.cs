@@ -31,6 +31,10 @@ namespace STUDENTU_1._06.ViewModel
         public MainViewModel(Window mainWindow, DefaultShowWindowService showWindow)
         {
             Records = new ObservableCollection<Records>();
+            EndDateReception = DateTime.Now.AddHours(-DateTime.Now.Hour).AddMinutes(-DateTime.Now.Minute).AddMilliseconds(-DateTime.Now.Millisecond);
+            StartDateReception = DateTime.Now.AddDays(-10).AddHours(-DateTime.Now.Hour).AddMinutes(-DateTime.Now.Minute).AddMilliseconds(-DateTime.Now.Millisecond);
+            showWindow = new DefaultShowWindowService();
+            dialogService = new DefaultDialogService();
             LoadData();
             this.mainWindow = mainWindow;            
             this.showWindow = showWindow;
@@ -95,6 +99,37 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
+        //для фильтрации заказов по дате, начальная дата 
+        //for order filtration by date, start date
+        private DateTime startDateReception;
+        public DateTime StartDateReception
+        {
+            get { return startDateReception; }
+            set
+            {
+                if (startDateReception != value)
+                {
+                    startDateReception = value;
+                    OnPropertyChanged(nameof(StartDateReception));
+                }
+            }
+        }
+        //для фильтрации заказов по дате, конечная дата 
+        //for order filtration by date, end date
+        private DateTime endDateReception;
+        public DateTime EndDateReception
+        {
+            get { return endDateReception; }
+            set
+            {
+                if (endDateReception != value)
+                {
+                    endDateReception = value;
+                    OnPropertyChanged(nameof(EndDateReception));
+                }
+            }
+        }
+
         private void LoadData()
         {
             LoadPreviosData();//setting default values in DB ​​on first start
@@ -104,9 +139,11 @@ namespace STUDENTU_1._06.ViewModel
                 {
                     //if (_Filters==null)
                     _Filters = new _Filters();
-                    
-                    DateTime defaultDate = DateTime.Now.AddDays(-30).AddHours(-DateTime.Now.Hour).AddMinutes(-DateTime.Now.Minute);
-                    var COrders = db.Orderlines.Where(o => o.Dates.DateOfReception >= defaultDate).OrderBy(o=>o.OrderNumber);
+
+                    //DateTime defaultDate = DateTime.Now.AddDays(-30).AddHours(-DateTime.Now.Hour).AddMinutes(-DateTime.Now.Minute);
+                    //DateTime defaultDate = StartDateReception.AddDays(-EndDateReception.Day);
+                    //var COrders = db.Orderlines.Where(o => o.Dates.DateOfReception >= defaultDate).OrderBy(o=>o.OrderNumber);
+                    var COrders = db.Orderlines.Where(o => o.Dates.DateOfReception <= EndDateReception && o.Dates.DateOfReception >= StartDateReception).OrderBy(o => o.OrderNumber);
                     string authorNickName;
                     //creat a orderlist in datagrid (mainwindow)
                     foreach (var item in COrders)
@@ -346,6 +383,59 @@ namespace STUDENTU_1._06.ViewModel
                     }
                     ));
 
+        private RelayCommand deleteOrderCommand;
+        public RelayCommand DeleteOrderCommand => deleteOrderCommand ?? (deleteOrderCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        string msg = "Точно удалять?";
+                        DeleteRecord(obj as Records, msg);
+                    }
+                    ));
+
+        private void DeleteRecord(Records i, string msg)
+        {
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                try
+                {    
+                    
+                    //хз , как эта движуха работае в реале. Не удаляется ли чего нужного... надо тестить
+                    if (!dialogService.YesNoDialog(msg))
+                        return;
+                    OrderLine tmpOrder = db.Orderlines.Where(c => c.OrderLineId == i.RecordId).FirstOrDefault();
+                    if (tmpOrder != null)
+                    {
+                        db.Orderlines.Remove(tmpOrder);
+                        db.SaveChanges();
+                    }
+                    Records.Clear();
+                    LoadData();
+                    
+                }
+                catch (ArgumentNullException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (OverflowException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+            }
+
+        }
+
         private RelayCommand closeMainWindow;
 
         public RelayCommand CloseMainWindow => closeMainWindow ?? (closeMainWindow = new RelayCommand(
@@ -499,6 +589,8 @@ namespace STUDENTU_1._06.ViewModel
             }
 
         }
+
+      
 
 
     }
