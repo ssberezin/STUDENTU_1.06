@@ -1494,7 +1494,7 @@ namespace STUDENTU_1._06.ViewModel
             //AuthorsRecord
             using (StudentuConteiner db = new StudentuConteiner())
             {
-                if (AuthorsRecord.Author.AuthorId == 1)
+                if (AuthorsRecord.Author.AuthorId <= 1)
                 {
                     dialogService.ShowMessage("Не задан автор. Сохранять нечего.");
                     return;

@@ -149,7 +149,7 @@
                 <TextBlock Text="Имя: " Foreground="Brown" FontWeight="Bold"/>
             </Viewbox>
             <TextBox x:Name="TBxName"  MinWidth="220" TabIndex="0"
-                   Width="274" Text="{Binding Persone.Name, Mode=TwoWay}"/>
+                   Width="274" Text="{Binding PersoneContactsData.Persone.Name, Mode=TwoWay}"/>
             <!--Persone can find in AuthorsVMClass.cs-->
         </WrapPanel>
         <WrapPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="3">
@@ -157,7 +157,7 @@
                      VerticalAlignment="Stretch">
                 <TextBlock Text="Фамилия: " Foreground="Brown" />
             </Viewbox>
-            <TextBox x:Name="Surname"   Text="{Binding Persone.Surname, Mode=TwoWay}" TabIndex="1"  MinWidth="250"/>
+            <TextBox x:Name="Surname"   Text="{Binding PersoneContactsData.Persone.Surname, Mode=TwoWay}" TabIndex="1"  MinWidth="250"/>
         </WrapPanel>
         <!--Persone can find in AuthorsVMClass.cs-->
         <WrapPanel Grid.Row="2" Grid.ColumnSpan="2" Margin="3">
@@ -165,7 +165,7 @@
                      VerticalAlignment="Stretch">
                 <TextBlock Text="Отчество: " Foreground="Brown"/>
             </Viewbox>
-            <TextBox x:Name="Patronimic"   Text="{Binding Persone.Patronimic, Mode=TwoWay}" TabIndex="2"  MinWidth="250"/>
+            <TextBox x:Name="Patronimic"   Text="{Binding PersoneContactsData.Persone.Patronimic, Mode=TwoWay}" TabIndex="2"  MinWidth="250"/>
             <!--Persone can find in ForEditOrder.cs-->
         </WrapPanel>
         <WrapPanel Grid.Row="3" Grid.ColumnSpan="2" Margin="3">
@@ -187,10 +187,10 @@
                 <TextBlock Text="Пол:" FontWeight="Bold" Foreground="Brown"/>
             </Viewbox>
             <RadioButton GroupName="A" Content="Мужской" VerticalAlignment="Center" TabIndex="5"
-                          IsChecked="{Binding Persone.Male, Mode=TwoWay}" />
+                          IsChecked="{Binding PersoneContactsData.Persone.Male, Mode=TwoWay}" />
             <!--Persone can find in AuthorsVMClass.cs-->
             <RadioButton GroupName="A" Content="Женский" VerticalAlignment="Center" TabIndex="6" 
-                          IsChecked="{Binding Persone.Female, Mode=TwoWay}"/>
+                          IsChecked="{Binding PersoneContactsData.Persone.Female, Mode=TwoWay}"/>
             <!--Persone can find in AuthorsVMClass.cs-->
             <Button Content="В ч.списке?" Background="Black" Height="30" Width="149" TabIndex="7" Margin="5"
                     Command="{Binding CheckBlackListCommand}"/>
@@ -203,7 +203,7 @@
             </Viewbox>
             <DatePicker  IsDropDownOpen="False" SelectedDateFormat="Short" 
                         MaxWidth="150" TabIndex="9" HorizontalAlignment="Center"
-                        SelectedDate="{Binding Date.DayBirth,Mode=TwoWay}"
+                        SelectedDate="{Binding PersoneContactsData.Date.DayBirth,Mode=TwoWay}"
                          IsEnabled="{Binding ElementName=BirthDate, Path=IsChecked}"/>
             
             <!--Date can find in AuthorsVMClass.cs-->
@@ -371,7 +371,7 @@
                     <ImageBrush ImageSource="{Binding DefaultPhoto, UpdateSourceTrigger=PropertyChanged}"/>
                 </Grid.Background>
                 <!--<Image Source="{Binding Photo, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" />-->
-                <Image Source="{Binding Path=Persone.Photo, Converter={StaticResource imagePathConverter}, Mode=OneWay}" VerticalAlignment="Center" />           
+            <Image Source="{Binding Path=PersoneContactsData.Persone.Photo, Converter={StaticResource imagePathConverter}, Mode=OneWay}" VerticalAlignment="Center" />           
         </Grid>
         
         <StackPanel Grid.Column="4" Grid.Row="5"  Orientation="Horizontal"  >

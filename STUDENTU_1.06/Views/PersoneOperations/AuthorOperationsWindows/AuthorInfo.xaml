@@ -178,7 +178,7 @@
                      VerticalAlignment="Stretch">
                 <TextBlock Text="Ник: " FontWeight="Bold" Foreground="Brown"/>
             </Viewbox>
-            <TextBox    Text="{Binding Persone.NickName, Mode=TwoWay}"  MinWidth="70" Width="110" TabIndex="3"/>
+            <TextBox    Text="{Binding PersoneContactsData.Persone.NickName, Mode=TwoWay}"  MinWidth="70" Width="110" TabIndex="3"/>
             <!--Persone can find in AuthorsVMClass.cs-->
             <Button Content="Посмотреть контакты " Background="YellowGreen" Height="30" TabIndex="4" Margin="5"
                      Command="{Binding NewEditContactsCommand}" CommandParameter="{Binding DataContext, RelativeSource=
@@ -192,11 +192,11 @@
                 <TextBlock Text="Пол:" FontWeight="Bold" Foreground="Brown"/>
             </Viewbox>
             <RadioButton GroupName="A" Content="Мужской" VerticalAlignment="Center" TabIndex="5"
-                          IsChecked="{Binding Persone.Male, Mode=TwoWay}" />
+                          IsChecked="{Binding PersoneContactsData.Persone.Male, Mode=TwoWay}" />
             <!--Persone can find in AuthorsVMClass.cs-->
             <!--Converter={StaticResource boolInverterConverter}-->
             <RadioButton GroupName="A" Content="Женский" VerticalAlignment="Center" TabIndex="6" 
-                          IsChecked="{Binding Persone.Female, Mode=TwoWay}"/>
+                          IsChecked="{Binding PersoneContactsData.Persone.Female, Mode=TwoWay}"/>
             <!--Persone can find in AuthorsVMClass.cs-->
             <Button Content="В ч.списке?" Background="Black" Height="30" Width="149" TabIndex="7" Margin="5"
                     Command="{Binding CheckBlackListCommand}"/>
@@ -209,7 +209,7 @@
             </Viewbox>
             <DatePicker  IsDropDownOpen="False" SelectedDateFormat="Short" 
                         MaxWidth="150" TabIndex="9" HorizontalAlignment="Center"
-                        SelectedDate="{Binding Date.DayBirth,Mode=TwoWay}"
+                        SelectedDate="{Binding PersoneContactsData.Date.DayBirth,Mode=TwoWay}"
                          IsEnabled="{Binding ElementName=BirthDate, Path=IsChecked}"/>
 
             <!--Date can find in AuthorsVMClass.cs-->

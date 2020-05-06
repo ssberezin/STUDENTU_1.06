@@ -440,6 +440,8 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
         {   
             string path;            
             path = dialogService.OpenFileDialog("C:\\");
+            if (path == null)
+                return;
             PersoneContactsData.Persone.Photo = File.ReadAllBytes(path);
         }
 

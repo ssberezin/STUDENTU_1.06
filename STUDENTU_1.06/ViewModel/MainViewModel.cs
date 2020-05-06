@@ -31,7 +31,7 @@ namespace STUDENTU_1._06.ViewModel
         public MainViewModel(Window mainWindow, DefaultShowWindowService showWindow)
         {
             Records = new ObservableCollection<Records>();
-            EndDateReception = DateTime.Now.AddHours(-DateTime.Now.Hour).AddMinutes(-DateTime.Now.Minute).AddMilliseconds(-DateTime.Now.Millisecond);
+            EndDateReception = DateTime.Now;//.AddHours(-DateTime.Now.Hour).AddMinutes(-DateTime.Now.Minute).AddMilliseconds(-DateTime.Now.Millisecond);
             StartDateReception = DateTime.Now.AddDays(-10).AddHours(-DateTime.Now.Hour).AddMinutes(-DateTime.Now.Minute).AddMilliseconds(-DateTime.Now.Millisecond);
             showWindow = new DefaultShowWindowService();
             dialogService = new DefaultDialogService();
