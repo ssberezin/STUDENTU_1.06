@@ -160,14 +160,14 @@
                     </DataGridTextColumn.HeaderStyle>
                     <DataGridTextColumn.Header>
                         <DockPanel >
-                            <Button DockPanel.Dock="Right" 
+                            <!--<Button DockPanel.Dock="Right" 
                                     x:Name="btnFilter" Content=" v " FontWeight="ExtraBold" 
                                     Background="White" Foreground="Blue" Margin="3,0,0,0"
                             Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}},
                                     Path=DataContext._Filters.SetDirectionFilterCommand}">
-                            </Button>
+                            </Button>-->
                             <TextBlock Text="Направление" />
-                            <Popup x:Name="popDir" Placement="Bottom"                                   
+                            <!--<Popup x:Name="popDir" Placement="Bottom"                                   
                                    PlacementTarget="{Binding ElementName=btnFilter}" 
                                    IsOpen="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
                                             AncestorType={x:Type Window}},Path=DataContext._Filters.DirrectionFilter,
@@ -206,11 +206,11 @@
                                                         <CheckBox Content="{Binding  DirectionName}" 
                                                                   IsChecked="False"                                                                                                                               
                                                               />
-                                                        <!--Checked="{Binding _Checked, Mode= TwoWay, UpdateSourceTrigger=PropertyChanged}"-->
+                                                        --><!--Checked="{Binding _Checked, Mode= TwoWay, UpdateSourceTrigger=PropertyChanged}"-->
                                                         <!--Unchecked="{Binding ApplyFilters}"-->
                                                         <!--<TextBlock Text="{Binding DirectionName}" Margin="2"
                                                                    TextWrapping="WrapWithOverflow" 
-                                                                   TextAlignment="Center"/>-->
+                                                                   TextAlignment="Center"/>--><!--
                                                     </DockPanel>
 
                                                 </DataTemplate>
@@ -230,7 +230,7 @@
                                         </StackPanel>
                                     </StackPanel>
                                 </Border>
-                            </Popup>
+                            </Popup>-->
                         </DockPanel>
                     </DataGridTextColumn.Header>
 

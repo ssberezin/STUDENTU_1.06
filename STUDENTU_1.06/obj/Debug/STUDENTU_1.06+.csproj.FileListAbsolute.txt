@@ -1225,3 +1225,5 @@ D:\ProjectFix\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\STUDENTU_1.06+.csproj.CopyCo
 D:\ProjectFix\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\STUDENTU_1.06.exe
 D:\ProjectFix\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\STUDENTU_1.06.pdb
 D:\ProjectFix\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\STUDENTU_1.06+.csproj.CoreCompileInputs.cache
+D:\ProjectFix\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\AuthorisationWindow.g.cs
+D:\ProjectFix\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\AuthorisationWindow.baml

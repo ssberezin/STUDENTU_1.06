@@ -14,6 +14,7 @@ using STUDENTU_1._06.Model.DBModelClasses;
 using STUDENTU_1._06.Model.HelpModelClasses.DialogWindows;
 using STUDENTU_1._06.Views.PersoneOperations.AuthorOperationsWindows;
 using STUDENTU_1._06.Views.EditOrderWindows.EditOrderLine;
+using STUDENTU_1._06.Views;
 
 namespace STUDENTU_1._06.ViewModel
 {
@@ -24,7 +25,11 @@ namespace STUDENTU_1._06.ViewModel
       
         private Persone selectedPersone;
         private Window mainWindow;
-        
+
+        _Authorisation AuthorisationTry;//to attempt authorization
+        AuthorisationWindow authorisationWindow;//to attempt authorization
+
+
         IDialogService dialogService;//for show messages in mvvm pattern order
         IShowWindowService showWindow;//for show messages in mvvm pattern order
 
@@ -35,12 +40,25 @@ namespace STUDENTU_1._06.ViewModel
             StartDateReception = DateTime.Now.AddDays(-10).AddHours(-DateTime.Now.Hour).AddMinutes(-DateTime.Now.Minute).AddMilliseconds(-DateTime.Now.Millisecond);
             showWindow = new DefaultShowWindowService();
             dialogService = new DefaultDialogService();
+            
+            AuthorisationTry = new _Authorisation();
+            authorisationWindow = new AuthorisationWindow(this); //to attempt authorization
+            do
+            {
+
+                showWindow.ShowDialog(authorisationWindow);
+            } while (!AuthorisationTry.TrueAuthorisation || !AuthorisationTry.FalseAuthorisation);
+
+
+            // LoadAuthorisation(authorisationWindow);
             LoadData();
             this.mainWindow = mainWindow;            
             this.showWindow = showWindow;
         }
 
-  
+
+     
+
 
         private Author author;
         public Author Author
@@ -128,6 +146,15 @@ namespace STUDENTU_1._06.ViewModel
                     OnPropertyChanged(nameof(EndDateReception));
                 }
             }
+        }
+
+        private void LoadAuthorisation(AuthorisationWindow authorisationWindow)
+        {            
+            do
+            {
+                
+                showWindow.ShowDialog(authorisationWindow);
+            } while (!AuthorisationTry.TrueAuthorisation ||!AuthorisationTry.FalseAuthorisation);            
         }
 
         private void LoadData()
@@ -590,8 +617,8 @@ namespace STUDENTU_1._06.ViewModel
 
         }
 
-      
 
+      
 
     }
 }
