@@ -13,7 +13,9 @@ namespace STUDENTU_1._06
         public MainWindow()
         {
             InitializeComponent();
-            this.DataContext = new MainViewModel(this, new DefaultShowWindowService());
+            //_Authorisation()
+            //this.DataContext = new MainViewModel(this, new DefaultShowWindowService());
+            this.DataContext = new _Authorisation();
         }
 
      

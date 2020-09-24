@@ -41,13 +41,13 @@ namespace STUDENTU_1._06.ViewModel
             showWindow = new DefaultShowWindowService();
             dialogService = new DefaultDialogService();
             
-            AuthorisationTry = new _Authorisation();
-            authorisationWindow = new AuthorisationWindow(this); //to attempt authorization
-            do
-            {
+            //AuthorisationTry = new _Authorisation();
+            //authorisationWindow = new AuthorisationWindow(this); //to attempt authorization
+            //do
+            //{
 
-                showWindow.ShowDialog(authorisationWindow);
-            } while (!AuthorisationTry.TrueAuthorisation || !AuthorisationTry.FalseAuthorisation);
+            //    showWindow.ShowDialog(authorisationWindow);
+            //} while (!AuthorisationTry.TrueAuthorisation || !AuthorisationTry.FalseAuthorisation);
 
 
             // LoadAuthorisation(authorisationWindow);
@@ -148,14 +148,14 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
-        private void LoadAuthorisation(AuthorisationWindow authorisationWindow)
-        {            
-            do
-            {
+        //private void LoadAuthorisation(AuthorisationWindow authorisationWindow)
+        //{            
+        //    do
+        //    {
                 
-                showWindow.ShowDialog(authorisationWindow);
-            } while (!AuthorisationTry.TrueAuthorisation ||!AuthorisationTry.FalseAuthorisation);            
-        }
+        //        showWindow.ShowDialog(authorisationWindow);
+        //    } while (!AuthorisationTry.TrueAuthorisation ||!AuthorisationTry.FalseAuthorisation);            
+        //}
 
         private void LoadData()
         {
