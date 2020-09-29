@@ -27,7 +27,7 @@ namespace STUDENTU_1._06.ViewModel
         private Window mainWindow;
 
         _Authorisation AuthorisationTry;//to attempt authorization
-        AuthorisationWindow authorisationWindow;//to attempt authorization
+       
 
 
         IDialogService dialogService;//for show messages in mvvm pattern order

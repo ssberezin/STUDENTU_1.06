@@ -17,54 +17,99 @@ namespace STUDENTU_1._06.ViewModel
         IDialogService dialogService;
         IShowWindowService showWindow;
 
-        private bool trueAuthorisation;//добро на авторизацию
-        public bool TrueAuthorisation
+        enum CheckUser
         {
-            get { return trueAuthorisation; }
-            set
-            {
-                if (value != trueAuthorisation)
-                {
-                    trueAuthorisation = value;
-                    OnPropertyChanged(nameof(TrueAuthorisation));
-                }
-            }
+            Yes,
+            No,
+            DB_trabl
         }
 
-        private bool falseAuthorisation;//отбой на авторизацию
-        public bool FalseAuthorisation
+
+
+
+        private User user;
+        public User User
         {
-            get { return falseAuthorisation; }
+            get { return user; }
             set
             {
-                if (value != falseAuthorisation)
+                if (value != user)
                 {
-                    falseAuthorisation = value;
-                    OnPropertyChanged(nameof(FalseAuthorisation));
+                    user = value;
+                    OnPropertyChanged(nameof(User));
                 }
             }
         }
 
         public _Authorisation()
         {
-            FalseAuthorisation = false;
-            TrueAuthorisation = false;
+            User = new User();
+
         }
        
-        private RelayCommand setTrueAuthorisationCommand;
-        public RelayCommand SetTrueAuthorisationCommand => setTrueAuthorisationCommand ?? (setTrueAuthorisationCommand = new RelayCommand(
+        private RelayCommand checkPersoneCommand;
+        public RelayCommand CheckPersone => checkPersoneCommand ?? (checkPersoneCommand = new RelayCommand(
                     (obj) =>
                     {                        
-                        TrueAuthorisation = true;
+                       //сначала делаем проверку на "не первый ли пользователь"
+                       //то есть есть ли вообще записи в таблице пользователей
+                       // если нет, то нужно предложить такую запись создать
+                       //если есть, то работаем процедуру проверки данных для идентификации с последующей авторизацией
+                       
+
                     }
                     ));
 
-        private RelayCommand setFalseAuthorisationCommand;
-        public RelayCommand SetFalseAuthorisationCommand => setFalseAuthorisationCommand ?? (setFalseAuthorisationCommand = new RelayCommand(
+        private RelayCommand cancelAuthorezitionCommand;
+        public RelayCommand CancelAuthorezitionCommand => cancelAuthorezitionCommand ?? (cancelAuthorezitionCommand = new RelayCommand(
                     (obj) =>
                     {
-                        FalseAuthorisation = true;
+                       
                     }
                     ));
+
+
+        private CheckUser FirstUserCheck ()
+        {
+            CheckUser chu;
+
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                try
+                {
+                    if (db.Users.Count() == 0)
+
+                        CheckUser.No ;
+                    else
+                        return 1;
+                    
+
+
+                }
+                catch (ArgumentNullException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (OverflowException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+            }
+            return 2;
+        }
+
+
     }
 }

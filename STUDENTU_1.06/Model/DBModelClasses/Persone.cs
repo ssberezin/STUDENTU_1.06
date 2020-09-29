@@ -22,6 +22,7 @@ namespace STUDENTU_1._06.Model
             this.Name = "";
             this.NickName = null;
             
+
         }
 
         public int PersoneId { get; set; }
@@ -42,6 +43,8 @@ namespace STUDENTU_1._06.Model
             }
         }
 
+        //каждый автор имеет свое сокращенное обозначение. Для большего удобства восприятия информации.
+        //each author has his own abbreviation. For greater convenience of information perception.
         [Column("NickName", TypeName = "nvarchar")]
         [MaxLength(50)]        
         private string nickName;
@@ -57,6 +60,8 @@ namespace STUDENTU_1._06.Model
                 }
             }
         }
+
+        
 
         [Column("Surname", TypeName = "nvarchar")]
         [MaxLength(50)]

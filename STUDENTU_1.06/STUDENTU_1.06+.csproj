@@ -151,9 +151,6 @@
     <Compile Include="ViewModel\_Direction.cs" />
     <Compile Include="ViewModel\_University.cs" />
     <Compile Include="ViewModel\_WorkType.cs" />
-    <Compile Include="Views\AuthorisationWindow.xaml.cs">
-      <DependentUpon>AuthorisationWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\EditOrderWindows\ContactsWindows\CompareContatctsWindow.xaml.cs">
       <DependentUpon>CompareContatctsWindow.xaml</DependentUpon>
     </Compile>
@@ -191,10 +188,6 @@
       <DependentUpon>EditAuthorStatusWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="ViewModel\FirstAfterMein.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\AuthorisationWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
