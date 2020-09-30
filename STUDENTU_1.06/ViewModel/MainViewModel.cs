@@ -33,14 +33,14 @@ namespace STUDENTU_1._06.ViewModel
         IDialogService dialogService;//for show messages in mvvm pattern order
         IShowWindowService showWindow;//for show messages in mvvm pattern order
 
-        public MainViewModel(Window mainWindow, DefaultShowWindowService showWindow)
+        public MainViewModel(Window mainWindow, DefaultShowWindowService showWindow, int userId)
         {
             Records = new ObservableCollection<Records>();
             EndDateReception = DateTime.Now;//.AddHours(-DateTime.Now.Hour).AddMinutes(-DateTime.Now.Minute).AddMilliseconds(-DateTime.Now.Millisecond);
             StartDateReception = DateTime.Now.AddDays(-10).AddHours(-DateTime.Now.Hour).AddMinutes(-DateTime.Now.Minute).AddMilliseconds(-DateTime.Now.Millisecond);
             showWindow = new DefaultShowWindowService();
             dialogService = new DefaultDialogService();
-            
+            User usver = FindeUser(userId);
             //AuthorisationTry = new _Authorisation();
             //authorisationWindow = new AuthorisationWindow(this); //to attempt authorization
             //do
@@ -148,14 +148,67 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
+        private User usver;
+        public User Usver
+        {
+            get { return usver; }
+            set
+            {
+                if (usver != value)
+                {
+                    usver = value;
+                    OnPropertyChanged(nameof(Usver));
+                }
+            }
+        }
+
         //private void LoadAuthorisation(AuthorisationWindow authorisationWindow)
         //{            
         //    do
         //    {
-                
+
         //        showWindow.ShowDialog(authorisationWindow);
         //    } while (!AuthorisationTry.TrueAuthorisation ||!AuthorisationTry.FalseAuthorisation);            
         //}
+
+        private  User FindeUser(int usverId)
+        {
+            
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                try
+                {                   
+                    var usver = db.Users.Where(o => o.UserId == usverId).FirstOrDefault(); ;
+                    User u = new User() {
+                    UserId=usver.UserId,
+                    UserNickName = usver.UserNickName,
+                    Pass = usver.Pass};
+                    return u;                   
+                }
+                catch (ArgumentNullException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (OverflowException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                return null;
+            }
+        }
+
 
         private void LoadData()
         {

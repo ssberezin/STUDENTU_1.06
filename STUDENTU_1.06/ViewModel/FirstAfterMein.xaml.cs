@@ -9,10 +9,10 @@ namespace STUDENTU_1._06.ViewModel
     /// </summary>
     public partial class FirstAfterMein : Window
     {
-        public FirstAfterMein()
+        public FirstAfterMein(int userId)
         {
             InitializeComponent();
-            this.DataContext = new MainViewModel(this, new DefaultShowWindowService());
+            this.DataContext = new MainViewModel(this, new DefaultShowWindowService(), userId);
         }
     }
 }
