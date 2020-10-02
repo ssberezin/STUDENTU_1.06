@@ -26,7 +26,7 @@ namespace STUDENTU_1._06.ViewModel
         private Persone selectedPersone;
         private Window mainWindow;
 
-        _Authorisation AuthorisationTry;//to attempt authorization
+       // _Authorisation AuthorisationTry;//to attempt authorization
        
 
 
@@ -40,7 +40,7 @@ namespace STUDENTU_1._06.ViewModel
             StartDateReception = DateTime.Now.AddDays(-10).AddHours(-DateTime.Now.Hour).AddMinutes(-DateTime.Now.Minute).AddMilliseconds(-DateTime.Now.Millisecond);
             showWindow = new DefaultShowWindowService();
             dialogService = new DefaultDialogService();
-            User usver = FindeUser(userId);
+            Usver = FindeUser(userId);
             //AuthorisationTry = new _Authorisation();
             //authorisationWindow = new AuthorisationWindow(this); //to attempt authorization
             //do
@@ -282,7 +282,8 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
-
+        //от этого метода желательно уйти в дальнейшем, но пока лень переделывать
+        //он не столь ресурсозатратен...
         private void LoadPreviosData()//setting default values in DB ​​on first start
         {
             using (StudentuConteiner db = new StudentuConteiner())

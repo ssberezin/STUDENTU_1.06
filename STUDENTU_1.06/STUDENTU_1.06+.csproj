@@ -140,6 +140,7 @@
       <DependentUpon>FirstAfterMein.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\PersoneOperations\AuthorsOperationsVM\AuthorsVMClass.cs" />
+    <Compile Include="ViewModel\PersoneOperations\PersoneOperations\PersoneOps.cs" />
     <Compile Include="ViewModel\_Authorisation.cs" />
     <Compile Include="ViewModel\_AuthorStatus.cs" />
     <Compile Include="ViewModel\_Contacts.cs" />
@@ -186,6 +187,9 @@
     </Compile>
     <Compile Include="Views\PersoneOperations\AuthorOperationsWindows\EditAuthorStatusWindow.xaml.cs">
       <DependentUpon>EditAuthorStatusWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PersoneOperations\UserOperations\UserRegistration.xaml.cs">
+      <DependentUpon>UserRegistration.xaml</DependentUpon>
     </Compile>
     <Page Include="ViewModel\FirstAfterMein.xaml">
       <SubType>Designer</SubType>
@@ -367,6 +371,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\PersoneOperations\UserOperations\UserRegistration.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -409,5 +417,6 @@
   <ItemGroup>
     <Resource Include="Images\for_filter.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

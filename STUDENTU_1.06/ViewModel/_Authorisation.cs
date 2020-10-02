@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using STUDENTU_1._06.Model.HelpModelClasses.DialogWindows;
 using STUDENTU_1._06.Model.HelpModelClasses.ShowWindows;
+using STUDENTU_1._06.Views.PersoneOperations.UserOperations;
 using System.ComponentModel;
 
 namespace STUDENTU_1._06.ViewModel
@@ -60,17 +61,18 @@ namespace STUDENTU_1._06.ViewModel
                         {
                             case CheckUser.Yes:
                                 //тут уже сверяем пару логин-пароль на наличие в БД
-                                if (Identification(User) != null)                                
-                                    AutentificationUser(User.UserId);                                
+                                if (Identification(User) != null)
+                                    CallFirstWindow(User.UserId);                                
                                 else
                                     dialogService.ShowMessage("Не верная пара логин-пароль");                                                                       
                                 break;
                             case CheckUser.No:
-                                //тут над инициировать процедуру регистрации нового пользователя. Типа с правами админа
+                                //тут нужно инициировать процедуру регистрации первого пользователя. Типа с правами админа
+                                //также актуально только при первом старте приложения
 
                                 break;
                             case CheckUser.DB_trabl:
-                                //а тут над вывести месс о том, что траблы с конноктом с БД и типа делай что хош
+                                dialogService.ShowMessage("Проблемы установки связи с базой данных...");
                                 break;                        }
 
                     }
@@ -84,7 +86,8 @@ namespace STUDENTU_1._06.ViewModel
                     }
                     ));
 
-
+        //проверка наличия пользователей как таковых в БД. Нужно для первого запуска 
+        // check for the presence of users as such in the database. Needed for the first launch
         private CheckUser FirstUserCheck ()
         {  
             using (StudentuConteiner db = new StudentuConteiner())
@@ -160,10 +163,22 @@ namespace STUDENTU_1._06.ViewModel
             return null;
         }
 
-        private void AutentificationUser(int usverId)
+        //Call first window after authorezation
+        private void CallFirstWindow(int userId)
         {
-            
+            FirstAfterMein FirstAfterMeinWindow;
+            FirstAfterMeinWindow =new FirstAfterMein(userId);
+            showWindow.ShowWindow(FirstAfterMeinWindow);
         }
+
+        //Call window of user registration
+        private void UsverRegistration()
+        {            
+            UserRegistration usver;
+            usver = new UserRegistration();
+            showWindow.ShowWindow(usver);
+        }
+
     }
     
 
