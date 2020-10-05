@@ -8,7 +8,7 @@
         xmlns:scm1="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         mc:Ignorable="d"
          WindowStartupLocation="CenterScreen"
-        Title="Авторизация" MaxHeight="150" MaxWidth="300" MinHeight="150" MinWidth="300" Height="150" Width="300"
+        Title="Авторизация" MaxHeight="200" MaxWidth="375" MinHeight="200" MinWidth="375" Height="200" Width="375"
         Background="LightGray">
     <Window.InputBindings>
         <KeyBinding Gesture="Esc" Command="{Binding CloseWindowCommand}"
@@ -42,47 +42,58 @@
             <RowDefinition Height="0.45*"/>
             <RowDefinition Height="0.75*"/>
         </Grid.RowDefinitions>
-        <Viewbox Grid.Row="1"  MaxHeight="15"  Stretch="Uniform" Margin="5" HorizontalAlignment="Center" 
+        <Viewbox Grid.Row="1"  MaxHeight="20"  Stretch="Uniform" Margin="5" HorizontalAlignment="Center" 
                      VerticalAlignment="Stretch" >
             <TextBlock  Text="Пользователь:" FontWeight="Bold"/>
         </Viewbox>
+        
         <TextBox x:Name="Login" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" Margin="5" 
-                 Background="White" 
-                 Text="{Binding  User.UserNickName , Mode=TwoWay,
-            UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap"
-                 SpellCheck.IsEnabled="True" Language="ru-ru" TextAlignment="Center"
-                 TabIndex="0"/>
-        <Viewbox Grid.Row="2"  MaxHeight="15"  Stretch="Uniform" Margin="5" HorizontalAlignment="Center" 
+                 Background="White"  MaxLength="30"
+                 Text="{Binding  User.UserNickName , Mode=TwoWay }" VerticalContentAlignment="Center"
+                  TextAlignment="Left" TabIndex="0"/>
+        <Viewbox Grid.Row="2"  MaxHeight="20"  Stretch="Uniform" Margin="5" HorizontalAlignment="Center" 
                      VerticalAlignment="Stretch" >
             <TextBlock  Text="Пароль:" FontWeight="Bold" />
         </Viewbox>
-        <TextBox x:Name="Password" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2" Margin="5" 
-                 Background="White" 
-                 Text="{Binding  User.Pass , Mode=TwoWay,
-            UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap"
-                 SpellCheck.IsEnabled="True" Language="ru-ru" TextAlignment="Center"
-                 TabIndex="1"/>
+        <TextBox x:Name="Pass" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2" Margin="5" 
+                 Background="White"  MaxLength="30"
+                 Text="{Binding  User.Pass , Mode=TwoWay}" VerticalContentAlignment="Center"
+                 TextAlignment="Left"  TabIndex="1"/>
 
         <Viewbox MaxHeight="18"  Stretch="Uniform" Margin="2" HorizontalAlignment="Right" Grid.Row="3"
                  Grid.ColumnSpan="3"
                      VerticalAlignment="Bottom" >
-            <TextBlock Text="Не зарегистрированны?" FontWeight="Bold" Cursor="Hand"
-                           Foreground="Blue">
-                <TextBlock.InputBindings>
-                    <MouseBinding Command="{Binding UserOperations}" MouseAction="LeftClick"/>
-                </TextBlock.InputBindings>                
-            </TextBlock>
+            <!--а тут у нас небольшой кАстыль....(-->
+            <Grid>
+                <Viewbox MaxHeight="18"  Stretch="Uniform" Margin="2" HorizontalAlignment="Right"
+                 
+                     VerticalAlignment="Bottom" >
+                    <TextBlock Text="Не зарегистрированны?" FontWeight="Bold" Cursor="Hand"
+                           Foreground="Blue" >
+                    </TextBlock>
+                 </Viewbox>
+
+                <Button Content="Не зарегистрированны?" FontWeight="Bold" Cursor="Hand"
+                           Foreground="Blue"  Opacity="0"
+                     Command="{Binding  NewRigistrationCommand }"
+                 CommandParameter="{Binding DataContext, RelativeSource=
+                    {RelativeSource AncestorType={x:Type Window}}}">
+
+                </Button>
+            </Grid>
+            
+            
                        
         </Viewbox>
         <Button  Grid.Row="4"  Content="Ok" Background="Green"                 
                 TabIndex="2"
-                   Command="{Binding AuthorisationTry.checkPersoneCommand}"
+                   Command="{Binding CheckPersoneCommand}"
                  CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}">          
         </Button>
         <Button  Grid.Row="4" Grid.Column="2"  Content="Отмена" Background="Red"                
                 TabIndex="3"
-                 Command="{Binding AuthorisationTry.CancelAuthorezitionCommand}"
+                 Command="{Binding CancelAuthorezitionCommand}"
                 CommandParameter="{Binding DataContext, RelativeSource=
                     {RelativeSource AncestorType={x:Type Window}}}">
         </Button>

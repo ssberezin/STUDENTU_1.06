@@ -45,11 +45,12 @@ namespace STUDENTU_1._06.ViewModel
         public _Authorisation()
         {
             User = new User();
-
+            showWindow = new DefaultShowWindowService();
+            dialogService = new DefaultDialogService();
         }
        
         private RelayCommand checkPersoneCommand;
-        public RelayCommand CheckPersone => checkPersoneCommand ?? (checkPersoneCommand = new RelayCommand(
+        public RelayCommand CheckPersoneCommand => checkPersoneCommand ?? (checkPersoneCommand = new RelayCommand(
                     (obj) =>
                     {
                         //сначала делаем проверку на "не первый ли пользователь"
@@ -67,13 +68,16 @@ namespace STUDENTU_1._06.ViewModel
                                     dialogService.ShowMessage("Не верная пара логин-пароль");                                                                       
                                 break;
                             case CheckUser.No:
-                                //тут нужно инициировать процедуру регистрации первого пользователя. Типа с правами админа
+                                //регистрация первого пользователя. Типа с правами админа
                                 //также актуально только при первом старте приложения
-
+                                UserRegistration usver;
+                                usver = new UserRegistration();
+                                showWindow.ShowWindow(usver);
                                 break;
                             case CheckUser.DB_trabl:
                                 dialogService.ShowMessage("Проблемы установки связи с базой данных...");
-                                break;                        }
+                                break;
+                        }
 
                     }
                     ));
@@ -94,6 +98,8 @@ namespace STUDENTU_1._06.ViewModel
             {
                 try
                 {
+                    //int u = db.Universities.Count();
+                    //int g = db.Users.Count();
                     if (db.Users.Count() == 0)
                         return CheckUser.No ;
                     else
@@ -174,10 +180,35 @@ namespace STUDENTU_1._06.ViewModel
         //Call window of user registration
         private void UsverRegistration()
         {            
-            UserRegistration usver;
-            usver = new UserRegistration();
-            showWindow.ShowWindow(usver);
+           
+
+            switch (FirstUserCheck())
+            {
+                case CheckUser.Yes:                   
+                        dialogService.ShowMessage("Обратитесь к администратору");
+                    break;
+                case CheckUser.No:
+                    UserRegistration usver;
+                    usver = new UserRegistration();
+                    showWindow.ShowWindow(usver);
+                    break;
+                case CheckUser.DB_trabl:
+                    dialogService.ShowMessage("Проблемы установки связи с базой данных...");
+                    break;
+            }
+
+            
         }
+
+
+        //for new user regigtration 
+        private RelayCommand newRigistrationCommand;
+        public RelayCommand NewRigistrationCommand => newRigistrationCommand ?? (newRigistrationCommand = new RelayCommand(
+                   (obj) =>
+                   {
+                       UsverRegistration();
+                   }
+                   ));
 
     }
     

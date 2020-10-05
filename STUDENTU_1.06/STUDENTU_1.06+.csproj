@@ -136,7 +136,7 @@
     <Compile Include="Model\HelpModelClasses\DialogWindows\IDialogService.cs" />
     <Compile Include="Model\HelpModelClasses\PersoneContactsData.cs" />
     <Compile Include="ViewModel\Filters\_Filters.cs" />
-    <Compile Include="ViewModel\FirstAfterMein.xaml.cs">
+    <Compile Include="Views\FirstAfterMein.xaml.cs">
       <DependentUpon>FirstAfterMein.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\PersoneOperations\AuthorsOperationsVM\AuthorsVMClass.cs" />
@@ -191,7 +191,7 @@
     <Compile Include="Views\PersoneOperations\UserOperations\UserRegistration.xaml.cs">
       <DependentUpon>UserRegistration.xaml</DependentUpon>
     </Compile>
-    <Page Include="ViewModel\FirstAfterMein.xaml">
+    <Page Include="Views\FirstAfterMein.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

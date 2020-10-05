@@ -25,7 +25,7 @@ namespace STUDENTU_1._06.Model
 
         //for authorezition by user
         [Column("UserNickName", TypeName = "nvarchar")]
-        [MaxLength(50)]
+        [MaxLength(30)]
         private string userNickName;
         public string UserNickName
         {
@@ -42,7 +42,7 @@ namespace STUDENTU_1._06.Model
 
         //Password field
         [Column("Pass", TypeName = "nvarchar")]
-        [MaxLength(50)]
+        [MaxLength(30)]
         private string pass;
         public string Pass
         {
@@ -51,8 +51,8 @@ namespace STUDENTU_1._06.Model
             {
                 if (value != pass)
                 {
-                    userNickName = value;
-                    OnPropertyChanged(nameof(pass));
+                    pass = value;
+                    OnPropertyChanged(nameof(Pass));
                 }
             }
         }
