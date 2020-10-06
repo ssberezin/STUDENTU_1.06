@@ -136,6 +136,7 @@
     <Compile Include="Model\HelpModelClasses\DialogWindows\IDialogService.cs" />
     <Compile Include="Model\HelpModelClasses\PersoneContactsData.cs" />
     <Compile Include="ViewModel\Filters\_Filters.cs" />
+    <Compile Include="ViewModel\PersoneOperations\PersoneOperations\UserOps.cs" />
     <Compile Include="Views\FirstAfterMein.xaml.cs">
       <DependentUpon>FirstAfterMein.xaml</DependentUpon>
     </Compile>

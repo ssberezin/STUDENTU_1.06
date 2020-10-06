@@ -43,6 +43,24 @@ namespace STUDENTU_1._06.Model
             }
         }
 
+        //поле для отображение информации о том, от куда информация об организации
+        // field for displaying information about where the information about the organization is from
+        [Column("Source", TypeName = "nvarchar")]
+        [MaxLength(50)]
+        private string source;
+        public string Source
+        {
+            get { return source; }
+            set
+            {
+                if (value != source)
+                {
+                    source = value;
+                    OnPropertyChanged(nameof(Source));
+                }
+            }
+        }
+
         //каждый автор имеет свое сокращенное обозначение. Для большего удобства восприятия информации.
         //each author has his own abbreviation. For greater convenience of information perception.
         [Column("NickName", TypeName = "nvarchar")]

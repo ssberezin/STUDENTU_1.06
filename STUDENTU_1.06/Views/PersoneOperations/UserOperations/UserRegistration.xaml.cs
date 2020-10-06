@@ -23,7 +23,7 @@ namespace STUDENTU_1._06.Views.PersoneOperations.UserOperations
         public UserRegistration()
         {
             InitializeComponent();
-            this.DataContext = new PersoneOps();
+            this.DataContext = new UserOps();
         }
     }
 }

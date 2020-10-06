@@ -46,21 +46,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
         }        
 
         
-        //simple "musthave" because whithot it we can't do any operations in this class
-        //in particular, in order to be able to make further changes to the Persone database table
-        //private Persone persone;
-        //public Persone Persone
-        //{
-        //    get { return persone; }
-        //    set
-        //    {
-        //        if (persone != value)
-        //        {
-        //            persone = value;
-        //            OnPropertyChanged(nameof(Persone));
-        //        }
-        //    }
-        //}
+
 
 
 
@@ -80,20 +66,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
             }
         }
 
-        //to be able to make further changes to the Authors database table
-        //private Author author;
-        //public Author Author
-        //{
-        //    get { return author; }
-        //    set
-        //    {
-        //        if (author != value)
-        //        {
-        //            author = value;
-        //            OnPropertyChanged(nameof(Author));
-        //        }
-        //    }
-        //}
+
 
         private AuthorsRecord authorsRecord;
         public AuthorsRecord AuthorsRecord
@@ -123,20 +96,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
             }
         }
 
-        //to be able to make further changes to the Dates database table
-        //private Dates date;
-        //public Dates Date
-        //{
-        //    get { return date; }
-        //    set
-        //    {
-        //        if (date != value)
-        //        {
-        //            date = value;
-        //            OnPropertyChanged(nameof(Date));
-        //        }
-        //    }
-        //}
+        
 
         //to be able to make further changes to the Subjects database table
         private _Subject _subj;
@@ -169,20 +129,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.AuthorsOperationsVM
         }
 
 
-        //to be able to make further changes to the PersoneDescription database table
-        //private PersoneDescription personeDescription;
-        //public PersoneDescription PersoneDescription
-        //{
-        //    get { return personeDescription; }
-        //    set
-        //    {
-        //        if (personeDescription != value)
-        //        {
-        //            personeDescription = value;
-        //            OnPropertyChanged(nameof(PersoneDescription));
-        //        }
-        //    }
-        //}
+      
         //Эта фича пидумана в попытке избежать лишних запросов при срабатывании PropertyChanged
         private PersoneContactsData personeContactsData;
         public PersoneContactsData PersoneContactsData

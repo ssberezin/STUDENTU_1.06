@@ -15,6 +15,7 @@ namespace STUDENTU_1._06.Model.HelpModelClasses
             this.Contacts = new Contacts();
             this.PersoneDescription = new PersoneDescription();
             this.Date = new Dates();
+            this.User = new User();
         }
 
       
@@ -61,6 +62,20 @@ namespace STUDENTU_1._06.Model.HelpModelClasses
                 {
                     persone = value;
                     OnPropertyChanged(nameof(Persone));
+                }
+            }
+        }
+
+        private User user;
+        public User User
+        {
+            get { return user; }
+            set
+            {
+                if (user != value)
+                {
+                    user = value;
+                    OnPropertyChanged(nameof(User));
                 }
             }
         }
