@@ -1224,9 +1224,11 @@ D:\ProjectFix\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\STUDENTU_1.06+.csproj.CopyCo
 D:\ProjectFix\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\STUDENTU_1.06.exe
 D:\ProjectFix\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\STUDENTU_1.06.pdb
 D:\ProjectFix\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\STUDENTU_1.06+.csproj.CoreCompileInputs.cache
-D:\ProjectFix\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\AuthorisationWindow.g.cs
-D:\ProjectFix\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\AuthorisationWindow.baml
 E:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\PersoneOperations\UserOperations\UserRegistration.g.cs
 E:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\PersoneOperations\UserOperations\UserRegistration.baml
 E:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\FirstAfterMein.g.cs
 E:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\FirstAfterMein.baml
+D:\ProjectFix\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\FirstAfterMein.g.cs
+D:\ProjectFix\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\PersoneOperations\UserOperations\UserRegistration.g.cs
+D:\ProjectFix\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\FirstAfterMein.baml
+D:\ProjectFix\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\PersoneOperations\UserOperations\UserRegistration.baml

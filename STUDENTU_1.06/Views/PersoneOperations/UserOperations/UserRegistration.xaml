@@ -199,8 +199,6 @@
                      VerticalAlignment="Stretch">
                     <TextBlock Text="Пол:" FontWeight="Bold" Foreground="Brown"/>
                 </Viewbox>
-                <RadioButton GroupName="A" Content="Мужской" VerticalAlignment="Center" TabIndex="5"
-                          IsChecked="{Binding Usver.Persone.Male, Mode=TwoWay}" />
                 <!--Persone can find in AuthorsVMClass.cs-->
                 <!--Converter={StaticResource boolInverterConverter}-->
                 <RadioButton GroupName="A" Content="Женский" VerticalAlignment="Center" TabIndex="6" 
@@ -240,9 +238,6 @@
                      Background="White" >
                 <!--Status can fint in _AuthorStatus.cs-->
             </ComboBox>
-            <Button x:Name="AddDStatus" Width="40" Background="Gray" Content="..." TabIndex="11"
-                    Command="{Binding NewEditAuthorStatusCommand}" CommandParameter="{Binding DataContext, RelativeSource=
-                    {RelativeSource AncestorType={x:Type Window}}}"/>
             <!--Command NewEditStatusCommand can find in _AuthorStatus.cs-->
         </WrapPanel>
 

@@ -15,10 +15,12 @@ using STUDENTU_1._06.Model.HelpModelClasses.DialogWindows;
 using STUDENTU_1._06.Views.PersoneOperations.AuthorOperationsWindows;
 using STUDENTU_1._06.Views.EditOrderWindows.EditOrderLine;
 using STUDENTU_1._06.Views;
-
+using System.IO;
 
 namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
 {
+
+
     class UserOps : Helpes.ObservableObject
     {
         IDialogService dialogService;//for show messages in mvvm pattern order
@@ -60,13 +62,64 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
             }
         }
 
-        public UserOps()
+
+
+        private _Contacts _contacts;
+        public _Contacts _Contacts
         {
-            PersoneContactsData Usver = new PersoneContactsData();
+            get { return _contacts; }
+            set
+            {
+                if (_contacts != value)
+                {
+                    _contacts = value;
+                    OnPropertyChanged(nameof(_Contacts));
+                }
+            }
+        }
 
-
+        public UserOps()
+        {            
+            DefaultDataLoad();
         }
 
 
+        private void DefaultDataLoad()
+        {
+            _Contacts = new _Contacts();
+            DefaultPhoto = "default_avatar.png";
+            Usver = new PersoneContactsData();            
+            dialogService = new DefaultDialogService();
+            showWindow = new DefaultShowWindowService();
+        }
+
+
+        //==================================Command for add new photo to persone profile================
+        private RelayCommand openFileDialogCommand;
+        public RelayCommand OpenFileDialogCommand => openFileDialogCommand ?? (openFileDialogCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        PathToFile();
+                    }
+                    ));
+        private void PathToFile()
+        {
+            string path;
+            path = dialogService.OpenFileDialog("C:\\");
+            if (path == null)
+                return;
+            Usver.Persone.Photo = File.ReadAllBytes(path);
+        }
+
+
+        //=====================Command for call AddContactsWindow.xaml ======================================
+        private RelayCommand newEditContactsCommand;
+        public RelayCommand NewEditContactsCommand => newEditContactsCommand ??
+            (newEditContactsCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        _Contacts.NewEditContacts(new AddContactsWindow(obj));
+                    }
+                    ));
     }
 }

@@ -130,6 +130,7 @@
     <Compile Include="Model\DBModelClasses\AuthorStatus.cs" />
     <Compile Include="Model\DBModelClasses\Sourse.cs" />
     <Compile Include="Model\DBModelClasses\University.cs" />
+    <Compile Include="Model\DBModelClasses\UserAccessRights.cs" />
     <Compile Include="Model\HelpModelClasses\AuthorsRecord.cs" />
     <Compile Include="Model\HelpModelClasses\BlackListHelpModel.cs" />
     <Compile Include="Model\HelpModelClasses\DialogWindows\DefaultDialogService.cs" />

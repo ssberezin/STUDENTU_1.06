@@ -10,6 +10,7 @@ using STUDENTU_1._06.Model.HelpModelClasses.DialogWindows;
 using STUDENTU_1._06.Model.HelpModelClasses.ShowWindows;
 using STUDENTU_1._06.Views.PersoneOperations.UserOperations;
 using System.ComponentModel;
+using System.IO;
 
 namespace STUDENTU_1._06.ViewModel
 {
@@ -25,8 +26,34 @@ namespace STUDENTU_1._06.ViewModel
             DB_trabl
         }
 
+        ////for display default image
+        //private string defaultPhoto;
+        //public string DefaultPhoto
+        //{
+        //    set
+        //    {
+        //        if (defaultPhoto != value)
+        //        {
+        //            defaultPhoto = value;
+        //            OnPropertyChanged(nameof(DefaultPhoto));
+        //        }
+        //    }
+        //    get { return "/STUDENTU_1.06;component/Images/" + defaultPhoto; }
+        //}
 
-
+        //private _Contacts _contacts;
+        //public _Contacts _Contacts
+        //{
+        //    get { return _contacts; }
+        //    set
+        //    {
+        //        if (_contacts != value)
+        //        {
+        //            _contacts = value;
+        //            OnPropertyChanged(nameof(_Contacts));
+        //        }
+        //    }
+        //}
 
         private User user;
         public User User
@@ -44,11 +71,20 @@ namespace STUDENTU_1._06.ViewModel
 
         public _Authorisation()
         {
-            User = new User();
-            showWindow = new DefaultShowWindowService();
-            dialogService = new DefaultDialogService();
+            DefaultDataLoad();            
         }
-       
+
+        private void DefaultDataLoad()
+        {
+            //_Contacts = new _Contacts();
+            //DefaultPhoto = "default_avatar.png";
+            User = new User();
+            dialogService = new DefaultDialogService();
+            showWindow = new DefaultShowWindowService();
+        }
+
+
+
         private RelayCommand checkPersoneCommand;
         public RelayCommand CheckPersoneCommand => checkPersoneCommand ?? (checkPersoneCommand = new RelayCommand(
                     (obj) =>
@@ -209,9 +245,6 @@ namespace STUDENTU_1._06.ViewModel
                        UsverRegistration();
                    }
                    ));
-
     }
     
-
-
 }
