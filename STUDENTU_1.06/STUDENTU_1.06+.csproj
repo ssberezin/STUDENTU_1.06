@@ -130,7 +130,6 @@
     <Compile Include="Model\DBModelClasses\AuthorStatus.cs" />
     <Compile Include="Model\DBModelClasses\Sourse.cs" />
     <Compile Include="Model\DBModelClasses\University.cs" />
-    <Compile Include="Model\DBModelClasses\UserAccessRights.cs" />
     <Compile Include="Model\HelpModelClasses\AuthorsRecord.cs" />
     <Compile Include="Model\HelpModelClasses\BlackListHelpModel.cs" />
     <Compile Include="Model\HelpModelClasses\DialogWindows\DefaultDialogService.cs" />
@@ -147,7 +146,6 @@
     <Compile Include="ViewModel\_AuthorStatus.cs" />
     <Compile Include="ViewModel\_Contacts.cs" />
     <Compile Include="ViewModel\_Evaluation.cs" />
-    <Compile Include="ViewModel\_MasterClass.cs" />
     <Compile Include="ViewModel\_Source.cs" />
     <Compile Include="ViewModel\_Status.cs" />
     <Compile Include="ViewModel\_Subject.cs" />

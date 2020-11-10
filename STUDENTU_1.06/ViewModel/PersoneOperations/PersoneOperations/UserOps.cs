@@ -26,9 +26,9 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
         IDialogService dialogService;//for show messages in mvvm pattern order
         IShowWindowService showWindow;//for show messages in mvvm pattern order
 
+        public ObservableCollection<string> AccessNameList { get; set; }
 
 
-       
 
         //for display default image
         private string defaultPhoto;
@@ -88,7 +88,10 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
         {
             _Contacts = new _Contacts();
             DefaultPhoto = "default_avatar.png";
-            Usver = new PersoneContactsData();            
+            Usver = new PersoneContactsData();
+            //  Usver.User.AccessName = NameOfUserAccess.FullAdmin;
+            AccessNameList.Add("Администратор");
+            AccessNameList.Add("Полный админичтратор");
             dialogService = new DefaultDialogService();
             showWindow = new DefaultShowWindowService();
         }
