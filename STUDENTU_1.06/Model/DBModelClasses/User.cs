@@ -18,18 +18,33 @@ using System.ComponentModel;
 
 namespace STUDENTU_1._06.Model
 {
-    public enum NameOfUserAccess
-    {
-        FullAdmin,
-        Admin
-    }
+    //public enum NameOfUserAccess
+    //{
+    //    FullAdmin,
+    //    Admin
+    //}
 
     public class User : Helpes.ObservableObject
     {
+        //[Column("AccessName", TypeName = "nvarchar")]
+        //[MaxLength(50)]
+        //private NameOfUserAccess accessName;
+        //public NameOfUserAccess AccessName
+        //{
+        //    get { return accessName; }
+        //    set
+        //    {
+        //        if (value != accessName)
+        //        {
+        //            accessName = value;
+        //            OnPropertyChanged(nameof(AccessName));
+        //        }
+        //    }
+        //}
         [Column("AccessName", TypeName = "nvarchar")]
         [MaxLength(50)]
-        private NameOfUserAccess accessName;
-        public NameOfUserAccess AccessName
+        private string accessName;
+        public string AccessName
         {
             get { return accessName; }
             set
