@@ -55,5 +55,37 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
         {
 
         }
+
+
+        //chek for  validation of PersoneName, PersoneSurname, Patronimic, Direction, Contacts data
+        // PersoneName, PersoneSurname, Patronimic -  have to be not empty 
+        // Direction - have to be bigger then 0. 
+        //Contacts data - som of contacts entries have to be not empty
+        public string ValidPersoneDataCheck(string PersoneName, string PersoneSurname, string Patronimic,
+            int DirCount, bool ContactsValidation)
+        {        
+            if (EmptyStringValidation(PersoneName) != null ||
+                EmptyStringValidation(PersoneSurname) != null ||
+                EmptyStringValidation(Patronimic) != null)
+                return "Какое-то из обязательных полей осталось пустым или заполнено не корректно";
+            if ( DirCount == 0 )
+                return "НЕ добавлено ни одного направления" ;
+            if (!ContactsValidation)
+                return "Ни одно из полей контактных данных не заполнено";           
+            
+            return null;
+        }
+
+        private string EmptyStringValidation(string str)
+        {
+            string error;
+            error = null;
+            if (str == null)
+                return null;
+            str = str.Trim(' ');
+            if (str.Length < 2)
+                error = "Какое-то из обязательных полей осталось пустым или заполнено не корректно";
+            return error;
+        }
     }
 }

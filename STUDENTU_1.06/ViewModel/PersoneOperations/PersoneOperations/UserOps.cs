@@ -142,25 +142,31 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
             {
                 try
                 {
-                    //string errValidation = ValidAuthorDataCheck();
-                    //if (errValidation != null)
-                    //{
-                    //    errValidation += "\n\n Данные автора НЕ были сохранены";
-                    //    dialogService.ShowMessage(errValidation);
-                    //    return;
-                    //}
-                    //else
-                    //{
-                    //    //if we  need to modified entrie
-                    //    if (PersoneContactsData.Author.AuthorId != 0)
-                    //    {
-                    //        db.Entry(PersoneContactsData.Persone).State = EntityState.Modified;
-                    //        db.Entry(PersoneContactsData.Date).State = EntityState.Modified;
-                    //        db.Entry(PersoneContactsData.Author).State = EntityState.Modified;
-                    //        db.Entry(_Dir.Dir).State = EntityState.Modified;
-                    //        db.Entry(_Subj.Subj).State = EntityState.Modified;
-                    //        db.Entry(PersoneContactsData.PersoneDescription).State = EntityState.Modified;
-                    //    }
+                    PersoneOps personeOps = new PersoneOps();//create for us personeOps.ValidPersoneDataCheck methode
+                    string error;
+                    error = personeOps.ValidPersoneDataCheck(Usver.Persone.Name, Usver.Persone.Surname, Usver.Persone.Patronimic,
+                        1, _Contacts.Contacts.ContactsValidation());
+                    if (error != null)
+                    {
+                        dialogService.ShowMessage(error);
+                        return;
+                    }
+                    else
+                    {
+                        //тут, возможно, придется пилить ветку редактирования 
+                        //возможно, что так
+                        //if we  need to modified entrie
+                        //    if (PersoneContactsData.Author.AuthorId != 0)
+                        //    {
+                        //        db.Entry(PersoneContactsData.Persone).State = EntityState.Modified;
+                        //        db.Entry(PersoneContactsData.Date).State = EntityState.Modified;
+                        //        db.Entry(PersoneContactsData.Author).State = EntityState.Modified;
+                        //        db.Entry(_Dir.Dir).State = EntityState.Modified;
+                        //        db.Entry(_Subj.Subj).State = EntityState.Modified;
+                        //        db.Entry(PersoneContactsData.PersoneDescription).State = EntityState.Modified;
+                        //    }
+                    };
+                    
                     Usver.Contacts = _Contacts.Contacts;
                     //    PersoneContactsData.Persone.Contacts = _Contacts.Contacts;
                     //    if (PersoneContactsData.Author.AuthorId != 0)
@@ -271,6 +277,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
             }
 
         }
+        
         //======================================================================================================
 
     }
