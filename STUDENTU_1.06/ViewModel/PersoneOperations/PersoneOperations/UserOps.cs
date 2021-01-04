@@ -121,6 +121,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
             (newEditContactsCommand = new RelayCommand(
                     (obj) =>
                     {
+                        //_Contacts.TmpContacts = _Contacts.Contacts;
                         _Contacts.NewEditContacts(new AddContactsWindow(obj));
                     }
                     ));
@@ -160,6 +161,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
                     //        db.Entry(_Subj.Subj).State = EntityState.Modified;
                     //        db.Entry(PersoneContactsData.PersoneDescription).State = EntityState.Modified;
                     //    }
+                    Usver.Contacts = _Contacts.Contacts;
                     //    PersoneContactsData.Persone.Contacts = _Contacts.Contacts;
                     //    if (PersoneContactsData.Author.AuthorId != 0)
                     //        PersoneContactsData.Persone.Dates[0] = PersoneContactsData.Date;
