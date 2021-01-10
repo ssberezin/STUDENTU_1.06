@@ -186,7 +186,33 @@ namespace STUDENTU_1._06.Model
             if (Phone1 == "+380" && Phone2 == "---" && Phone3 == "---" && Email1 == "---" && Email2 == "---" && VK == "---" && FaceBook == "---")
                 return false;
 
-            return true; ;
+            return true; 
+
+            if(Phone1=="+380"|| !NotEmptyFieldCheck(Phone1))
+        }
+
+        //если строка соответсвует критериям, то возвращаем true. Обрезаем пробелы с концов строки
+        // if the string matches the criteria, then return true.Trim the spaces from the end of the line
+        private bool NotEmptyFieldCheck(string str)
+        {
+            if (str != "" || str != "---")
+            {
+                if (str[0] == ' ' || str[str.Length] == ' ')
+                    str.Trim();              
+                return str.Length > 0 ? true:false;
+            }
+            else
+                return false;
+        }
+
+        private bool PhoneNumberValidationCheck(string ph)
+        {
+            if (NotEmptyFieldCheck(ph))
+            {
+                //+380979847647
+            }
+            else
+                return false;
         }
 
         IDialogService dialogService;
