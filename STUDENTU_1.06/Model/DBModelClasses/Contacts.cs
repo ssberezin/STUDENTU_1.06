@@ -181,14 +181,19 @@ namespace STUDENTU_1._06.Model
         //check for validation of Contacts fields
         public bool ContactsValidation()
         {
-            
+
+
+            if (NotEmptyFieldCheck(Phone1) && PhoneNumberValidationCheck(Phone1) == null &&
+                NotEmptyFieldCheck(Phone2) && PhoneNumberValidationCheck(Phone2) == null &&
+                NotEmptyFieldCheck(Phone3) && PhoneNumberValidationCheck(Phone3) == null && 
+                )
 
             if (Phone1 == "+380" && Phone2 == "---" && Phone3 == "---" && Email1 == "---" && Email2 == "---" && VK == "---" && FaceBook == "---")
                 return false;
 
             return true; 
 
-            if(Phone1=="+380"|| !NotEmptyFieldCheck(Phone1))
+           
         }
 
         //если строка соответсвует критериям, то возвращаем true. Обрезаем пробелы с концов строки
@@ -205,14 +210,51 @@ namespace STUDENTU_1._06.Model
                 return false;
         }
 
-        private bool PhoneNumberValidationCheck(string ph)
+
+        public  string PhoneNumberValidationCheck(string ph)
         {
-            if (NotEmptyFieldCheck(ph))
+            int len = ph.Length;
+            string tmp = null,
+                   plus = null;
+            if (ph[0] == '8' && len == 11)
             {
-                //+380979847647
+                ph = ph.Remove(0, 1);
+
             }
             else
-                return false;
+            {
+                if (len != 10 && len != 13)
+                    return null;
+                else
+                {
+                    //if (ph[0] == '+' && ph[1] == '3' && ph[2] == '8' && len == 13)
+
+                    if (len == 13)
+                    {
+                        plus = ph.Remove(3, ph.Length - 3);
+                        if (plus[0] == '+')
+                            ph = ph.Remove(0, 3);
+                        else
+                            return null;
+                    }
+                    if (len == 10 && ph[0] == '+')
+                        return null;
+                }
+            }
+            len = ph.Length;
+
+            for (int i = 0; i < len; i++)
+                if ((int)ph[i] >= 48 && (int)ph[i] <= 57)
+                    tmp += ph[i];
+                else
+                {
+                    //если символ "(" или ")" или "-" , или " "
+                    if ((int)ph[i] == 40 || (int)ph[i] == 41 || (int)ph[i] == 45 || (int)ph[i] == 32)
+                        continue;
+                    return null;
+                }
+            return plus != null ? plus + ph : "+38" + ph;
+
         }
 
         IDialogService dialogService;
