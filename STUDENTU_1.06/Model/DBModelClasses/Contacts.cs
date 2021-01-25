@@ -19,7 +19,7 @@ namespace STUDENTU_1._06.Model
             this.Phone2 = "---";
             this.Phone3 = "---";
             this.Email1 = "---";
-            this.Email2 = "---";           
+            this.Email2 = "---";
             this.Adress = "---";
             this.Skype = "---";
             this.VK = "---";
@@ -29,7 +29,7 @@ namespace STUDENTU_1._06.Model
             dialogService = new DefaultDialogService();
         }
         [Column("Phone1", TypeName = "ntext")]
-        [MaxLength(13)]        
+        [MaxLength(13)]
         private string phone1;
         public string Phone1
         {
@@ -110,7 +110,7 @@ namespace STUDENTU_1._06.Model
         }
 
         [Column("Adress", TypeName = "ntext")]
-        [MaxLength(255)]        
+        [MaxLength(255)]
         private string adress;
         public string Adress
         {
@@ -158,7 +158,7 @@ namespace STUDENTU_1._06.Model
         }
 
         [Column("FaceBook", TypeName = "ntext")]
-        [MaxLength(100)]        
+        [MaxLength(100)]
         private string faceBook;
         public string FaceBook
         {
@@ -181,21 +181,29 @@ namespace STUDENTU_1._06.Model
         //check for validation of Contacts fields
         public bool ContactsValidation()
         {
-
-
-            if (NotEmptyFieldCheck(Phone1) && PhoneNumberValidationCheck(Phone1) == null &&
-                NotEmptyFieldCheck(Phone2) && PhoneNumberValidationCheck(Phone2) == null &&
-                NotEmptyFieldCheck(Phone3) && PhoneNumberValidationCheck(Phone3) == null && 
-                )
-
-            if (Phone1 == "+380" && Phone2 == "---" && Phone3 == "---" && Email1 == "---" && Email2 == "---" && VK == "---" && FaceBook == "---")
+            if (!NotEmptyFieldCheck(Phone1) && PhoneNumberValidationCheck(Phone1) == null &&
+                !NotEmptyFieldCheck(Phone2) && PhoneNumberValidationCheck(Phone2) == null &&
+                !NotEmptyFieldCheck(Phone3) && PhoneNumberValidationCheck(Phone3) == null &&
+                !NotEmptyFieldCheck(Email1) && !Email1.Contains("@") &&
+                !NotEmptyFieldCheck(Email2) && !Email2.Contains("@") &&
+                !NotEmptyFieldCheck(VK) && !NotEmptyFieldCheck(FaceBook))
+                //if (Phone1 == "+380" && Phone2 == "---" && Phone3 == "---" && Email1 == "---" && Email2 == "---" && VK == "---" && FaceBook == "---")
                 return false;
-
-            return true; 
-
+            else
+            {
+                if (NotEmptyFieldCheck(Phone1) && PhoneNumberValidationCheck(Phone1) != null)
+                    Phone1 = PhoneNumberValidationCheck(Phone1);
+                if (NotEmptyFieldCheck(Phone2) && PhoneNumberValidationCheck(Phone2) != null)
+                    Phone2 = PhoneNumberValidationCheck(Phone2);
+                if (NotEmptyFieldCheck(Phone2) && PhoneNumberValidationCheck(Phone2) != null)
+                    Phone2 = PhoneNumberValidationCheck(Phone2);
+                return true;
+            }
+            
            
         }
 
+        
         //если строка соответсвует критериям, то возвращаем true. Обрезаем пробелы с концов строки
         // if the string matches the criteria, then return true.Trim the spaces from the end of the line
         private bool NotEmptyFieldCheck(string str)
