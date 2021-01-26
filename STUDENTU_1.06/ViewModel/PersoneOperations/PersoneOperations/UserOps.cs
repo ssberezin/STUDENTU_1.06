@@ -142,10 +142,12 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
             {
                 try
                 {
-                    PersoneOps personeOps = new PersoneOps();//create for us personeOps.ValidPersoneDataCheck methode
+                    PersoneOps personeOps = new PersoneOps();//create for use personeOps.ValidPersoneDataCheck methode
                     string error;
                     error = personeOps.ValidPersoneDataCheck(Usver.Persone.Name, Usver.Persone.Surname, Usver.Persone.Patronimic,
                         1, _Contacts.Contacts.ContactsValidation());
+                    //пока считаем, что все корректно. Ничего не проверялось еще (26.1.21)
+                    // for now we believe that everything is correct. Nothing checked yet (26.1.21)
                     if (error != null)
                     {
                         dialogService.ShowMessage(error);
@@ -168,6 +170,21 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
                     };
                     
                     Usver.Contacts = _Contacts.Contacts;
+                    //Usver.Contacts.Phone1 = _Contacts.Contacts.Phone1;
+                    //Usver.Contacts.Phone2 = _Contacts.Contacts.Phone2;
+                    //Usver.Contacts.Phone3 = _Contacts.Contacts.Phone3;
+                    //Usver.Contacts.Email1 = _Contacts.Contacts.Email1;
+                    //Usver.Contacts.Email2 = _Contacts.Contacts.Email2;
+                    //Usver.Contacts.VK = _Contacts.Contacts.VK;
+                    //Usver.Contacts.FaceBook = _Contacts.Contacts.FaceBook;
+                    if (Usver.User.UserId == 0)
+                    {
+                        db.Users.Add(Usver.User);
+                        db.Persones.Add(Usver.Persone);
+                        db.Dates.Add(Usver.Date);
+                        db.PersoneDescriptions.Add(Usver.PersoneDescription);
+                    }
+                    
                     //    PersoneContactsData.Persone.Contacts = _Contacts.Contacts;
                     //    if (PersoneContactsData.Author.AuthorId != 0)
                     //        PersoneContactsData.Persone.Dates[0] = PersoneContactsData.Date;
