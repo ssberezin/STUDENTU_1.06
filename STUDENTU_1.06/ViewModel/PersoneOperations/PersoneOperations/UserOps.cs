@@ -77,7 +77,13 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
         }
 
         public UserOps()
-        {            
+        {
+            string error = CheckExistUser();
+            if (error != null)
+            {
+                dialogService.ShowMessage(error);
+                return;
+            }
             DefaultDataLoad();
         }
 
@@ -141,6 +147,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
             {
                 try
                 {
+                    //initial data validation
                     string error;                    
                     error = UsverDataValidation();                    
                     if (error != null)
@@ -149,17 +156,41 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
                         return;
                     }
 
+                    // тут мы проверяем контакты по БД.Если есть такие, то подтянуть нужную person вместо того, чтоб создавать новую с одинковыми контактами
+                    //пока считаем что проверка прошла успешно и никого такого мы не нашли
+                    //добавляем в БД новую личность не глядя
 
+                    Persone tmpPerson = CheckExistPerson(_Contacts.Contacts);
+                    if (tmpPerson == null)
+                    {
+                        dialogService.ShowMessage("Проблемы со связью с базой данных\n на стадии проверки существования контактов " +
+                            "\n при добавлении нового пользователя");
+                        return;
+                    }
 
-                   
-                        //тут над проверить контакты по БД. Если есть такие, то подтянуть нужную person вместо того, чтоб создавать новую с одинковыми контактами
-                        //пока считаем что проверка прошла успешно и никого такого мы не нашли
-                        //добавляем в БД новую личность не глядя
+                    if (tmpPerson.PersoneId != 0)
+                    {
+                        
+                        
+                        Usver.Persone = db.Persones.Where(e => e.PersoneId == tmpPerson.PersoneId).FirstOrDefault();
+                        //need to compare current contacts data with new ons
+                        //возможно тут нужна модификация БД по Persons
+                    }
+                    else
+                    {
                         Usver.Persone.Contacts = _Contacts.Contacts;
+                    }
+
+
+                        
+                    
+
+                    
+
                         Usver.Persone.Dates.Add(Usver.Date);
                         Usver.User.Persone = Usver.Persone;
                         
-                        db.Persones.Add(Usver.Persone);                        
+                        db.Users.Add(Usver.User);                        
                     
                         db.SaveChanges();
 
@@ -205,7 +236,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
                 return "Поле отчества не должно быть пустым или заполнено не корректно";
             if (!_Contacts.Contacts.ContactsValidation())
                 return "Ни одно из полей контактных данных не заполнено";
-            if (Usver.Date.DayBirth == ZeroDefaultDate(DateTime.Now))            
+            if (ZeroDefaultDate(Usver.Date.DayBirth) == ZeroDefaultDate(DateTime.Now))            
                 return "Не корректно заполнено поле даты рождения";
             if (Usver.User.AccessName=="" || Usver.User.AccessName == null)
                 return "Нужно указать права доспупа";
@@ -224,10 +255,91 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
             
         }
 
+        //if returned null then db.Users has no entries
+        private string CheckExistUser()
+        {
+            string result = "По технической причине в текущий момент \n регистрация нового пользователя не возможна";
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                try
+                {
+                    if (db.Users.Count() > 0)
+                        result = "Регистрировать новых пользователей может только администратор";
+                    else
+                        return null;
+                }
+                catch (ArgumentNullException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (OverflowException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+            }
+            return result;
+        }
+
+        //if returnd null - DB connetion problems
+        //if Persone.Person_Id ==0 - not found any exist person
+        //if Persone.Person_Id !=0 - here we fount exist person
+        private Persone CheckExistPerson(Contacts contacts)
+        {
+            
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                try
+                {                    
+                    // here we find  Id of former Contscts
+                    int contactId = 0;
+                    contactId = _Contacts.Contacts.CheckContacts(contacts);
+                    if (contactId == 0)                    
+                        return new Persone { PersoneId = 0 };                    
+                    else                    
+                        return db.Persones.Where(o => o.Contacts.ContactsId == contactId).FirstOrDefault();
+                    
+                }
+                catch (ArgumentNullException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (OverflowException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+            }
+
+            return null;
+        }
+
         // here we get only the year, month, day, with zero other indicators
         public DateTime ZeroDefaultDate(DateTime date)
         {
-            return date.AddHours(-DateTime.Now.Hour).AddMinutes(-DateTime.Now.Minute).AddSeconds(-DateTime.Now.Second).AddMilliseconds(-DateTime.Now.Millisecond);
+            return new DateTime(date.Year, date.Month, date.Day, 0, 0, 0, 0);
         }
         //======================================================================================================
 

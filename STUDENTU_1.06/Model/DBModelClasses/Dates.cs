@@ -114,8 +114,8 @@ namespace STUDENTU_1._06.Model
         //тут мы получаем только год , месяц, число, с нулевыми остальными показателями
         // here we get only the year, month, day, with zero other indicators
         public DateTime ZeroDefaultDate(DateTime date)
-        {           
-            return date.AddHours(-DateTime.Now.Hour).AddMinutes(-DateTime.Now.Minute).AddSeconds(-DateTime.Now.Second).AddMilliseconds(-DateTime.Now.Millisecond);
+        {
+            return new DateTime(date.Year, date.Month, date.Day, 0, 0, 0,0);
         }
 
       
