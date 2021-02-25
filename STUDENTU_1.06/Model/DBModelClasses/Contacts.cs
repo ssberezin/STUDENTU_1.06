@@ -181,24 +181,50 @@ namespace STUDENTU_1._06.Model
         //check for validation of Contacts fields
         public bool ContactsValidation()
         {
-            if (!NotEmptyFieldCheck(Phone1) && PhoneNumberValidationCheck(Phone1) == null &&
-                !NotEmptyFieldCheck(Phone2) && PhoneNumberValidationCheck(Phone2) == null &&
-                !NotEmptyFieldCheck(Phone3) && PhoneNumberValidationCheck(Phone3) == null &&
-                !NotEmptyFieldCheck(Email1) && !Email1.Contains("@") &&
-                !NotEmptyFieldCheck(Email2) && !Email2.Contains("@") &&
-                !NotEmptyFieldCheck(VK) && !NotEmptyFieldCheck(FaceBook))
-                //if (Phone1 == "+380" && Phone2 == "---" && Phone3 == "---" && Email1 == "---" && Email2 == "---" && VK == "---" && FaceBook == "---")
-                return false;
-            else
+            bool result = false;
+
+            //if (!NotEmptyFieldCheck(Phone1) && PhoneNumberValidationCheck(Phone1) == null &&
+            //    !NotEmptyFieldCheck(Phone2) && PhoneNumberValidationCheck(Phone2) == null &&
+            //    !NotEmptyFieldCheck(Phone3) && PhoneNumberValidationCheck(Phone3) == null &&
+            //    !NotEmptyFieldCheck(Email1) && !Email1.Contains("@") &&
+            //    !NotEmptyFieldCheck(Email2) && !Email2.Contains("@") &&
+            //    !NotEmptyFieldCheck(VK) && !NotEmptyFieldCheck(FaceBook))
+            //    //if (Phone1 == "+380" && Phone2 == "---" && Phone3 == "---" && Email1 == "---" && Email2 == "---" && VK == "---" && FaceBook == "---")
+            //    return false;
+            //else
+            //{
+            if (NotEmptyFieldCheck(Phone1) && PhoneNumberValidationCheck(Phone1) != null)
             {
-                if (NotEmptyFieldCheck(Phone1) && PhoneNumberValidationCheck(Phone1) != null)
-                    Phone1 = PhoneNumberValidationCheck(Phone1);
-                if (NotEmptyFieldCheck(Phone2) && PhoneNumberValidationCheck(Phone2) != null)
-                    Phone2 = PhoneNumberValidationCheck(Phone2);
-                if (NotEmptyFieldCheck(Phone2) && PhoneNumberValidationCheck(Phone2) != null)
-                    Phone2 = PhoneNumberValidationCheck(Phone2);
-                return true;
+                Phone1 = PhoneNumberValidationCheck(Phone1);
+                result = true;
             }
+            if (NotEmptyFieldCheck(Phone2) && PhoneNumberValidationCheck(Phone2) != null)
+            {    Phone2 = PhoneNumberValidationCheck(Phone2);
+                result = true;
+            }
+            if (NotEmptyFieldCheck(Phone3) && PhoneNumberValidationCheck(Phone3) != null)
+            {    Phone3 = PhoneNumberValidationCheck(Phone3);
+                 result = true;
+            }
+            if (!result)
+            {
+                dialogService.ShowMessage("Хотя бы одно из полей номера телефона нужно заполнить корректно");
+                return false;
+            }
+            if (Email1!="---" && !Email1.Contains("@"))
+            {
+                dialogService.ShowMessage("Поле Email1 в контактных данных заполнено не корректно");
+                return false;
+            }
+            if (Email2!="---" && !Email2.Contains("@"))
+            {
+                dialogService.ShowMessage("Поле Email2 в контактных данных заполнено не корректно");
+                return false;
+            }
+            
+            return true;
+
+            //}
             
            
         }
@@ -210,8 +236,9 @@ namespace STUDENTU_1._06.Model
         {
             if (str != "" || str != "---")
             {
-                if (str[0] == ' ' || str[str.Length] == ' ')
-                    str.Trim();              
+                if (str[0] == ' ' || str[str.Length-1] == ' ')
+                    str.Trim();
+          
                 return str.Length > 0 ? true:false;
             }
             else
@@ -224,19 +251,14 @@ namespace STUDENTU_1._06.Model
             int len = ph.Length;
             string tmp = null,
                    plus = null;
-            if (ph[0] == '8' && len == 11)
-            {
-                ph = ph.Remove(0, 1);
-
-            }
+            if (ph[0] == '8' && len == 11)            
+                ph = ph.Remove(0, 1);            
             else
             {
                 if (len != 10 && len != 13)
                     return null;
                 else
                 {
-                    //if (ph[0] == '+' && ph[1] == '3' && ph[2] == '8' && len == 13)
-
                     if (len == 13)
                     {
                         plus = ph.Remove(3, ph.Length - 3);

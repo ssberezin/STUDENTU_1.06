@@ -17,7 +17,7 @@ namespace STUDENTU_1._06.Model
           
             this.StartDateWork = ZeroDefaultDate( DateTime.Now);
             this.EndDateWork = new DateTime(1900, 1, 1);
-            this.DayBirth = new DateTime(1900, 1, 1);
+            this.DayBirth = ZeroDefaultDate(DateTime.Now);
             this.DeadLine = ZeroDefaultDate(DateTime.Now).AddDays(1).AddHours(9);            
             this.DateDone = new DateTime(1900, 1, 1);
             this.DateOfPaid = new DateTime(1900, 1, 1);

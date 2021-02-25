@@ -25,7 +25,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
     {
         IDialogService dialogService;//for show messages in mvvm pattern order
         IShowWindowService showWindow;//for show messages in mvvm pattern order
-
+        bool editMode = false;
         public ObservableCollection<string> AccessNameList { get; set; }
        
 
@@ -44,9 +44,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
             }
             get { return "/STUDENTU_1.06;component/Images/" + defaultPhoto; }
         }
-
-       
-     
+               
 
         private PersoneContactsData usver;
         public PersoneContactsData Usver
@@ -62,7 +60,6 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
                 
             }
         }
-
 
 
         private _Contacts _contacts;
@@ -105,6 +102,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
                         PathToFile();
                     }
                     ));
+
         private void PathToFile()
         {
             string path;
@@ -135,6 +133,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
                         SaveUserData();
                     }
                     ));
+
         private void SaveUserData()
         {
 
@@ -142,133 +141,30 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
             {
                 try
                 {
-                    PersoneOps personeOps = new PersoneOps();//create for use personeOps.ValidPersoneDataCheck methode
-                    string error;
-                    error = personeOps.ValidPersoneDataCheck(Usver.Persone.Name, Usver.Persone.Surname, Usver.Persone.Patronimic,
-                        1, _Contacts.Contacts.ContactsValidation());
-                    //пока считаем, что все корректно. Ничего не проверялось еще (26.1.21)
-                    // for now we believe that everything is correct. Nothing checked yet (26.1.21)
+                    string error;                    
+                    error = UsverDataValidation();                    
                     if (error != null)
                     {
                         dialogService.ShowMessage(error);
                         return;
                     }
-                    else
-                    {
-                        //тут, возможно, придется пилить ветку редактирования 
-                        //возможно, что так
-                        //if we  need to modified entrie
-                        //    if (PersoneContactsData.Author.AuthorId != 0)
-                        //    {
-                        //        db.Entry(PersoneContactsData.Persone).State = EntityState.Modified;
-                        //        db.Entry(PersoneContactsData.Date).State = EntityState.Modified;
-                        //        db.Entry(PersoneContactsData.Author).State = EntityState.Modified;
-                        //        db.Entry(_Dir.Dir).State = EntityState.Modified;
-                        //        db.Entry(_Subj.Subj).State = EntityState.Modified;
-                        //        db.Entry(PersoneContactsData.PersoneDescription).State = EntityState.Modified;
-                        //    }
-                    };
+
+
+
+                   
+                        //тут над проверить контакты по БД. Если есть такие, то подтянуть нужную person вместо того, чтоб создавать новую с одинковыми контактами
+                        //пока считаем что проверка прошла успешно и никого такого мы не нашли
+                        //добавляем в БД новую личность не глядя
+                        Usver.Persone.Contacts = _Contacts.Contacts;
+                        Usver.Persone.Dates.Add(Usver.Date);
+                        Usver.User.Persone = Usver.Persone;
+                        
+                        db.Persones.Add(Usver.Persone);                        
                     
-                    Usver.Contacts = _Contacts.Contacts;
-                    //Usver.Contacts.Phone1 = _Contacts.Contacts.Phone1;
-                    //Usver.Contacts.Phone2 = _Contacts.Contacts.Phone2;
-                    //Usver.Contacts.Phone3 = _Contacts.Contacts.Phone3;
-                    //Usver.Contacts.Email1 = _Contacts.Contacts.Email1;
-                    //Usver.Contacts.Email2 = _Contacts.Contacts.Email2;
-                    //Usver.Contacts.VK = _Contacts.Contacts.VK;
-                    //Usver.Contacts.FaceBook = _Contacts.Contacts.FaceBook;
-                    if (Usver.User.UserId == 0)
-                    {
-                        db.Users.Add(Usver.User);
-                        db.Persones.Add(Usver.Persone);
-                        db.Dates.Add(Usver.Date);
-                        db.PersoneDescriptions.Add(Usver.PersoneDescription);
-                    }
-                    
-                    //    PersoneContactsData.Persone.Contacts = _Contacts.Contacts;
-                    //    if (PersoneContactsData.Author.AuthorId != 0)
-                    //        PersoneContactsData.Persone.Dates[0] = PersoneContactsData.Date;
-                    //    else
-                    //        PersoneContactsData.Persone.Dates.Add(PersoneContactsData.Date);
+                        db.SaveChanges();
 
-                    //    PersoneContactsData.Persone.PersoneDescription = PersoneContactsData.PersoneDescription;
-                    //    PersoneContactsData.Author.Persone = PersoneContactsData.Persone;
-                    //    PersoneContactsData.Author.AuthorStatus = db.AuthorStatuses.Find(_AuthorStatus.AuthorStatus.AuthorStatusId);
-                    //    if (PersoneContactsData.Author.AuthorId == 0)
-                    //        db.Authors.Add(PersoneContactsData.Author);
-                    //    db.SaveChanges();
-
-                    //    //удаляем из списка направлений упоминания об авторе, если в списке направлений автора нет более того или  иного направления после правки
-                    //    // remove the author’s mention from the list of directions if the author’s list does not have more than one direction or another after editing
-                    //    var res = db.Directions.ToList();
-                    //    foreach (var i in res)
-                    //    {
-                    //        if (i.Author.Contains(PersoneContactsData.Author) && !_Dir.AuthorDirections.Contains(i))
-                    //            i.Author.Remove(PersoneContactsData.Author);
-                    //        continue;
-                    //    }
-
-
-                    //    foreach (Direction item in _Dir.AuthorDirections)
-                    //    {
-                    //        var res1 = db.Directions.Find(item.DirectionId);
-                    //        if (res1 != null && !res1.Author.Contains(PersoneContactsData.Author))
-                    //        {
-                    //            //changing DB
-                    //            if (PersoneContactsData.Author.AuthorId != 0)
-                    //            {
-
-                    //                res1.Author.Add(PersoneContactsData.Author);
-                    //                continue;
-                    //            }
-                    //            else
-                    //                res1.Author.Add(PersoneContactsData.Author);
-                    //            continue;
-                    //        }
-                    //    }
-                    //    db.SaveChanges();
-
-                    //    //удаляем из списка предметов упоминания об авторе, если в списке предметов автора нет более того или  иного направления после правки
-                    //    // remove the author’s mention from the list of subjects if the author’s list does not have more than one subject or another after editing
-                    //    var res2 = db.Subjects.ToList();
-                    //    foreach (var i in res2)
-                    //    {
-                    //        if (i.Authors.Contains(PersoneContactsData.Author) && !_Subj.AuthorSubjects.Contains(i))
-                    //            i.Authors.Remove(PersoneContactsData.Author);
-                    //        continue;
-                    //    }
-                    //    //here we add author in subjects
-                    //    foreach (Subject item in _Subj.AuthorSubjects)
-                    //    {
-                    //        var res1 = db.Subjects.Find(item.SubjectId);
-                    //        if (res1 != null)
-                    //        {
-                    //            //changing DB
-                    //            res1.Authors.Add(PersoneContactsData.Author);
-                    //            continue;
-                    //        }
-                    //        else
-                    //            res1.Authors.Add(PersoneContactsData.Author);
-                    //        continue;
-
-                    //    }
-                    //    db.SaveChanges();
-
-                    //    dialogService.ShowMessage("Данные автора сохранены");
-                    //    //обнуляем поля окна
-                    //    //clear window fields
-                    //    if (PersoneContactsData.Author.AuthorId == 0)
-                    //    {
-                    //        _Contacts = new _Contacts();
-                    //        PersoneContactsData.Persone = new Persone();
-                    //        _AuthorStatus = new _AuthorStatus();
-                    //        PersoneContactsData.Author = new Author();
-                    //        PersoneContactsData.Date = new Dates();
-                    //        _Subj = new _Subject();
-                    //        _Dir = new _Direction();
-                    //        PersoneContactsData.PersoneDescription = new PersoneDescription();
-                    //    }
-                    //}
+                        dialogService.ShowMessage("Данные автора сохранены");
+                  
 
                 }
                 catch (ArgumentNullException ex)
@@ -294,7 +190,45 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
             }
 
         }
-        
+
+        //if return nul - then Ok
+        private string UsverDataValidation()
+        {
+            PersoneOps personeOps = new PersoneOps();
+            string error = null;
+           
+            if (personeOps.EmptyStringValidation(Usver.Persone.Name) != null)
+                return "Поле имени не должно быть пустым или заполнено не корректно";
+            if (personeOps.EmptyStringValidation(Usver.Persone.Surname) != null)
+                return "Поле фамилии не должно быть пустым или заполнено не корректно";            
+            if (personeOps.EmptyStringValidation(Usver.Persone.Patronimic) != null)
+                return "Поле отчества не должно быть пустым или заполнено не корректно";
+            if (!_Contacts.Contacts.ContactsValidation())
+                return "Ни одно из полей контактных данных не заполнено";
+            if (Usver.Date.DayBirth == ZeroDefaultDate(DateTime.Now))            
+                return "Не корректно заполнено поле даты рождения";
+            if (Usver.User.AccessName=="" || Usver.User.AccessName == null)
+                return "Нужно указать права доспупа";
+            if (Usver.Persone.Source == null || Usver.Persone.Source == "" || personeOps.EmptyStringValidation(Usver.Persone.Source)!=null)
+                return "Нужно корректно заполнить поле источника данными о пользователе";
+            if (Usver.Date.StartDateWork > ZeroDefaultDate(DateTime.Now))
+                return "Дата начала сотрудничества не может быть больше текущей";
+            if (Usver.Date.EndDateWork != new DateTime(1900, 1, 1) && Usver.Date.EndDateWork < Usver.Date.StartDateWork || Usver.Date.EndDateWork > DateTime.Now)
+                return "Поле даты увольнения сотрудника заполнено не корректно.";
+            if (personeOps.EmptyStringValidation(Usver.PersoneDescription.Description) != null)
+                return "Поле информации о пользователе не должно быть пустым или заполнено не корректно";
+            if(personeOps.EmptyStringValidation(Usver.PersoneDescription.FeedBack) != null)
+                return "Поле информации о отзывов о сотруднике не должно быть пустым или заполнено не корректно";
+            return error;
+
+            
+        }
+
+        // here we get only the year, month, day, with zero other indicators
+        public DateTime ZeroDefaultDate(DateTime date)
+        {
+            return date.AddHours(-DateTime.Now.Hour).AddMinutes(-DateTime.Now.Minute).AddSeconds(-DateTime.Now.Second).AddMilliseconds(-DateTime.Now.Millisecond);
+        }
         //======================================================================================================
 
     }

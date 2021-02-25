@@ -61,6 +61,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
         // PersoneName, PersoneSurname, Patronimic -  have to be not empty 
         // Direction - have to be bigger then 0. 
         //Contacts data - som of contacts entries have to be not empty
+        //if returned null - then OK
         public string ValidPersoneDataCheck(string PersoneName, string PersoneSurname, string Patronimic,
             int DirCount, bool ContactsValidation)
         {        
@@ -76,7 +77,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
             return null;
         }
 
-        private string EmptyStringValidation(string str)
+        public string EmptyStringValidation(string str)
         {
             string error;
             error = null;

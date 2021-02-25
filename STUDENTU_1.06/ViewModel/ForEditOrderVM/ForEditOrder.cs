@@ -891,7 +891,7 @@ namespace STUDENTU_1._06.ViewModel
                         Client.OrderLine.Add(Order);
 
                         // к  Order.Client мы добавляем полученного Client уже в основном методе SaveNewOrder
-                        //так как еще не хватает навыков работы с каонтекстом , чтоб сделать это  красиво
+                        //так как еще не хватает навыков работы с контекстом , чтоб сделать это  красиво
                         //ниже приведенна конструкция тут не работает. 
                         // to Order.Client we add the received Client already in the main SaveNewOrder method
                         // since there are still not enough skills to work with kaontext, to make it beautiful
