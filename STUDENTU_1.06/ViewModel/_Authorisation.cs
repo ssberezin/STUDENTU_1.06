@@ -26,34 +26,7 @@ namespace STUDENTU_1._06.ViewModel
             DB_trabl
         }
 
-        ////for display default image
-        //private string defaultPhoto;
-        //public string DefaultPhoto
-        //{
-        //    set
-        //    {
-        //        if (defaultPhoto != value)
-        //        {
-        //            defaultPhoto = value;
-        //            OnPropertyChanged(nameof(DefaultPhoto));
-        //        }
-        //    }
-        //    get { return "/STUDENTU_1.06;component/Images/" + defaultPhoto; }
-        //}
-
-        //private _Contacts _contacts;
-        //public _Contacts _Contacts
-        //{
-        //    get { return _contacts; }
-        //    set
-        //    {
-        //        if (_contacts != value)
-        //        {
-        //            _contacts = value;
-        //            OnPropertyChanged(nameof(_Contacts));
-        //        }
-        //    }
-        //}
+       
 
         private User user;
         public User User
@@ -76,8 +49,7 @@ namespace STUDENTU_1._06.ViewModel
 
         private void DefaultDataLoad()
         {
-            //_Contacts = new _Contacts();
-            //DefaultPhoto = "default_avatar.png";
+           
             User = new User();
             dialogService = new DefaultDialogService();
             showWindow = new DefaultShowWindowService();
@@ -98,10 +70,19 @@ namespace STUDENTU_1._06.ViewModel
                         {
                             case CheckUser.Yes:
                                 //тут уже сверяем пару логин-пароль на наличие в БД
-                                if (Identification(User) != null)
-                                    CallFirstWindow(User.UserId);                                
+                                //if (User == null)
+                                //{
+                                //    dialogService.ShowMessage("Не верная пара логин-пароль"); 
+                                //    return;
+                                //}
+                                User = Identification(User);
+                                if (User != null)                              
+                                    CallFirstWindow(User.UserId);                            
+                              
                                 else
-                                    dialogService.ShowMessage("Не верная пара логин-пароль");                                                                       
+                                    dialogService.ShowMessage("Не верная пара логин-пароль");
+                                
+                                User = new User();
                                 break;
                             case CheckUser.No:
                                 //регистрация первого пользователя. Типа с правами админа
@@ -122,7 +103,8 @@ namespace STUDENTU_1._06.ViewModel
         public RelayCommand CancelAuthorezitionCommand => cancelAuthorezitionCommand ?? (cancelAuthorezitionCommand = new RelayCommand(
                     (obj) =>
                     {
-                       
+                        User.Pass = "";
+                        User.UserNickName = "";
                     }
                     ));
 
@@ -211,6 +193,7 @@ namespace STUDENTU_1._06.ViewModel
             FirstAfterMein FirstAfterMeinWindow;
             FirstAfterMeinWindow =new FirstAfterMein(userId);
             showWindow.ShowWindow(FirstAfterMeinWindow);
+            
         }
 
         //Call window of user registration

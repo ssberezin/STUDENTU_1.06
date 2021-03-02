@@ -151,19 +151,7 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
                 
-        //private EvaluationRecord finalevaluationRecord;
-        //public EvaluationRecord FinalEvaluationRecord
-        //{
-        //    get { return finalevaluationRecord; ; }
-        //    set
-        //    {
-        //        if (finalevaluationRecord != value)
-        //        {
-        //            finalevaluationRecord = value;
-        //            OnPropertyChanged(nameof(FinalEvaluationRecord));
-        //        }
-        //    }
-        //}
+      
 
         //for save previos state Order and compare 
         private OrderLine nullOrder;
@@ -280,20 +268,7 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
-        //private _Status _status;
-        //public _Status _Status
-        //{
-        //    get { return _status; }
-        //    set
-        //    {
-        //        if (_status != value)
-        //        {
-        //            _status = value;
-        //            OnPropertyChanged(nameof(_Status));
-        //        }
-        //    }
-        //}
-
+     
 
         private _Source _source;
         public _Source _Source
@@ -348,6 +323,20 @@ namespace STUDENTU_1._06.ViewModel
                     _university = value;
                     OnPropertyChanged(nameof(_University));
                 }
+            }       
+        }
+
+        private User usver;
+        public User Usver
+        {
+            get { return usver; }
+            set
+            {
+                if (usver != value)
+                {
+                    usver = value;
+                    OnPropertyChanged(nameof(Usver));
+                }
             }
         }
 
@@ -366,25 +355,25 @@ namespace STUDENTU_1._06.ViewModel
         }
 
         //for new order
-        public ForEditOrder()
+        public ForEditOrder(int UserId)
         {
-            DefaultLoadData();
+            DefaultLoadData(UserId);
             Order = new OrderLine { OrderNumber = GetOrderNumber() };
             showWindow = new DefaultShowWindowService();
             dialogService = new DefaultDialogService();
             PropertyChanged += ChangeRuleOrder;
         }
         //for edit allready exist order
-        public ForEditOrder(int OrderLineId)
+        public ForEditOrder(int OrderLineId, int UserId)
         {
-            DefaultLoadDataEditOrder(OrderLineId);           
+            DefaultLoadDataEditOrder(OrderLineId, UserId);           
             showWindow = new DefaultShowWindowService();
             dialogService = new DefaultDialogService();
             PropertyChanged += ChangeRuleOrder;
         }
 
         //for create new order
-        private void DefaultLoadData()
+        private void DefaultLoadData(int UserId)
         {
             BlackListRecords = new ObservableCollection<BlackListHelpModel>();
             AuthorsRecords = new ObservableCollection<AuthorsRecord>();
@@ -409,8 +398,7 @@ namespace STUDENTU_1._06.ViewModel
                 DeadLine = Date.AuthorDeadLine,
                 Price = 0,
                 EvaluateDescription = ""
-            };
-            //RuleOrderLine._Status = new _Status();
+            };            
             _Subj = new _Subject();
             _Source = new _Source();
             _University = new _University();
@@ -421,11 +409,44 @@ namespace STUDENTU_1._06.ViewModel
             SetTmpOrder(TmpOrder);//for look changes befor close window
             NullOrder = new OrderLine();
             SetTmpOrder(NullOrder);
-            
+
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                try
+                {
+                    Usver = db.Users.Where(e => e.UserId == UserId).FirstOrDefault();
+                    if (Usver == null)
+                    {
+                        dialogService.ShowMessage("Проблемы связи с БД при попытке подвязки данных пользователя");
+                        return;
+                    }
+                }
+                catch (ArgumentNullException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (OverflowException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+            }
+
         }
 
         //for edit allready exist order
-        private void DefaultLoadDataEditOrder(int OrderLineId)
+        private void DefaultLoadDataEditOrder(int OrderLineId, int UserId)
         {
             BlackListRecords = new ObservableCollection<BlackListHelpModel>();
             AuthorsRecords = new ObservableCollection<AuthorsRecord>();
@@ -436,6 +457,13 @@ namespace STUDENTU_1._06.ViewModel
             {
                 try
                 {
+                    Usver = db.Users.Where(e => e.UserId == UserId).FirstOrDefault();
+                    if (Usver == null)
+                    {
+                        dialogService.ShowMessage("Проблемы связи с БД при попытке подвязки данных пользователя");
+                        return;
+                    }
+
                     Order = db.Orderlines.Where(o=>o.OrderLineId==OrderLineId).FirstOrDefault();
                     TMPStaticClass.CurrentOrder = (OrderLine)Order.Clone();
                     TmpOrder = new OrderLine();
@@ -533,12 +561,7 @@ namespace STUDENTU_1._06.ViewModel
         
         private void ChangeRuleOrder(object sender, PropertyChangedEventArgs e)
         {
-            //if (RuleOrderLine.ExecuteAuthor.Author.AuthorId != 0&& !kastil1)
-            //{
-            //    kastil1 = true;
-            //    RoolMSG = $"Заказ закреплен за {RuleOrderLine.ExecuteAuthor.Persone.NickName}";
-            //}
- 
+         
                 Date.DeadLine = DeadLine.AddHours(9);                
                 DeadLineHHMM= Date.DeadLine;
                 RuleOrderLine._Evaluation.FinalEvaluationRecord.DeadLine = Date.DeadLine;
@@ -714,7 +737,8 @@ namespace STUDENTU_1._06.ViewModel
                         if (CancelSaveOrder)
                             return;
                     }
-
+                    Order.User = db.Users.Where(e => e.UserId == Usver.UserId).FirstOrDefault();
+                    //нижние две строки кода - признак того, что что-то пошло не тиак, но вроде работает....
                     db.Configuration.AutoDetectChangesEnabled = false;
                     db.Configuration.ValidateOnSaveEnabled = false;
                     db.Orderlines.Add(Order);
@@ -777,6 +801,7 @@ namespace STUDENTU_1._06.ViewModel
                     Order.Source = db2.Sources.Find(_Source.Source.SourceId);
                     Order.Dates = Date;
                     Order.Money = Price;
+                    Order.User = db2.Users.Where(e => e.UserId == Usver.UserId).FirstOrDefault();
                     if (RuleOrderLine._Status.Status.StatusId == 1)
                     {
                         Order.Status = db2.Statuses.Find(2);
@@ -817,6 +842,9 @@ namespace STUDENTU_1._06.ViewModel
                         Client.OrderLine.Add(Order);
                         Order.Client = db2.Clients.Find(Client.ClientId);
                     }
+
+                    //и тут эти нижние 2 строки кода свидетельствуют о том, что данные в БД могут залетать 
+                    //кастыльно ...(
                     db2.Configuration.AutoDetectChangesEnabled = false;
                     db2.Configuration.ValidateOnSaveEnabled = false;
                     db2.Orderlines.Add(Order);
@@ -1337,6 +1365,7 @@ namespace STUDENTU_1._06.ViewModel
                     Order.Client.Course = Client.Course;
                     if (_Source.Source.SourceId!= Order.Source.SourceId)  
                         Order.Source = db.Sources.Find(_Source.Source.SourceId);
+                    Order.User = db.Users.Where(e => e.UserId == Usver.UserId).FirstOrDefault();
                     Order.Saved = true;
                     db.SaveChanges();
                     dialogService.ShowMessage("Данные о заказе сохранены");
@@ -1529,6 +1558,7 @@ namespace STUDENTU_1._06.ViewModel
                     Author.Evaluation.Add(evaluation);                    
                     Order.Author.Add(Author);
                     Order.Evaluations.Add(evaluation);
+                    Order.User = db.Users.Where(e => e.UserId == Usver.UserId).FirstOrDefault();
                     db.SaveChanges();                  
                     TMPStaticClass.CurrentOrder.Author.Add(Author);
                     RuleOrderLine.RoolMSG = $"Заказ выполняет {Author.Persone.NickName}";

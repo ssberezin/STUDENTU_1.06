@@ -20,15 +20,15 @@ namespace STUDENTU_1._06.Views.EditOrderWindows.EditOrderLine
     /// </summary>
     public partial class EditOrderRedaction : Window
     {
-        public EditOrderRedaction()
+        public EditOrderRedaction(int UserId)
         {
             InitializeComponent();
-            this.DataContext = new ForEditOrder();
+            this.DataContext = new ForEditOrder(UserId);
         }
-        public EditOrderRedaction(int OrderLineId)
+        public EditOrderRedaction(int OrderLineId, int UserId)
         {
             InitializeComponent();
-            this.DataContext = new ForEditOrder(OrderLineId);
+            this.DataContext = new ForEditOrder(OrderLineId, UserId);
         }
     }
 }

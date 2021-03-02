@@ -16,6 +16,8 @@ using STUDENTU_1._06.Views.PersoneOperations.AuthorOperationsWindows;
 using STUDENTU_1._06.Views.EditOrderWindows.EditOrderLine;
 using STUDENTU_1._06.Views;
 using System.IO;
+using STUDENTU_1._06.Views.EditOrderWindows.ContactsWindows;
+using System.Data.Entity;
 
 namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
 {
@@ -25,7 +27,9 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
     {
         IDialogService dialogService;//for show messages in mvvm pattern order
         IShowWindowService showWindow;//for show messages in mvvm pattern order
-        bool editMode = false;
+        bool editMode = false,
+            cancelSaveUserData = false;
+        
         public ObservableCollection<string> AccessNameList { get; set; }
        
 
@@ -156,9 +160,9 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
                         return;
                     }
 
-                    // тут мы проверяем контакты по БД.Если есть такие, то подтянуть нужную person вместо того, чтоб создавать новую с одинковыми контактами
-                    //пока считаем что проверка прошла успешно и никого такого мы не нашли
-                    //добавляем в БД новую личность не глядя
+                    // тут мы проверяем контакты по БД.Если есть такие, то подтянуть 
+                    //нужную person вместо того, чтоб создавать новую с одинковыми контактами
+                    
 
                     Persone tmpPerson = CheckExistPerson(_Contacts.Contacts);
                     if (tmpPerson == null)
@@ -167,36 +171,77 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
                             "\n при добавлении нового пользователя");
                         return;
                     }
-
+                   
                     if (tmpPerson.PersoneId != 0)
                     {
+                        Persone persone = new Persone();
+                        Contacts OldContacts = new Contacts();
+                        //тут мы находим Person , которая уже имеется в БД с такими же контактами для дальнейшей работы с ней
+                        //в текущем контексте
+                        Usver.Persone = db.Persones.Where(e => e.PersoneId == tmpPerson.PersoneId).FirstOrDefault();                        OldContacts = db.Contacts.Where(c => c.ContactsId == Usver.Persone.Contacts.ContactsId).FirstOrDefault();
+                        OldContacts = db.Contacts.Where(c => c.ContactsId == Usver.Persone.Contacts.ContactsId).FirstOrDefault();
+                        //тут мы подготавливаем данные для вызова окна сравнения текущих данных личности пользователя
+                        //и предыдущих его данных 
+                        _Contacts.OldPersoneCompare = (Persone)persone.CloneExceptVirtual();
+                        _Contacts.CurPersoneCompare = (Persone)this.Usver.Persone.CloneExceptVirtual();
+                        _Contacts.TmpContacts = (Contacts)OldContacts.CloneExceptVirtual();
+                        _Contacts.OldTmpContactsCompare = (Contacts)OldContacts.CloneExceptVirtual();
+                        _Contacts.TmpContactsCompare = (Contacts)this._Contacts.Contacts.CloneExceptVirtual();
+                        //вызывем окно сравнения
+                        CompareContatctsWindow compareContatctsWindow = new CompareContatctsWindow(this);
+                        showWindow.ShowDialog(compareContatctsWindow);
+
+                        //если в результате сравнения не был принят ни один из вариантов
+                        if (!_Contacts.saveCompareResults)
+                        {
+                            //тут лучше придумать диалоговое окно с радиокнопками , для выбора вариантов действия
+                            // - отменить прием заказа и отправить пользователя закрыть окно приема заказа
+                            //т.к. не понятно как реализовать закрытие окна из вьюмодел не вмешиваяся в сраный мввм
+                            //но в идеале закрыть окно приема заказа. Думаю, что это потянет за собой перепил по всему проекту
+                            //процедуры закрытия окна.
+                            // - 
+                            if (dialogService.YesNoDialog("Не сохранен ни один из вариантов...\n" +
+                                    "Отменить процедуру оформления нового пользователя?"))
+                            {
+                                dialogService.ShowMessage("Ок. Тогда просто закройте окно оформления нового пользователя");
+                                _Contacts.Contacts = OldContacts;
+                                cancelSaveUserData = true;
+                                return;
+                            }
+                            else
+                            {
+                                dialogService.ShowMessage("В базе данных не могут дублироваться контакты\n" +
+                                      "Задайте другие контактные данные пользователя в окне приема заказа.");
+                                _Contacts.Contacts = OldContacts;
+                                cancelSaveUserData = true;
+                                return;
+                            };
+                        }
+
+                       bool  personeCompare = persone.ComparePersons(persone, _Contacts.Persone);
+                       bool contactsCompare = _Contacts.CompareContacts(persone.Contacts, _Contacts.Contacts);
                         
-                        
-                        Usver.Persone = db.Persones.Where(e => e.PersoneId == tmpPerson.PersoneId).FirstOrDefault();
-                        //need to compare current contacts data with new ons
-                        //возможно тут нужна модификация БД по Persons
+                        if (!personeCompare)
+                        {
+                            db.Entry(Usver.Persone).State = EntityState.Modified;
+                            Usver.Persone.CopyExeptVirtualIdPhoto(Usver.Persone, _Contacts.Persone);
+                        }
+                        if (!contactsCompare)
+                        {
+                            db.Entry(OldContacts).State = EntityState.Modified;
+                            _Contacts.Contacts.CopyExceptVirtualAndId(OldContacts, _Contacts.Contacts);
+                            Usver.Persone.Contacts = _Contacts.Contacts;
+                        }
+                        //db.SaveChanges();
                     }
-                    else
-                    {
+                    else                    
                         Usver.Persone.Contacts = _Contacts.Contacts;
-                    }
-
-
-                        
-                    
-
-                    
 
                         Usver.Persone.Dates.Add(Usver.Date);
-                        Usver.User.Persone = Usver.Persone;
-                        
-                        db.Users.Add(Usver.User);                        
-                    
+                        Usver.User.Persone = Usver.Persone;                        
+                        db.Users.Add(Usver.User);
                         db.SaveChanges();
-
-                        dialogService.ShowMessage("Данные автора сохранены");
-                  
-
+                        dialogService.ShowMessage("Данные сохранены");
                 }
                 catch (ArgumentNullException ex)
                 {
@@ -341,7 +386,11 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
         {
             return new DateTime(date.Year, date.Month, date.Day, 0, 0, 0, 0);
         }
+
+
         //======================================================================================================
+
+
 
     }
 }

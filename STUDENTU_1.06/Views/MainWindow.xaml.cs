@@ -22,6 +22,7 @@ namespace STUDENTU_1._06
 
             InitializeComponent();            
             this.DataContext = new _Authorisation();
+           
         }
 
      

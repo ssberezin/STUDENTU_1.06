@@ -41,16 +41,12 @@ namespace STUDENTU_1._06.ViewModel
             showWindow = new DefaultShowWindowService();
             dialogService = new DefaultDialogService();
             Usver = FindeUser(userId);
-            //AuthorisationTry = new _Authorisation();
-            //authorisationWindow = new AuthorisationWindow(this); //to attempt authorization
-            //do
-            //{
-
-            //    showWindow.ShowDialog(authorisationWindow);
-            //} while (!AuthorisationTry.TrueAuthorisation || !AuthorisationTry.FalseAuthorisation);
-
-
-            // LoadAuthorisation(authorisationWindow);
+            if (Usver == null)
+            {
+                dialogService.ShowMessage("Проблема с авторизацией подвязкой пользователя к оформлению заказа");
+                return;
+            }
+            
             LoadData();
             this.mainWindow = mainWindow;            
             this.showWindow = showWindow;
@@ -162,28 +158,21 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
-        //private void LoadAuthorisation(AuthorisationWindow authorisationWindow)
-        //{            
-        //    do
-        //    {
-
-        //        showWindow.ShowDialog(authorisationWindow);
-        //    } while (!AuthorisationTry.TrueAuthorisation ||!AuthorisationTry.FalseAuthorisation);            
-        //}
-
+        
         private  User FindeUser(int usverId)
         {
             
             using (StudentuConteiner db = new StudentuConteiner())
             {
                 try
-                {                   
-                    var usver = db.Users.Where(o => o.UserId == usverId).FirstOrDefault(); ;
-                    User u = new User() {
-                    UserId=usver.UserId,
-                    UserNickName = usver.UserNickName,
-                    Pass = usver.Pass};
-                    return u;                   
+                {                  
+                    User usver = db.Users.Where(o => o.UserId == usverId).FirstOrDefault();
+                    //User u = new User() {
+                    //UserId=usver.UserId,
+                    //UserNickName = usver.UserNickName,
+                    //Pass = usver.Pass};
+                    //return u;
+                    return usver;
                 }
                 catch (ArgumentNullException ex)
                 {
@@ -436,22 +425,19 @@ namespace STUDENTU_1._06.ViewModel
         private RelayCommand newOrder;
         public RelayCommand NewOrder => newOrder ?? (newOrder = new RelayCommand(
                     (obj) =>
-                    {
-                        //EditOrder editOrder = new EditOrder();
-                        //editOrder.Owner = Application.Current.MainWindow;                        
-                        //showWindow.ShowWindow(editOrder);
-                        EditOrderRedactionCall(0);
+                    {                        
+                        EditOrderRedactionCall(0, Usver.UserId);
                     }
                     ));
 
 
-        private void EditOrderRedactionCall(int id)
+        private void EditOrderRedactionCall(int Orderid, int UserId)
         {
             EditOrderRedaction editOrderRedaction;
-            if (id!=0)
-                 editOrderRedaction = new EditOrderRedaction(id);
+            if (Orderid!=0 )
+                 editOrderRedaction = new EditOrderRedaction(Orderid, UserId );//for edit order
             else
-                editOrderRedaction = new EditOrderRedaction();
+                editOrderRedaction = new EditOrderRedaction(UserId);//for recept new order
             editOrderRedaction.Owner = Application.Current.MainWindow;
             showWindow.ShowWindow(editOrderRedaction);
         }
@@ -460,7 +446,7 @@ namespace STUDENTU_1._06.ViewModel
         public RelayCommand EditOrderCommand => editOrderCommand ?? (editOrderCommand = new RelayCommand(
                     (obj) =>
                     {                        
-                        EditOrderRedactionCall(SelectedRecord.RecordId);
+                        EditOrderRedactionCall(SelectedRecord.RecordId, Usver.UserId);
                     }
                     ));
 
@@ -643,6 +629,7 @@ namespace STUDENTU_1._06.ViewModel
                     Order.Money = new Money() {Price=price, Prepayment=prepayment };
                     Order.Status = db.Statuses.Find(new Status() { StatusId = 2 }.StatusId);
                     Order.Source = db.Sources.Find(new Source() { SourceId=source}.SourceId);
+                    Order.User = db.Users.Where(e=>e.UserId==Usver.UserId).FirstOrDefault();
                     db.Orderlines.Add(Order);
                     db.SaveChanges();                    
                     

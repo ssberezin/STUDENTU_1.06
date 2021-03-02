@@ -11,12 +11,12 @@ namespace STUDENTU_1._06.Views
     /// </summary>
     public partial class EditOrder : Window
     {
-        public EditOrder()
+        public EditOrder(int UserId)
         {
             InitializeComponent();
             //this.DataContext = new ForEditOrder(this, new DefaultShowWindowService(),
             //    new DefaultDialogService());
-            this.DataContext = new ForEditOrder();
+            this.DataContext = new ForEditOrder(UserId);
 
         }
 
