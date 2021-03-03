@@ -56,37 +56,37 @@ namespace STUDENTU_1._06.ViewModel
         }
 
 
+      
+
+
 
         private RelayCommand checkPersoneCommand;
         public RelayCommand CheckPersoneCommand => checkPersoneCommand ?? (checkPersoneCommand = new RelayCommand(
                     (obj) =>
                     {
-                        //сначала делаем проверку на "не первый ли пользователь"
-                        //то есть есть ли вообще записи в таблице пользователей
-                        // если нет, то нужно предложить такую запись создать
-                        //если есть, то работаем процедуру проверки данных для идентификации с последующей авторизацией
+                        Window win = obj as Window;
 
+                        //check for exist eny user data in Users                        
                         switch (FirstUserCheck())
                         {
                             case CheckUser.Yes:
-                                //тут уже сверяем пару логин-пароль на наличие в БД
-                                //if (User == null)
-                                //{
-                                //    dialogService.ShowMessage("Не верная пара логин-пароль"); 
-                                //    return;
-                                //}
+                                //here we have user i identification and authorezation    
                                 User = Identification(User);
-                                if (User != null)                              
-                                    CallFirstWindow(User.UserId);                            
-                              
+                                if (User != null)
+                                {
+                                    //here we call main window fo work with application
+                                    CallFirstWindow(User.UserId);
+                                    win.Close();//this gave to close authoresation window
+                                }
+
                                 else
-                                    dialogService.ShowMessage("Не верная пара логин-пароль");
-                                
+                                    dialogService.ShowMessage("Не верная пара логин-пароль");                                
                                 User = new User();
                                 break;
                             case CheckUser.No:
-                                //регистрация первого пользователя. Типа с правами админа
-                                //также актуально только при первом старте приложения
+                                
+                                //here we call user registration window
+                                //this is relevat only at the first application start
                                 UserRegistration usver;
                                 usver = new UserRegistration();
                                 showWindow.ShowWindow(usver);

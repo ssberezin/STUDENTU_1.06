@@ -340,6 +340,21 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
+        private User usver_curent;
+        public User Usver_curent
+        {
+            get { return usver_curent; }
+            set
+            {
+                if (usver_curent != value)
+                {
+                    usver_curent = value;
+                    OnPropertyChanged(nameof(Usver_curent));
+                }
+            }
+        }
+
+
         private _WorkType _workType;
         public _WorkType _WorkType
         {
@@ -457,8 +472,9 @@ namespace STUDENTU_1._06.ViewModel
             {
                 try
                 {
-                    Usver = db.Users.Where(e => e.UserId == UserId).FirstOrDefault();
-                    if (Usver == null)
+                    Usver = db.Orderlines.Where(e => e.OrderLineId == OrderLineId).FirstOrDefault().User;
+                    Usver_curent = db.Users.Where(e => e.UserId == UserId).FirstOrDefault();
+                    if (Usver == null|| Usver_curent==null)
                     {
                         dialogService.ShowMessage("Проблемы связи с БД при попытке подвязки данных пользователя");
                         return;
@@ -801,7 +817,10 @@ namespace STUDENTU_1._06.ViewModel
                     Order.Source = db2.Sources.Find(_Source.Source.SourceId);
                     Order.Dates = Date;
                     Order.Money = Price;
-                    Order.User = db2.Users.Where(e => e.UserId == Usver.UserId).FirstOrDefault();
+                    if (Usver_curent!=null&&Usver_curent.UserId!=Usver.UserId)                        
+                        Order.User = db2.Users.Where(e => e.UserId == Usver_curent.UserId).FirstOrDefault();
+                    else                        
+                        Order.User = db2.Users.Where(e => e.UserId == Usver.UserId).FirstOrDefault();
                     if (RuleOrderLine._Status.Status.StatusId == 1)
                     {
                         Order.Status = db2.Statuses.Find(2);
@@ -1319,6 +1338,12 @@ namespace STUDENTU_1._06.ViewModel
                 { 
                     Order = db.Orderlines.Where(o=>o.OrderLineId==TMPStaticClass.CurrentOrder.OrderLineId).FirstOrDefault();
                     db.Entry(Order).State = EntityState.Modified;
+
+                    if (Usver_curent != null && Usver_curent.UserId != Usver.UserId)
+                        Order.User = db.Users.Where(e => e.UserId == Usver_curent.UserId).FirstOrDefault();
+                    else
+                        Order.User = db.Users.Where(e => e.UserId == Usver.UserId).FirstOrDefault();
+
                     if (!Persone.ComparePersons(Persone, Order.Client.Persone))
                     {
                         Persone pers = db.Persones.Where(p=> p.PersoneId== Order.Client.Persone.PersoneId).FirstOrDefault();

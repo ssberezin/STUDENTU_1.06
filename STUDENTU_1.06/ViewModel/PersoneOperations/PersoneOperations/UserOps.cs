@@ -140,7 +140,9 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
         public RelayCommand SaveUserDataCommand => saveUserDataCommand ?? (saveUserDataCommand = new RelayCommand(
                     (obj) =>
                     {
+                        Window win = obj as Window;
                         SaveUserData();
+                        win.Close();//типа должно закрыть окно регистрации пользователя
                     }
                     ));
 
@@ -241,7 +243,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
                         Usver.User.Persone = Usver.Persone;                        
                         db.Users.Add(Usver.User);
                         db.SaveChanges();
-                        dialogService.ShowMessage("Данные сохранены");
+                        dialogService.ShowMessage("Данные сохранены. Теперь нужно авторизироваться...");
                 }
                 catch (ArgumentNullException ex)
                 {
