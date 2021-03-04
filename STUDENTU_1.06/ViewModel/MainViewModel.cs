@@ -15,6 +15,7 @@ using STUDENTU_1._06.Model.HelpModelClasses.DialogWindows;
 using STUDENTU_1._06.Views.PersoneOperations.AuthorOperationsWindows;
 using STUDENTU_1._06.Views.EditOrderWindows.EditOrderLine;
 using STUDENTU_1._06.Views;
+using STUDENTU_1._06.Views.PersoneOperations.UserOperations;
 
 namespace STUDENTU_1._06.ViewModel
 {
@@ -36,7 +37,8 @@ namespace STUDENTU_1._06.ViewModel
         public MainViewModel(Window mainWindow, DefaultShowWindowService showWindow, int userId)
         {
             Records = new ObservableCollection<Records>();
-            EndDateReception = DateTime.Now;//.AddHours(-DateTime.Now.Hour).AddMinutes(-DateTime.Now.Minute).AddMilliseconds(-DateTime.Now.Millisecond);
+            EndDateReception = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0, 0);
+                //DateTime.Now;//.AddHours(-DateTime.Now.Hour).AddMinutes(-DateTime.Now.Minute).AddMilliseconds(-DateTime.Now.Millisecond);
             StartDateReception = DateTime.Now.AddDays(-10).AddHours(-DateTime.Now.Hour).AddMinutes(-DateTime.Now.Minute).AddMilliseconds(-DateTime.Now.Millisecond);
             showWindow = new DefaultShowWindowService();
             dialogService = new DefaultDialogService();
@@ -208,7 +210,7 @@ namespace STUDENTU_1._06.ViewModel
                 {
                     //if (_Filters==null)
                     _Filters = new _Filters();
-
+                    EndDateReception = DateTime.Now;
                     //DateTime defaultDate = DateTime.Now.AddDays(-30).AddHours(-DateTime.Now.Hour).AddMinutes(-DateTime.Now.Minute);
                     //DateTime defaultDate = StartDateReception.AddDays(-EndDateReception.Day);
                     //var COrders = db.Orderlines.Where(o => o.Dates.DateOfReception >= defaultDate).OrderBy(o=>o.OrderNumber);
@@ -659,7 +661,30 @@ namespace STUDENTU_1._06.ViewModel
         }
 
 
-      
+        //=================================COMANDS FOR USER DATA OPERATIONS =====================
+
+        private RelayCommand addNewUserCommand;
+        public RelayCommand AddNewUserCommand => addNewUserCommand ?? (addNewUserCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        AddNewUserByRegUser();
+                    }
+                    ));
+
+        private void AddNewUserByRegUser()
+        {
+            if (Usver.AccessName != "Мастер-админ")
+            {
+                dialogService.ShowMessage("Нет прав доступа");
+                return;
+            }
+            UserRegistration usver;
+            usver = new UserRegistration();            
+            showWindow.ShowWindow(usver);
+        }
+
+
+
 
     }
 }

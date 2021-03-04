@@ -66,9 +66,7 @@
                 <MenuItem Header="Правка"  Height="17"  VerticalAlignment="Top">
                     <MenuItem Header="Заказы" Height="17" VerticalAlignment="Top">
                         <MenuItem Header="Новый заказ  Ctrl+N" Command="{Binding NewOrder}"
-                                  Height="17" VerticalAlignment="Top"/>
-
-                        "NewOrder" we can find in  "MainViewModel.cs"
+                                  Height="17" VerticalAlignment="Top"/>                       
 
                         <MenuItem Header="Редактировать заказ" Height="17" VerticalAlignment="Top"
                               IsEnabled="{Binding SelectedItem,
@@ -99,6 +97,15 @@
                         <MenuItem Header="Удалить" />
                         <MenuItem Header="Редактировать" />
                     </MenuItem>
+                </MenuItem>
+                <MenuItem Header="Сервис"  Height="17"  VerticalAlignment="Top" >
+                    <MenuItem Header="Операции с пользователями">
+                        <MenuItem Header="Добавить нового пользователя" Command="{Binding AddNewUserCommand}"
+                                  Height="17" VerticalAlignment="Top"/>
+                        <MenuItem Header="Посмотреть список пользователей" Command="{Binding ShowUsersListCommand}"
+                                  Height="17" VerticalAlignment="Top"/>
+                    </MenuItem>
+                    
                 </MenuItem>
                 <MenuItem Header="Поиск"  Height="17"  VerticalAlignment="Top" >
                     <MenuItem Header="По номеру" />

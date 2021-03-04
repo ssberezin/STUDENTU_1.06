@@ -356,7 +356,7 @@
                     </Button>
                     <Button   Content="Отменить" Background="Red"   TabIndex="19"
                               MinWidth="150"
-                        Command="{Binding CencelCommand}"
+                        Command="{Binding CancelCommand}"
                         CommandParameter="{Binding DataContext, RelativeSource=
                                           {RelativeSource AncestorType={x:Type Window}}}">
                     </Button>
@@ -392,7 +392,7 @@
                 <ImageBrush ImageSource="{Binding DefaultPhoto, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid.Background>
             <!--<Image Source="{Binding Photo, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" />-->
-            <Image Source="{Binding Path=Usver.Persone.Photo, Converter={StaticResource imagePathConverter}, Mode=OneWay}" VerticalAlignment="Center" />
+            <Image Source="{Binding Path = Usver.Persone.Photo, Converter={StaticResource imagePathConverter}, Mode=OneWay}" VerticalAlignment="Center" />
         </Grid>
        
 

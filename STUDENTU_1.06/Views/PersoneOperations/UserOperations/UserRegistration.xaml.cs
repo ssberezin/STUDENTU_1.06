@@ -25,5 +25,11 @@ namespace STUDENTU_1._06.Views.PersoneOperations.UserOperations
             InitializeComponent();
             this.DataContext = new UserOps();
         }
+
+        //public UserRegistration(int UserId)
+        //{
+        //    InitializeComponent();
+        //    this.DataContext = new UserOps(UserId);
+        //}
     }
 }

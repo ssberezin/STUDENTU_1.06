@@ -80,16 +80,32 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
             }
         }
 
+        bool notTheOne = false;
+      
+
         public UserOps()
         {
+            showWindow = new DefaultShowWindowService();
+            dialogService = new DefaultDialogService();
+            
             string error = CheckExistUser();
             if (error != null)
             {
-                dialogService.ShowMessage(error);
+                dialogService.ShowMessage(error);              
                 return;
             }
             DefaultDataLoad();
+
         }
+
+        //public UserOps(int UserId)
+        //{
+        //    showWindow = new DefaultShowWindowService();
+        //    dialogService = new DefaultDialogService();
+         
+        //    DefaultDataLoad();
+        //    notTheOne = true;
+        //}
 
 
         private void DefaultDataLoad()
@@ -122,6 +138,17 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
             Usver.Persone.Photo = File.ReadAllBytes(path);
         }
 
+        //=====================Command for close user registration window ======================================
+        private RelayCommand cancelCommand;
+        public RelayCommand CancelCommand => cancelCommand ??
+            (cancelCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        Window win = obj as Window;
+                        win.Close();
+                    }
+                    ));
+
 
         //=====================Command for call AddContactsWindow.xaml ======================================
         private RelayCommand newEditContactsCommand;
@@ -142,7 +169,8 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
                     {
                         Window win = obj as Window;
                         SaveUserData();
-                        win.Close();//типа должно закрыть окно регистрации пользователя
+                        if (!notTheOne)
+                            win.Close();//типа должно закрыть окно регистрации пользователя
                     }
                     ));
 
@@ -243,7 +271,10 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
                         Usver.User.Persone = Usver.Persone;                        
                         db.Users.Add(Usver.User);
                         db.SaveChanges();
+                    if (!notTheOne)
                         dialogService.ShowMessage("Данные сохранены. Теперь нужно авторизироваться...");
+                    else
+                        dialogService.ShowMessage("Данные сохранены.");
                 }
                 catch (ArgumentNullException ex)
                 {
@@ -297,7 +328,11 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
                 return "Поле информации о пользователе не должно быть пустым или заполнено не корректно";
             if(personeOps.EmptyStringValidation(Usver.PersoneDescription.FeedBack) != null)
                 return "Поле информации о отзывов о сотруднике не должно быть пустым или заполнено не корректно";
+            string er = CheckExistLogin(Usver.User.UserNickName);
+            if (er != null)
+                return er;
             return error;
+            
 
             
         }
@@ -310,6 +345,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
             {
                 try
                 {
+                  
                     if (db.Users.Count() > 0)
                         result = "Регистрировать новых пользователей может только администратор";
                     else
@@ -338,6 +374,46 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
             }
             return result;
         }
+
+
+        private string CheckExistLogin(string newUserLogin)
+        {
+            string result = "По технической причине в текущий момент \n регистрация нового пользователя не возможна";
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                try
+                {
+                    var tmp = db.Users.Where(e => e.UserNickName == newUserLogin).FirstOrDefault();
+                    if (tmp!=null)
+                        result = "Текущий логин занят. Нужно задать другой";
+                    else
+                        return null;
+                }
+                catch (ArgumentNullException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (OverflowException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+            }
+            return result;
+        }
+
+        
 
         //if returnd null - DB connetion problems
         //if Persone.Person_Id ==0 - not found any exist person
