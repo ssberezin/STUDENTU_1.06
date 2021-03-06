@@ -191,6 +191,9 @@
     <Compile Include="Views\PersoneOperations\UserOperations\UserRegistration.xaml.cs">
       <DependentUpon>UserRegistration.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PersoneOperations\UserOperations\UsersInformationWindow.xaml.cs">
+      <DependentUpon>UsersInformationWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="Views\FirstAfterMein.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -372,6 +375,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PersoneOperations\UserOperations\UserRegistration.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PersoneOperations\UserOperations\UsersInformationWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

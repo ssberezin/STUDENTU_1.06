@@ -329,7 +329,7 @@
             <!--PersoneDescription can find in AuthorsVMClass.cs-->
         </StackPanel>
         <TextBlock  Grid.Column="2" Grid.Row="8" Grid.ColumnSpan="2" Grid.RowSpan="2" 
-            IsHitTestVisible="False" Text="Тут мы указываем причины прекращения сотрудничества" FontSize="25"                     
+            IsHitTestVisible="False" Text="По-моему это была попытка реализации окна пользователя...хз..." FontSize="25"                     
                     TextWrapping="Wrap" VerticalAlignment="Center"
                     TextAlignment="Center" 
                     HorizontalAlignment="Center"  Foreground="DarkGray">

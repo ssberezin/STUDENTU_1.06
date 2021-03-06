@@ -1233,3 +1233,5 @@ D:\ProjectFix\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\PersoneOperations\User
 D:\ProjectFix\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\FirstAfterMein.baml
 D:\ProjectFix\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\PersoneOperations\UserOperations\UserRegistration.baml
 E:\STEP\ADO.NET\exam\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\STUDENTU_1.06+.csprojAssemblyReference.cache
+D:\ProjectFix\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\PersoneOperations\UserOperations\UsersInformationWindow.g.cs
+D:\ProjectFix\STUDENTU_1.06\STUDENTU_1.06\obj\Debug\Views\PersoneOperations\UserOperations\UsersInformationWindow.baml
