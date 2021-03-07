@@ -16,6 +16,7 @@ using STUDENTU_1._06.Views.PersoneOperations.AuthorOperationsWindows;
 using STUDENTU_1._06.Views.EditOrderWindows.EditOrderLine;
 using STUDENTU_1._06.Views;
 using STUDENTU_1._06.Views.PersoneOperations.UserOperations;
+using STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations;
 
 namespace STUDENTU_1._06.ViewModel
 {
@@ -48,6 +49,7 @@ namespace STUDENTU_1._06.ViewModel
                 dialogService.ShowMessage("Проблема с авторизацией подвязкой пользователя к оформлению заказа");
                 return;
             }
+            UsrOps = new UserOps(userId,0);
             
             LoadData();
             this.mainWindow = mainWindow;            
@@ -160,7 +162,21 @@ namespace STUDENTU_1._06.ViewModel
             }
         }
 
-        
+        private UserOps usrOps;
+        public UserOps UsrOps
+        {
+            get { return usrOps; }
+            set
+            {
+                if (usrOps != value)
+                {
+                    usrOps = value;
+                    OnPropertyChanged(nameof(UsrOps));
+                }
+            }
+        }
+
+
         private  User FindeUser(int usverId)
         {
             
@@ -168,12 +184,7 @@ namespace STUDENTU_1._06.ViewModel
             {
                 try
                 {                  
-                    User usver = db.Users.Where(o => o.UserId == usverId).FirstOrDefault();
-                    //User u = new User() {
-                    //UserId=usver.UserId,
-                    //UserNickName = usver.UserNickName,
-                    //Pass = usver.Pass};
-                    //return u;
+                    User usver = db.Users.Where(o => o.UserId == usverId).FirstOrDefault();                    
                     return usver;
                 }
                 catch (ArgumentNullException ex)
@@ -207,13 +218,10 @@ namespace STUDENTU_1._06.ViewModel
             using (StudentuConteiner db = new StudentuConteiner())
             {
                 try
-                {
-                    //if (_Filters==null)
+                {                    
                     _Filters = new _Filters();
-                    EndDateReception = DateTime.Now;
-                    //DateTime defaultDate = DateTime.Now.AddDays(-30).AddHours(-DateTime.Now.Hour).AddMinutes(-DateTime.Now.Minute);
-                    //DateTime defaultDate = StartDateReception.AddDays(-EndDateReception.Day);
-                    //var COrders = db.Orderlines.Where(o => o.Dates.DateOfReception >= defaultDate).OrderBy(o=>o.OrderNumber);
+        
+                    EndDateReception = DateTime.Now;                   
                     var COrders = db.Orderlines.Where(o => o.Dates.DateOfReception <= EndDateReception && o.Dates.DateOfReception >= StartDateReception).OrderBy(o => o.OrderNumber);
                     string authorNickName;
                     //creat a orderlist in datagrid (mainwindow)

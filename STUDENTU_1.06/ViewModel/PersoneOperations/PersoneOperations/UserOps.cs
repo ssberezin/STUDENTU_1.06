@@ -18,10 +18,20 @@ using STUDENTU_1._06.Views;
 using System.IO;
 using STUDENTU_1._06.Views.EditOrderWindows.ContactsWindows;
 using System.Data.Entity;
+using STUDENTU_1._06.Views.PersoneOperations.UserOperations;
 
 namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
 {
-
+    public class UserRecord
+    {
+        public int UserId { get; set; }
+        public string NickName { get; set; }   
+        public string FIO { get; set; }
+        public string Accessname { get; set; }
+        public DateTime StartDateWork { get; set; }
+        public string Firedate { get; set; }
+        
+    }
 
     class UserOps : Helpes.ObservableObject
     {
@@ -29,9 +39,12 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
         IShowWindowService showWindow;//for show messages in mvvm pattern order
         bool editMode = false,
             cancelSaveUserData = false;
-        
+
+        int UserId;
         public ObservableCollection<string> AccessNameList { get; set; }
-       
+
+        //for keep Users List
+        public ObservableCollection<UserRecord> Records { get; set; }
 
 
         //for display default image
@@ -48,7 +61,22 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
             }
             get { return "/STUDENTU_1.06;component/Images/" + defaultPhoto; }
         }
-               
+
+        private User littleUser;
+        public User LittleUser//set that parametr in CheckUserAccessRights method
+        {
+            get { return littleUser; }
+            set
+            {
+                if (littleUser != value)
+                {
+                    littleUser = value;
+                    OnPropertyChanged(nameof(LittleUser));
+                }
+
+            }
+        }
+
 
         private PersoneContactsData usver;
         public PersoneContactsData Usver
@@ -65,6 +93,19 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
             }
         }
 
+        private UserRecord selectedRecord;
+        public UserRecord SelectedRecord
+        {
+            get { return selectedRecord; }
+            set
+            {
+                if (selectedRecord != value)
+                {
+                    selectedRecord = value;
+                    OnPropertyChanged(nameof(SelectedRecord));
+                }
+            }
+        }
 
         private _Contacts _contacts;
         public _Contacts _Contacts
@@ -80,6 +121,20 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
             }
         }
 
+        private _Filters _filters;
+        public _Filters _Filters
+        {
+            get { return _filters; }
+            set
+            {
+                if (_filters != value)
+                {
+                    _filters = value;
+                    OnPropertyChanged(nameof(Filters));
+                }
+            }
+        }
+
         bool notTheOne = false;
       
 
@@ -87,7 +142,10 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
         {
             showWindow = new DefaultShowWindowService();
             dialogService = new DefaultDialogService();
+
             
+           
+
             string error = CheckExistUser();
             if (error != null)
             {
@@ -98,14 +156,24 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
 
         }
 
-        //public UserOps(int UserId)
-        //{
-        //    showWindow = new DefaultShowWindowService();
-        //    dialogService = new DefaultDialogService();
-         
-        //    DefaultDataLoad();
-        //    notTheOne = true;
-        //}
+        //for UserInformationWindow
+        public UserOps(int UserId, int tmp)
+        {
+
+            
+            showWindow = new DefaultShowWindowService();
+            dialogService = new DefaultDialogService();            
+            this.UserId = UserId;
+            
+        }
+        public UserOps(int UserId)
+        {
+            showWindow = new DefaultShowWindowService();
+            dialogService = new DefaultDialogService();
+            Records = new ObservableCollection<UserRecord>();
+            this.UserId = UserId;
+            LoadDataForUsersList();
+        }
 
 
         private void DefaultDataLoad()
@@ -167,7 +235,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
         public RelayCommand SaveUserDataCommand => saveUserDataCommand ?? (saveUserDataCommand = new RelayCommand(
                     (obj) =>
                     {
-                        Window win = obj as Window;
+                        Window win = obj as Window;//don't work this shit here
                         SaveUserData();
                         if (!notTheOne)
                             win.Close();//типа должно закрыть окно регистрации пользователя
@@ -463,6 +531,121 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
         public DateTime ZeroDefaultDate(DateTime date)
         {
             return new DateTime(date.Year, date.Month, date.Day, 0, 0, 0, 0);
+        }
+
+
+
+        //==================================Command users list show=================================
+        private RelayCommand showUsersListCommand;
+        public RelayCommand ShowUsersListCommand => showUsersListCommand ?? (showUsersListCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        
+                        ShowUsersList();
+                        
+                    }
+                    ));
+
+        private void ShowUsersList()
+        {
+            UsersInformationWindow usversWindow;
+            usversWindow = new UsersInformationWindow(UserId);
+            if (CheckUserAccessRights(UserId)!=null)
+                return;
+           
+            showWindow.ShowDialog(usversWindow);
+            
+        }
+
+        private string CheckUserAccessRights(int UserId)
+        {
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                try
+                {
+                    LittleUser = db.Users.Where(e => e.UserId == UserId).FirstOrDefault();
+                    if (LittleUser == null)                    
+                        return "Проблемы со связью с БД при проверке \n прав доступа пользователя";
+                    if (LittleUser.AccessName != "Мастер-админ")
+                        return "Нет прав доступа";
+                    
+                }
+                catch (ArgumentNullException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (OverflowException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+            }
+            return null;
+
+        }
+
+        private void LoadDataForUsersList()
+        {
+            Records.Clear();       
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                try
+                {
+                    _Filters = new _Filters();
+                   
+                    var COrders = db.Users.ToList().OrderBy(o => o.Persone.Surname);
+                    if ( COrders == null)
+                    {
+                        dialogService.ShowMessage("Проблемы со связью с БД при попытке отобразить список пользователей");
+                        return;
+                    }
+                    foreach (var item in COrders)
+                    {
+                        Dates date = item.Persone.Dates.Where(e => e.Persone.PersoneId == item.Persone.PersoneId).FirstOrDefault();
+                        UserRecord record = new UserRecord
+                        {
+                            UserId = item.UserId,
+                            NickName = item.UserNickName,
+                            FIO = item.Persone.Surname + " " + item.Persone.Name + " " + item.Persone.Patronimic,
+                            Accessname = item.AccessName,
+                            StartDateWork = date.StartDateWork,
+                            Firedate = date.EndDateWork <date.StartDateWork? "работает" : date.EndDateWork.ToString()
+                        };
+                        Records.Add(record);                       
+                    }
+                }
+                catch (ArgumentNullException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (OverflowException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+            }
         }
 
 

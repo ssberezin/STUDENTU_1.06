@@ -1,4 +1,5 @@
-﻿using System;
+﻿using STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,10 +20,10 @@ namespace STUDENTU_1._06.Views.PersoneOperations.UserOperations
     /// </summary>
     public partial class UsersInformationWindow : Window
     {
-        public UsersInformationWindow()
+        public UsersInformationWindow(int UserId)
         {
             InitializeComponent();
-            this.DataContext = new _Authorisation();
+            this.DataContext = new UserOps(UserId);
         }
     }
 }

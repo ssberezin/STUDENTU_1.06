@@ -72,11 +72,11 @@
             </DataGrid.ContextMenu>
             <!--all the binding elements of the DataGrid element can be found in the class "MainViewModel.cs"-->
             <DataGrid.Columns>
-                <DataGridTextColumn Width="0.355*" Binding="{Binding OrderNumber}"  Header="NickName"/>
-                <DataGridTextColumn Width="0.5*" Binding="{Binding ClientName}" Header="ФИО"/>
-                <DataGridTextColumn Width="0.5*" Binding="{Binding ClientName}" Header="Право доступа"/>
-                <DataGridTextColumn Width="0.35*"  Binding="{Binding  DateOfReception, Converter={StaticResource dateFormatConverter}}" Header="Работает с.."/>
-                <DataGridTextColumn Width="0.35*"  Binding="{Binding  DeadLine, Converter={StaticResource dateFormatConverter}}" Header="Уволен с..."/>                
+                <DataGridTextColumn Width="0.355*" Binding="{Binding NickName}"  Header="NickName"/>
+                <DataGridTextColumn Width="0.5*" Binding="{Binding FIO}" Header="ФИО"/>
+                <DataGridTextColumn Width="0.5*" Binding="{Binding Accessname}" Header="Право доступа"/>
+                <DataGridTextColumn Width="0.35*"  Binding="{Binding  StartDateWork, Converter={StaticResource dateFormatConverter}}" Header="Работает с.."/>
+                <DataGridTextColumn Width="0.35*"  Binding="{Binding  Firedate}" Header="Уволен с..."/>                
             </DataGrid.Columns>
         </DataGrid>
         <Grid Grid.Row="2" Grid.ColumnSpan="5">

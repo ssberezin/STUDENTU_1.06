@@ -102,7 +102,7 @@
                     <MenuItem Header="Операции с пользователями">
                         <MenuItem Header="Добавить нового пользователя" Command="{Binding AddNewUserCommand}"
                                   Height="17" VerticalAlignment="Top"/>
-                        <MenuItem Header="Посмотреть список пользователей" Command="{Binding ShowUsersListCommand}"
+                        <MenuItem Header="Посмотреть список пользователей" Command="{Binding UsrOps.ShowUsersListCommand}"
                                   Height="17" VerticalAlignment="Top"/>
                     </MenuItem>
                     
