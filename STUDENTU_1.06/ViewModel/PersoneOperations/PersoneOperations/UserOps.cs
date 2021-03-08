@@ -40,7 +40,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
         bool editMode = false,
             cancelSaveUserData = false;
 
-        int UserId;
+        int UserId=0;
         public ObservableCollection<string> AccessNameList { get; set; }
 
         //for keep Users List
@@ -143,9 +143,6 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
             showWindow = new DefaultShowWindowService();
             dialogService = new DefaultDialogService();
 
-            
-           
-
             string error = CheckExistUser();
             if (error != null)
             {
@@ -159,10 +156,14 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
         //for UserInformationWindow
         public UserOps(int UserId, int tmp)
         {
-
-            
             showWindow = new DefaultShowWindowService();
-            dialogService = new DefaultDialogService();            
+            dialogService = new DefaultDialogService();
+            if (tmp != 0)
+            {
+                this.UserId = tmp;
+                DefaultDataLoadForEditUser(tmp);                
+            }
+            else            
             this.UserId = UserId;
             
         }
@@ -183,9 +184,11 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
             Usver = new PersoneContactsData();
             
             AccessNameList = new ObservableCollection <string>() {"Админ", "Мастер-админ" };            
-            dialogService = new DefaultDialogService();
-            showWindow = new DefaultShowWindowService();
+            //dialogService = new DefaultDialogService();
+            //showWindow = new DefaultShowWindowService();
         }
+
+        
 
 
         //==================================Command for add new photo to persone profile================
@@ -235,10 +238,17 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
         public RelayCommand SaveUserDataCommand => saveUserDataCommand ?? (saveUserDataCommand = new RelayCommand(
                     (obj) =>
                     {
-                        Window win = obj as Window;//don't work this shit here
-                        SaveUserData();
-                        if (!notTheOne)
-                            win.Close();//типа должно закрыть окно регистрации пользователя
+                        if (!editMode)
+                        {
+                            Window win = obj as Window;//don't work this shit here
+                            SaveUserData();
+                            if (!notTheOne)
+                                win.Close();//типа должно закрыть окно регистрации пользователя
+                        }
+                        else
+                            SaveEditUserData(SelectedRecord.UserId);
+
+                        
                     }
                     ));
 
@@ -414,7 +424,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
                 try
                 {
                   
-                    if (db.Users.Count() > 0)
+                    if (UserId==0 && db.Users.Count() > 0)
                         result = "Регистрировать новых пользователей может только администратор";
                     else
                         return null;
@@ -533,7 +543,26 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
             return new DateTime(date.Year, date.Month, date.Day, 0, 0, 0, 0);
         }
 
+        //=================================COMANDS FOR USER DATA OPERATIONS =====================
 
+        private RelayCommand addNewUserCommand;
+        public RelayCommand AddNewUserCommand => addNewUserCommand ?? (addNewUserCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                  
+                         AddNewUserByRegUser();
+                  
+                    }
+                    ));
+
+        private void AddNewUserByRegUser()
+        {
+            if (CheckUserAccessRights(UserId) != null)
+                return;
+            UserRegistration usver;
+            usver = new UserRegistration(UserId);
+            showWindow.ShowDialog(usver);
+        }
 
         //==================================Command users list show=================================
         private RelayCommand showUsersListCommand;
@@ -648,7 +677,164 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
             }
         }
 
+        //==================================Command for update users list =================================
+        private RelayCommand upddateUsersListCommand;
+        public RelayCommand UpddateUsersListCommand => upddateUsersListCommand ?? (upddateUsersListCommand = new RelayCommand(
+                    (obj) =>
+                    {
 
+                        LoadDataForUsersList();
+
+                    }
+                    ));        
+
+        private RelayCommand editUserCommand;
+        public RelayCommand EditUserCommand => editUserCommand ?? (editUserCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        EditUser(SelectedRecord.UserId);
+                    }
+                    ));
+
+        private void EditUser(int usrId)
+        {
+            UserRegistration usver;
+            usver = new UserRegistration(0, usrId);
+            showWindow.ShowDialog(usver);
+            //using (StudentuConteiner db = new StudentuConteiner())
+            //{
+            //    try
+            //    {
+
+
+            //    }
+            //    catch (ArgumentNullException ex)
+            //    {
+            //        dialogService.ShowMessage(ex.Message);
+            //    }
+            //    catch (OverflowException ex)
+            //    {
+            //        dialogService.ShowMessage(ex.Message);
+            //    }
+            //    catch (System.Data.SqlClient.SqlException ex)
+            //    {
+            //        dialogService.ShowMessage(ex.Message);
+            //    }
+            //    catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+            //    {
+            //        dialogService.ShowMessage(ex.Message);
+            //    }
+            //    catch (System.Data.Entity.Core.EntityException ex)
+            //    {
+            //        dialogService.ShowMessage(ex.Message);
+            //    }
+            //}
+
+        }
+
+        private void DefaultDataLoadForEditUser(int usrId)
+        {
+            AccessNameList = new ObservableCollection<string>() { "Админ", "Мастер-админ" };
+            _Contacts = new _Contacts();
+            DefaultPhoto = "default_avatar.png";
+            Usver = new PersoneContactsData();
+            //dialogService = new DefaultDialogService();
+            //showWindow = new DefaultShowWindowService();
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                try
+                {
+                    Usver.User = db.Users.Where(e => e.UserId == usrId).FirstOrDefault();
+                    Usver.Persone = Usver.User.Persone;
+                    _Contacts.Contacts = Usver.User.Persone.Contacts;
+                    Usver.Date = Usver.Persone.Dates.Where(e => e.Persone.PersoneId == Usver.Persone.PersoneId).FirstOrDefault();
+                    //Usver.Persone = db.Persones.Where(e => e.PersoneId == Usver.User.Persone.PersoneId).FirstOrDefault();
+                    //_Contacts.Contacts = db.Contacts.Where(e => e.ContactsId == Usver.User.Persone.Contacts.ContactsId).FirstOrDefault();
+                    //Dates date = Usver.Persone.Dates.Where(e => e.Persone.PersoneId == Usver.Persone.PersoneId).FirstOrDefault();
+                    //db.Dates.Attach(date);
+                    //Usver.Date = date;
+                }
+                catch (ArgumentNullException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (OverflowException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+            }
+        }
+
+        private void SaveEditUserData(int usrId)
+        {
+            //Usver.Persone = db.Persones.Where(e => e.PersoneId == Usver.User.Persone.PersoneId).FirstOrDefault();
+            //_Contacts.Contacts = db.Contacts.Where(e => e.ContactsId == Usver.User.Persone.Contacts.ContactsId).FirstOrDefault();
+            //Dates date = Usver.Persone.Dates.Where(e => e.Persone.PersoneId == Usver.Persone.PersoneId).FirstOrDefault();
+            //db.Dates.Attach(date);
+            //Usver.Date = date;
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                try
+                {
+                    User usr = db.Users.Where(e => e.UserId == usrId).FirstOrDefault();
+                    Persone prs = db.Persones.Where(e => e.PersoneId == usr.Persone.PersoneId).FirstOrDefault();
+                    Contacts cts = db.Contacts.Where(e => e.ContactsId == usr.Persone.Contacts.ContactsId).FirstOrDefault();
+                    Dates date = Usver.Persone.Dates.Where(e => e.Persone.PersoneId == usr.Persone.PersoneId).FirstOrDefault();
+                    db.Dates.Attach(date);
+                    PersoneDescription prsDiscr = db.PersoneDescriptions.Where(e => e.PersoneDescriptionId == usr.Persone.PersoneDescription.PersoneDescriptionId).FirstOrDefault();
+                    
+                    //Usver.Date = date;
+
+
+                    db.Entry(usr).State = EntityState.Modified;
+                    db.Entry(prs).State = EntityState.Modified;
+                    db.Entry(cts).State = EntityState.Modified;
+                    db.Entry(date).State = EntityState.Modified;
+                    db.Entry(prsDiscr).State = EntityState.Modified;
+                    usr = Usver.User;
+                    prs = Usver.Persone;
+                    cts = _Contacts.Contacts;
+                    date = Usver.Date;
+                    prsDiscr = Usver.User.Persone.PersoneDescription;
+
+                    db.SaveChanges();
+                    dialogService.ShowMessage("Изменения сохранены");
+
+                }
+                catch (ArgumentNullException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (OverflowException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+            }
+        }
         //======================================================================================================
 
 

@@ -669,27 +669,27 @@ namespace STUDENTU_1._06.ViewModel
         }
 
 
-        //=================================COMANDS FOR USER DATA OPERATIONS =====================
+        ////=================================COMANDS FOR USER DATA OPERATIONS =====================
 
-        private RelayCommand addNewUserCommand;
-        public RelayCommand AddNewUserCommand => addNewUserCommand ?? (addNewUserCommand = new RelayCommand(
-                    (obj) =>
-                    {
-                        AddNewUserByRegUser();
-                    }
-                    ));
+        //private RelayCommand addNewUserCommand;
+        //public RelayCommand AddNewUserCommand => addNewUserCommand ?? (addNewUserCommand = new RelayCommand(
+        //            (obj) =>
+        //            {
+        //                AddNewUserByRegUser();
+        //            }
+        //            ));
 
-        private void AddNewUserByRegUser()
-        {
-            if (Usver.AccessName != "Мастер-админ")
-            {
-                dialogService.ShowMessage("Нет прав доступа");
-                return;
-            }
-            UserRegistration usver;
-            usver = new UserRegistration();            
-            showWindow.ShowWindow(usver);
-        }
+        //private void AddNewUserByRegUser()
+        //{
+        //    if (Usver.AccessName != "Мастер-админ")
+        //    {
+        //        dialogService.ShowMessage("Нет прав доступа");
+        //        return;
+        //    }
+        //    UserRegistration usver;
+        //    usver = new UserRegistration();            
+        //    showWindow.ShowWindow(usver);
+        //}
 
 
 

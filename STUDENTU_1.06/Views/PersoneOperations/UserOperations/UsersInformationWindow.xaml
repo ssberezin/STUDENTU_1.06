@@ -56,14 +56,15 @@
             <RowDefinition Height="0.15*"/>
         </Grid.RowDefinitions>
 
-        
-        <DataGrid  ItemsSource="{Binding Records}" 
+
+        <DataGrid x:Name="GridUsers" 
+                  ItemsSource="{Binding Records}" 
                   SelectedItem="{Binding SelectedRecord}"                                          
                   AutoGenerateColumns="False" SelectionMode="Single"
                   IsReadOnly="True" Grid.RowSpan="2"  >           
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Обновить Ctrl+R" Command="{Binding UpdateOrederList}"/>
+                    <MenuItem Header="Обновить Ctrl+R" Command="{Binding UpddateUsersListCommand}"/>
                     <!--"UpdateOrederList" we can find in  "MainViewModel.cs"-->
                     <MenuItem Header="Редактировать"                               
                               Command="{Binding EditOrderCommand}"/>
@@ -146,17 +147,17 @@
 
 
             <Button Content="Новый пользователь" Grid.Column="0" Grid.Row="2"
-                    Name="NewOrder" Margin="5,5,5.4,5"  Command="{Binding NewOrder}"
+                    Name="NewOrder" Margin="5,5,5.4,5"  Command="{Binding AddNewUserCommand}"
                     Background="Green" TabIndex="9"/>
             <!--"NewOrder" can be found in the class "MainViewModel.cs"-->
             <Button Content="Редактировать" Grid.Column="1" Grid.Row="2" TabIndex="10"
                     Name="EditOrder" Margin="4.6,5,4.8,5"  
                     Background="Black"
-                    CommandParameter="{Binding ElementName=GridOrders, Path=SelectedItem}"
-                    Command="{Binding EditOrderCommand}"
+                    CommandParameter="{Binding ElementName=GridUsers, Path=SelectedItem}"
+                    Command="{Binding EditUserCommand}"
                  
                     IsEnabled="{Binding SelectedItem,
-                     Converter={StaticResource NullBoolConverter}, ElementName=GridOrders}"/>
+                     Converter={StaticResource NullBoolConverter}, ElementName=GridUsers}"/>
             <Button Content="Отменить" Grid.Column="2" Grid.Row="2"
                      Margin="4.6,5,4.8,5"  
                     Background="Red"

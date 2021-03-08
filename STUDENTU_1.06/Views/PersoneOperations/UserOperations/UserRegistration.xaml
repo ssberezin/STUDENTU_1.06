@@ -154,7 +154,7 @@
                 <TextBlock Text="Фамилия: " Foreground="Brown" />
             </Viewbox>
             <TextBox x:Name="TBxName"  MinWidth="220" TabIndex="0"
-                   Width="274" Text="{Binding Usver.Persone.SurName, Mode=TwoWay}"/>
+                   Width="274" Text="{Binding Usver.Persone.Surname, Mode=TwoWay}"/>
             <!--Persone can find in AuthorsVMClass.cs-->
         </WrapPanel>
         <WrapPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="3">

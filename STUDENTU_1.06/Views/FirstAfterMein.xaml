@@ -100,7 +100,7 @@
                 </MenuItem>
                 <MenuItem Header="Сервис"  Height="17"  VerticalAlignment="Top" >
                     <MenuItem Header="Операции с пользователями">
-                        <MenuItem Header="Добавить нового пользователя" Command="{Binding AddNewUserCommand}"
+                        <MenuItem Header="Добавить нового пользователя" Command="{Binding UsrOps.AddNewUserCommand}"
                                   Height="17" VerticalAlignment="Top"/>
                         <MenuItem Header="Посмотреть список пользователей" Command="{Binding UsrOps.ShowUsersListCommand}"
                                   Height="17" VerticalAlignment="Top"/>
