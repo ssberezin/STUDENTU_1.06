@@ -24,7 +24,7 @@ namespace STUDENTU_1._06.Views.PersoneOperations.UserOperations
         public UserRegistration()
         {
             InitializeComponent();
-            this.DataContext = new UserOps();
+            this.DataContext = new UserOps(this);
         }
 
         //for registration any new user by anothee user

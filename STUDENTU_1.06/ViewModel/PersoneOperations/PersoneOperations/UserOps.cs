@@ -37,10 +37,16 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
     {
         IDialogService dialogService;//for show messages in mvvm pattern order
         IShowWindowService showWindow;//for show messages in mvvm pattern order
+
         bool editMode = false,
-            cancelSaveUserData = false;
+            anyUsersInDB = false,
+            newUserSave = false,//us with anyUsersInDB. 
+            cancelSaveUserData = false;//us during compare date in save usere data methode
 
         int UserId=0;
+
+        Object closeRegWindow;
+
         public ObservableCollection<string> AccessNameList { get; set; }
 
         //for keep Users List
@@ -135,14 +141,16 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
             }
         }
 
-        bool notTheOne = false;
-      
+        //bool notTheOne = false;//flag for 
 
-        public UserOps()
+       
+
+        public UserOps(object obj)
         {
             showWindow = new DefaultShowWindowService();
             dialogService = new DefaultDialogService();
-
+            closeRegWindow = obj;
+    
             string error = CheckExistUser();
             if (error != null)
             {
@@ -156,19 +164,27 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
         //for UserInformationWindow
         public UserOps(int UserId, int tmp)
         {
+            //notTheOne = true;
+            anyUsersInDB = true;//here we show, that we have some user(s) in DB
             showWindow = new DefaultShowWindowService();
             dialogService = new DefaultDialogService();
             if (tmp != 0)
             {
                 this.UserId = tmp;
-                DefaultDataLoadForEditUser(tmp);                
+                editMode = true;
+                DefaultDataLoadForEditUser(tmp);
             }
-            else            
-            this.UserId = UserId;
+            else
+            {
+                this.UserId = UserId;
+                DefaultDataLoad();
+            }
             
         }
         public UserOps(int UserId)
         {
+            //notTheOne = true;
+            anyUsersInDB = true;//here we show, that we have some user(s) in DB
             showWindow = new DefaultShowWindowService();
             dialogService = new DefaultDialogService();
             Records = new ObservableCollection<UserRecord>();
@@ -183,7 +199,10 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
             DefaultPhoto = "default_avatar.png";
             Usver = new PersoneContactsData();
             
-            AccessNameList = new ObservableCollection <string>() {"Админ", "Мастер-админ" };            
+            AccessNameList = new ObservableCollection <string>() {"Админ", "Мастер-админ" };
+
+            //first user have to be only "master-admin"
+            Usver.User.AccessName = "Мастер-админ";
             //dialogService = new DefaultDialogService();
             //showWindow = new DefaultShowWindowService();
         }
@@ -227,7 +246,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
             (newEditContactsCommand = new RelayCommand(
                     (obj) =>
                     {
-                        //_Contacts.TmpContacts = _Contacts.Contacts;
+                        _Contacts.TmpContacts = _Contacts.Contacts;
                         _Contacts.NewEditContacts(new AddContactsWindow(obj));
                     }
                     ));
@@ -240,15 +259,29 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
                     {
                         if (!editMode)
                         {
-                            Window win = obj as Window;//don't work this shit here
+                           
                             SaveUserData();
-                            if (!notTheOne)
-                                win.Close();//типа должно закрыть окно регистрации пользователя
+                            //here we close current registration window right after first user registration
+                            if (!anyUsersInDB && newUserSave)
+                            {
+                                //we can close reg window only if new users data has been save
+                                Window win = closeRegWindow as Window;
+                                win.Close();
+                            }
                         }
                         else
-                            SaveEditUserData(SelectedRecord.UserId);
+                        {                            
+                            if (SelectedRecord == null)
+                                SaveEditUserData(UserId);
+                            else
+                                SaveEditUserData(SelectedRecord.UserId);
 
-                        
+                        }    
+                            
+                            
+
+
+
                     }
                     ));
 
@@ -346,10 +379,12 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
                         Usver.Persone.Contacts = _Contacts.Contacts;
 
                         Usver.Persone.Dates.Add(Usver.Date);
-                        Usver.User.Persone = Usver.Persone;                        
+                        Usver.User.Persone = Usver.Persone;
+                        Usver.User.Persone.PersoneDescription = Usver.PersoneDescription;                    
                         db.Users.Add(Usver.User);
                         db.SaveChanges();
-                    if (!notTheOne)
+                    newUserSave = true;
+                    if (!anyUsersInDB)
                         dialogService.ShowMessage("Данные сохранены. Теперь нужно авторизироваться...");
                     else
                         dialogService.ShowMessage("Данные сохранены.");
@@ -394,9 +429,12 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
                 return "Ни одно из полей контактных данных не заполнено";
             if (ZeroDefaultDate(Usver.Date.DayBirth) == ZeroDefaultDate(DateTime.Now))            
                 return "Не корректно заполнено поле даты рождения";
+            if (!anyUsersInDB && Usver.User.AccessName != "Мастер-админ")
+                return "Так как регистрируется первый пользователь,\n" +
+                    " то его уровень доступа должен быть Мастер-админ, не менее.";
             if (Usver.User.AccessName=="" || Usver.User.AccessName == null)
                 return "Нужно указать права доспупа";
-            if (Usver.Persone.Source == null || Usver.Persone.Source == "" || personeOps.EmptyStringValidation(Usver.Persone.Source)!=null)
+            if (Usver.PersoneDescription.Source == null || Usver.Persone.Source == "" || personeOps.EmptyStringValidation(Usver.Persone.Source)!=null)
                 return "Нужно корректно заполнить поле источника данными о пользователе";
             if (Usver.Date.StartDateWork > ZeroDefaultDate(DateTime.Now))
                 return "Дата начала сотрудничества не может быть больше текущей";
@@ -406,9 +444,13 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
                 return "Поле информации о пользователе не должно быть пустым или заполнено не корректно";
             if(personeOps.EmptyStringValidation(Usver.PersoneDescription.FeedBack) != null)
                 return "Поле информации о отзывов о сотруднике не должно быть пустым или заполнено не корректно";
-            string er = CheckExistLogin(Usver.User.UserNickName);
-            if (er != null)
-                return er;
+            string er = null;
+            if (!editMode)
+            {
+                er = CheckExistLogin(Usver.User.UserNickName);
+                if (er != null)
+                    return er;
+            }
             return error;
             
 
@@ -560,9 +602,10 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
             if (CheckUserAccessRights(UserId) != null)
                 return;
             UserRegistration usver;
-            usver = new UserRegistration(UserId);
+            usver = new UserRegistration(UserId,0);
             showWindow.ShowDialog(usver);
         }
+
 
         //==================================Command users list show=================================
         private RelayCommand showUsersListCommand;
@@ -682,9 +725,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
         public RelayCommand UpddateUsersListCommand => upddateUsersListCommand ?? (upddateUsersListCommand = new RelayCommand(
                     (obj) =>
                     {
-
                         LoadDataForUsersList();
-
                     }
                     ));        
 
@@ -700,35 +741,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
         {
             UserRegistration usver;
             usver = new UserRegistration(0, usrId);
-            showWindow.ShowDialog(usver);
-            //using (StudentuConteiner db = new StudentuConteiner())
-            //{
-            //    try
-            //    {
-
-
-            //    }
-            //    catch (ArgumentNullException ex)
-            //    {
-            //        dialogService.ShowMessage(ex.Message);
-            //    }
-            //    catch (OverflowException ex)
-            //    {
-            //        dialogService.ShowMessage(ex.Message);
-            //    }
-            //    catch (System.Data.SqlClient.SqlException ex)
-            //    {
-            //        dialogService.ShowMessage(ex.Message);
-            //    }
-            //    catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
-            //    {
-            //        dialogService.ShowMessage(ex.Message);
-            //    }
-            //    catch (System.Data.Entity.Core.EntityException ex)
-            //    {
-            //        dialogService.ShowMessage(ex.Message);
-            //    }
-            //}
+            showWindow.ShowDialog(usver);            
 
         }
 
@@ -738,8 +751,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
             _Contacts = new _Contacts();
             DefaultPhoto = "default_avatar.png";
             Usver = new PersoneContactsData();
-            //dialogService = new DefaultDialogService();
-            //showWindow = new DefaultShowWindowService();
+            
             using (StudentuConteiner db = new StudentuConteiner())
             {
                 try
@@ -748,6 +760,8 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
                     Usver.Persone = Usver.User.Persone;
                     _Contacts.Contacts = Usver.User.Persone.Contacts;
                     Usver.Date = Usver.Persone.Dates.Where(e => e.Persone.PersoneId == Usver.Persone.PersoneId).FirstOrDefault();
+                    Usver.PersoneDescription = Usver.Persone.PersoneDescription;
+                    //SelectedRecord = Usver;
                     //Usver.Persone = db.Persones.Where(e => e.PersoneId == Usver.User.Persone.PersoneId).FirstOrDefault();
                     //_Contacts.Contacts = db.Contacts.Where(e => e.ContactsId == Usver.User.Persone.Contacts.ContactsId).FirstOrDefault();
                     //Dates date = Usver.Persone.Dates.Where(e => e.Persone.PersoneId == Usver.Persone.PersoneId).FirstOrDefault();
@@ -788,29 +802,131 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
             {
                 try
                 {
-                    User usr = db.Users.Where(e => e.UserId == usrId).FirstOrDefault();
-                    Persone prs = db.Persones.Where(e => e.PersoneId == usr.Persone.PersoneId).FirstOrDefault();
-                    Contacts cts = db.Contacts.Where(e => e.ContactsId == usr.Persone.Contacts.ContactsId).FirstOrDefault();
-                    Dates date = Usver.Persone.Dates.Where(e => e.Persone.PersoneId == usr.Persone.PersoneId).FirstOrDefault();
-                    db.Dates.Attach(date);
-                    PersoneDescription prsDiscr = db.PersoneDescriptions.Where(e => e.PersoneDescriptionId == usr.Persone.PersoneDescription.PersoneDescriptionId).FirstOrDefault();
-                    
-                    //Usver.Date = date;
+                    //User usr = db.Users.Where(e => e.UserId == usrId).FirstOrDefault();
+                    //Persone prs = db.Persones.Where(e => e.PersoneId == usr.Persone.PersoneId).FirstOrDefault();
+                    //Contacts cts = db.Contacts.Where(e => e.ContactsId == usr.Persone.Contacts.ContactsId).FirstOrDefault();
+                    //Dates date = Usver.Persone.Dates.Where(e => e.Persone.PersoneId == usr.Persone.PersoneId).FirstOrDefault();
+                    ////db.Dates.Attach(date);
+                    //PersoneDescription prsDiscr = db.PersoneDescriptions.Where(e => e.PersoneDescriptionId == usr.Persone.PersoneDescription.PersoneDescriptionId).FirstOrDefault();
+
+                    ////Usver.Date = date;
+                    //Usver.Persone.Contacts = Usver.Contacts;
+                    //Usver.User.Persone = Usver.Persone;
+                    //Usver.User.Persone.PersoneDescription = Usver.PersoneDescription;
+                    //Usver.
+                    //usr = Usver.User;
+
+                    //db.Entry(usr).State = EntityState.Modified;
+                    //db.Entry(prs).State = EntityState.Modified;
+                    //db.Entry(cts).State = EntityState.Modified;
+                    //db.Entry(date).State = EntityState.Modified;
+                    //db.Entry(prsDiscr).State = EntityState.Modified;
+                    //usr = Usver.User;
+                    //prs = Usver.Persone;
+                    //cts = _Contacts.Contacts;
+                    //date = Usver.Date;
+                    //prsDiscr = Usver.User.Persone.PersoneDescription;
+
+                    //db.SaveChanges();
+                    //dialogService.ShowMessage("Изменения сохранены");
+
+                    //initial data validation
+                    string error;
+                    error = UsverDataValidation();
+                    if (error != null)
+                    {
+                        dialogService.ShowMessage(error);
+                        return;
+                    }
+
+                    // тут мы проверяем контакты по БД.Если есть такие, то подтянуть 
+                    //нужную person вместо того, чтоб создавать новую с одинковыми контактами
 
 
-                    db.Entry(usr).State = EntityState.Modified;
-                    db.Entry(prs).State = EntityState.Modified;
-                    db.Entry(cts).State = EntityState.Modified;
-                    db.Entry(date).State = EntityState.Modified;
-                    db.Entry(prsDiscr).State = EntityState.Modified;
-                    usr = Usver.User;
-                    prs = Usver.Persone;
-                    cts = _Contacts.Contacts;
-                    date = Usver.Date;
-                    prsDiscr = Usver.User.Persone.PersoneDescription;
+                    Persone tmpPerson = CheckExistPerson(_Contacts.Contacts);
+                    if (tmpPerson == null)
+                    {
+                        dialogService.ShowMessage("Проблемы со связью с базой данных\n на стадии проверки существования контактов " +
+                            "\n при добавлении нового пользователя");
+                        return;
+                    }
 
+                    if (tmpPerson.PersoneId != 0)
+                    {
+                        Persone persone = new Persone();
+                        Contacts OldContacts = new Contacts();
+                        //тут мы находим Person , которая уже имеется в БД с такими же контактами для дальнейшей работы с ней
+                        //в текущем контексте
+                        Usver.Persone = db.Persones.Where(e => e.PersoneId == tmpPerson.PersoneId).FirstOrDefault(); OldContacts = db.Contacts.Where(c => c.ContactsId == Usver.Persone.Contacts.ContactsId).FirstOrDefault();
+                        OldContacts = db.Contacts.Where(c => c.ContactsId == Usver.Persone.Contacts.ContactsId).FirstOrDefault();
+                        //тут мы подготавливаем данные для вызова окна сравнения текущих данных личности пользователя
+                        //и предыдущих его данных 
+                        _Contacts.OldPersoneCompare = (Persone)persone.CloneExceptVirtual();
+                        _Contacts.CurPersoneCompare = (Persone)this.Usver.Persone.CloneExceptVirtual();
+                        _Contacts.TmpContacts = (Contacts)OldContacts.CloneExceptVirtual();
+                        _Contacts.OldTmpContactsCompare = (Contacts)OldContacts.CloneExceptVirtual();
+                        _Contacts.TmpContactsCompare = (Contacts)this._Contacts.Contacts.CloneExceptVirtual();
+                        //вызывем окно сравнения
+                        CompareContatctsWindow compareContatctsWindow = new CompareContatctsWindow(this);
+                        showWindow.ShowDialog(compareContatctsWindow);
+
+                        //если в результате сравнения не был принят ни один из вариантов
+                        if (!_Contacts.saveCompareResults)
+                        {
+                            //тут лучше придумать диалоговое окно с радиокнопками , для выбора вариантов действия
+                            // - отменить прием заказа и отправить пользователя закрыть окно приема заказа
+                            //т.к. не понятно как реализовать закрытие окна из вьюмодел не вмешиваяся в сраный мввм
+                            //но в идеале закрыть окно приема заказа. Думаю, что это потянет за собой перепил по всему проекту
+                            //процедуры закрытия окна.
+                            // - 
+                            if (dialogService.YesNoDialog("Не сохранен ни один из вариантов...\n" +
+                                    "Отменить процедуру оформления нового пользователя?"))
+                            {
+                                dialogService.ShowMessage("Ок. Тогда просто закройте окно оформления нового пользователя");
+                                _Contacts.Contacts = OldContacts;
+                                cancelSaveUserData = true;
+                                return;
+                            }
+                            else
+                            {
+                                dialogService.ShowMessage("В базе данных не могут дублироваться контакты\n" +
+                                      "Задайте другие контактные данные пользователя в окне приема заказа.");
+                                _Contacts.Contacts = OldContacts;
+                                cancelSaveUserData = true;
+                                return;
+                            };
+                        }
+
+                        bool personeCompare = persone.ComparePersons(persone, _Contacts.Persone);
+                        bool contactsCompare = _Contacts.CompareContacts(persone.Contacts, _Contacts.Contacts);
+
+                        if (!personeCompare)
+                        {
+                            db.Entry(Usver.Persone).State = EntityState.Modified;
+                            Usver.Persone.CopyExeptVirtualIdPhoto(Usver.Persone, _Contacts.Persone);
+                        }
+                        if (!contactsCompare)
+                        {
+                            db.Entry(OldContacts).State = EntityState.Modified;
+                            _Contacts.Contacts.CopyExceptVirtualAndId(OldContacts, _Contacts.Contacts);
+                            Usver.Persone.Contacts = _Contacts.Contacts;
+                        }
+                        //db.SaveChanges();
+                    }
+                    else
+                        Usver.Persone.Contacts = _Contacts.Contacts;
+
+                    Usver.Persone.Dates.Add(Usver.Date);
+                    Usver.User.Persone = Usver.Persone;
+                    Usver.User.Persone.PersoneDescription = Usver.PersoneDescription;
+                    db.Users.Add(Usver.User);
                     db.SaveChanges();
-                    dialogService.ShowMessage("Изменения сохранены");
+                    newUserSave = true;
+                    if (!anyUsersInDB)
+                        dialogService.ShowMessage("Данные сохранены. Теперь нужно авторизироваться...");
+                    else
+                        dialogService.ShowMessage("Данные сохранены.");
+
 
                 }
                 catch (ArgumentNullException ex)
@@ -835,6 +951,19 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
                 }
             }
         }
+
+        
+        //=============================================================================================
+        private RelayCommand closeWindowCommand;        
+        public RelayCommand CloseWindowCommand => closeWindowCommand ?? (closeWindowCommand = new RelayCommand(
+                    (obj) =>
+                    {
+                        Window win = obj as Window;
+                        win.Close();                       
+
+                    }
+                    ));
+
         //======================================================================================================
 
 

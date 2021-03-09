@@ -84,12 +84,12 @@ namespace STUDENTU_1._06.ViewModel
                                 User = new User();
                                 break;
                             case CheckUser.No:
-                                
+                                dialogService.ShowMessage("В БД нет ни одного пользователя. Нужно зарегистрироваться.");
                                 //here we call user registration window
                                 //this is relevat only at the first application start
-                                UserRegistration usver;
-                                usver = new UserRegistration();
-                                showWindow.ShowWindow(usver);
+                                //UserRegistration usver;
+                                //usver = new UserRegistration();
+                                //showWindow.ShowWindow(usver);
                                 break;
                             case CheckUser.DB_trabl:
                                 dialogService.ShowMessage("Проблемы установки связи с базой данных...");
