@@ -43,9 +43,11 @@
     </Window.Resources>
 
     <Window.InputBindings>
-        <KeyBinding Gesture="Ctrl+R" Command="{Binding UpdateOrederList}"/>
-        <KeyBinding Gesture="Ctrl+N" Command="{Binding NewOrder}"/>
-        <KeyBinding Gesture="Alt+X" Command="{Binding CloseMainWindow}"/>
+        <KeyBinding Gesture="Ctrl+R" Command="{Binding UpddateUsersListCommand}"/>
+        <KeyBinding Gesture="Ctrl+N" Command="{Binding AddNewUserCommand}"/>
+        <KeyBinding Gesture="Alt+X" Command="{Binding CloseMainWindow}"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
+        <KeyBinding Gesture="Esc" Command="{Binding CloseWindowCommand}"/>
     </Window.InputBindings>
     <!--"UpdateOrederList" , "NewOrder",  "CloseMainWindow" we can find in  "MainViewModel.cs"-->
     <Grid>
@@ -61,13 +63,25 @@
                   ItemsSource="{Binding Records}" 
                   SelectedItem="{Binding SelectedRecord}"                                          
                   AutoGenerateColumns="False" SelectionMode="Single"
-                  IsReadOnly="True" Grid.RowSpan="2"  >           
+                  IsReadOnly="True" Grid.RowSpan="2"  >
+
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <!--задаем фон заказам, которые разбиты на несколько подзаказов-->
+                    <!--set the background for orders that are divided into several suborders-->
+                    <Setter Property="Foreground"
+                           Value="{Binding Firedate, Converter={StaticResource StringToBrushConverter}}" />
+                </Style>
+            </DataGrid.RowStyle>
+
             <DataGrid.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Обновить Ctrl+R" Command="{Binding UpddateUsersListCommand}"/>
                     <!--"UpdateOrederList" we can find in  "MainViewModel.cs"-->
                     <MenuItem Header="Редактировать"                               
-                              Command="{Binding EditOrderCommand}"/>
+                              CommandParameter="{Binding ElementName=GridUsers, Path=SelectedItem}"
+                              Command="{Binding EditUserCommand}"
+                              />
                     <MenuItem Header="Подробности" />                    
                 </ContextMenu>
             </DataGrid.ContextMenu>
@@ -77,7 +91,7 @@
                 <DataGridTextColumn Width="0.5*" Binding="{Binding FIO}" Header="ФИО"/>
                 <DataGridTextColumn Width="0.5*" Binding="{Binding Accessname}" Header="Право доступа"/>
                 <DataGridTextColumn Width="0.35*"  Binding="{Binding  StartDateWork, Converter={StaticResource dateFormatConverter}}" Header="Работает с.."/>
-                <DataGridTextColumn Width="0.35*"  Binding="{Binding  Firedate}" Header="Уволен с..."/>                
+                <DataGridTextColumn Width="0.35*"  Binding="{Binding  Firedate }" Header="Уволен с..."/>                
             </DataGrid.Columns>
         </DataGrid>
         <Grid Grid.Row="2" Grid.ColumnSpan="5">
@@ -162,14 +176,8 @@
                      Margin="4.6,5,4.8,5"  
                     Background="Red"
                     TabIndex="11"
-                    CommandParameter="{Binding ElementName=GridOrders, Path=SelectedItem}"
-                    Command="{Binding EditOrderCommand}"/>
-
-            
-               
-               
-            
-            
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+                    Command="{Binding CloseWindowCommand}"/>
         </Grid>
     </Grid>
 

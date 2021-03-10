@@ -49,7 +49,9 @@ namespace STUDENTU_1._06.Helpes
                       return Brushes.SaddleBrown;
                 case "ждем новостей от заказчика":
                         return Brushes.DarkGray;
-                  
+                case "работает":
+                        return Brushes.Blue;
+
                     default:
                     return DependencyProperty.UnsetValue;
             }

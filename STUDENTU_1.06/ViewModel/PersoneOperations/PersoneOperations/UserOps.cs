@@ -275,13 +275,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
                                 SaveEditUserData(UserId);
                             else
                                 SaveEditUserData(SelectedRecord.UserId);
-
                         }    
-                            
-                            
-
-
-
                     }
                     ));
 
@@ -305,7 +299,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
                     //нужную person вместо того, чтоб создавать новую с одинковыми контактами
                     
 
-                    Persone tmpPerson = CheckExistPerson(_Contacts.Contacts);
+                    Persone tmpPerson = CheckExistPerson(_Contacts.Contacts,0);
                     if (tmpPerson == null)
                     {
                         dialogService.ShowMessage("Проблемы со связью с базой данных\n на стадии проверки существования контактов " +
@@ -538,21 +532,38 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
         //if returnd null - DB connetion problems
         //if Persone.Person_Id ==0 - not found any exist person
         //if Persone.Person_Id !=0 - here we fount exist person
-        private Persone CheckExistPerson(Contacts contacts)
+        private Persone CheckExistPerson(Contacts contacts, int usrId)
         {
             
             using (StudentuConteiner db = new StudentuConteiner())
             {
                 try
-                {                    
-                    // here we find  Id of former Contscts
-                    int contactId = 0;
-                    contactId = _Contacts.Contacts.CheckContacts(contacts);
-                    if (contactId == 0)                    
-                        return new Persone { PersoneId = 0 };                    
-                    else                    
-                        return db.Persones.Where(o => o.Contacts.ContactsId == contactId).FirstOrDefault();
-                    
+                {
+                    if (usrId == 0)
+                    {
+                        // here we find  Id of former Contscts
+                        int contactId = 0;
+                        contactId = _Contacts.Contacts.CheckContacts(contacts);
+                        if (contactId == 0)
+                            return new Persone { PersoneId = 0 };
+                        else
+                            return db.Persones.Where(o => o.Contacts.ContactsId == contactId).FirstOrDefault();
+                    }
+                    else 
+                    {
+                        // here we are trying to find matches by contacts with the database, excluding contacts
+                        // user whose data is currently being edited
+                        int? contactId = 0;
+                        contactId = _Contacts.Contacts.CheckContacts(contacts, usrId).Value;
+                        if (contactId == null)
+                            return null;
+                        
+                        if (contactId==0)
+                            return new Persone { PersoneId = 0 };
+                        else
+                            return db.Persones.Where(o => o.Contacts.ContactsId == contactId).FirstOrDefault();
+
+                    }
                 }
                 catch (ArgumentNullException ex)
                 {
@@ -692,7 +703,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
                             FIO = item.Persone.Surname + " " + item.Persone.Name + " " + item.Persone.Patronimic,
                             Accessname = item.AccessName,
                             StartDateWork = date.StartDateWork,
-                            Firedate = date.EndDateWork <date.StartDateWork? "работает" : date.EndDateWork.ToString()
+                            Firedate = date.EndDateWork <date.StartDateWork? "работает" : date.EndDateWork.ToString(("d"))
                         };
                         Records.Add(record);                       
                     }
@@ -793,44 +804,17 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
 
         private void SaveEditUserData(int usrId)
         {
-            //Usver.Persone = db.Persones.Where(e => e.PersoneId == Usver.User.Persone.PersoneId).FirstOrDefault();
-            //_Contacts.Contacts = db.Contacts.Where(e => e.ContactsId == Usver.User.Persone.Contacts.ContactsId).FirstOrDefault();
-            //Dates date = Usver.Persone.Dates.Where(e => e.Persone.PersoneId == Usver.Persone.PersoneId).FirstOrDefault();
             //db.Dates.Attach(date);
-            //Usver.Date = date;
+     
             using (StudentuConteiner db = new StudentuConteiner())
             {
                 try
                 {
-                    //User usr = db.Users.Where(e => e.UserId == usrId).FirstOrDefault();
-                    //Persone prs = db.Persones.Where(e => e.PersoneId == usr.Persone.PersoneId).FirstOrDefault();
-                    //Contacts cts = db.Contacts.Where(e => e.ContactsId == usr.Persone.Contacts.ContactsId).FirstOrDefault();
-                    //Dates date = Usver.Persone.Dates.Where(e => e.Persone.PersoneId == usr.Persone.PersoneId).FirstOrDefault();
-                    ////db.Dates.Attach(date);
-                    //PersoneDescription prsDiscr = db.PersoneDescriptions.Where(e => e.PersoneDescriptionId == usr.Persone.PersoneDescription.PersoneDescriptionId).FirstOrDefault();
-
-                    ////Usver.Date = date;
-                    //Usver.Persone.Contacts = Usver.Contacts;
-                    //Usver.User.Persone = Usver.Persone;
-                    //Usver.User.Persone.PersoneDescription = Usver.PersoneDescription;
-                    //Usver.
-                    //usr = Usver.User;
-
-                    //db.Entry(usr).State = EntityState.Modified;
-                    //db.Entry(prs).State = EntityState.Modified;
-                    //db.Entry(cts).State = EntityState.Modified;
-                    //db.Entry(date).State = EntityState.Modified;
-                    //db.Entry(prsDiscr).State = EntityState.Modified;
-                    //usr = Usver.User;
-                    //prs = Usver.Persone;
-                    //cts = _Contacts.Contacts;
-                    //date = Usver.Date;
-                    //prsDiscr = Usver.User.Persone.PersoneDescription;
-
-                    //db.SaveChanges();
+                   
                     //dialogService.ShowMessage("Изменения сохранены");
 
                     //initial data validation
+                   
                     string error;
                     error = UsverDataValidation();
                     if (error != null)
@@ -843,90 +827,40 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
                     //нужную person вместо того, чтоб создавать новую с одинковыми контактами
 
 
-                    Persone tmpPerson = CheckExistPerson(_Contacts.Contacts);
+                    Persone tmpPerson = CheckExistPerson(_Contacts.Contacts, usrId);
                     if (tmpPerson == null)
                     {
                         dialogService.ShowMessage("Проблемы со связью с базой данных\n на стадии проверки существования контактов " +
-                            "\n при добавлении нового пользователя");
+                            "\n при редактирования данных пользователя");
                         return;
                     }
 
                     if (tmpPerson.PersoneId != 0)
                     {
-                        Persone persone = new Persone();
-                        Contacts OldContacts = new Contacts();
-                        //тут мы находим Person , которая уже имеется в БД с такими же контактами для дальнейшей работы с ней
-                        //в текущем контексте
-                        Usver.Persone = db.Persones.Where(e => e.PersoneId == tmpPerson.PersoneId).FirstOrDefault(); OldContacts = db.Contacts.Where(c => c.ContactsId == Usver.Persone.Contacts.ContactsId).FirstOrDefault();
-                        OldContacts = db.Contacts.Where(c => c.ContactsId == Usver.Persone.Contacts.ContactsId).FirstOrDefault();
-                        //тут мы подготавливаем данные для вызова окна сравнения текущих данных личности пользователя
-                        //и предыдущих его данных 
-                        _Contacts.OldPersoneCompare = (Persone)persone.CloneExceptVirtual();
-                        _Contacts.CurPersoneCompare = (Persone)this.Usver.Persone.CloneExceptVirtual();
-                        _Contacts.TmpContacts = (Contacts)OldContacts.CloneExceptVirtual();
-                        _Contacts.OldTmpContactsCompare = (Contacts)OldContacts.CloneExceptVirtual();
-                        _Contacts.TmpContactsCompare = (Contacts)this._Contacts.Contacts.CloneExceptVirtual();
-                        //вызывем окно сравнения
-                        CompareContatctsWindow compareContatctsWindow = new CompareContatctsWindow(this);
-                        showWindow.ShowDialog(compareContatctsWindow);
-
-                        //если в результате сравнения не был принят ни один из вариантов
-                        if (!_Contacts.saveCompareResults)
+                        Persone prs = CompareContacts(tmpPerson.PersoneId);
+                        if (prs == null)
                         {
-                            //тут лучше придумать диалоговое окно с радиокнопками , для выбора вариантов действия
-                            // - отменить прием заказа и отправить пользователя закрыть окно приема заказа
-                            //т.к. не понятно как реализовать закрытие окна из вьюмодел не вмешиваяся в сраный мввм
-                            //но в идеале закрыть окно приема заказа. Думаю, что это потянет за собой перепил по всему проекту
-                            //процедуры закрытия окна.
-                            // - 
-                            if (dialogService.YesNoDialog("Не сохранен ни один из вариантов...\n" +
-                                    "Отменить процедуру оформления нового пользователя?"))
-                            {
-                                dialogService.ShowMessage("Ок. Тогда просто закройте окно оформления нового пользователя");
-                                _Contacts.Contacts = OldContacts;
-                                cancelSaveUserData = true;
-                                return;
-                            }
-                            else
-                            {
-                                dialogService.ShowMessage("В базе данных не могут дублироваться контакты\n" +
-                                      "Задайте другие контактные данные пользователя в окне приема заказа.");
-                                _Contacts.Contacts = OldContacts;
-                                cancelSaveUserData = true;
-                                return;
-                            };
+                            dialogService.ShowMessage("Редактирование данных пользователя прервано");
+                            return;
                         }
-
-                        bool personeCompare = persone.ComparePersons(persone, _Contacts.Persone);
-                        bool contactsCompare = _Contacts.CompareContacts(persone.Contacts, _Contacts.Contacts);
-
-                        if (!personeCompare)
-                        {
-                            db.Entry(Usver.Persone).State = EntityState.Modified;
-                            Usver.Persone.CopyExeptVirtualIdPhoto(Usver.Persone, _Contacts.Persone);
-                        }
-                        if (!contactsCompare)
-                        {
-                            db.Entry(OldContacts).State = EntityState.Modified;
-                            _Contacts.Contacts.CopyExceptVirtualAndId(OldContacts, _Contacts.Contacts);
-                            Usver.Persone.Contacts = _Contacts.Contacts;
-                        }
-                        //db.SaveChanges();
+                        prs.PersoneId = Usver.Persone.PersoneId;
+                        Usver.Persone = prs;                         
                     }
                     else
                         Usver.Persone.Contacts = _Contacts.Contacts;
 
-                    Usver.Persone.Dates.Add(Usver.Date);
+                    Dates dt = Usver.Persone.Dates.Where(e => e.Persone.PersoneId == Usver.Persone.PersoneId).FirstOrDefault();
+                    dt = Usver.Date;                    
                     Usver.User.Persone = Usver.Persone;
-                    Usver.User.Persone.PersoneDescription = Usver.PersoneDescription;
-                    db.Users.Add(Usver.User);
-                    db.SaveChanges();
-                    newUserSave = true;
-                    if (!anyUsersInDB)
-                        dialogService.ShowMessage("Данные сохранены. Теперь нужно авторизироваться...");
-                    else
-                        dialogService.ShowMessage("Данные сохранены.");
-
+                    Usver.User.Persone.PersoneDescription = Usver.PersoneDescription;                    
+                    db.Entry(Usver.User).State = EntityState.Modified;
+                    db.Entry(Usver.User.Persone).State = EntityState.Modified;
+                    db.Entry(Usver.User.Persone.Contacts).State = EntityState.Modified;
+                    db.Entry(Usver.User.Persone.PersoneDescription).State = EntityState.Modified;
+                    db.Entry(dt).State = EntityState.Modified;
+                    db.SaveChanges();                   
+                    
+                    dialogService.ShowMessage("Данные сохранены.");
 
                 }
                 catch (ArgumentNullException ex)
@@ -952,7 +886,100 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
             }
         }
 
-        
+        private Persone CompareContacts(int PersoneId)
+        {
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                try
+                {
+                    Persone persone = new Persone();
+                    
+                    Contacts OldContacts = new Contacts();
+                    //тут мы находим Person , которая уже имеется в БД с такими же контактами для дальнейшей работы с ней
+                    //в текущем контексте
+                    persone = db.Persones.Where(e => e.PersoneId == PersoneId).FirstOrDefault();
+                    OldContacts = db.Contacts.Where(c => c.ContactsId == persone.Contacts.ContactsId).FirstOrDefault();
+
+                    //тут мы подготавливаем данные для вызова окна сравнения текущих данных личности пользователя
+                    //и предыдущих его данных 
+                    _Contacts.OldPersoneCompare = (Persone)persone.CloneExceptVirtual();
+                    _Contacts.CurPersoneCompare = (Persone)Usver.Persone.CloneExceptVirtual();
+                    _Contacts.TmpContacts = (Contacts)OldContacts.CloneExceptVirtual();
+                    _Contacts.OldTmpContactsCompare = (Contacts)OldContacts.CloneExceptVirtual();
+                    _Contacts.TmpContactsCompare = (Contacts)this._Contacts.Contacts.CloneExceptVirtual();
+                    //вызывем окно сравнения
+                    CompareContatctsWindow compareContatctsWindow = new CompareContatctsWindow(this);
+                    showWindow.ShowDialog(compareContatctsWindow);
+
+                    //если в результате сравнения не был принят ни один из вариантов
+                    if (!_Contacts.saveCompareResults)
+                    {
+                        //тут лучше придумать диалоговое окно с радиокнопками , для выбора вариантов действия
+                        // - отменить прием заказа и отправить пользователя закрыть окно приема заказа
+                        //т.к. не понятно как реализовать закрытие окна из вьюмодел не вмешиваяся в сраный мввм
+                        //но в идеале закрыть окно приема заказа. Думаю, что это потянет за собой перепил по всему проекту
+                        //процедуры закрытия окна.
+                        // - 
+                        if (dialogService.YesNoDialog("Не сохранен ни один из вариантов...\n" +
+                                "Отменить процедуру оформления нового пользователя?"))
+                        {
+                            dialogService.ShowMessage("Ок. Тогда просто закройте окно оформления нового пользователя");
+                            Usver.Contacts = OldContacts;
+                            cancelSaveUserData = true;
+                            return null;
+                        }
+                        else
+                        {
+                            dialogService.ShowMessage("В базе данных не могут дублироваться контакты\n" +
+                                  "Задайте другие контактные данные пользователя в окне приема заказа.");
+                            Usver.Contacts = OldContacts;
+                            cancelSaveUserData = true;
+                            return null;
+                        };
+                    }
+
+                    bool personeCompare = persone.ComparePersons(persone, _Contacts.Persone);
+                    bool contactsCompare = _Contacts.CompareContacts(persone.Contacts, _Contacts.Contacts);
+
+                    if (!personeCompare)
+                        persone.CopyExeptVirtualIdPhoto(persone, _Contacts.Persone);
+                    
+                   
+                    
+                    if (!contactsCompare)
+                    {
+                        _Contacts.Contacts.CopyExceptVirtualAndId(OldContacts, _Contacts.Contacts);
+                        persone.Contacts = _Contacts.Contacts;                        
+                    }
+                    else
+                        return null;
+                    return persone;
+                }
+                catch (ArgumentNullException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (OverflowException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+            }
+            return null;
+            //db.SaveChanges();
+        }
+
         //=============================================================================================
         private RelayCommand closeWindowCommand;        
         public RelayCommand CloseWindowCommand => closeWindowCommand ?? (closeWindowCommand = new RelayCommand(

@@ -343,7 +343,60 @@ namespace STUDENTU_1._06.Model
             return 0;
         }
 
-       public  object Clone()
+        //Return null if usrId==0 ore Db connection problems
+        //returns int value if has been found that we need
+        //if returned 0  - nothing has been found
+        public int? CheckContacts(Contacts contacts, int usrId)
+        {
+            using (StudentuConteiner db = new StudentuConteiner())
+            {
+                try
+                {
+                    if (usrId == 0)
+                        return null;
+                    
+                 int curContactsId = db.Users.Where(e => e.UserId == usrId).FirstOrDefault().Persone.Contacts.ContactsId;
+                 var tmp = db.Contacts.Where(e => e.ContactsId != curContactsId).ToList();
+
+                    if (tmp == null) return null;
+                    foreach (var item in tmp)
+                    {
+                        if (item.Phone1 != "---" && (item.Phone1 == contacts.Phone1 || item.Phone1 == contacts.Phone2 || item.Phone1 == contacts.Phone3) ||
+                            item.Phone2 != "---" && (item.Phone2 == contacts.Phone2 || item.Phone2 == contacts.Phone3) ||
+                            item.Phone3 != "---" && item.Phone3 == contacts.Phone3 ||
+                            item.Email1 != "---" && (item.Email1 == contacts.Email1 || item.Email1 == contacts.Email2) ||
+                            item.Email2 != "---" && (item.Email2 == contacts.Email2) ||
+                            item.VK != "---" && item.VK == contacts.VK ||
+                            item.FaceBook != "---" && item.FaceBook == contacts.FaceBook ||
+                            item.Skype != "---" && item.Skype == item.Skype)
+                            return item.ContactsId;
+                    }
+                }
+                catch (ArgumentNullException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (OverflowException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityCommandExecutionException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+                catch (System.Data.Entity.Core.EntityException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+            }
+            return 0;
+        }
+
+        public  object Clone()
         {
             return new Contacts()
             {

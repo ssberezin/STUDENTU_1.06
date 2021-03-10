@@ -74,6 +74,7 @@ namespace STUDENTU_1._06.ViewModel
                                 User = Identification(User);
                                 if (User != null)
                                 {
+                                    
                                     //here we call main window fo work with application
                                     CallFirstWindow(User.UserId);
                                     win.Close();//this gave to close authoresation window
@@ -159,7 +160,13 @@ namespace STUDENTU_1._06.ViewModel
                     {
                         if (item.UserNickName == usver.UserNickName)
                             if (item.Pass == usver.Pass)
-                                return item;                           
+                            {
+                                Dates dt = db.Dates.Where(e => e.Persone.PersoneId == item.Persone.PersoneId).FirstOrDefault();
+                                if (dt.StartDateWork > dt.EndDateWork)
+                                    return item;
+                                else
+                                    return null;
+                            }
                     }
                     return null;
                 }

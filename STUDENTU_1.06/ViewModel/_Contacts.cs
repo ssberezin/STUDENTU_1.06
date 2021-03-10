@@ -501,8 +501,8 @@ namespace STUDENTU_1._06.ViewModel
                     ));
         private void SetRightContacts(Window window)
         {
+           
             Contacts = TmpContactsCompare;
-
             Persone.Name = CurPersoneCompare.Name;
             Persone.Surname = CurPersoneCompare.Surname;
             Persone.Patronimic = CurPersoneCompare.Patronimic;
@@ -512,15 +512,40 @@ namespace STUDENTU_1._06.ViewModel
             CloseWindow(window);
         }
 
-        public bool CompareContacts (Contacts obj1, Contacts obj2)
+        //it returns true if there is at least one match. It mean that validation failed
+        public bool CompareContacts(Contacts obj1, Contacts obj2)
         {
-            if ((obj1.Phone1 == obj2.Phone1) && (obj1.Phone2 == obj2.Phone2) &&
-                (obj1.Phone3 == obj2.Phone3) && (obj1.Email1 == obj2.Email1) &&
-                (obj1.Email2 == obj2.Email2) && (obj1.VK == obj2.VK) &&
-                (obj1.FaceBook == obj2.FaceBook) && (obj1.Skype == obj2.Skype))
+            if (Contacts.PhoneNumberValidationCheck(obj1.Phone1) == null &&
+                Contacts.PhoneNumberValidationCheck(obj1.Phone2) == null &&
+                Contacts.PhoneNumberValidationCheck(obj1.Phone3) == null &&
+                Contacts.PhoneNumberValidationCheck(obj2.Phone1) == null &&
+                Contacts.PhoneNumberValidationCheck(obj2.Phone2) == null &&
+                Contacts.PhoneNumberValidationCheck(obj2.Phone3) == null)
+            {
+                dialogService.ShowMessage("Должен быть задан хотя бы один номер телефона");
                 return true;
+            }
+
+            if ((obj1.Phone1 == obj2.Phone1) || (obj1.Phone1 == obj2.Phone2) || (obj1.Phone1 == obj2.Phone3) ||
+                 (obj1.Phone2 == obj2.Phone2) || (obj1.Phone2 == obj2.Phone3) ||
+                 (obj1.Phone3 == obj2.Phone3) ||
+                 (obj1.Email1 == obj2.Email1) || (obj1.Email1 == obj2.Email2) ||
+                 (obj1.Email2 == obj2.Email2) ||
+                 (obj1.VK == obj2.VK) || (obj1.FaceBook == obj2.FaceBook) && (obj1.Skype == obj2.Skype))
+            {
+                dialogService.ShowMessage("БД не может содержать одинаковые контаные данные у разных пользователей");
+                return true;
+            }
+            //10/3/21 - this is bullshit
+            //if ((obj1.Phone1 == obj2.Phone1) && (obj1.Phone2 == obj2.Phone2) &&
+            //    (obj1.Phone3 == obj2.Phone3) && (obj1.Email1 == obj2.Email1) &&
+            //    (obj1.Email2 == obj2.Email2) && (obj1.VK == obj2.VK) &&
+            //    (obj1.FaceBook == obj2.FaceBook) && (obj1.Skype == obj2.Skype))
+            //    return true;
             return false;
         }
+
+      
 
 
 
