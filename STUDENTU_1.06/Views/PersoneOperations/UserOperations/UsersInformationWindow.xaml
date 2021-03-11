@@ -47,7 +47,8 @@
         <KeyBinding Gesture="Ctrl+N" Command="{Binding AddNewUserCommand}"/>
         <KeyBinding Gesture="Alt+X" Command="{Binding CloseMainWindow}"
                                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
-        <KeyBinding Gesture="Esc" Command="{Binding CloseWindowCommand}"/>
+        <KeyBinding Gesture="Esc" Command="{Binding CloseWindowCommand}"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
     </Window.InputBindings>
     <!--"UpdateOrederList" , "NewOrder",  "CloseMainWindow" we can find in  "MainViewModel.cs"-->
     <Grid>

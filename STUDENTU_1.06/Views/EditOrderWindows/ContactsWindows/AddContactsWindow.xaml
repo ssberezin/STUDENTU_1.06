@@ -1,6 +1,7 @@
 ﻿<Window xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"  x:Class="STUDENTU_1._06.Views.AddContactsWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:helpes="clr-namespace:STUDENTU_1._06.Helpes" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:STUDENTU_1._06.Views"
@@ -16,6 +17,12 @@
         FontFamily="{DynamicResource MaterialDesignFont}" 
         WindowStartupLocation="CenterScreen" 
         >
+    <Window.Resources>
+        <ResourceDictionary>
+            <helpes:CaretPositionConverter x:Key="caretPositionConverter"/>
+        </ResourceDictionary>
+            
+    </Window.Resources>
     <Window.InputBindings>
         <KeyBinding Gesture="Esc" Command="{Binding _Contacts.CancelSaveContactsCommand}" 
                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
@@ -57,7 +64,9 @@
             </Viewbox>
             <TextBox x:Name="Phone2"  Margin="2" MinWidth="205" HorizontalAlignment="Stretch"
                  Text="{Binding _Contacts.TmpContacts.Phone2 , Mode=TwoWay,
-            UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TabIndex="1"
+            UpdateSourceTrigger=PropertyChanged}"
+                     CaretIndex="10"
+                     TextWrapping="Wrap" TabIndex="1"
                   TextAlignment="Center" Width="205" MaxLength="13"/>
             <!--Contatcts can find in ForEditOrder.cs-->
         </WrapPanel>

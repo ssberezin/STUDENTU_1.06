@@ -810,11 +810,7 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
             {
                 try
                 {
-                   
-                    //dialogService.ShowMessage("Изменения сохранены");
-
-                    //initial data validation
-                   
+                    //initial data validation                   
                     string error;
                     error = UsverDataValidation();
                     if (error != null)
@@ -823,9 +819,8 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
                         return;
                     }
 
-                    // тут мы проверяем контакты по БД.Если есть такие, то подтянуть 
-                    //нужную person вместо того, чтоб создавать новую с одинковыми контактами
-
+                    // here we check contacts in the database. If there are such, then pull up
+                    // the desired person instead of creating a new one with single contacts
 
                     Persone tmpPerson = CheckExistPerson(_Contacts.Contacts, usrId);
                     if (tmpPerson == null)
@@ -861,7 +856,6 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
                     db.SaveChanges();                   
                     
                     dialogService.ShowMessage("Данные сохранены.");
-
                 }
                 catch (ArgumentNullException ex)
                 {
@@ -893,39 +887,35 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
                 try
                 {
                     Persone persone = new Persone();
-                    
+
                     Contacts OldContacts = new Contacts();
-                    //тут мы находим Person , которая уже имеется в БД с такими же контактами для дальнейшей работы с ней
-                    //в текущем контексте
+                    // here we find Person, which is already in the database with the same contacts for further work with it
+                    // in the current context
                     persone = db.Persones.Where(e => e.PersoneId == PersoneId).FirstOrDefault();
                     OldContacts = db.Contacts.Where(c => c.ContactsId == persone.Contacts.ContactsId).FirstOrDefault();
-
-                    //тут мы подготавливаем данные для вызова окна сравнения текущих данных личности пользователя
-                    //и предыдущих его данных 
+                    // here we prepare the data to call the window for comparing the current data of the user's identity
+                    // and its previous data
                     _Contacts.OldPersoneCompare = (Persone)persone.CloneExceptVirtual();
                     _Contacts.CurPersoneCompare = (Persone)Usver.Persone.CloneExceptVirtual();
                     _Contacts.TmpContacts = (Contacts)OldContacts.CloneExceptVirtual();
                     _Contacts.OldTmpContactsCompare = (Contacts)OldContacts.CloneExceptVirtual();
                     _Contacts.TmpContactsCompare = (Contacts)this._Contacts.Contacts.CloneExceptVirtual();
-                    //вызывем окно сравнения
+                    //call compare window
                     CompareContatctsWindow compareContatctsWindow = new CompareContatctsWindow(this);
                     showWindow.ShowDialog(compareContatctsWindow);
 
-                    //если в результате сравнения не был принят ни один из вариантов
+                    // if none of the options was accepted as a result of comparison
                     if (!_Contacts.saveCompareResults)
                     {
-                        //тут лучше придумать диалоговое окно с радиокнопками , для выбора вариантов действия
-                        // - отменить прием заказа и отправить пользователя закрыть окно приема заказа
-                        //т.к. не понятно как реализовать закрытие окна из вьюмодел не вмешиваяся в сраный мввм
-                        //но в идеале закрыть окно приема заказа. Думаю, что это потянет за собой перепил по всему проекту
-                        //процедуры закрытия окна.
-                        // - 
+                        //here we have a violation of the MVVM pattern because
+                        //the dick knows how to close the window without it
                         if (dialogService.YesNoDialog("Не сохранен ни один из вариантов...\n" +
                                 "Отменить процедуру оформления нового пользователя?"))
                         {
-                            dialogService.ShowMessage("Ок. Тогда просто закройте окно оформления нового пользователя");
                             Usver.Contacts = OldContacts;
                             cancelSaveUserData = true;
+                            compareContatctsWindow.Close();
+                            //dialogService.ShowMessage("Ок. Тогда просто закройте окно оформления нового пользователя");                          
                             return null;
                         }
                         else
@@ -943,13 +933,11 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
 
                     if (!personeCompare)
                         persone.CopyExeptVirtualIdPhoto(persone, _Contacts.Persone);
-                    
-                   
-                    
+
                     if (!contactsCompare)
                     {
                         _Contacts.Contacts.CopyExceptVirtualAndId(OldContacts, _Contacts.Contacts);
-                        persone.Contacts = _Contacts.Contacts;                        
+                        persone.Contacts = _Contacts.Contacts;
                     }
                     else
                         return null;
@@ -985,9 +973,9 @@ namespace STUDENTU_1._06.ViewModel.PersoneOperations.PersoneOperations
         public RelayCommand CloseWindowCommand => closeWindowCommand ?? (closeWindowCommand = new RelayCommand(
                     (obj) =>
                     {
+                        //breaking MVVM concept
                         Window win = obj as Window;
                         win.Close();                       
-
                     }
                     ));
 

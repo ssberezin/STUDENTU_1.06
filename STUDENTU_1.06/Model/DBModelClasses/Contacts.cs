@@ -198,14 +198,22 @@ namespace STUDENTU_1._06.Model
                 Phone1 = PhoneNumberValidationCheck(Phone1);
                 result = true;
             }
+            else
+                Phone1 = "+380";
+
             if (NotEmptyFieldCheck(Phone2) && PhoneNumberValidationCheck(Phone2) != null)
-            {    Phone2 = PhoneNumberValidationCheck(Phone2);
+            {
+                Phone2 = PhoneNumberValidationCheck(Phone2);
                 result = true;
             }
+            else
+                Phone2 = "---";
             if (NotEmptyFieldCheck(Phone3) && PhoneNumberValidationCheck(Phone3) != null)
             {    Phone3 = PhoneNumberValidationCheck(Phone3);
                  result = true;
             }
+            else
+                Phone3 = "---";
             if (!result)
             {
                 dialogService.ShowMessage("Хотя бы одно из полей номера телефона нужно заполнить корректно");
@@ -234,7 +242,9 @@ namespace STUDENTU_1._06.Model
         // if the string matches the criteria, then return true.Trim the spaces from the end of the line
         private bool NotEmptyFieldCheck(string str)
         {
-            if (str != "" || str != "---")
+            if (str == null || str == "")
+                return false;
+            if ( str != "---")
             {
                 if (str[0] == ' ' || str[str.Length-1] == ' ')
                     str.Trim();

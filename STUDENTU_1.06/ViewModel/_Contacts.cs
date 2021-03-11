@@ -162,11 +162,9 @@ namespace STUDENTU_1._06.ViewModel
         public void PersonAddContacts()
         {
             Author author = CheckAuthorContacts();
-            if (author == null)
-            {
-                Contacts = TmpContacts;
-                dialogService.ShowMessage("Данные сохранены");
-            }
+            if (author == null)          
+                //сюда бы воткнуть валидацию нормальную, но чета лень
+                Contacts = TmpContacts;           
             else
                 if (dialogService.YesNoDialog("Контактные данные этого автора уже есть в БД авторов\n" +
                                 "Показать информацию по найденному совпадению?"))
@@ -544,13 +542,6 @@ namespace STUDENTU_1._06.ViewModel
             //    return true;
             return false;
         }
-
-      
-
-
-
-
-
 
     }
 }
